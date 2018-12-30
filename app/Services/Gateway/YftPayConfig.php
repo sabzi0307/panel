@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Services\Gateway;
 
-class PayConfig{
+class YftPayConfig{
 
     public $pay_config;
 
