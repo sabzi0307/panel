@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">账户已被封禁</span>
+                        <span class="home-title">حساب کاربری مسدود شده است</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">你的账户功能已被停用，并且禁止访问用户中心</span>
+                        <span class="home-subtitle">عملکرد حساب شما غیرفعال شده است و دسترسی به مرکز کاربر ممنوع است</span>
                     </div>
                 </div>
             </div>
@@ -25,10 +25,10 @@
                                 <i class="ti ti-circle-x icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
                             </div>
                             {if $banned_reason == null}
-                            <p class="empty-title">账户被系统封禁</p>
-                            <p class="empty-subtitle text-muted">你的账户被系统自动封禁了，请联系管理员</p>
+                            <p class="empty-title">حساب کاربری توسط سیستم مسدود شده است</p>
+                            <p class="empty-subtitle text-muted">حساب شما به طور خودکار توسط سیستم مسدود می شود، لطفا با مدیر تماس بگیرید</p>
                             {else}
-                            <p class="empty-title">以下是你被封禁的理由</p>
+                            <p class="empty-title">این دلیل ممنوعیت شماست</p>
                             <p class="empty-subtitle text-muted">{$banned_reason}</p>
                             {/if}
                         </div>

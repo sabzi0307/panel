@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">商品列表</span>
+                        <span class="home-title">لیست محصولات</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">在这里浏览商店商品并根据需要下单</span>
+                        <span class="home-subtitle">اجناس فروشگاه را اینجا مرور کنید و در صورت تمایل سفارش دهید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -26,7 +26,7 @@
                                 </path>
                                 <path d="M12 6v2m0 8v2"></path>
                             </svg>
-                            充值余额
+                            موجودی شارژ مجدد
                         </a>
                         <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="#account-recharge">
@@ -54,12 +54,12 @@
                         <div class="card-body">
                             <div class="m-0 my-2">
                                 <div>
-                                    <p>账户当前余额为：<code>{$user->money}</code> 元，剩余流量为：<code>{$user->unusedTraffic()}</code>
+                                    <p>موجودی حساب：<code>{$user->money}</code> تومان，ترافیک باقی مانده：<code>{$user->unusedTraffic()}</code>
                                         {if time() > strtotime($user->expire_in)}
-                                            ，你的账户已经过期了
+                                            ，حساب شما منقضی شده است
                                         {else}
                                             {$diff = round((strtotime($user->expire_in) - time()) / 86400)}
-                                            ，大约还有 <code>{$diff}</code> 天到期
+                                            ，میزان <code>{$diff}</code> روزهای سررسید
                                         {/if}
                                     </p>
                                     {if $config['user_product_page_custom'] == true}
@@ -114,12 +114,12 @@
                                                                         {if $product->stock - $product->sales > '0'}
                                                                             <div class="col">
                                                                                 <button onclick="buy('{$product->id}')" href="#"
-                                                                                    class="btn btn-primary w-100">购买</button>
+                                                                                    class="btn btn-primary w-100">بخرید</button>
                                                                             </div>
                                                                         {else}
                                                                             <div class="col">
                                                                                 <button href="#" class="btn btn-primary w-100"
-                                                                                    disabled>告罄</button>
+                                                                                    disabled>فروخته شده</button>
                                                                             </div>
                                                                         {/if}
                                                                         <div class="col-auto align-self-center">
@@ -136,7 +136,7 @@
                                                 {/foreach}
                                             {else}
                                                 <div class="card-body">
-                                                    <p>此分类下没有商品</p>
+                                                    <p>در این دسته بندی هیچ محصولی وجود ندارد</p>
                                                 </div>
                                             {/if}
                                         </div>
@@ -154,39 +154,39 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">确认订单</h5>
+                    <h5 class="modal-title">تایید سفارش</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <span>商品名称：</span>
+                        <span>نام محصول：</span>
                         <span id="product-buy-name" style="float: right"></span>
                     </div>
                     <div class="mb-3">
-                        <span>商品售价：</span>
+                        <span>قیمت：</span>
                         <span id="product-buy-price" style="float: right"></span>
                     </div>
                     <div class="mb-3">
-                        <span>折扣：</span>
+                        <span>تخفیف：</span>
                         <span id="product-buy-discount" style="float: right">0.00</span>
                     </div>
                     <hr />
                     <div class="mb-3">
-                        <span>合计：</span>
+                        <span>مجموع：</span>
                         <span id="product-buy-total" style="float: right">0</span>
                     </div>
                     <div class="mb-3">
                         <div class="input-group mb-2">
-                            <input id="coupon" type="text" class="form-control" placeholder="填写优惠码，没有请留空">
-                            <button id="verify-coupon" class="btn" type="button">验证</button>
+                            <input id="coupon" type="text" class="form-control" placeholder="کد تخفیف را وارد کنید، لطفا خالی بگذارید">
+                            <button id="verify-coupon" class="btn" type="button">تایید</button>
                         </div>
                     </div>
                     <p id="valid-msg"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
                     <button id="create-order" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">创建订单</button>
+                        data-bs-dismiss="modal">سفارش</button>
                 </div>
             </div>
         </div>
@@ -209,8 +209,8 @@
                     <p id="notice-message" class="text-muted">注意</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
-                    <button id="notice-confirm" type="button" class="btn btn-yellow" data-bs-dismiss="modal">确认</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
+                    <button id="notice-confirm" type="button" class="btn btn-yellow" data-bs-dismiss="modal">تایید</button>
                 </div>
             </div>
         </div>
@@ -220,22 +220,22 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">账户充值</h5>
+                    <h5 class="modal-title">شارژ اکانت</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p style="color: red;">温馨提示：新的商店系统已支持直接下单扫码付款，无需先充值再购买。此功能是提供给在支付账单时遇到账单金额低于支付限额的用户</p>
+                    <p style="color: red;">یادآوری: سیستم فروشگاه جدید در حال حاضر از اسکن مستقیم سفارش و پرداخت پشتیبانی می کند، بدون نیاز به شارژ مجدد قبل از خرید. این عملکرد برای کاربرانی ارائه می شود که هنگام پرداخت صورتحساب با قبوض زیر سقف پرداخت مواجه می شوند</p>
                     <div class="form-group mb-3 row">
-                        <label class="form-label col-2 col-form-label">金额</label>
+                        <label class="form-label col-2 col-form-label">تعداد</label>
                         <div class="col">
-                            <input id="recharge_amount" type="text" class="form-control" placeholder="请输入充值金额">
+                            <input id="recharge_amount" type="text" class="form-control" placeholder="لطفا مبلغ شارژ را وارد کنید">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
                     <button id="create-recharge-order" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">提交</button>
+                        data-bs-dismiss="modal">ارسال</button>
                 </div>
             </div>
         </div>
@@ -288,7 +288,7 @@
                 },
                 success: function(data) {
                     if (data.ret == 1) {
-                        $('#success-message').text('正在准备您的订单');
+                        $('#success-message').text('سفارش شما در حال آماده سازی است');
                         $('#success-dialog').modal('show');
                         setTimeout(function() {
                             $(location).attr('href', '/user/order/' + data.order_id);
@@ -312,7 +312,7 @@
                 },
                 success: function(data) {
                     if (data.ret == 1) {
-                        $('#success-message').text('正在准备您的订单');
+                        $('#success-message').text('سفارش شما در حال آماده سازی است');
                         $('#success-dialog').modal('show');
                         setTimeout(function() {
                             $(location).attr('href', '/user/order/' + data.order_id);

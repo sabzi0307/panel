@@ -10,16 +10,16 @@
             </div>
             <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4">登录到用户中心</h2>
+                    <h2 class="card-title text-center mb-4">وارد مرکز کاربر شوید</h2>
                     <div class="mb-3">
-                        <label class="form-label">注册邮箱</label>
+                        <label class="form-label">ثبت نام ایمیل</label>
                         <input id="email" type="email" class="form-control">
                     </div>
                     <div class="mb-2">
                         <label class="form-label">
-                            登录密码
+                            رمز عبور ورود
                             <span class="form-label-description">
-                                <a href="/password/reset">忘记密码</a>
+                                <a href="/password/reset">رمز عبور را فراموش کرده اید</a>
                             </span>
                         </label>
                         <div class="input-group input-group-flat">
@@ -27,13 +27,13 @@
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">两步认证</label>
-                        <input id="code" type="email" class="form-control" placeholder="如果没有设置两步认证可留空">
+                        <label class="form-label">احراز هویت دو مرحله ای</label>
+                        <input id="code" type="email" class="form-control" placeholder="اگر احراز هویت دو مرحله ای تنظیم نشده باشد، می توان آن را خالی گذاشت">
                     </div>
                     <div class="mb-2">
                         <label class="form-check">
                             <input id="remember_me" type="checkbox" class="form-check-input" />
-                            <span class="form-check-label">记住此设备</span>
+                            <span class="form-check-label">این دستگاه را به خاطر بسپار</span>
                         </label>
                     </div>
                     {if $config['enable_login_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
@@ -51,12 +51,12 @@
                     </div>
                     {/if}
                     <div class="form-footer">
-                        <button id="login-dashboard" class="btn btn-primary w-100">登录</button>
+                        <button id="login-dashboard" class="btn btn-primary w-100">ورود</button>
                     </div>
                 </div>
             </div>
             <div class="text-center text-muted mt-3">
-                还没有账户？ <a href="/auth/register" tabindex="-1">点击注册</a>
+                حساب کاربری ندارید؟ <a href="/auth/register" tabindex="-1">برای ثبت نام کلیک کنید</a>
             </div>
         </div>
     </div>

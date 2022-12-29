@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">                    
                     <h2 class="page-title">
-                        <span class="home-title">订阅记录</span>
+                        <span class="home-title">سابقه اشتراک</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">在最近 {$config['subscribeLog_keep_days']} 天内所有的订阅记录</span>
+                        <span class="home-subtitle">به تازگی {$config['subscribeLog_keep_days']} تمام سوابق اشتراک در روز</span>
                     </div>
                 </div>
             </div>
@@ -25,11 +25,11 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>类型</th>
+                                        <th>انواع</th>
                                         <th>IP</th>
-                                        <th>归属</th>
-                                        <th>时间</th>
-                                        <th>标识</th>
+                                        <th>انتساب</th>
+                                        <th>زمان</th>
+                                        <th>لوگو</th>
                                     </tr>
                                 </thead>
                                 <tbody>

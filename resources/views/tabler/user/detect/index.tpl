@@ -1,16 +1,16 @@
 {include file='user/tabler_header.tpl'}
 
-<!-- 审计规则是用来防止DMCA和Spam，不是用来给用户建墙用的，不要以为把“违法网站”墙了，被抓了能少判哪怕一天的刑期 -->
+<!-- قوانین حسابرسی برای جلوگیری از DMCA و هرزنامه استفاده می شود، نه برای ساختن دیوار برای کاربران. فکر نکنید که اگر "وب سایت های غیرقانونی" را جدا کنید و گرفتار شوید، می توانید حتی یک روز در زندان پس انداز کنید. -->
 <div class="page-wrapper">
     <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">审计规则</span>
+                        <span class="home-title">قوانین ممیزی</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">目前站点中所使用的审计规则</span>
+                        <span class="home-subtitle">قوانین ممیزی در حال حاضر در سایت استفاده می شود</span>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="m-0 my-2">
-                                <p>为了防止滥用与确保站点可以稳定运行，特制定了如下过滤规则，当您使用节点执行这些动作时，您的通信就会被截断。</p>
+                                <p>به منظور جلوگیری از سوء استفاده و اطمینان از عملکرد پایدار سایت، قوانین فیلتر زیر به طور ویژه تدوین شده است، هنگامی که از گره ها برای انجام این اقدامات استفاده می کنید، ارتباط شما رهگیری می شود.</p>
                             </div>
                         </div>
                     </div>
@@ -35,10 +35,10 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>名称</th>
-                                        <th>描述</th>
-                                        <th>正则表达式</th>
-                                        <th>类型</th>
+                                        <th>نام</th>
+                                        <th>شرح</th>
+                                        <th>regular expression</th>
+                                        <th>نوع</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,10 +49,10 @@
                                         <td>{$rule->text}</td>
                                         <td>{$rule->regex}</td>
                                         {if $rule->type == 1}
-                                            <td>数据包明文匹配</td>
+                                            <td>مطابقت متن ساده بسته</td>
                                         {/if}
                                         {if $rule->type == 2}
-                                            <td>数据包 hex 匹配</td>
+                                            <td>بسته داده hex همخوانی داشتن</td>
                                         {/if}
                                     </tr>
                                     {/foreach}

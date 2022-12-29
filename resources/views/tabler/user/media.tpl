@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">流媒体解锁</span>
+                        <span class="home-title">پخش استریم مسدود شد</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">你可以在这里查看节点的流媒体解锁情况</span>
+                        <span class="home-subtitle">در اینجا می توانید رفع انسداد جریان گره را بررسی کنید</span>
                     </div>
                 </div>
             </div>
@@ -29,15 +29,15 @@
                                             {foreach $results['0']['unlock_item'] as $key => $value}
                                                 {if $key != 'BilibiliChinaMainland'}
                                                     {if $key == 'BilibiliHKMCTW'}
-                                                        <th>港澳台B站</th>
+                                                        <th>ایستگاه هنگ کنگ، ماکائو و تایوان B</th>
                                                     {else if $key == 'BilibiliTW'}
-                                                        <th>台湾B站</th>
+                                                        <th>ایستگاه تایوان B</th>
                                                     {else}
                                                         <th>{$key}</th>
                                                     {/if}
                                                 {/if}
                                             {/foreach}
-                                            <th>更新时间</th>
+                                            <th>زمان به روز رسانی</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,7 +60,7 @@
                             </div>
                         {else}
                             <div class="card-body">
-                                <p>管理员未启用此功能。</p>
+                                <p>مدیر این ویژگی را فعال نکرده است.</p>
                             </div>
                         {/if}
                     </div>
@@ -74,7 +74,7 @@
         $("td:contains('Yes')").css("color", "green");
         $("td:contains('No')").css("color", "red");
         $("td:contains('Unknow')").css("color", "orange");
-        $("td:contains('仅限自制')").css("color", "purple");
+        $("td:contains('فقط خانگی')").css("color", "purple");
     </script>
     
 {include file='user/tabler_footer.tpl'}

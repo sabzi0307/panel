@@ -1,10 +1,10 @@
 <div class="card-inner">
     <h4>
-        epay在线充值
+        شارژ آنلاین epay
     <h4>
     <p class="card-heading"></p>
     <form class="epay" name="epay" action="/user/payment/purchase/epay" method="post">
-        <input class="form-control maxwidth-edit" id="price" name="price" placeholder="输入金额，选择以下要付款的渠道"
+        <input class="form-control maxwidth-edit" id="price" name="price" placeholder="مبلغ را وارد کرده و کانال پرداخت را در زیر انتخاب کنید"
             autofocus="autofocus" type="number" min="0.01" max="1000" step="0.01" required="required">
         <br />
         {if $config['epay_alipay'] == true}

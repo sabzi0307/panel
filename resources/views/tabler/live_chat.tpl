@@ -48,14 +48,14 @@ window.__lc = window.__lc || {};
 {/literal}
 window.__lc.license = "{$config['livechat_id']}";;
 window.__lc.params = [
-    { name: '用户编号', value: '{$user->id}' },
-    { name: '用户类别', value: '{$user->class}' },
-    { name: '注册邮箱', value: '{$user->email}' },
-    { name: '上次使用', value: '{$user->lastSsTime()}' },
-    { name: '到期时间', value: '{$user->expire_in}' },
-    { name: '等级时间', value: '{$user->class_expire}' },
-    { name: '剩余流量', value: '{$user->unusedTraffic()}' },
-    { name: '账户余额', value: '{$user->money}' }
+    { name: 'شناسه کاربر', value: '{$user->id}' },
+    { name: 'دسته کاربری', value: '{$user->class}' },
+    { name: 'ثبت نام ایمیل', value: '{$user->email}' },
+    { name: 'آخرین استفاده', value: '{$user->lastSsTime()}' },
+    { name: 'تاریخ انقضا', value: '{$user->expire_in}' },
+    { name: 'زمان کلاس', value: '{$user->class_expire}' },
+    { name: 'ترافیک باقیمانده', value: '{$user->unusedTraffic()}' },
+    { name: 'موجودی حساب', value: '{$user->money}' }
 ];
 {literal}
 (function(n, t, c) {

@@ -121,7 +121,7 @@
                                         valign="top">
                                         <h2 class="aligncenter"
                                             style="font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;"
-                                            align="center">邮件发送测试</h2>
+                                            align="center">تست ارسال ایمیل</h2>
                                     </td>
                                 </tr>
                                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -134,7 +134,7 @@
                                             <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                                 <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;"
                                                     valign="top">
-                                                    <p>这是一封测试邮件。如果你能收到，说明邮件发送配置有效，可以正常工作</p>
+                                                    <p>این یک ایمیل آزمایشی است. اگر بتوانید آن را دریافت کنید، به این معنی است که پیکربندی ارسال ایمیل معتبر است و می تواند به طور معمول کار کند</p>
                                                 </td>
                                             </tr>
 

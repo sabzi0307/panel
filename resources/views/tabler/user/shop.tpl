@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">套餐购买</h1>
+            <h1 class="content-heading">خرید بسته</h1>
         </div>
     </div>
     <div class="container">
@@ -12,9 +12,9 @@
                 <div class="card">
                     <div class="card-main">
                         <div class="card-inner">
-                            <p>商品不可叠加，新购商品会覆盖旧商品的效果。</p>
-                            <p>购买新套餐时，如果未关闭旧套餐自动续费，则旧套餐的自动续费依然生效。</p>
-                            <p><i class="mdi mdi-currency-usd icon-lg"></i>当前余额：<font color="#399AF2" size="5">{$user->money}</font> 元</p>
+                            <p>کالاها را نمی توان روی هم قرار داد و کالاهای تازه خریداری شده اثرات کالاهای قدیمی را بازنویسی می کنند.</p>
+                            <p>در هنگام خرید بسته جدید، در صورتی که تمدید خودکار بسته قدیمی خاموش نشود، تمدید خودکار بسته قدیمی همچنان برقرار است.</p>
+                            <p><i class="mdi mdi-currency-usd icon-lg"></i>موجودی فعلی：<font color="#399AF2" size="5">{$user->money}</font> تومان</p>
                         </div>
                     </div>
                 </div>
@@ -39,11 +39,11 @@
                         <div class="card-main">
                             <div class="dropdown btn-group">
                                 <a href="javascript:void(0);" type="button" class="btn btn-dropdown-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  选择商品类型 <span class="caret"></span>
+                                  نوع محصول را انتخاب کنید <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li class="order-type"><a href="javascript:void(0)" id="orders">套餐购买</a></li>
-                                  <li class="order-type"><a href="javascript:void(0)" id="traffice-packages">叠加流量包</a></li>
+                                  <li class="order-type"><a href="javascript:void(0)" id="orders">خرید بسته</a></li>
+                                  <li class="order-type"><a href="javascript:void(0)" id="traffice-packages">بسته ترافیک اضافه</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -71,33 +71,33 @@
                                     </div>
                                     <div>
                                         <div class="cube-detail">
-                                            {if {$shop->connector()} == '0' }无限制{else}{$shop->connector()}
+                                            {if {$shop->connector()} == '0' }نامحدود{else}{$shop->connector()}
                                                 <span> 个</span>
                                             {/if}
                                         </div>
                                         <div class="cube-title">
-                                            客户端数量
+                                            تعداد مشتریان
                                         </div>
                                     </div>
                                     <div>
                                         <div class="cube-detail">
-                                            {if {$shop->speedlimit()} == '0' }无限制{else}{$shop->speedlimit()}
+                                            {if {$shop->speedlimit()} == '0' }نامحدود{else}{$shop->speedlimit()}
                                                 <span> Mbps</span>
                                             {/if}
                                         </div>
                                         <div class="cube-title">
-                                            端口速率
+                                            سرعت پورت
                                         </div>
                                     </div>
                                 </div>
                                 <div class="shop-content">
-                                    <div class="shop-content-left">账号有效期:</div>
+                                    <div class="shop-content-left">مدت اعتبار حساب:</div>
                                     <div class="shop-content-right">{$shop->expire()}<span>天</span></div>
-                                    <div class="shop-content-left">重置周期:</div>
+                                    <div class="shop-content-left">چرخه تنظیم مجدد:</div>
                                     <div class="shop-content-right">{if {$shop->reset()} == '0' }N / A{else}{$shop->resetExp()}
                                             <span>天</span>
                                         {/if}</div>
-                                    <div class="shop-content-left">重置频率:</div>
+                                    <div class="shop-content-left">تنظیم مجدد همواره:</div>
                                     <div class="shop-content-right">{if {$shop->reset()} == '0' }N / A{else}{$shop->resetValue()}
                                             <span>G</span>
                                             / {$shop->reset()}
@@ -110,7 +110,7 @@
                                     {/foreach}
                                 </div>
                                 <a class="btn btn-brand-accent shop-btn" href="javascript:void(0);"
-                                   onClick="buy('{$shop->id}',{$shop->auto_renew})">购买</a>
+                                   onClick="buy('{$shop->id}',{$shop->auto_renew})">خرید</a>
                             </div>
                         </div>
                     {/if}
@@ -128,38 +128,38 @@
                                     <div class="card-tag tag-gold">VIP {$shop->userClass()}</div>
                                     <div class="card-tag tag-orange">¥ {$shop->price}</div>
                                     <div class="card-tag tag-cyan">{$shop->bandwidth()} G</div>
-                                    <div class="card-tag tag-blue">{$shop->classExpire()} 天</div>
+                                    <div class="card-tag tag-blue">{$shop->classExpire()} روز</div>
                                 </div>
                                 <div>
                                     <i class="mdi mdi-chevron-down"></i>
                                 </div>
                             </div>
                             <a class="btn btn-brand-accent shop-btn" href="javascript:void(0);"
-                               onClick="buy('{$shop->id}',{$shop->auto_renew})">购买</a>
+                               onClick="buy('{$shop->id}',{$shop->auto_renew})">خرید</a>
                             <div class="shop-drop dropdown-area">
-                                <div class="card-tag tag-black">账号有效期</div>
-                                <div class="card-tag tag-blue">{$shop->expire()} 天</div>
+                                <div class="card-tag tag-black">مدت اعتبار حساب</div>
+                                <div class="card-tag tag-blue">{$shop->expire()} روز</div>
                                 {if {$shop->reset()} == '0' }
-                                    <div class="card-tag tag-black">重置周期</div>
+                                    <div class="card-tag tag-black">چرخه تنظیم مجدد</div>
                                     <div class="card-tag tag-blue">N/A</div>
                                 {else}
-                                    <div class="card-tag tag-black">重置周期</div>
+                                    <div class="card-tag tag-black">چرخه تنظیم مجدد</div>
                                     <div class="card-tag tag-blue">{$shop->resetExp()} 天</div>
-                                    <div class="card-tag tag-black">重置频率</div>
+                                    <div class="card-tag tag-black">تنظیم مجدد همواره</div>
                                     <div class="card-tag tag-blue">{$shop->resetValue()}G/{$shop->reset()}天</div>
                                 {/if}
                                 {if {$shop->speedlimit()} == '0' }
-                                    <div class="card-tag tag-black">端口速率</div>
-                                    <div class="card-tag tag-blue">无限制</div>
+                                    <div class="card-tag tag-black">سرعت پورت</div>
+                                    <div class="card-tag tag-blue">نامحدود</div>
                                 {else}
-                                    <div class="card-tag tag-black">端口限速</div>
+                                    <div class="card-tag tag-black">محدودیت سرعت پورت</div>
                                     <div class="card-tag tag-blue">{$shop->speedlimit()} Mbps</div>
                                 {/if}
                                 {if {$shop->connector()} == '0' }
-                                    <div class="card-tag tag-black">客户端数量</div>
-                                    <div class="card-tag tag-blue">无限制</div>
+                                    <div class="card-tag tag-black">تعداد کاربر</div>
+                                    <div class="card-tag tag-blue">نامحدود</div>
                                 {else}
-                                    <div class="card-tag tag-black">客户端限制</div>
+                                    <div class="card-tag tag-black">محدودیت کاربر</div>
                                     <div class="card-tag tag-blue">{$shop->connector()} 个</div>
                                 {/if}
                             </div>
@@ -184,9 +184,9 @@
                             </div>
                         </div>
                         <a class="btn btn-brand-accent shop-btn" href="javascript:void(0);"
-                        onClick="buyTraffic('{$shop->id}')">购买</a>
+                        onClick="buyTraffic('{$shop->id}')">خرید</a>
                         <div class="shop-drop dropdown-area">
-                            <div class="card-tag tag-black">流量包流量</div>
+                            <div class="card-tag tag-black">بسته ترافیک</div>
                             <div class="card-tag tag-blue">{$shop->bandwidth()} G</div>
                         </div>
                     </div>
@@ -200,18 +200,18 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">您有优惠码吗？</h2>
+                                <h2 class="modal-title">آیا کوپن دارید？</h2>
                             </div>
                             <div class="modal-inner">
                                 <div class="form-group form-group-label">
-                                    <label class="floating-label" for="coupon">有的话，请在这里输入。没有的话，直接确定吧</label>
+                                    <label class="floating-label" for="coupon">اگر چنین است، لطفاً آن را در اینجا وارد کنید</label>
                                     <input class="form-control maxwidth-edit" id="coupon" type="text">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <p class="text-right">
                                     <button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal"
-                                            id="coupon_input" type="button">确定
+                                            id="coupon_input" type="button">حتما
                                     </button>
                                 </p>
                             </div>
@@ -224,12 +224,12 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">确认购买流量包吗？</h2>
+                                <h2 class="modal-title">آیا مطمئن هستید که بسته ترافیک را خریداری می کنید؟</h2>
                             </div>
                             <div class="modal-footer">
                                 <p class="text-right">
                                     <button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal"
-                                            id="traffic_package_confirm" type="button">确定
+                                            id="traffic_package_confirm" type="button">مطمئن
                                     </button>
                                 </p>
                             </div>
@@ -241,23 +241,23 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">订单确认</h2>
+                                <h2 class="modal-title">تایید سفارش</h2>
                             </div>
                             <div class="modal-inner">
-                                <p id="name">商品名称：</p>
-                                <p id="credit">优惠额度：</p>
-                                <p id="total">总金额：</p>
+                                <p id="name">نام محصول:</p>
+                                <p id="credit">مبلغ تخفیف:</p>
+                                <p id="total">مبلغ کل:</p>
                                 <div class="checkbox switch">
                                     <label for="disableothers">
                                         <input checked class="access-hide" id="disableothers" type="checkbox">
-                                        <span class="switch-toggle"></span>关闭旧套餐自动续费
+                                        <span class="switch-toggle"></span>تمدید خودکار بسته های قدیمی را خاموش کنید
                                     </label>
                                 </div>
                                 <br/>
                                 <div class="checkbox switch" id="autor">
                                     <label for="autorenew">
                                         <input checked class="access-hide" id="autorenew" type="checkbox">
-                                        <span class="switch-toggle"></span>到期时自动续费
+                                        <span class="switch-toggle"></span>به صورت خودکار پس از انقضا تمدید می شود
                                     </label>
                                 </div>
 
@@ -265,7 +265,7 @@
                             <div class="modal-footer">
                                 <p class="text-right">
                                     <button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal"
-                                            id="order_input" type="button">确定
+                                            id="order_input" type="button">مطمئن
                                     </button>
                                 </p>
                             </div>
@@ -316,7 +316,7 @@
                 $("#result").modal();
                 $$.getElementById('msg').innerHTML = `${
                         data.msg
-                        } 发生了错误`;
+                        } خطایی رخ داد`;
             }
         })
     })
@@ -360,13 +360,13 @@
             },
             success: (data) => {
                 if (data.ret) {
-                    $$.getElementById('name').innerHTML = `商品名称：${
+                    $$.getElementById('name').innerHTML = `نام محصول:${
                             data.name
                             }`;
-                    $$.getElementById('credit').innerHTML = `优惠额度：${
+                    $$.getElementById('credit').innerHTML = `مبلغ تخفیف:${
                             data.credit
                             }`;
-                    $$.getElementById('total').innerHTML = `总金额：${
+                    $$.getElementById('total').innerHTML = `مبلغ کل:${
                             data.total
                             }`;
                     $("#order_modal").modal();
@@ -379,7 +379,7 @@
                 $("#result").modal();
                 $$.getElementById('msg').innerHTML = `${
                         data.msg
-                        } 发生了错误`;
+                        } خطایی رخ داده`;
             }
         })
     });
@@ -418,7 +418,7 @@
                 $("#result").modal();
                 $$.getElementById('msg').innerHTML = `${
                         data.msg
-                        } 发生了错误`;
+                        } خطایی رخ داده`;
             }
         })
     });

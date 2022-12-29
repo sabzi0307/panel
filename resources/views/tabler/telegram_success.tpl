@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zh-cn">
 <head>
-    <title>正在跳转用户中心 - {$config['appName']} </title>
+    <title>پرش به مرکز کاربران - {$config['appName']} </title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta charset="utf-8"/>

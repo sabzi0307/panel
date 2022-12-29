@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">购买记录</h1>
+            <h1 class="content-heading">سابقه خرید</h1>
         </div>
     </div>
     <div class="container">
@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-main">
                         <div class="card-inner">
-                            <p>系统中您的购买记录。</p>
+                            <p>سابقه خرید شما در سیستم</p>
                         </div>
                     </div>
                 </div>
@@ -26,13 +26,13 @@
                                     <table class="table">
                                         <tr>
                                             <th>ID</th>
-                                            <th>购买时间</th>
-                                            <th>商品名称</th>
-                                            <th>内容</th>
-                                            <th>价格</th>
-                                            <th>续费时间</th>
-                                            <th>续费时重置流量</th>
-                                            <th>操作</th>
+                                            <th>زمان خرید</th>
+                                            <th>نام محصول</th>
+                                            <th>محتوا</th>
+                                            <th>قیمت</th>
+                                            <th>زمان تمدید</th>
+                                            <th>در هنگام تمدید، ترافیک را بازنشانی کنید</th>
+                                            <th>عمل کنند</th>
                                         </tr>
                                         {foreach $shops as $shop}
                                             <tr>
@@ -62,20 +62,20 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">确认要关闭自动续费？</h2>
+                                <h2 class="modal-title">آیا مطمئن هستید که می خواهید تمدید خودکار را خاموش کنید؟</h2>
                             </div>
                             <div class="modal-inner">
-                                <p>请您确认。</p>
+                                <p>لطفا تایید کنید.</p>
                             </div>
                             <div class="modal-footer">
                                 <p class="text-right">
                                     <button class="btn btn-flat btn-brand-accent waves-attach waves-effect"
                                             data-dismiss="modal" type="button">
-                                        取消
+                                        لغو کنید
                                     </button>
                                     <button class="btn btn-flat btn-brand-accent waves-attach" data-dismiss="modal"
                                             id="delete_input" type="button">
-                                        确定
+                                        حتما
                                     </button>
                                 </p>
                             </div>
@@ -117,7 +117,7 @@
                     $("#result").modal();
                     $$.getElementById('msg').innerHTML = `${
                             data.msg
-                            } 发生错误了`;
+                            } مشکلی پیش آمده`;
                 }
             });
         }

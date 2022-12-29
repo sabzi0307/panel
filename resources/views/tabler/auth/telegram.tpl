@@ -41,21 +41,21 @@
                             success: (data) => {
                                 if (data.ret) {
                                     $("#result").modal();
-                                    $$.getElementById('msg').innerHTML = '登录成功！';
+                                    $$.getElementById('msg').innerHTML = 'ورود با موفقیت';
                                     window.setTimeout("location.href=/user/", {$config['jump_delay']});
                                 }
                             },
                             error: (jqXHR) => {
                                 $("#result").modal();
-                                $$.getElementById('msg').innerHTML = `发生错误：${
+                                $$.getElementById('msg').innerHTML = `خطایی رخ داد：${
                                         jqXHR.status
                                         }`;
                             }
                         });
                     } else {
                         if (data.ret === -1) {
-                            $('#telegram-qr').replaceWith('此二维码已经过期，请刷新页面后重试。');
-                            $('#code_number').replaceWith('<code id="code_number">此数字已经过期，请刷新页面后重试。</code>');
+                            $('#telegram-qr').replaceWith('این کد QR منقضی شده است، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
+                            $('#code_number').replaceWith('<code id="code_number">این شماره منقضی شده است، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.</code>');
                         }
                     }
                 },

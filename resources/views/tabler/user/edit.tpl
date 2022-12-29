@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">资料修改</span>
+                        <span class="home-title">اصلاح داده ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">修改账户的部分信息</span>
+                        <span class="home-subtitle">برخی از اطلاعات حساب را تغییر دهید</span>
                     </div>
                 </div>
             </div>
@@ -25,28 +25,28 @@
                                 <a href="#personal_information" class="nav-link active" data-bs-toggle="tab"
                                     aria-selected="true" role="tab">
                                     <i class="ti ti-chart-candle icon"></i>&nbsp;
-                                    资料
+                                    اطلاعات
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="#login_security" class="nav-link" data-bs-toggle="tab" aria-selected="true"
                                     role="tab">
                                     <i class="ti ti-shield-lock icon"></i>&nbsp;
-                                    登录
+                                    ورود
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="#use_safety" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                     tabindex="-1" role="tab">
                                     <i class="ti ti-brand-telegram icon"></i>&nbsp;
-                                    使用
+                                    استفاده
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="#other_settings" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                     tabindex="-1" role="tab">
                                     <i class="ti ti-settings icon"></i>&nbsp;
-                                    其他
+                                    دیگر
                                 </a>
                             </li>
                         </ul>
@@ -57,31 +57,31 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">登录邮箱</h3>
-                                                    <p>当前邮箱：<code>{$user->email}</code></p>
+                                                    <h3 class="card-title">ورود به ایمیل</h3>
+                                                    <p>ایمیل فعلی：<code>{$user->email}</code></p>
                                                     <div class="mb-3">
                                                         <input id="new-email" type="email" class="form-control"
-                                                            placeholder="新邮箱" {if $config['enable_change_email'] == false}disabled=""{/if}>
+                                                            placeholder="ایمیل جدید" {if $config['enable_change_email'] == false}disabled=""{/if}>
                                                     </div>
                                                     {if $config['enable_email_verify'] == true && $config['enable_change_email'] == true}
                                                     <div class="mb-3">
                                                         <input id="email-code" type="text" class="form-control"
-                                                            placeholder="验证码">
+                                                            placeholder="کد تایید">
                                                     </div>
                                                     {/if}
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         {if $config['enable_email_verify'] == true && $config['enable_change_email'] == true}
-                                                        <a id="email-verify" class="btn btn-link">获取验证码</a>
+                                                        <a id="email-verify" class="btn btn-link">دریافت کد تایید</a>
                                                         <button id="modify-email"
-                                                            class="btn btn-primary ms-auto">修改</button>
+                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</button>
                                                         {elseif $config['enable_change_email'] == true}
                                                         <button id="modify-email"
-                                                            class="btn btn-primary ms-auto">修改</button>
+                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</button>
                                                         {else}
                                                         <button id="modify-email" class="btn btn-primary ms-auto"
-                                                            disabled>暂不允许修改</button>
+                                                            disabled>تغییر مجاز نیست</button>
                                                         {/if}
                                                     </div>
                                                 </div>
@@ -90,7 +90,7 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">联系方式</h3>
+                                                    <h3 class="card-title">اطلاعات تماس</h3>
                                                     <div class="mb-3">
                                                         <select id="imtype" class="form-select">
                                                             <option value="1" {if $user->im_type == '1'}selected{/if}>
@@ -107,12 +107,12 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <input id="wechat" type="text" class="form-control"
-                                                            value="{$user->im_value}" placeholder="社交账户">
+                                                            value="{$user->im_value}" placeholder="حساب کاربری اجتماعی">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-im" class="btn btn-primary ms-auto">修改</a>
+                                                        <a id="modify-im" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,16 +120,16 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">用戶名</h3>
-                                                    <p>当前用戶名：<code>{$user->user_name}</code></p>
+                                                    <h3 class="card-title">شناسه کاربری</h3>
+                                                    <p>شناسه کاربری فعلی：<code>{$user->user_name}</code></p>
                                                     <div class="mb-3">
                                                         <input id="new-nickname" type="text" class="form-control"
-                                                        placeholder="新用戶名" autocomplete="off">
+                                                        placeholder="شناسه کاربری جدید" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-username" class="btn btn-primary ms-auto">修改</a>
+                                                        <a id="modify-username" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,9 +139,9 @@
                                             {if $user->telegram_id != 0}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">解绑 Telegram</h3>
-                                                    <p>当前绑定的 Telegram 账户：
-                                                        {if $user->im_value === "用戶名未设置"}
+                                                    <h3 class="card-title">باز کردن Telegram</h3>
+                                                    <p>اکانت تلگرام در حال حاضر محدود شده است：
+                                                        {if $user->im_value === "نام کاربری تنظیم نشده است"}
                                                         <code>{$user->telegram_id}</code>
                                                         {else}
                                                         <a href="https://t.me/{$user->im_value}">@{$user->im_value}</a>
@@ -151,35 +151,35 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a href="/user/telegram_reset"
-                                                            class="btn btn-red ms-auto">解绑</a>
+                                                            class="btn btn-red ms-auto">باز کردن</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             {else}
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">绑定 Telegram</h3>
+                                                    <h3 class="card-title">به تلگرام متصل شوید</h3>
                                                     <div class="row">
                                                         <div class="col-6 col-sm-2 col-md-2 col-xl mb-3">
-                                                            手机电脑平板等如已安装 Telegram 可点击
+                                                            اگر تلگرام را روی گوشی، کامپیوتر، تبلت و ... خود نصب کرده اید، می توانید کلیک کنید
                                                         </div>
                                                         <div class="col-6 col-sm-2 col-md-2 col-sm mb-3">
                                                             <a href="https://t.me/{$telegram_bot}?start={$bind_token}"
                                                                 class="btn btn-primary w-100">
-                                                                一键绑定
+                                                                اتصال یک کلید
                                                             </a>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-6 col-sm-2 col-md-2 col-xl mb-3">
-                                                            向机器人 <a
+                                                            به ربات <a
                                                                 href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>
-                                                            发送验证码绑定
+                                                                ارسال کد تأیید
                                                         </div>
                                                         <div class="col-6 col-sm-2 col-md-2 col-sm mb-3">
                                                             <button data-clipboard-text="{$bind_token}"
                                                                 class="copy btn btn-primary w-100">
-                                                                复制验证码
+                                                                کد تایید را کپی کنید
                                                             </button>
                                                         </div>
                                                     </div>
@@ -195,18 +195,18 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">两步认证</h3>
+                                                    <h3 class="card-title">احراز هویت دو مرحله ای</h3>
                                                     <div class="col-md-12">
                                                         <div class="col-sm-6 col-md-6">
                                                             <p>
                                                                 <i class="ti ti-brand-apple"></i>
                                                                 <a target="view_window"
-                                                                    href="https://apps.apple.com/us/app/google-authenticator/id388497605">苹果客户端
+                                                                    href="https://apps.apple.com/us/app/google-authenticator/id388497605">کلاینت اپل
                                                                 </a>
                                                                 &nbsp;&nbsp;&nbsp;
                                                                 <i class="ti ti-brand-android"></i>
                                                                 <a target="view_window"
-                                                                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh&gl=US">安卓客户端
+                                                                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh&gl=US">کلاینت اندروید
                                                                 </a>
                                                             </p>
                                                         </div>
@@ -218,28 +218,28 @@
                                                         <div class="col-md-9">
                                                             <div class="mb-3">
                                                                 <select id="ga-enable" class="form-select">
-                                                                    <option value="0">不使用</option>
+                                                                    <option value="0">استفاده نشود</option>
                                                                     <option value="1"
                                                                         {if $user->ga_enable == '1'}selected{/if}>
-                                                                        使用两步认证登录
+                                                                        با احراز هویت دو مرحله ای وارد شوید
                                                                     </option>
                                                                 </select>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <input id="2fa-test-code" type="text"
-                                                                    class="form-control" placeholder="测试两步认证验证码">
+                                                                    class="form-control" placeholder="کد تأیید احراز هویت 2 مرحله ای را آزمایش کنید">
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <p>密钥：<code>{$user->ga_token}</code></p>
+                                                                <p>کلید：<code>{$user->ga_token}</code></p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="reset-2fa" class="btn btn-link">重置</a>
-                                                        <a id="test-2fa" class="btn btn-link">测试</a>
-                                                        <a id="save-2fa" class="btn btn-primary ms-auto">设置</a>
+                                                        <a id="reset-2fa" class="btn btn-link">تنظیم مجدد</a>
+                                                        <a id="test-2fa" class="btn btn-link">تست</a>
+                                                        <a id="save-2fa" class="btn btn-primary ms-auto">نصب</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,24 +247,24 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">修改登录密码</h3>
+                                                    <h3 class="card-title">رمز ورود را تغییر دهید</h3>
                                                     <div class="mb-3">
                                                         <form>
                                                             <input id="password" type="password" class="form-control"
-                                                                placeholder="当前登录密码" autocomplete="off">
+                                                                placeholder="رمز ورود فعلی" autocomplete="off">
                                                         </form>
                                                     </div>
                                                     <div class="mb-3">
                                                         <form>
                                                             <input id="new-password" type="password"
-                                                                class="form-control" placeholder="输入新密码"
+                                                                class="form-control" placeholder="یک رمز جدید وارد کنید"
                                                                 autocomplete="off">
                                                         </form>
                                                     </div>
                                                     <div class="mb-3">
                                                         <form>
                                                             <input id="again-new-password" type="password"
-                                                                class="form-control" placeholder="再次输入新密码"
+                                                                class="form-control" placeholder="رمز جدید را دوباره وارد کنید"
                                                                 autocomplete="off">
                                                         </form>
                                                     </div>
@@ -272,7 +272,7 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="modify-login-passwd"
-                                                            class="btn btn-primary ms-auto">修改</a>
+                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -284,8 +284,8 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">更换加密方式</h3>
-                                                    <p>不同的客户端支持的加密方式可能会有所不同，请参考客户端支持列表进行设置</p>
+                                                    <h3 class="card-title">تغییر روش رمزگذاری</h3>
+                                                    <p>روش‌های رمزگذاری پشتیبانی‌شده توسط کلاینت‌های مختلف ممکن است متفاوت باشد، لطفاً برای تنظیم به فهرست پشتیبانی مشتری مراجعه کنید</p>
                                                     <div class="mb-3">
                                                         <select id="user-method" class="form-select">
                                                             {foreach $methods as $method}
@@ -299,7 +299,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-user-method" class="btn btn-primary ms-auto">修改</a>
+                                                        <a id="modify-user-method" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,13 +307,13 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">更换订阅地址</h3>
-                                                    <p>更换订阅地址后，旧的订阅地址将无法获取配置，但节点配置仍能使用。如果希望旧的节点配置不能使用，请配合修改连接密码操作</p>
+                                                    <h3 class="card-title">تغییر آدرس اشتراک</h3>
+                                                    <p>پس از تغییر آدرس اشتراک، آدرس اشتراک قدیمی قادر به دریافت پیکربندی نخواهد بود، اما همچنان می توان از پیکربندی گره استفاده کرد. اگر می‌خواهید پیکربندی گره قدیمی غیرقابل استفاده باشد، لطفاً رمز عبور را تغییر دهید.</p>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="reset-sub-url"
-                                                            class="btn btn-primary ms-auto bg-red">更换</a>
+                                                            class="btn btn-primary ms-auto bg-red">جایگزین کردن</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,13 +321,13 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">更换连接端口</h3>
-                                                    <p>随机分配一个连接端口，这将用于 SS / SSR 客户端</p>
-                                                    <p>当前端口是：<code>{$user->port}</code></p>
+                                                    <h3 class="card-title">پورت اتصال را تغییر دهید</h3>
+                                                    <p>به طور تصادفی یک پورت اتصال اختصاص دهید، این پورت برای کلاینت های SS/SSR استفاده خواهد شد</p>
+                                                    <p>پورت فعلی است：<code>{$user->port}</code></p>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="reset-client-port" class="btn btn-red ms-auto">更换</a>
+                                                        <a id="reset-client-port" class="btn btn-red ms-auto">جایگزین کردن</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,15 +335,15 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">重置连接密码</h3>
-                                                    <p>重置连接密码与UUID ，重置后需更新订阅，才能继续使用</p>
-                                                    <p>当前连接密码：<code>{$user->passwd}</code></p>
-                                                    <p>当前UUID：<code>{$user->uuid}</code></p>
+                                                    <h3 class="card-title">بازنشانی رمز عبور اتصال</h3>
+                                                    <p>رمز عبور اتصال و UUID را بازنشانی کنید. پس از بازنشانی، برای ادامه استفاده باید اشتراک را به‌روزرسانی کنید</p>
+                                                    <p>رمز عبور اتصال فعلی：<code>{$user->passwd}</code></p>
+                                                    <p>UUID فعلی：<code>{$user->uuid}</code></p>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="reset-passwd"
-                                                            class="btn btn-primary ms-auto bg-red">重置</a>
+                                                            class="btn btn-primary ms-auto bg-red">تنظیم مجدد</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -355,18 +355,18 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">每日用量推送</h3>
+                                                    <h3 class="card-title">فشار مصرف روزانه</h3>
                                                     <div class="mb-3">
                                                         <select id="daily-report" class="form-select">
                                                             <option value="0"
-                                                                {if $user->sendDailyMail == '0'}selected{/if}>不发送
+                                                                {if $user->sendDailyMail == '0'}selected{/if}>نفرست
                                                             </option>
                                                             <option value="1"
-                                                                {if $user->sendDailyMail == '1'}selected{/if}>邮件接收
+                                                                {if $user->sendDailyMail == '1'}selected{/if}>دریافت پستی
                                                             </option>
                                                             <option value="2"
                                                                 {if $user->sendDailyMail == '2'}selected{/if}>Telegram
-                                                                Bot 接收
+                                                                Bot به عهده گرفتن
                                                             </option>
                                                         </select>
                                                     </div>
@@ -374,7 +374,7 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="modify-daily-report"
-                                                            class="btn btn-primary ms-auto">修改</a>
+                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -382,7 +382,7 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">修改主题</h3>
+                                                    <h3 class="card-title">تم را تغییر دهید</h3>
                                                     <div class="mb-3">
                                                         <select id="user-theme" class="form-select">
                                                             {foreach $themes as $theme}
@@ -395,7 +395,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-user-theme" class="btn btn-primary ms-auto">修改</a>
+                                                        <a id="modify-user-theme" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
                                                     </div>
                                                 </div>
                                             </div>   
@@ -409,13 +409,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h3 class="card-title">删除账户数据</h3>
+                                                    <h3 class="card-title">حذف اطلاعات حساب</h3>
                                                 </div>    
                                                 <div class="card-footer">
                                                     <a href="#" class="btn btn-red d-none d-sm-inline-block" data-bs-toggle="modal"
                                                         data-bs-target="#destroy-account">
                                                         <i class="ti ti-trash icon"></i>
-                                                        确认删除
+                                                        تایید حذف
                                                     </a>
                                                 </div>
                                             </div>  
@@ -439,8 +439,8 @@
                 <div class="modal-status bg-danger"></div>
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-alert-circle icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
-                    <h3>删除确认</h3>
-                    <div class="text-muted">请确认是否真的要删除你的账户，此操作无法撤销，你的所有账户数据将会被从服务器上彻底删除</div>
+                    <h3>حذف تاییدیه</h3>
+                    <div class="text-muted">لطفاً تأیید کنید که آیا واقعاً می خواهید حساب خود را حذف کنید، این عملیات قابل واگرد نیست و تمام اطلاعات حساب شما به طور کامل از سرور حذف خواهد شد.</div>
                     <div class="py-3">
                         <form>
                             <input id="confirm-passwd" type="password" class="form-control" placeholder="输入登录密码"
@@ -453,12 +453,12 @@
                         <div class="row">
                             <div class="col">
                                 <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    取消
+                                    لغو
                                 </a>
                             </div>
                             <div class="col">
                                 <a href="#" id="confirm-destroy" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                    确认
+                                    تایید
                                 </a>
                             </div>
                         </div>
@@ -475,15 +475,15 @@
                 <div class="modal-status bg-success"></div>
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-circle-check icon mb-2 text-green icon-lg" style="font-size:3.5rem;"></i>
-                    <h3>删除成功</h3>
-                    <p id="success-message" class="text-muted">删除成功</p>
+                    <h3>با موفقیت حذف شد</h3>
+                    <p id="success-message" class="text-muted">با موفقیت حذف شد</p>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100">
                         <div class="row">
                             <div class="col">
                                 <a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                    好
+                                    این خوبه
                                 </a>
                             </div>
                         </div>
@@ -500,15 +500,15 @@
                 <div class="modal-status bg-danger"></div>
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-circle-x icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
-                    <h3>删除失败</h3>
-                    <p id="error-message" class="text-muted">删除失败</p>
+                    <h3>حذف نشد</h3>
+                    <p id="error-message" class="text-muted">حذف نشد</p>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100">
                         <div class="row">
                             <div class="col">
                                 <a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                                    确认
+                                    تایید
                                 </a>
                             </div>
                         </div>
@@ -531,7 +531,7 @@
 
         var clipboard = new ClipboardJS('.copy');
         clipboard.on('success', function(e) {
-            $('#success-message').text('已复制到剪切板');
+            $('#success-message').text('در کلیپ بورد کپی شد');
             $('#success-dialog').modal('show');
         });
 

@@ -54,11 +54,11 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             {if $user->is_dark_mode}
-                            <a id="switch_theme_mode" class="dropdown-item">切换至浅色模式</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت روشن</a>
                             {else}
-                            <a id="switch_theme_mode" class="dropdown-item">切换至深色模式</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت تاریک</a>
                             {/if}
-                            <a href="/user/logout" class="dropdown-item">登出</a>
+                            <a href="/user/logout" class="dropdown-item">خروج از سیستم</a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                         <i class="ti ti-home icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        主页
+                                        صفحه نخست
                                     </span>
                                 </a>
                             </li>
@@ -82,7 +82,7 @@
                                         <i class="ti ti-user icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        我的
+                                        من
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -90,21 +90,21 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/profile">
                                                 <i class="ti ti-info-square"></i>&nbsp;
-                                                账户信息
+                                                اطلاعات حساب
                                             </a>
                                             <a class="dropdown-item" href="/user/edit">
                                                 <i class="ti ti-edit"></i>&nbsp;
-                                                资料修改
+                                                اصلاح اطلاعات
                                             </a>
                                             {if $config['enable_ticket'] == true}
                                                 <a class="dropdown-item" href="/user/ticket">
                                                     <i class="ti ti-ticket"></i>&nbsp;
-                                                    工单系统
+                                                    پشتیبانی
                                                 </a>
                                             {/if}
                                             <a class="dropdown-item" href="/user/invite">
                                                 <i class="ti ti-friends"></i>&nbsp;
-                                                邀请注册
+                                                دعوتنامه برای ثبت نام
                                             </a>
                                         </div>
                                     </div>
@@ -117,17 +117,17 @@
                                         <i class="ti ti-brand-telegram icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        使用
+                                        استفاده کنید
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        节点列表
+                                        لیست گره ها
                                     </a>
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
-                                        流媒体解锁
+                                        پخش استریم مسدود شد
                                     </a>
                                 </div>
                             </li>
@@ -138,18 +138,18 @@
                                         <i class="ti ti-dots-circle-horizontal icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        更多
+                                        بیشتر
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/announcement">
                                         <i class="ti ti-speakerphone"></i>&nbsp;
-                                        站点公告
+                                        اطلاعیه سایت
                                     </a>
                                     {if $config['subscribeLog_show'] == true && $config['subscribeLog'] == true}
                                         <a class="dropdown-item" href="/user/subscribe_log">
                                             <i class="ti ti-rss"></i></i>&nbsp;
-                                            订阅日志
+                                            در مجله مشترک شوید
                                         </a>
                                     {/if}
                                 </div>
@@ -161,17 +161,17 @@
                                         <i class="ti ti-shield-check icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        审计
+                                        ممیزی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/detect">
                                         <i class="ti ti-barrier-block"></i>&nbsp;
-                                        审计规则
+                                        قوانین ممیزی
                                     </a>
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        审计日志
+                                        گزارش ممیزی
                                     </a>
                                 </div>
                             </li>
@@ -182,7 +182,7 @@
                                         <i class="ti ti-building-store icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        商店
+                                        فروشگاه
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -190,11 +190,11 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/shop">
                                                 <i class="ti ti-shopping-cart"></i>&nbsp;
-                                                套餐购买
+                                                خرید بسته
                                             </a>
                                             <a class="dropdown-item" href="/user/code">
                                                 <i class="ti ti-checklist"></i>&nbsp;
-                                                账户充值
+                                                شارژ حساب
                                             </a>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@
                                             <i class="ti ti-settings icon"></i>
                                         </span>
                                         <span class="nav-link-title">
-                                            管理
+                                            مدیریت
                                         </span>
                                     </a>
                                 </li>

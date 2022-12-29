@@ -31,19 +31,19 @@
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.</p>
         <br>
-        <h1><a href="https://wiki.sspanel.org/#/contributors">贡献者清单</a></h1>
+        <h1><a href="https://wiki.sspanel.org/#/contributors">لیست مشارکت کنندگان</a></h1>
         <br>
         <h1><a href="https://github.com/Anankke/SSPanel-Uim">GitHub</h1>
         <br>
-        <h1>SSPanel-UIM 中所使用的开源项目</h1>
+        <h1>SSPanel-UIM پروژه های منبع باز مورد استفاده در</h1>
         <p><a href="https://github.com/smarty-php/smarty">Smarty template engine</a></p>
         <p><a href="https://github.com/slimphp/Slim">Slim Framework</a></p>
         <p><a href="https://github.com/cakephp/phinx">Phinx</a></p>
         <p><a href="https://github.com/orvice/ss-panel">ss-panel</a></p>
         <p><a href="https://github.com/tabler/tabler">tabler</a></p>
         <br>
-        <h1>鸣谢</h1>
-        <p>所有被引用过代码的开发者，以及所有提交过 PR 的贡献者。当然，还有在使用这份程序的你我Ta。</p>
+        <h1>متشکرم</h1>
+        <p>همه توسعه دهندگانی که به کد ارجاع داده اند و همه مشارکت کنندگانی که PR ارسال کرده اند. البته من و شما هستیم که از این برنامه استفاده می کنیم.</p>
     </div>
 </div>
 </body>

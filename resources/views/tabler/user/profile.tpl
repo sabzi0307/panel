@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">     
                     <h2 class="page-title">
-                        <span class="home-title">账户信息</span>
+                        <span class="home-title">اطلاعات حساب</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">浏览最近的登录和使用记录</span>
+                        <span class="home-subtitle">آخرین سوابق ورود و استفاده را مرور کنید</span>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">账户邮箱</div>
+                                <div class="subheader">حساب ایمیل</div>
                             </div>
                             <div class="h1 mb-3">{$user->email}</div>
                         </div>
@@ -32,7 +32,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">账户昵称</div>
+                                <div class="subheader">نام کاربری حساب</div>
                             </div>
                             <div class="h1 mb-3">{$user->user_name}</div>
                         </div>
@@ -42,7 +42,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">账户注册时间</div>
+                                <div class="subheader">زمان ثبت حساب</div>
                             </div>
                             <div class="h1 mb-3">{$user->reg_date}</div>
                         </div>
@@ -52,7 +52,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">账户累计使用流量</div>
+                                <div class="subheader">مصرف ترافیک باقی مانده حساب</div>
                             </div>
                             <div class="h1 mb-3">{round($user->transfer_total / 1073741824,2)} GB</div>
                         </div>
@@ -63,15 +63,15 @@
                 <div class="col-md-6 com-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">最近登录记录</h3>
+                            <h3 class="card-title">تاریخچه ورود اخیر</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap card-table">
                                 <thead>
                                     <tr>
                                         <th>IP</th>
-                                        <th>时间</th>
-                                        <th>归属</th>
+                                        <th>زمان</th>
+                                        <th>مشخصات</th>
                                     </tr>
                                 </thead>
                                 <tbody>

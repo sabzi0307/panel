@@ -1,24 +1,24 @@
 language: {
-"sProcessing": "处理中...",
-"sLengthMenu": "显示 _MENU_ 项结果",
-"sZeroRecords": "没有匹配结果",
-"sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-"sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-"sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+"sProcessing": "در حال پردازش...",
+"sLengthMenu": "نمایش نتایج _MENU_",
+"sZeroRecords": "نتایج منطبقی وجود ندارد",
+"sInfo": "نمایش نتایج _START_ تا _END_ از _TOTAL_",
+"sInfoEmpty": "نمایش نتایج 0 تا 0 از 0",
+"sInfoFiltered": "(فیلتر شده توسط _MAX_ نتایج)",
 "sInfoPostFix": "",
-"sSearch": "搜索:",
+"sSearch": "جستجو کردن:",
 "sUrl": "",
-"sEmptyTable": "表中数据为空",
-"sLoadingRecords": "载入中...",
+"sEmptyTable": "داده های جدول خالی است",
+"sLoadingRecords": "بارگذاری...",
 "sInfoThousands": ",",
 "oPaginate": {
-"sFirst": "首页",
-"sPrevious": "上页",
-"sNext": "下页",
-"sLast": "末页"
+"sFirst": "صفحه اول",
+"sPrevious": "صفحه قبل",
+"sNext": "صفحه بعد",
+"sLast": "آخرین صفحه"
 },
 "oAria": {
-"sSortAscending": ": 以升序排列此列",
-"sSortDescending": ": 以降序排列此列"
+"sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
+"sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
 }
 }

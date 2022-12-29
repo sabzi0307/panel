@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">审计记录</span>
+                        <span class="home-title">سوابق ممیزی</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">系统中所有审计记录</span>
+                        <span class="home-subtitle">کلیه سوابق ممیزی در سیستم</span>
                     </div>
                 </div>
             </div>
@@ -25,14 +25,14 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>节点ID</th>
-                                        <th>节点名称</th>
-                                        <th>规则ID</th>
-                                        <th>名称</th>
-                                        <th>描述</th>
-                                        <th>正则表达式</th>
-                                        <th>类型</th>
-                                        <th>时间</th>
+                                        <th>شناسه گره</th>
+                                        <th>نام گره</th>
+                                        <th>شناسه قانون</th>
+                                        <th>نام</th>
+                                        <th>شرح</th>
+                                        <th>regular expression</th>
+                                        <th>انواع</th>
+                                        <th>زمان</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +48,10 @@
                                             <td>{$rule->text}</td>
                                             <td>{$rule->regex}</td>
                                             {if $rule->type == 1}
-                                                <td>数据包明文匹配</td>
+                                                <td>مطابقت متن ساده بسته</td>
                                             {/if}
                                             {if $rule->type == 2}
-                                                <td>数据包 hex 匹配</td>
+                                                <td>بسته داده hex همخوانی داشتن</td>
                                             {/if}
                                             <td>{date('Y-m-d H:i:s',$log->datetime)}</td>
                                         </tr>

@@ -1,7 +1,7 @@
 <div class="card-inner">
-    <p class="card-heading">输入充值金额后，点击下方的图标进行充值</p>
+    <p class="card-heading">پس از وارد کردن مبلغ شارژ روی آیکون زیر کلیک کنید تا شارژ شود</p>
     <div class="form-group form-group-label">
-        <label class="floating-label" for="amount-payjs">金额</label>
+        <label class="floating-label" for="amount-payjs">مقدار</label>
         <input class="form-control" id="amount-payjs" type="text">
     </div>
 </div>
@@ -17,11 +17,11 @@
     var flag = false;
     function payjs(type) {
         var price = parseFloat($$getValue('amount-payjs'));
-        //console.log("将要使用 " + type + " 充值" + price + "元");
+        //console.log("استفاده خواهد کرد " + type + " شارژ مجدد" + price + "تومان");
         if (isNaN(price)) {
             $("#readytopay").modal('hide');
             $("#result").modal();
-            $$.getElementById('msg').innerHTML = '非法的金额！'
+            $$.getElementById('msg').innerHTML = 'مبلغ غیرمجاز！'
             return;
         }
         $('#readytopay').modal();
@@ -39,7 +39,7 @@
                     $("#readytopay").modal('hide');
                     {
                         pid = data.pid;
-                        $$.getElementById('qrarea').innerHTML = '<div class="text-center"><p>使用支付宝扫描二维码支付.</p><div align="center" id="qrcode" style="padding-top:10px;"></div><p>充值完毕后会自动跳转</p></div>';
+                        $$.getElementById('qrarea').innerHTML = '<div class="text-center"><p>از Alipay برای اسکن کد QR برای پرداخت استفاده کنید.</p><div align="center" id="qrcode" style="padding-top:10px;"></div><p>پس از شارژ مجدد، به طور خودکار پرش می کند</p></div>';
                         var qrcode = new QRCode("qrcode", {
                             correctLevel: 3,  //解决超过200字符的二维码生成问题
                             render: "canvas",
@@ -74,7 +74,7 @@
                 if (data.result) {
                     //console.log(data);
                     $("#result").modal();
-                    $$.getElementById('msg').innerHTML = '充值成功！';
+                    $$.getElementById('msg').innerHTML = 'شارژ مجدد با موفقیت انجام شد!';
                     window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
                 }
             },

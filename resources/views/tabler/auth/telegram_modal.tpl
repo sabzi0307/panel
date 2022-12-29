@@ -3,26 +3,26 @@
         <nav class="tab-nav margin-top-no margin-bottom-no">
             <ul class="nav nav-justified">
                 <li class="active">
-                    <a class="waves-attach" data-toggle="tab" href="#number_login">一键/验证码登录</a>
+                    <a class="waves-attach" data-toggle="tab" href="#number_login">با یک کلیک/ورود کد تایید</a>
                 </li>
                 <li>
-                    <a class="waves-attach" data-toggle="tab" href="#qrcode_login">二维码登录</a>
+                    <a class="waves-attach" data-toggle="tab" href="#qrcode_login">با اسکن کد وارد شوید</a>
                 </li>
             </ul>
         </nav>
         <div class="tab-pane fade active in" id="number_login">
             <div class="card-header">
                 <div class="card-inner">
-                    <h1 class="card-heading" style=" text-align:center;font-weight:bold;">Telegram 登录</h1>
+                    <h1 class="card-heading" style=" text-align:center;font-weight:bold;">ورود به تلگرام</h1>
                 </div>
             </div>
             <div class="card-inner">
                 <div class="text-center">
-                    <p>一键登陆</p>
+                    <p>ورود با یک کلیک</p>
                 </div>
-                <p id="telegram-alert">正在载入 Telegram，如果长时间未显示请刷新页面或检查代理</p>
+                <p id="telegram-alert">در حال بارگذاری تلگرام، اگر برای مدت طولانی نمایش داده نشد، لطفاً صفحه را رفرش کنید یا پروکسی را بررسی کنید</p>
                 <div class="text-center" id="telegram-login-box"></div>
-                <p>或者添加机器人账号 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，发送下面的数字给它。
+                <p>یا یک حساب ربات اضافه کنید<a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，شماره زیر را برای آن ارسال کنید.
                 </p>
                 <div class="text-center">
                     <h2><code id="code_number">{$login_number}</code></h2>
@@ -32,11 +32,11 @@
         <div class="tab-pane fade" id="qrcode_login">
             <div class="card-header">
                 <div class="card-inner">
-                    <h1 class="card-heading" style=" text-align:center;font-weight:bold;">Telegram扫码登录</h1>
+                    <h1 class="card-heading" style=" text-align:center;font-weight:bold;">ورود کد اسکن تلگرام</h1>
                 </div>
             </div>
             <div class="card-inner">
-                <p>添加机器人账号 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，拍下下面这张二维码发给它。
+                <p>اضافه کردن حساب ربات <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，از کد QR زیر عکس بگیرید و آن را ارسال کنید.
                 </p>
                 <div class="form-group form-group-label">
                     <div class="text-center qr-center">

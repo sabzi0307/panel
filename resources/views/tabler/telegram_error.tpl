@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zh-cn">
 <head>
-    <title>产生了一个错误 - {$config['appName']} </title>
+    <title>خطا ایجاد کرد - {$config['appName']} </title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta charset="utf-8"/>

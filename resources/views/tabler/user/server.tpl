@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">节点列表</span>
+                        <span class="home-title">لیست گره ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">查看节点在线情况</span>
+                        <span class="home-subtitle">وضعیت آنلاین گره را بررسی کنید</span>
                     </div>
                 </div>
             </div>
@@ -22,8 +22,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="m-0 my-2">
-                                <p>描述中分别表述为：该节点的在线人数，该节点的流量倍率，该节点的类型</p>
-                                <p>指示灯为绿色表示正常运行；为黄色表示当月流量用尽；为橙色表示未配置成功；为红色表示已离线，不可使用</p>
+                                <p>توضیحات به ترتیب به صورت زیر بیان می شود: تعداد کاربران آنلاین این گره، ضریب ترافیک این گره و نوع این گره.</p>
+                                <p>چراغ سبز نشان دهنده عملکرد عادی است، نشانگر زرد نشان می دهد که ترافیک ماه جاری تمام شده است، نشانگر نارنجی نشان می دهد که پیکربندی موفقیت آمیز نیست، نشانگر قرمز نشان می دهد که آفلاین است و نمی توان از آن استفاده کرد.</p>
                             </div>
                         </div>
                     </div>
@@ -38,15 +38,15 @@
                                         <div class="col-lg-12">
                                             <div class="card bg-primary-lt">
                                                 {if $server["class"] == 0}
-                                                <div class="ribbon bg-red">免费</div>
+                                                <div class="ribbon bg-red">رایگان</div>
                                                 {else}
                                                 <div class="ribbon bg-red">LV. {$server["class"]}</div>
                                                 {/if}
                                                 <div class="card-body">
                                                     <p class="text-muted">
                                                         <i class="ti ti-info-circle icon text-blue"></i>
-                                                        你当前的账户等级小于下列节点等级，因此无法使用。可前往 <a
-                                                            href="/user/shop">商店</a> 订购相应等级套餐
+                                                        سطح حساب فعلی شما کمتر از سطح گره ذکر شده در زیر است، بنابراین نمی توان از آن استفاده کرد. می تواند به <a
+                                                            href="/user/shop">فروشگاه</a> بسته سطح مربوطه را سفارش دهید
                                                     </p>
                                                 </div>
                                             </div>
@@ -55,7 +55,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="card">
                                                 {if $server["class"] == 0}
-                                                <div class="ribbon bg-red">免费</div>
+                                                <div class="ribbon bg-red">رایگان</div>
                                                 {else}
                                                 <div class="ribbon bg-red">LV. {$server["class"]}</div>
                                                 {/if}
@@ -86,7 +86,7 @@
                                                                     style="font-size: 10px;">
                                                                     {if $server["traffic_limit"] == "0"}
                                                                         {round($server["traffic_used"])} GB /
-                                                                        不限
+                                                                        نامحدود
                                                                     {else}
                                                                         {round($server["traffic_used"])} GB /
                                                                         {round($server["traffic_limit"])} GB
