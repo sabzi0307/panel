@@ -10,9 +10,9 @@ final class UpdateTicket extends AbstractMigration
     {
         if ($this->table('ticket')->hasColumn('rootid')) {
             $this->table('ticket')
-                ->changeColumn('content', 'json', [ 'comment' => '工单内容', 'default' => '' ])
-                ->changeColumn('status', 'string', [ 'comment' => '工单状态', 'default' => '' ])
-                ->addColumn('type', 'string', [ 'comment' => '工单类型', 'default' => 'other' ])
+                ->changeColumn('content', 'json', [ 'comment' => 'محتوای دستور کار', 'default' => '' ])
+                ->changeColumn('status', 'string', [ 'comment' => 'وضعیت تیکت', 'default' => '' ])
+                ->addColumn('type', 'string', [ 'comment' => 'نوع تیکت', 'default' => 'other' ])
                 ->removeColumn('rootid')
                 ->save();
         }

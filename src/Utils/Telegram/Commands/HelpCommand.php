@@ -20,7 +20,7 @@ final class HelpCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] 系统中可用的所有命令.';
+    protected $description = '[چت گروهی/خصوصی] تمامی دستورات موجود در سیستم.';
 
     public function handle(): void
     {

@@ -22,7 +22,7 @@ final class UnbindCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[私聊]     解除账户绑定.';
+    protected $description = '[گپ خصوصی]     لغو پیوند حساب.';
 
     public function handle(): void
     {
@@ -74,7 +74,7 @@ final class UnbindCommand extends Command
                 return;
             }
             if ($MessageKey !== '') {
-                $text = '键入的 Email 地址与您的账户不匹配.';
+                $text = 'آدرس ایمیلی که تایپ کردید با حساب شما مطابقت ندارد.';
             }
             if ($MessageKey === '/unbind') {
                 $text = $this->sendtext();
@@ -92,9 +92,9 @@ final class UnbindCommand extends Command
 
     public function sendtext()
     {
-        $text = '以 `/unbind example@qq.com` 的形式发送进行解绑.';
+        $text = 'توسط `/unbind example@qq.com` ارسال شده در قالب.';
         if (Setting::obtain('telegram_unbind_kick_member') === true) {
-            $text .= PHP_EOL . PHP_EOL . '根据管理员的设定，您解绑账户将会被自动移出用户群.';
+            $text .= PHP_EOL . PHP_EOL . 'طبق تنظیمات مدیر، حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف می شود.';
         }
         return $text;
     }

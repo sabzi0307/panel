@@ -32,10 +32,10 @@ use Exception;
 final class Job extends Command
 {
     public $description = <<<EOL
-├─=: php xcat Job [选项]
-│ ├─ DailyJob                - 每日任务，每天
-│ ├─ CheckJob                - 检查任务，每分钟
-│ ├─ UserJob                 - 用户账户相关任务，每小时
+├─=: php xcat Job [options]
+│ ├─ DailyJob                - daily tasks, daily
+│ ├─ CheckJob                - Check tasks, every minute
+│ ├─ UserJob                 - User account-related tasks, per hour
 EOL;
 
     public function boot(): void
@@ -47,7 +47,7 @@ EOL;
             if (method_exists($this, $methodName)) {
                 $this->$methodName();
             } else {
-                echo '方法不存在.' . PHP_EOL;
+                echo 'method does not exist.' . PHP_EOL;
             }
         }
     }
@@ -118,17 +118,17 @@ EOL;
             }
             $bought_users[] = $bought->userid;
             if ($bought->valid() && $bought->usedDays() % $shop->reset() === 0 && $bought->usedDays() !== 0) {
-                echo '流量重置-' . $user->id . "\n";
+                echo 'traffic reset-' . $user->id . "\n";
                 $user->transfer_enable = Tools::toGB($shop->resetValue());
                 $user->u = 0;
                 $user->d = 0;
                 $user->last_day_t = 0;
                 $user->save();
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的流量被重置了',
+                    $_ENV['appName'] . '- ترافیک شما تنظیم مجدد شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，根据您所订购的订单 ID:' . $bought->id . '，流量已经被重置为' . $shop->resetValue() . 'GB',
+                        'text' => 'سلام با توجه درخواست شما به شناسه ::' . $bought->id . '，میزان ترافیک شما تغییر کرد.' . $shop->resetValue() . 'GB',
                     ],
                     [],
                     true
@@ -150,10 +150,10 @@ EOL;
                 $user->transfer_enable = $user->auto_reset_bandwidth * 1024 * 1024 * 1024;
                 $user->save();
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的免费流量被重置了',
+                    $_ENV['appName'] . '-ترافیک رایگان شما دوباره تنظیم شد',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，您的免费流量已经被重置为' . $user->auto_reset_bandwidth . 'GB',
+                        'text' => 'سلام، ترافیک رایگان شما به حجم اولیه ریست شد' . $user->auto_reset_bandwidth . 'GB',
                     ],
                     [],
                     true
@@ -206,7 +206,7 @@ EOL;
         //邮件队列处理
         while (true) {
             if (\time() - $timestatmp > 59) {
-                echo '邮件队列处理超时，已跳过' . PHP_EOL;
+                echo 'Message queue processing timed out, skipped' . PHP_EOL;
                 break;
             }
             DB::beginTransaction();
@@ -219,7 +219,7 @@ EOL;
                 return (array) $value;
             }, $email_queues_raw);
             $email_queue = $email_queues[0];
-            echo '发送邮件至 ' . $email_queue['to_email'] . PHP_EOL;
+            echo 'send email to ' . $email_queue['to_email'] . PHP_EOL;
             DB::delete('DELETE FROM email_queue WHERE id = ?', [$email_queue['id']]);
             if (Tools::isEmail($email_queue['to_email'])) {
                 try {
@@ -228,23 +228,23 @@ EOL;
                     echo $e->getMessage();
                 }
             } else {
-                echo $email_queue['to_email'] . ' 邮箱格式错误，已跳过' . PHP_EOL;
+                echo $email_queue['to_email'] . ' Email format error, skipped' . PHP_EOL;
             }
             DB::commit();
         }
         //节点掉线检测
         if ($_ENV['enable_detect_offline'] === true) {
-            echo '节点掉线检测开始' . PHP_EOL;
+            echo 'Node down detection starts' . PHP_EOL;
             $adminUser = User::where('is_admin', '=', '1')->get();
             $nodes = Node::all();
             foreach ($nodes as $node) {
                 if ($node->isNodeOnline() === false && $node->online === true) {
                     if ($_ENV['useScFtqq'] === true && $_ENV['enable_detect_offline_useScFtqq'] === true) {
                         $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
-                        $text = '管理员您好，系统发现节点 ' . $node->name . ' 掉线了，请您及时处理。';
+                        $text = 'Hello administrator, the system discovers the node ' . $node->name . ' The line is disconnected, please deal with it in time.';
                         $postdata = http_build_query(
                             [
-                                'text' => $_ENV['appName'] . '-节点掉线了',
+                                'text' => $_ENV['appName'] . '-Node is down',
                                 'desp' => $text,
                             ]
                         );
@@ -262,10 +262,10 @@ EOL;
                     foreach ($adminUser as $user) {
                         echo 'Send offline mail to user: ' . $user->id . PHP_EOL;
                         $user->sendMail(
-                            $_ENV['appName'] . '-系统警告',
+                            $_ENV['appName'] . '-هشدار سیستم',
                             'news/warn.tpl',
                             [
-                                'text' => '管理员您好，系统发现节点 ' . $node->name . ' 掉线了，请您及时处理。',
+                                'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' The line is disconnected, please deal with it in time.',
                             ],
                             [],
                             true
@@ -286,10 +286,10 @@ EOL;
                 } elseif ($node->isNodeOnline() === true && $node->online === false) {
                     if ($_ENV['useScFtqq'] === true && $_ENV['enable_detect_offline_useScFtqq'] === true) {
                         $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
-                        $text = '管理员您好，系统发现节点 ' . $node->name . ' 恢复上线了。';
+                        $text = 'Hello administrator, the system discovers the node ' . $node->name . ' back online.';
                         $postdata = http_build_query(
                             [
-                                'text' => $_ENV['appName'] . '-节点恢复上线了',
+                                'text' => $_ENV['appName'] . '-The node is back online',
                                 'desp' => $text,
                             ]
                         );
@@ -310,7 +310,7 @@ EOL;
                             $_ENV['appName'] . '-系统提示',
                             'news/warn.tpl',
                             [
-                                'text' => '管理员您好，系统发现节点 ' . $node->name . ' 恢复上线了。',
+                                'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' back online.',
                             ],
                             [],
                             true
@@ -330,7 +330,7 @@ EOL;
                     $node->save();
                 }
             }
-            echo '节点掉线检测结束' . PHP_EOL;
+            echo 'Node disconnection detection ends' . PHP_EOL;
         }
 
         //更新节点 IP，每分钟
@@ -374,10 +374,10 @@ EOL;
                 $user->d = 0;
                 $user->last_day_t = 0;
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的用户账户已经过期了',
+                    $_ENV['appName'] . '-حساب کاربری شما منقضی شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统发现您的账号已经过期了。',
+                        'text' => 'سلام، متاسفانه جساب کاربری شما منقضی شده است.',
                     ],
                     [],
                     true
@@ -412,10 +412,10 @@ EOL;
 
                 if ($under_limit === true && $user->traffic_notified === false) {
                     $result = $user->sendMail(
-                        $_ENV['appName'] . '-您的剩余流量过低',
+                        $_ENV['appName'] . '-ترافیک باقیمانده شما بسیار کم است',
                         'news/warn.tpl',
                         [
-                            'text' => '您好，系统发现您剩余流量已经低于 ' . $_ENV['notify_limit_value'] . $unit_text . ' 。',
+                            'text' => 'ترافیک باقیمانده شما کمتر از حد مجاز می باشد ' . $_ENV['notify_limit_value'] . $unit_text . ' 。',
                         ],
                         [],
                         true
@@ -436,10 +436,10 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的用户账户已经被删除了',
+                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统发现您的账户已经过期 ' . $_ENV['account_expire_delete_days'] . ' 天了，帐号已经被删除。',
+                        'text' => 'سلام، سیستم متوجه شد که اکانت شما منقضی شده است ' . $_ENV['account_expire_delete_days'] . ' اوه، حساب حذف شده است.',
                     ],
                     [],
                     true
@@ -458,10 +458,10 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的用户账户已经被删除了',
+                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统发现您的账号已经 ' . $_ENV['auto_clean_uncheck_days'] . ' 天没签到了，帐号已经被删除。',
+                        'text' => 'سلام، سیستم متوجه شد که اکانت شما ' . $_ENV['auto_clean_uncheck_days'] . ' چند روزی است که وارد سیستم نشده اید و حساب کاربری حذف شده است.',
                     ],
                     [],
                     true
@@ -477,10 +477,10 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的用户账户已经被删除了',
+                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统发现您的账号已经 ' . $_ENV['auto_clean_unused_days'] . ' 天没使用了，帐号已经被删除。',
+                        'text' => 'سلام، سیستم متوجه شد که اکانت شما ' . $_ENV['auto_clean_unused_days'] . ' چند روزی است که استفاده نشده و اکانت حذف شده است.',
                     ],
                     [],
                     true
@@ -494,17 +494,17 @@ EOL;
                 strtotime($user->class_expire) < \time() &&
                 strtotime($user->class_expire) > 1420041600
             ) {
-                $text = '您好，系统发现您的账号等级已经过期了。';
+                $text = 'سلام، سیستم متوجه شد که سطح حساب شما منقضی شده است.';
                 $reset_traffic = $_ENV['class_expire_reset_traffic'];
                 if ($reset_traffic >= 0) {
                     $user->transfer_enable = Tools::toGB($reset_traffic);
                     $user->u = 0;
                     $user->d = 0;
                     $user->last_day_t = 0;
-                    $text .= '流量已经被重置为' . $reset_traffic . 'GB';
+                    $text .= 'میزان ترافیک تنظیم شده جدید' . $reset_traffic . 'GB';
                 }
                 $user->sendMail(
-                    $_ENV['appName'] . '-您的账户等级已经过期了',
+                    $_ENV['appName'] . '-سطح حساب شما منقضی شده است',
                     'news/warn.tpl',
                     [
                         'text' => $text,
@@ -541,10 +541,10 @@ EOL;
             if ($shop === null) {
                 $bought->delete();
                 $user->sendMail(
-                    $_ENV['appName'] . '-续费失败',
+                    $_ENV['appName'] . '-تمدید ناموفق بود',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统为您自动续费商品时，发现该商品已被下架，为能继续正常使用，建议您登录用户面板购买新的商品。',
+                        'text' => 'با سلام وقتی سیستم به صورت خودکار محصول را برای شما تمدید می کند مشخص می شود که محصول از قفسه خارج شده است برای ادامه استفاده عادی توصیه می شود برای خرید محصول جدید وارد پنل کاربری شوید. .',
                     ],
                     [],
                     true
@@ -570,10 +570,10 @@ EOL;
                 $bought_new->save();
 
                 $user->sendMail(
-                    $_ENV['appName'] . '-续费成功',
+                    $_ENV['appName'] . '-تمدید با موفقیت انجام شد',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统已经为您自动续费，商品名：' . $shop->name . ',金额:' . $shop->price . ' 元。',
+                        'text' => 'سلام سیستم به صورت خودکار برای شما تمدید شد نام محصول：' . $shop->name . ',مقدار:' . $shop->price . ' تومان',
                     ],
                     [],
                     true
@@ -583,10 +583,10 @@ EOL;
                 $bought->save();
             } elseif ($bought->is_notified === false) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-续费失败',
+                    $_ENV['appName'] . '-تمدید ناموفق بود',
                     'news/warn.tpl',
                     [
-                        'text' => '您好，系统为您自动续费商品名：' . $shop->name . ',金额:' . $shop->price . ' 元 时，发现您余额不足，请及时充值。充值后请稍等系统便会自动为您续费。',
+                        'text' => 'سلام سیستم به طور خودکار نام محصول را برای شما تمدید می کند：' . $shop->name . ',مقدار:' . $shop->price . ' وقتی متوجه شدید که موجودی شما کافی نیست، لطفاً به موقع شارژ کنید. پس از شارژ مجدد، لطفا کمی صبر کنید تا سیستم به طور خودکار برای شما تمدید شود.',
                     ],
                     [],
                     true

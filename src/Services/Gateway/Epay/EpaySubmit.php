@@ -49,7 +49,7 @@ final class EpaySubmit
         return EpayTool::createLinkstringUrlencode($para);
     }
 
-    public function buildRequestForm($para_temp, $method = 'POST', $button_name = '正在跳转')
+    public function buildRequestForm($para_temp, $method = 'POST', $button_name = 'پرش')
     {
         //待请求参数数组
         $para = $this->buildRequestPara($para_temp);

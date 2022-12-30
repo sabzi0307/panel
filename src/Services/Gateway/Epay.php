@@ -47,7 +47,7 @@ final class Epay extends AbstractPayment
 
     public static function _readableName(): string
     {
-        return 'epay在线充值';
+        return 'شارژ آنلاین epay';
     }
 
     public function purchase(Request $request, Response $response, array $args): ResponseInterface
@@ -55,7 +55,7 @@ final class Epay extends AbstractPayment
         $type = $request->getParam('type');
         $price = $request->getParam('price');
         if ($price <= 0) {
-            return \json_encode(['errcode' => -1, 'errmsg' => '非法的金额.']);
+            return \json_encode(['errcode' => -1, 'errmsg' => 'مقدار غیر مجاز.']);
         }
         $user = Auth::getUser();
         $pl = new Paylist();
@@ -107,11 +107,11 @@ final class Epay extends AbstractPayment
             $trade_status = $_GET['trade_status'];
             if ($trade_status === 'TRADE_SUCCESS') {
                 $this->postPayment($out_trade_no, $type);
-                return $response->withJson(['state' => 'success', 'msg' => '支付成功']);
+                return $response->withJson(['state' => 'success', 'msg' => 'پرداخت موفق']);
             }
-            return $response->withJson(['state' => 'fail', 'msg' => '支付失败']);
+            return $response->withJson(['state' => 'fail', 'msg' => 'پرداخت ناموفق']);
         }
-        return $response->write('非法请求');
+        return $response->write('درخواست غیر مجاز');
     }
     public static function getPurchaseHTML(): string
     {
@@ -122,7 +122,7 @@ final class Epay extends AbstractPayment
     {
         $money = $_GET['money'];
         $html = <<<HTML
-        您已成功充值 ${money} 元，正在跳转..
+        شما با موفقیت شارژ شدید ${money} تومان，پرش..
         <script>
             setTimeout(function() {
                 location.href="/user/code";

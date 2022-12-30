@@ -30,29 +30,29 @@ final class Shop extends Model
         foreach ($this->content as $key => $value) {
             switch ($key) {
                 case 'bandwidth':
-                    $content_text .= '添加流量 ' . $value . ' G ';
+                    $content_text .= 'ترافیک را اضافه کنید ' . $value . ' G ';
                     break;
                 case 'expire':
-                    $content_text .= ', 为账号的有效期添加 ' . $value . ' 天 ';
+                    $content_text .= ', به مدت اعتبار حساب اضافه کنید ' . $value . ' روز ';
                     break;
                 case 'class':
-                    $content_text .= ', 为账号升级为等级 ' . $value . ' , 有效期 ' . $this->content['class_expire'] . ' 天 ';
+                    $content_text .= ', یک حساب کاربری را به یک سطح ارتقا دهید ' . $value . ' , مدت اعتبار ' . $this->content['class_expire'] . ' روز ';
                     break;
                 case 'reset':
-                    $content_text .= ', 在 ' . $this->content['reset_exp'] . ' 天内 ，每 ' . $value . ' 天重置流量为 ' . $this->content['reset_value'] . ' G ';
+                    $content_text .= ', وجود دارد ' . $this->content['reset_exp'] . ' در عرض چند روز، هر ' . $value . ' روز ریست ترافیک به ' . $this->content['reset_value'] . ' G ';
                     break;
                 case 'speedlimit':
                     if ($value === 0) {
-                        $content_text .= ', 用户端口不限速 ';
+                        $content_text .= ', سرعت پورت کاربر نامحدود ';
                     } else {
-                        $content_text .= ', 用户端口限速变为' . $value . ' Mbps ';
+                        $content_text .= ', سرعت پورت کاربر محدودیت دارد' . $value . ' Mbps ';
                     }
                     break;
                 case 'connector':
                     if ($value === 0) {
-                        $content_text .= ', 用户IP不限制';
+                        $content_text .= ', IP کاربر محدود نیست';
                     } else {
-                        $content_text .= ', 用户IP限制变为 ' . $value . ' 个';
+                        $content_text .= ', IP کاربر دارای محدودیت می باشد. ' . $value . ' 个';
                     }
                     break;
                 default:
@@ -218,7 +218,7 @@ final class Shop extends Model
      */
     public function autoRenew(): string
     {
-        return $this->auto_renew === 0 ? '不自动续费' : $this->auto_renew . ' 天后续费';
+        return $this->auto_renew === 0 ? 'بدون تمدید خودکار' : $this->auto_renew . ' اشتراک روز';
     }
 
     /*
@@ -226,7 +226,7 @@ final class Shop extends Model
      */
     public function autoResetBandwidthString(): string
     {
-        return $this->auto_reset_bandwidth === 0 ? '不自动重置' : '自动重置';
+        return $this->auto_reset_bandwidth === 0 ? 'بدون تنظیم مجدد خودکار' : 'تنظیم مجدد خودکار';
     }
 
     /*
@@ -234,6 +234,6 @@ final class Shop extends Model
      */
     public function status(): string
     {
-        return $this->status === 1 ? '上架' : '下架';
+        return $this->status === 1 ? 'در قفسه ها قرار دهید' : 'قفسه ها را بردارید';
     }
 }

@@ -16,15 +16,15 @@ final class SubscribeLogController extends BaseController
     public static $details =
     [
         'field' => [
-            'id' => '事件ID',
-            'user_name' => '用户名',
-            'user_id' => '用户ID',
-            'email' => '用户邮箱',
-            'subscribe_type' => '获取的订阅类型',
-            'request_ip' => '请求IP',
-            'location' => 'IP归属地',
-            'request_time' => '请求时间',
-            'request_user_agent' => '客户端标识符',
+            'id' => 'شناسه رویداد',
+            'user_name' => 'نام کاربری',
+            'user_id' => 'شناسه کاربر',
+            'email' => 'ایمیل کاربر',
+            'subscribe_type' => 'دریافت نوع اشتراک',
+            'request_ip' => 'درخواست IP',
+            'location' => 'انتساب IP',
+            'request_time' => 'زمان درخواست',
+            'request_user_agent' => 'شناسه مشتری',
         ],
     ];
 

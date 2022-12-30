@@ -7,10 +7,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">قوانین ممیزی</span>
+                        <span class="home-title">قوانین فیلترینگ</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">قوانین ممیزی در حال حاضر در سایت استفاده می شود</span>
+                        <span class="home-subtitle">قوانین فیلترینگ در حال حاضر در سایت استفاده می شود</span>
                     </div>
                 </div>
             </div>

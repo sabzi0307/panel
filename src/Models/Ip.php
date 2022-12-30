@@ -30,7 +30,7 @@ final class Ip extends Model
     public function userName(): string
     {
         if ($this->user() === null) {
-            return '用户已不存在';
+            return 'کاربر دیگر وجود ندارد';
         }
         return $this->user()->user_name;
     }
@@ -49,7 +49,7 @@ final class Ip extends Model
     public function nodeName(): string
     {
         if ($this->node() === null) {
-            return '节点已不存在';
+            return 'گره دیگر وجود ندارد';
         }
         return $this->node()->name;
     }

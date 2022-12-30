@@ -6,11 +6,11 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">节点列表</span>
+                        <span class="home-title">لیست گره ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">
-                            系统中所有节点的列表
+                            لیست تمام گره های سیستم
                         </span>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                     <div class="btn-list">
                         <a href="/admin/node/create" class="btn btn-primary">
                             <i class="icon ti ti-plus"></i>
-                            创建
+                            افزودن
                         </a>
                     </div>
                 </div>
@@ -72,27 +72,27 @@
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row card-footer d-flex align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             language: {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 条",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(在 _MAX_ 项中查找)",
+                "sProcessing": "در حال پردازش...",
+                "sLengthMenu": "نمایش موارد _MENU_",
+                "sZeroRecords": "نتایج منطبقی وجود ندارد",
+                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
+                "sInfoEmpty": "نتایج 0 تا 0 از 0",
+                "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",
                 "sInfoPostFix": "",
                 "sSearch": "<i class=\"ti ti-search\"></i> ",
                 "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
+                "sEmptyTable": "داده های جدول خالی است",
+                "sLoadingRecords": "بارگذاری...",
                 "sInfoThousands": ",",
                 "oPaginate": {
-                    "sFirst": "首页",
+                    "sFirst": "صفحه اول",
                     "sPrevious": "<i class=\"ti ti-arrow-left\"></i>",
                     "sNext": "<i class=\"ti ti-arrow-right\"></i>",
-                    "sLast": "末页"
+                    "sLast": "آخرین صفحه"
                 },
                 "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
+                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
+                    "sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
                 }
             }
         });
@@ -102,7 +102,7 @@
         }
 
         function deleteNode(node_id) {
-            $('#notice-message').text('确定删除此节点？');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این گره را حذف کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({
@@ -124,7 +124,7 @@
         };
 
         function copyNode(node_id) {
-            $('#notice-message').text('确定复制此节点？');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این گره را کپی کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({

@@ -6,17 +6,17 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">用户 #{$edit_user->id}</span>
+                        <span class="home-title">کاربر #{$edit_user->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">用户编辑</span>
+                        <span class="home-subtitle">ویرایش کاربر</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <a id="save_changes" href="#" class="btn btn-primary d-none d-sm-inline-block">
                             <i class="icon ti ti-device-floppy"></i>
-                            保存
+                            نگه داشتن
                         </a>
                         <a id="save_changes" href="#" class="btn btn-primary d-sm-none btn-icon">
                             <i class="icon ti ti-device-floppy"></i>
@@ -32,62 +32,62 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">基础信息</h3>
+                            <h3 class="card-title">اطلاعات اولیه</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">注册邮箱</label>
+                                <label class="form-label col-3 col-form-label">ثبت نام ایمیل</label>
                                 <div class="col">
                                     <input id="email" type="email" class="form-control" value="{$edit_user->email}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户名</label>
+                                <label class="form-label col-3 col-form-label">نام کاربری</label>
                                 <div class="col">
                                     <input id="user_name" type="text" class="form-control"
                                         value="{$edit_user->user_name}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">备注</label>
+                                <label class="form-label col-3 col-form-label">ریمارک</label>
                                 <div class="col">
                                     <input id="remark" type="text" class="form-control" value="{$edit_user->remark}"
-                                        placeholder="仅管理员可见">
+                                        placeholder="فقط برای مدیران قابل مشاهده است">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">账户密码</label>
+                                <label class="form-label col-3 col-form-label">رمز عبور حساب کاربری</label>
                                 <div class="col">
                                     <input id="pass" type="text" class="form-control"
-                                        placeholder="若需为此用户重置密码, 填写此栏">
+                                        placeholder="برای بازنشانی رمز عبور این کاربر، این قسمت را پر کنید">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">账户余额</label>
+                                <label class="form-label col-3 col-form-label">موجودی حساب</label>
                                 <div class="col">
                                     <input id="money" type="number" step="0.1" class="form-control"
                                         value="{$edit_user->money}">
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>时间设置</span>
+                                <span>تعیین زمان</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">等级过期时间</label>
+                                <label class="form-label col-4 col-form-label">زمان انقضای سطح</label>
                                 <div class="col">
                                     <input id="class_expire" type="text" class="form-control"
                                         value="{$edit_user->class_expire}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">账户过期时间</label>
+                                <label class="form-label col-4 col-form-label">زمان انقضای حساب</label>
                                 <div class="col">
                                     <input id="expire_in" type="text" class="form-control"
                                         value="{$edit_user->expire_in}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">免费用户流量重置日</label>
+                                <label class="form-label col-4 col-form-label">روز ریست ترافیک رایگان کاربر</label>
                                 <div class="col">
                                     <input id="auto_reset_day" type="text" class="form-control"
                                         value="{$edit_user->auto_reset_day}">
@@ -95,7 +95,7 @@
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">
-                                重置的免费流量(GB)
+                                ریست ترافیک رایگان(GB)
                                 </label>
                                 <div class="col">
                                     <input id="auto_reset_bandwidth" type="text" class="form-control"
@@ -103,10 +103,10 @@
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>高级选项</span>
+                                <span>گزینه های پیشرفته</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">管理员</span>
+                                <span class="col">مدیر</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="is_admin" class="form-check-input" type="checkbox"
@@ -115,7 +115,7 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">两步认证</span>
+                                <span class="col">احراز هویت دو مرحله ای</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="ga_enable" class="form-check-input" type="checkbox"
@@ -124,7 +124,7 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">使用新的商店系统</span>
+                                <span class="col">از سیستم فروشگاه جدید استفاده کنید</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="use_new_shop" class="form-check-input" type="checkbox"
@@ -133,7 +133,7 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">封禁用户</span>
+                                <span class="col">ممنوع کردن کاربر</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="is_banned" class="form-check-input" type="checkbox"
@@ -142,7 +142,7 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">手动封禁理由</span>
+                                <span class="col">علت ممنوعیت دستی</span>
                                 <span class="col-auto">
                                     <input id="banned_reason" type="text" class="form-control"
                                         value="{$edit_user->banned_reason}">
@@ -154,64 +154,64 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">其他信息</h3>
+                            <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">流量限制 (GB)</label>
+                                <label class="form-label col-4 col-form-label">محدودیت های ترافیکی (GB)</label>
                                 <div class="col">
                                     <input id="transfer_enable" type="text" class="form-control"
                                         value="{$edit_user->enableTrafficInGB()}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">已用流量 (GB)</label>
+                                <label class="form-label col-4 col-form-label">ترافیک استفاده شده (GB)</label>
                                 <div class="col">
                                     <input id="usedTraffic" type="text" class="form-control"
                                         value="{$edit_user->usedTraffic()}" disabled />
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>邀请注册</span>
+                                <span>دعوت به ثبت نام</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">可用邀请数量</label>
+                                <label class="form-label col-4 col-form-label">تعداد دعوت نامه های موجود</label>
                                 <div class="col">
                                     <input id="invite_num" type="text" class="form-control"
                                         value="{$edit_user->invite_num}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">邀请人</label>
+                                <label class="form-label col-4 col-form-label">افراد را دعوت کنید</label>
                                 <div class="col">
                                     <input id="ref_by" type="text" class="form-control" value="{$edit_user->ref_by}">
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>划分与使用限制</span>
+                                <span>محدودیت های تخصیص و استفاده</span>
                             </div>
                             <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">节点群组</label>
+                                    <label class="form-label col-12 col-form-label">گروه گره</label>
                                     <div class="col">
                                         <input id="node_group" type="text" class="form-control"
                                             value="{$edit_user->node_group}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">账户等级</label>
+                                    <label class="form-label col-12 col-form-label">سطح حساب</label>
                                     <div class="col">
                                         <input id="class" type="text" class="form-control" value="{$edit_user->class}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">速度限制 (Mbps)</label>
+                                    <label class="form-label col-12 col-form-label">محدودیت سرعت (Mbps)</label>
                                     <div class="col">
                                         <input id="node_speedlimit" type="text" class="form-control"
                                             value="{$edit_user->node_speedlimit}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">链接设备限制</label>
+                                    <label class="form-label col-12 col-form-label">پیوند محدودیت های دستگاه</label>
                                     <div class="col">
                                         <input id="node_connector" type="text" class="form-control"
                                             value="{$edit_user->node_connector}">
@@ -223,29 +223,29 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">连接设置</h3>
+                            <h3 class="card-title">تنظیمات اتصال</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">端口</label>
+                                <label class="form-label col-3 col-form-label">پورت</label>
                                 <div class="col">
                                     <input id="port" type="text" class="form-control" value="{$edit_user->port}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">密码</label>
+                                <label class="form-label col-3 col-form-label">کلمه عبور</label>
                                 <div class="col">
                                     <input id="passwd" type="text" class="form-control" value="{$edit_user->passwd}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">加密</label>
+                                <label class="form-label col-3 col-form-label">رمزگذاری</label>
                                 <div class="col">
                                     <input id="method" type="text" class="form-control" value="{$edit_user->method}">
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>访问限制</span>
+                                <span>محدودیت بازدید</span>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">IP / CIDR</label>

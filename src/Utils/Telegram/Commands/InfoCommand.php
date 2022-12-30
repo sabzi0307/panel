@@ -23,7 +23,7 @@ final class InfoCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组]     获取被回复消息的用户信息，管理员命令.';
+    protected $description = '[گروه]     دریافت اطلاعات کاربر پاسخ دهنده دستور مدیریتی.';
 
     public function handle(): void
     {
@@ -87,7 +87,7 @@ final class InfoCommand extends Command
             } else {
                 $this->replyWithMessage(
                     [
-                        'text' => '请回复消息使用.',
+                        'text' => 'لطفا با استفاده از پیام پاسخ دهید.',
                         'reply_to_message_id' => $MessageID,
                     ]
                 );

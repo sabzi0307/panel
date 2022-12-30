@@ -21,43 +21,43 @@ final class UserController extends BaseController
 {
     public static $details = [
         'field' => [
-            'op' => '操作',
-            'id' => '用户ID',
-            'user_name' => '昵称',
-            'email' => '邮箱',
-            'money' => '余额',
-            'ref_by' => '邀请人',
-            'transfer_enable' => '流量限制',
-            'last_day_t' => '累计用量',
-            'class' => '等级',
-            'reg_date' => '注册时间',
-            'expire_in' => '账户过期',
-            'class_expire' => '等级过期',
+            'op' => 'شرح عملیات',
+            'id' => 'شناسه کاربر',
+            'user_name' => 'نام مستعار',
+            'email' => 'ایمیل',
+            'money' => 'اعتبار',
+            'ref_by' => 'دعوت شده',
+            'transfer_enable' => 'محدودیت های ترافیکی',
+            'last_day_t' => 'استفاده تجمعی',
+            'class' => 'درجه',
+            'reg_date' => 'زمان ثبت نام',
+            'expire_in' => 'حساب منقضی شده است',
+            'class_expire' => 'درجه منقضی شده',
         ],
         'create_dialog' => [
             [
                 'id' => 'email',
-                'info' => '登录邮箱',
+                'info' => 'ورود به ایمیل',
                 'type' => 'input',
                 'placeholder' => '',
             ],
             [
                 'id' => 'password',
-                'info' => '登录密码',
+                'info' => 'رمز عبور ورود',
                 'type' => 'input',
-                'placeholder' => '留空则随机生成',
+                'placeholder' => 'خالی بگذارید تا به صورت تصادفی تولید شود',
             ],
             [
                 'id' => 'ref_by',
-                'info' => '邀请人',
+                'info' => 'دعوت شده',
                 'type' => 'input',
-                'placeholder' => '邀请人的用户id，可留空',
+                'placeholder' => 'شناسه کاربر دعوت کننده، می تواند خالی بماند',
             ],
             [
                 'id' => 'balance',
-                'info' => '账户余额',
+                'info' => 'موجودی حساب',
                 'type' => 'input',
-                'placeholder' => '-1为按默认设置，其他为指定值',
+                'placeholder' => '-1 به طور پیش فرض تنظیم شده است، بقیه مقادیر مشخص شده هستند',
             ],
         ],
     ];
@@ -117,14 +117,14 @@ final class UserController extends BaseController
 
         try {
             if ($email === '') {
-                throw new \Exception('请填写邮箱');
+                throw new \Exception('لطفا ایمیل خود را وارد کن');
             }
             if (!Check::isEmailLegal($email)) {
-                throw new \Exception('邮箱格式不正确');
+                throw new \Exception('قالب ایمیل نادرست است');
             }
             $exist = User::where('email', $email)->first();
             if ($exist !== null) {
-                throw new \Exception('此邮箱已注册');
+                throw new \Exception('این ایمیل قبلا ثبت شده است');
             }
             if ($password === '') {
                 $password = Tools::genRandomChar(16);
@@ -146,7 +146,7 @@ final class UserController extends BaseController
                 } else {
                     return $response->withJson([
                         'ret' => 0,
-                        'msg' => '添加失败，套餐不存在',
+                        'msg' => 'افزودن ناموفق بود، بسته وجود ندارد',
                     ]);
                 }
             }
@@ -163,7 +163,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '添加成功，用户邮箱：'.$email.' 密码：'.$password,
+            'msg' => 'با موفقیت اضافه شد، ایمیل کاربر：'.$email.' کلمه عبور：'.$password,
         ]);
     }
 
@@ -225,12 +225,12 @@ final class UserController extends BaseController
         if (! $user->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '修改失败',
+                'msg' => 'موفق به ویرایش نشدن',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '修改成功',
+            'msg' => 'با موفقیت اصلاح شد',
         ]);
     }
     /**
@@ -244,13 +244,13 @@ final class UserController extends BaseController
         if (! $user->killUser()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '删除失败',
+                'msg' => 'حذف نشد',
             ]);
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -268,7 +268,7 @@ final class UserController extends BaseController
         if (! $admin->is_admin || ! $user || ! Auth::getUser()->isLogin) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '非法请求',
+                'msg' => 'درخواست غیر مجاز',
             ]);
         }
 
@@ -288,7 +288,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '切换成功',
+            'msg' => 'با موفقیت تغییر دهید',
         ]);
     }
 
@@ -301,8 +301,8 @@ final class UserController extends BaseController
 
         foreach ($users as $user) {
             $user->op = '<button type="button" class="btn btn-red" id="delete-user-' . $user->id . '" 
-            onclick="deleteUser(' . $user->id . ')">删除</button>
-            <a class="btn btn-blue" href="/admin/user/' . $user->id . '/edit">编辑</a>';
+            onclick="deleteUser(' . $user->id . ')">حذف</button>
+            <a class="btn btn-blue" href="/admin/user/' . $user->id . '/edit">ویرایش کنید</a>';
             $user->transfer_enable = round($user->transfer_enable / 1073741824, 2);
             $user->last_day_t = round($user->last_day_t / 1073741824, 2);
         }

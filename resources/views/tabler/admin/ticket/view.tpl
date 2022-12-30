@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">工单回复</span>
+                        <span class="home-title my-3">پاسخ تیکت</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">你可以在这里查看历史消息并添加回复</span>
+                        <span class="home-subtitle">می‌توانید پیام‌های تاریخی را ببینید و پاسخ‌ها را در اینجا اضافه کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -18,7 +18,7 @@
                         <button href="#" class="btn btn-red d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#close_ticket_confirm_dialog">
                             <i class="icon ti ti-x"></i>
-                            关闭
+                            بسته
                         </button>
                         <button href="#" class="btn btn-red d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="#close_ticket_confirm_dialog">
@@ -28,7 +28,7 @@
                         <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#add-reply">
                             <i class="icon ti ti-plus"></i>
-                            回复
+                            پاسخ
                         </button>
                         <button href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="#add-reply">
@@ -62,7 +62,7 @@
                                         <div>
                                             {nl2br($comment['comment'])}
                                         </div>
-                                        <div class="text-muted my-1">{$comment['commenter_name']} 回复于 {Tools::toDateTime($comment['datetime'])}
+                                        <div class="text-muted my-1">{$comment['commenter_name']} پاسخ دادن به {Tools::toDateTime($comment['datetime'])}
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -85,17 +85,17 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">添加回复</h5>
+                    <h5 class="modal-title">اضافه کردن پاسخ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <textarea id="reply-comment" class="form-control" rows="12" placeholder="请输入回复内容"></textarea>
+                        <textarea id="reply-comment" class="form-control" rows="12" placeholder="لطفا محتوای پاسخ را وارد کنید"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
-                    <button id="reply" type="button" class="btn btn-primary" data-bs-dismiss="modal">回复</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو کنید</button>
+                    <button id="reply" type="button" class="btn btn-primary" data-bs-dismiss="modal">پاسخ</button>
                 </div>
             </div>
         </div>
@@ -105,19 +105,19 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">关闭工单</h5>
+                    <h5 class="modal-title">بستن تیکت</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <p>
-                            确认关闭工单？
+                            برای بستن تیکت تأیید کنید？
                         <p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
-                    <button id="confirm_close" type="button" class="btn btn-primary" data-bs-dismiss="modal">确认</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو کنید</button>
+                    <button id="confirm_close" type="button" class="btn btn-primary" data-bs-dismiss="modal">تایید</button>
                 </div>
             </div>
         </div>

@@ -17,13 +17,13 @@ final class TicketController extends BaseController
     public static $details =
     [
         'field' => [
-            'op' => '操作',
-            'id' => '工单ID',
-            'title' => '主题',
-            'status' => '工单状态',
-            'type' => '工单类型',
-            'userid' => '提交用户',
-            'datetime' => '创建时间',
+            'op' => 'شرح عملیات',
+            'id' => 'شناسه بلیت',
+            'title' => 'موضوع',
+            'status' => 'وضعیت تیکت',
+            'type' => 'نوع تیکت',
+            'userid' => 'ارسال کاربر',
+            'datetime' => 'زمان ایجاد',
         ],
     ];
 
@@ -81,7 +81,7 @@ final class TicketController extends BaseController
             $_ENV['appName'] . '-工单被回复',
             'news/warn.tpl',
             [
-                'text' => '您好，有人回复了<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">工单</a>，请您查看。',
+                'text' => 'سلام یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.',
             ],
             []
         );
@@ -92,7 +92,7 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '提交成功',
+            'msg' => 'با موفقیت ثبت شد',
         ]);
     }
 
@@ -133,16 +133,16 @@ final class TicketController extends BaseController
         if ($ticket->status === 'closed') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '工单已关闭',
+                'msg' => 'تیکت بسته است',
             ]);
         }
 
         $user = User::find($ticket->userid);
         $user->sendMail(
-            $_ENV['appName'] . '-工单已被关闭',
+            $_ENV['appName'] . '-تیکت بسته است',
             'news/warn.tpl',
             [
-                'text' => '您好，您的工单 #'. $ticket->id .' 已被关闭，如果您还有问题，欢迎提交新的工单。',
+                'text' => 'سلام تیکت شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، خوشحال می شویم یک تیکت جدید ارسال کنید.',
             ],
             []
         );
@@ -152,7 +152,7 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '关闭成功',
+            'msg' => 'با موفقیت بسته شد',
         ]);
     }
 
@@ -168,7 +168,7 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -183,10 +183,10 @@ final class TicketController extends BaseController
 
         foreach ($tickets as $ticket) {
             $ticket->op = '<button type="button" class="btn btn-red" id="delete-ticket" 
-            onclick="deleteTicket(' . $ticket->id . ')">删除</button>
+            onclick="deleteTicket(' . $ticket->id . ')">حذف</button>
             <button type="button" class="btn btn-orange" id="close-ticket" 
-            onclick="closeTicket(' . $ticket->id . ')">关闭</button>
-            <a class="btn btn-blue" href="/admin/ticket/' . $ticket->id . '/view">查看</a>';
+            onclick="closeTicket(' . $ticket->id . ')">بستن</button>
+            <a class="btn btn-blue" href="/admin/ticket/' . $ticket->id . '/view">بررسی</a>';
             $ticket->status = Tools::getTicketStatus($ticket);
             $ticket->type = Tools::getTicketType($ticket);
             $ticket->datetime = Tools::toDateTime((int) $ticket->datetime);

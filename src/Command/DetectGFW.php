@@ -11,7 +11,7 @@ use App\Utils\Telegram;
 
 final class DetectGFW extends Command
 {
-    public $description = '├─=: php xcat DetectGFW      - 节点被墙检测定时任务' . PHP_EOL;
+    public $description = '├─=: php xcat DetectGFW      - Timing task for node detection by wall' . PHP_EOL;
 
     public function boot(): void
     {
@@ -58,10 +58,10 @@ final class DetectGFW extends Command
                         foreach ($adminUser as $user) {
                             echo 'Send gfw mail to user: ' . $user->id . '-';
                             $user->sendMail(
-                                $_ENV['appName'] . '-系统警告',
+                                $_ENV['appName'] . '-system warning',
                                 'news/warn.tpl',
                                 [
-                                    'text' => '管理员您好，系统发现节点 ' . $node->name . ' 被墙了，请您及时处理。',
+                                    'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' I was blocked, please deal with it in time.',
                                 ],
                                 []
                             );
@@ -85,10 +85,10 @@ final class DetectGFW extends Command
                         foreach ($adminUser as $user) {
                             echo 'Send gfw mail to user: ' . $user->id . '-';
                             $user->sendMail(
-                                $_ENV['appName'] . '-系统提示',
+                                $_ENV['appName'] . '-system hint',
                                 'news/warn.tpl',
                                 [
-                                    'text' => '管理员您好，系统发现节点 ' . $node->name . ' 溜出墙了。',
+                                    'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' Sneaked out of the wall.',
                                 ],
                                 []
                             );

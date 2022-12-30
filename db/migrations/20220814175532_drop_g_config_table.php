@@ -17,16 +17,16 @@ final class DropGConfigTable extends AbstractMigration
     {
         $this->table('gconfig', [ 'id' => false, 'primary_key' => [ 'id' ]])
             ->addColumn('id', 'integer', [ 'identity' => true,'signed' => false ])
-            ->addColumn('key', 'string', [ 'comment' => '配置键名' ])
-            ->addColumn('type', 'string', [ 'comment' => '值类型' ])
-            ->addColumn('value', 'string', [ 'comment' => '配置值' ])
-            ->addColumn('oldvalue', 'string', [ 'comment' => '之前的配置值' ])
-            ->addColumn('name', 'string', [ 'comment' => '配置名称' ])
-            ->addColumn('comment', 'string', [ 'comment' => '配置描述' ])
-            ->addColumn('operator_id', 'integer', [ 'comment' => '操作员 ID' ])
-            ->addColumn('operator_name', 'string', [ 'comment' => '操作员名称' ])
-            ->addColumn('operator_email', 'string', [ 'comment' => '操作员邮箱' ])
-            ->addColumn('last_update', 'biginteger', [ 'comment' => '修改时间' ])
+            ->addColumn('key', 'string', [ 'comment' => 'نام کلید تنظیمات' ])
+            ->addColumn('type', 'string', [ 'comment' => 'نوع مقدار' ])
+            ->addColumn('value', 'string', [ 'comment' => 'مقدار تنظیمات' ])
+            ->addColumn('oldvalue', 'string', [ 'comment' => 'مقدار پیکربندی قبلی' ])
+            ->addColumn('name', 'string', [ 'comment' => 'نام پیکربندی' ])
+            ->addColumn('comment', 'string', [ 'comment' => 'توضیحات پیکربندی' ])
+            ->addColumn('operator_id', 'integer', [ 'comment' => 'شناسه اپراتور' ])
+            ->addColumn('operator_name', 'string', [ 'comment' => 'نام اپراتور' ])
+            ->addColumn('operator_email', 'string', [ 'comment' => 'ایمیل اپراتور' ])
+            ->addColumn('last_update', 'biginteger', [ 'comment' => 'زمان را تغییر دهید' ])
             ->create();
     }
 }

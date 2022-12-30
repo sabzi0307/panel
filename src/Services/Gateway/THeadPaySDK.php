@@ -36,7 +36,7 @@ final class THeadPaySDK
 
         $result = \json_decode((string) $data, true);
         if (! \is_array($result) || ! isset($result['status'])) {
-            throw new \Exception('网络连接异常: 无法连接支付网关');
+            throw new \Exception('استثنا اتصال شبکه: اتصال به درگاه پرداخت امکان پذیر نیست');
         }
         if ($result['status'] !== 'success') {
             throw new \Exception($result['message']);

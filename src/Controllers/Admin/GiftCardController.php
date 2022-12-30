@@ -12,38 +12,38 @@ final class GiftCardController extends BaseController
 {
     public static $details = [
         'field' => [
-            'op' => '操作',
-            'id' => '礼品卡ID',
-            'card' => '卡号',
-            'balance' => '面值',
-            'create_time' => '创建时间',
-            'status' => '使用状态',
-            'use_time' => '使用时间',
-            'use_user' => '使用用户',
+            'op' => 'شرح عملیات',
+            'id' => 'شناسه کارت هدیه',
+            'card' => 'شماره کارت',
+            'balance' => 'ارزش اسمی',
+            'create_time' => 'زمان ایجاد',
+            'status' => 'وضعیت استفاده',
+            'use_time' => 'زمان استفاده',
+            'use_user' => 'کاربر',
         ],
         'create_dialog' => [
             [
                 'id' => 'card_number',
-                'info' => '创建数量',
+                'info' => 'تولید به تعداد',
                 'type' => 'input',
                 'placeholder' => '',
             ],
             [
                 'id' => 'card_value',
-                'info' => '礼品卡面值',
+                'info' => 'ارزش اسمی کارت هدیه',
                 'type' => 'input',
                 'placeholder' => '',
             ],
             [
                 'id' => 'card_length',
-                'info' => '礼品卡长度',
+                'info' => 'طول کارت هدیه',
                 'type' => 'select',
                 'select' => [
-                    '12' => '12位',
-                    '18' => '18位',
-                    '24' => '24位',
-                    '30' => '30位',
-                    '36' => '36位',
+                    '12' => '12بیت',
+                    '18' => '18بیت',
+                    '24' => '24بیت',
+                    '30' => '30بیت',
+                    '36' => '36بیت',
                 ],
             ],
         ],
@@ -68,14 +68,14 @@ final class GiftCardController extends BaseController
         if ($card_number === null || $card_number < 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '生成数量不能为空或小于0',
+                'msg' => 'مقدار تولید شده نمی تواند خالی یا کمتر از 0 باشد',
             ]);
         }
 
         if ($card_value === null || $card_value < 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '礼品卡面值不能为空或小于0',
+                'msg' => 'ارزش اسمی کارت هدیه نباید خالی یا کمتر از 0 باشد',
             ]);
         }
 
@@ -95,7 +95,7 @@ final class GiftCardController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '添加成功' . PHP_EOL . $card_added,
+            'msg' => 'با موفقیت اضافه شد' . PHP_EOL . $card_added,
         ]);
     }
 
@@ -104,7 +104,7 @@ final class GiftCardController extends BaseController
         $giftcards = GiftCard::orderBy('id', 'desc')->get();
         foreach ($giftcards as $giftcard) {
             $giftcard->op = '<button type="button" class="btn btn-red" id="delete-gift-card-' . $giftcard->id . '" 
-        onclick="deleteGiftCard(' . $giftcard->id . ')">删除</button>';
+        onclick="deleteGiftCard(' . $giftcard->id . ')">حذف</button>';
             $giftcard->status = Tools::getGiftCardStatus($giftcard);
             $giftcard->create_time = Tools::toDateTime((int) $giftcard->create_time);
             $giftcard->use_time = Tools::toDateTime((int) $giftcard->use_time);
@@ -120,7 +120,7 @@ final class GiftCardController extends BaseController
         GiftCard::find($card_id)->delete();
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 }

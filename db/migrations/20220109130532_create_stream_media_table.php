@@ -9,9 +9,9 @@ final class CreateStreamMediaTable extends AbstractMigration
     public function up(): void
     {
         $table = $this->table('stream_media');
-        $table->addColumn('node_id', 'integer', ['comment' => '节点id'])
-            ->addColumn('result', 'text', ['comment' => '检测结果'])
-            ->addColumn('created_at', 'integer', ['comment' => '创建时间'])
+        $table->addColumn('node_id', 'integer', ['comment' => 'شناسه گره'])
+            ->addColumn('result', 'text', ['comment' => 'نتایج آزمون'])
+            ->addColumn('created_at', 'integer', ['comment' => 'زمان ایجاد'])
             ->create();
     }
 

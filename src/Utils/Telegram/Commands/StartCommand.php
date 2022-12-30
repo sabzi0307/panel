@@ -24,7 +24,7 @@ final class StartCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] Bot 初始命令.';
+    protected $description = '[چت گروهی/خصوصی] دستور اولیه ربات.';
 
     /**
      * {@inheritdoc}
@@ -63,7 +63,7 @@ final class StartCommand extends Command
             // 回送信息
             $this->replyWithMessage(
                 [
-                    'text' => '发送 /help 获取帮助',
+                    'text' => 'ارسال /help برای کمک',
                     'parse_mode' => 'Markdown',
                 ]
             );
@@ -77,7 +77,7 @@ final class StartCommand extends Command
             // 回送信息
             $this->replyWithMessage(
                 [
-                    'text' => '喵喵喵.',
+                    'text' => 'میو میو میو.',
                     'parse_mode' => 'Markdown',
                     'reply_to_message_id' => $Message->getMessageId(),
                 ]
@@ -89,24 +89,24 @@ final class StartCommand extends Command
     {
         $Uid = TelegramSessionManager::verifyBindSession($MessageText);
         if ($Uid === 0) {
-            $text = '绑定失败了呢，经检查发现：【' . $MessageText . '】的有效期为 10 分钟，您可以在我们网站上的 **资料编辑** 页面刷新后重试.';
+            $text = 'اتصال شکست خورد، پس از بازرسی، مشخص شد که：【' . $MessageText . '】به مدت 10 دقیقه معتبر است، می توانید پس از تازه کردن صفحه **ویرایش نمایه** در وب سایت ما دوباره امتحان کنید.';
         } else {
             $BinsUser = User::where('id', $Uid)->first();
             $BinsUser->telegram_id = $SendUser['id'];
             $BinsUser->im_type = 4;
             if ($SendUser['username'] === null) {
-                $BinsUser->im_value = '用戶名未设置';
+                $BinsUser->im_value = 'نام کاربری تنظیم نشده است';
             } else {
                 $BinsUser->im_value = $SendUser['username'];
             }
             $BinsUser->save();
             if ($BinsUser->is_admin >= 1) {
-                $text = '尊敬的 **管理员** 您好，恭喜绑定成功。' . PHP_EOL . '当前绑定邮箱为： ' . $BinsUser->email;
+                $text = '**مدیر محترم** سلام، اتصال موفق را تبریک می گویم.' . PHP_EOL . 'آدرس ایمیل محدود فعلی است： ' . $BinsUser->email;
             } else {
                 if ($BinsUser->class >= 1) {
-                    $text = '尊敬的 **VIP ' . $BinsUser->class . '** 用户您好.' . PHP_EOL . '恭喜您绑定成功，当前绑定邮箱为： ' . $BinsUser->email;
+                    $text = 'عزیز **VIP ' . $BinsUser->class . '** سلام کاربر.' . PHP_EOL . 'اتثال موفق شما را تبریک می گویم，آدرس ایمیل محدود فعلی است： ' . $BinsUser->email;
                 } else {
-                    $text = '绑定成功了，您的邮箱为：' . $BinsUser->email;
+                    $text = 'اتثال به ایمیل شما با موفقیت انجام شد، ：' . $BinsUser->email;
                 }
             }
         }

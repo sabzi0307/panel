@@ -10,7 +10,7 @@ final class AddTrafficLog extends AbstractMigration
     {
         if (! $this->table('user')->hasColumn('transfer_total')) {
             $this->table('user')
-                ->addColumn('transfer_total', 'biginteger', [ 'comment' => '账户累计使用流量', 'default' => 0, 'signed' => false])
+                ->addColumn('transfer_total', 'biginteger', [ 'comment' => 'استفاده از ترافیک انباشته از حساب', 'default' => 0, 'signed' => false])
                 ->save();
         }
 

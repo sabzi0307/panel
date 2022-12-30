@@ -21,7 +21,7 @@ final class CheckinCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] 每日签到.';
+    protected $description = '[چت گروهی/خصوصی] ورود روزانه.';
 
     /**
      * {@inheritdoc}

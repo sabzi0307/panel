@@ -37,7 +37,7 @@ final class LoginIp extends Model
     public function userName(): string
     {
         if ($this->user() === null) {
-            return '用户已不存在';
+            return 'کاربر دیگر وجود ندارد';
         }
         return $this->user()->user_name;
     }
@@ -67,6 +67,6 @@ final class LoginIp extends Model
      */
     public function type(): string
     {
-        return $this->type === 0 ? '成功' : '失败';
+        return $this->type === 0 ? 'موفقیت' : 'شکست';
     }
 }

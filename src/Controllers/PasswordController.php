@@ -48,7 +48,7 @@ final class PasswordController extends BaseController
         if (Setting::obtain('enable_reset_password_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
-                return ResponseHelper::error($response, '系统无法接受您的验证结果，请刷新页面后重试');
+                return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }
         }
 
@@ -56,13 +56,13 @@ final class PasswordController extends BaseController
         $user = User::where('email', $email)->first();
 
         if ($user === null) {
-            $msg = '如果你的账户存在于我们的数据库中，那么重置密码的链接将会发送到你账户所对应的邮箱。';
+            $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
         }
 
         if (Password::sendResetEmail($email)) {
-            $msg = '如果你的账户存在于我们的数据库中，那么重置密码的链接将会发送到你账户所对应的邮箱。';
+            $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
         } else {
-            $msg = '邮件发送失败，请联系网站管理员。';
+            $msg = 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.';
         }
 
         return ResponseHelper::successfully($response, $msg);
@@ -93,22 +93,22 @@ final class PasswordController extends BaseController
         $repasswd = $request->getParam('repasswd');
 
         if ($password !== $repasswd) {
-            return ResponseHelper::error($response, '两次输入不符合');
+            return ResponseHelper::error($response, 'این دو ورودی مطابقت ندارند');
         }
 
         if (strlen($password) < 8) {
-            return ResponseHelper::error($response, '密码太短啦');
+            return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
         }
 
         /** @var PasswordReset $token */
         $token = PasswordReset::where('token', $tokenStr)->where('expire_time', '>', \time())->orderBy('id', 'desc')->first();
         if ($token === null) {
-            return ResponseHelper::error($response, '链接已经失效，请重新获取');
+            return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
         }
 
         $user = $token->getUser();
         if ($user === null) {
-            return ResponseHelper::error($response, '链接已经失效，请重新获取');
+            return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
         }
 
         // reset password
@@ -117,7 +117,7 @@ final class PasswordController extends BaseController
         $user->ga_enable = 0;
 
         if (! $user->save()) {
-            return ResponseHelper::error($response, '重置失败，请重试');
+            return ResponseHelper::error($response, 'بازنشانی انجام نشد، لطفاً دوباره امتحان کنید');
         }
 
         if ($_ENV['enable_forced_replacement'] === true) {
@@ -128,6 +128,6 @@ final class PasswordController extends BaseController
         $token->expire_time = \time();
         $token->save();
 
-        return ResponseHelper::successfully($response, '重置成功');
+        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 }

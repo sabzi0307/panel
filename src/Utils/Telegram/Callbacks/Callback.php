@@ -101,16 +101,16 @@ final class Callback
         $Keyboard = [
             [
                 [
-                    'text' => '产品介绍',
+                    'text' => 'توضیحات محصول',
                     'callback_data' => 'general.pricing',
                 ],
                 [
-                    'text' => '服务条款',
+                    'text' => 'شرایط استفاده از خدمات',
                     'callback_data' => 'general.terms',
                 ],
             ],
         ];
-        $text = '游客您好，以下是 BOT 菜单：' . PHP_EOL . PHP_EOL . '本站用户请前往用户中心进行 Telegram 绑定操作.';
+        $text = 'سلام ، منوی BOT در زیر آمده است：' . PHP_EOL . PHP_EOL . 'کاربران این سایت لطفا برای انجام عملیات اتصال تلگرام به مرکز کاربران مراجعه کنند.';
         return [
             'text' => $text,
             'keyboard' => $Keyboard,
@@ -215,25 +215,25 @@ final class Callback
 
     public static function getUserIndexKeyboard($user)
     {
-        $checkin = (!$user->isAbleToCheckin() ? '已签到' : '签到');
+        $checkin = (!$user->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن');
         $Keyboard = [
             [
                 [
-                    'text' => '用户中心',
+                    'text' => 'مرکز کاربران',
                     'callback_data' => 'user.center',
                 ],
                 [
-                    'text' => '资料编辑',
+                    'text' => 'ویرایش اطلاعات',
                     'callback_data' => 'user.edit',
                 ],
             ],
             [
                 [
-                    'text' => '订阅中心',
+                    'text' => 'مرکز اشتراک',
                     'callback_data' => 'user.subscribe',
                 ],
                 [
-                    'text' => '分享计划',
+                    'text' => 'طرح را به اشتراک بگذارید',
                     'callback_data' => 'user.invite',
                 ],
             ],
@@ -248,11 +248,11 @@ final class Callback
         $text .= PHP_EOL . PHP_EOL;
         $text .= Reply::getUserInfo($user);
         $text .= PHP_EOL;
-        $text .= '流量重置时间：' . $user->validUseLoop();
+        $text .= 'زمان تنظیم مجدد ترافیک：' . $user->validUseLoop();
         if (Setting::obtain('telegram_show_group_link')) {
             $Keyboard[] = [
                 [
-                    'text' => '加入用户群',
+                    'text' => 'به گروه کاربری بپیوندید',
                     'url' => Setting::obtain('telegram_group_link'),
                 ],
             ];
@@ -272,7 +272,7 @@ final class Callback
             if ($this->ChatID < 0) {
                 // 群组内提示
                 return $this->answerCallbackQuery([
-                    'text' => '您好，您尚未绑定账户，无法进行操作.',
+                    'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید.',
                     'show_alert' => true,
                 ]);
             }
@@ -298,7 +298,7 @@ final class Callback
                 // 签到
                 if ((int) $Operate[2] !== $this->triggerUser['id']) {
                     $this->answerCallbackQuery([
-                        'text' => '您好，您无法操作他人的账户.',
+                        'text' => 'سلام، شما نمی توانید حساب های دیگران را اداره کنید.',
                         'show_alert' => true,
                     ]);
                     return;
@@ -335,27 +335,27 @@ final class Callback
         $keyboard = [
             [
                 [
-                    'text' => '登录记录',
+                    'text' => 'سابقه ثبت نام',
                     'callback_data' => 'user.center.login_log',
                 ],
                 [
-                    'text' => '使用记录',
+                    'text' => 'سابقه استفاده',
                     'callback_data' => 'user.center.usage_log',
                 ],
             ],
             [
                 [
-                    'text' => '返利记录',
+                    'text' => 'سابقه تخفیف',
                     'callback_data' => 'user.center.rebate_log',
                 ],
                 [
-                    'text' => '订阅记录',
+                    'text' => 'سابقه اشتراک',
                     'callback_data' => 'user.center.subscribe_log',
                 ],
             ],
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
             ],
@@ -374,11 +374,11 @@ final class Callback
         $back = [
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
                 [
-                    'text' => '回上一页',
+                    'text' => 'بازگشت به صفحه قبل',
                     'callback_data' => 'user.center',
                 ],
             ],
@@ -399,7 +399,7 @@ final class Callback
                         $userloginip[] = $loginiplocation;
                     }
                 }
-                $text = '<strong>以下是您最近 10 次的登录位置：</strong>';
+                $text = '<strong>در اینجا 10 آخرین ورود شما وجود دارد：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode('、', $userloginip);
                 $sendMessage = [
@@ -428,7 +428,7 @@ final class Callback
                     $location = $iplocation->getlocation($single->ip);
                     $userip[$single->ip] = '[' . $single->ip . '] ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']);
                 }
-                $text = '<strong>以下是您最近 5 分钟的使用 IP：</strong>';
+                $text = '<strong>در اینجا آی پی های استفاده شده شما در 5 دقیقه گذشته آمده است：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode(PHP_EOL, $userip);
                 $sendMessage = [
@@ -448,9 +448,9 @@ final class Callback
                 $paybacks = Payback::where('ref_by', $this->User->id)->orderBy('datetime', 'desc')->take(10)->get();
                 $temp = [];
                 foreach ($paybacks as $payback) {
-                    $temp[] = '<code>#' . $payback->id . '：' . ($payback->user() !== null ? $payback->user()->user_name : '已注销') . '：' . $payback->ref_get . ' 元</code>';
+                    $temp[] = '<code>#' . $payback->id . '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شده است') . '：' . $payback->ref_get . ' 元</code>';
                 }
-                $text = '<strong>以下是您最近 10 条返利记录：</strong>';
+                $text = '<strong>موارد زیر آخرین 10 سابقه تخفیف شما هستند：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode(PHP_EOL, $temp);
                 $sendMessage = [
@@ -472,9 +472,9 @@ final class Callback
                 $temp = [];
                 foreach ($logs as $log) {
                     $location = $iplocation->getlocation($log->request_ip);
-                    $temp[] = '<code>' . $log->request_time . ' 在 [' . $log->request_ip . '] ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . ' 访问了 ' . $log->subscribe_type . ' 订阅</code>';
+                    $temp[] = '<code>' . $log->request_time . ' وجود دارد [' . $log->request_ip . '] ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . ' بازدید کرده است ' . $log->subscribe_type . ' اشتراک، ابونمان</code>';
                 }
-                $text = '<strong>以下是您最近 10 条订阅记录：</strong>';
+                $text = '<strong>در اینجا 10 سابقه آخرین اشتراک شما آمده است：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode(PHP_EOL . PHP_EOL, $temp);
                 $sendMessage = [
@@ -513,47 +513,47 @@ final class Callback
         $keyboard = [
             [
                 [
-                    'text' => '重置订阅链接',
+                    'text' => 'بازنشانی لینک اشتراک',
                     'callback_data' => 'user.edit.update_link',
                 ],
                 [
-                    'text' => '重置链接密码',
+                    'text' => 'رمز عبور پیوند را بازنشانی کنید',
                     'callback_data' => 'user.edit.update_passwd',
                 ],
             ],
             [
                 [
-                    'text' => '更改加密方式',
+                    'text' => 'تغییر روش رمزگذاری',
                     'callback_data' => 'user.edit.encrypt',
                 ],
                 [
-                    'text' => '更改协议类型',
+                    'text' => 'تغییر نوع پروتکل',
                     'callback_data' => 'user.edit.protocol',
                 ],
             ],
             [
                 [
-                    'text' => '更改混淆类型',
+                    'text' => 'نوع مبهم سازی را تغییر دهید',
                     'callback_data' => 'user.edit.obfs',
                 ],
                 [
-                    'text' => '每日邮件接收',
+                    'text' => 'دریافت پستی روزانه',
                     'callback_data' => 'user.edit.sendemail',
                 ],
             ],
             [
                 [
-                    'text' => '账户解绑',
+                    'text' => 'حساب لغو پیوند',
                     'callback_data' => 'user.edit.unbind',
                 ],
                 [
-                    'text' => '群组解封',
+                    'text' => 'رفع انسداد گروه',
                     'callback_data' => 'user.edit.unban',
                 ],
             ],
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
             ],
@@ -571,18 +571,18 @@ final class Callback
     {
         if ($this->ChatID < 0) {
             return $this->answerCallbackQuery([
-                'text' => '无法在群组中进行该操作.',
+                'text' => 'این عمل را نمی توان در یک گروه انجام داد.',
                 'show_alert' => true,
             ]);
         }
         $back = [
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
                 [
-                    'text' => '回上一页',
+                    'text' => 'بازگشت به صفحه قبل',
                     'callback_data' => 'user.edit',
                 ],
             ],
@@ -595,7 +595,7 @@ final class Callback
                 // 重置订阅链接
                 $this->User->cleanLink();
                 $this->answerCallbackQuery([
-                    'text' => '订阅链接重置成功，请在下方重新更新订阅.',
+                    'text' => 'پیوند اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',
                     'show_alert' => true,
                 ]);
                 $temp = $this->getUserSubscribeKeyboard();
@@ -614,10 +614,10 @@ final class Callback
                 // 重置链接密码
                 $this->User->passwd = Tools::genRandomChar(8);
                 if ($this->User->save()) {
-                    $answerCallbackQuery = '连接密码更新成功，请在下方重新更新订阅.';
+                    $answerCallbackQuery = 'رمز عبور اتصال با موفقیت به روز شد، لطفا اشتراک زیر را تمدید کنید.';
                     $temp = $this->getUserSubscribeKeyboard();
                 } else {
-                    $answerCallbackQuery = '出现错误，连接密码更新失败，请联系管理员.';
+                    $answerCallbackQuery = 'خطایی روی داد، به‌روزرسانی رمز عبور اتصال ناموفق بود، لطفاً با سرپرست تماس بگیرید.';
                     $temp = $this->getUserEditKeyboard();
                 }
                 $this->answerCallbackQuery([
@@ -642,12 +642,12 @@ final class Callback
                     if (\in_array($CallbackDataExplode[1], Config::getSupportParam('method'))) {
                         $temp = $this->User->setMethod($CallbackDataExplode[1]);
                         if ($temp['ok'] === true) {
-                            $text = '您当前的加密方式为：' . $this->User->method . PHP_EOL . PHP_EOL . $temp['msg'];
+                            $text = 'روش رمزگذاری فعلی شما این است：' . $this->User->method . PHP_EOL . PHP_EOL . $temp['msg'];
                         } else {
-                            $text = '发生错误，请重新选择.' . PHP_EOL . PHP_EOL . $temp['msg'];
+                            $text = 'خطایی روی داد، لطفاً دوباره امتحان کنید.' . PHP_EOL . PHP_EOL . $temp['msg'];
                         }
                     } else {
-                        $text = '发生错误，请重新选择.';
+                        $text = 'خطایی روی داد، لطفاً دوباره امتحان کنید.';
                     }
                 } else {
                     $Encrypts = [];
@@ -663,7 +663,7 @@ final class Callback
                         $keyboard[] = $Encrypt;
                     }
                     $keyboard[] = $back[0];
-                    $text = '您当前的加密方式为：' . $this->User->method;
+                    $text = 'روش رمزگذاری فعلی شما این است：' . $this->User->method;
                 }
                 $sendMessage = [
                     'text' => $text,
@@ -681,7 +681,7 @@ final class Callback
                 $keyboard = [
                     [
                         [
-                            'text' => '更改开启/关闭',
+                            'text' => 'تغییر روشن/خاموش',
                             'callback_data' => 'user.edit.sendemail.update',
                         ],
                     ],
@@ -692,18 +692,18 @@ final class Callback
                     case 'update':
                         $this->User->sendDailyMail = ($this->User->sendDailyMail === 0 ? 1 : 0);
                         if ($this->User->save()) {
-                            $text = '设置更改成功，每日邮件接收当前设置为：';
+                            $text = 'تنظیمات با موفقیت تغییر کرد، دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
                             $text .= '<strong>';
-                            $text .= ($this->User->sendDailyMail === 0 ? '不发送' : '发送');
+                            $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
                             $text .= '</strong>';
                         } else {
-                            $text = '发生错误.';
+                            $text = 'خطایی رخ داد.';
                         }
                         break;
                     default:
-                        $text = '每日邮件接收当前设置为：';
+                        $text = 'دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
                         $text .= '<strong>';
-                        $text .= ($this->User->sendDailyMail === 0 ? '不发送' : '发送');
+                        $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
                         $text .= '</strong>';
                         break;
                 }
@@ -721,9 +721,9 @@ final class Callback
             case 'unbind':
                 // Telegram 账户解绑
                 $this->AllowEditMessage = false;
-                $text = '发送 **/unbind 账户邮箱** 进行解绑.';
+                $text = 'ارسال **/unbind ایمیل** برای لغو پیوند.';
                 if (Setting::obtain('telegram_unbind_kick_member') === true) {
-                    $text .= PHP_EOL . PHP_EOL . '根据管理员的设定，您解绑账户将会被自动移出用户群.';
+                    $text .= PHP_EOL . PHP_EOL . 'طبق تنظیمات مدیر，حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف خواهد شد.';
                 }
                 $sendMessage = [
                     'text' => $text,
@@ -736,7 +736,7 @@ final class Callback
             case 'unban':
                 // 群组解封
                 $sendMessage = [
-                    'text' => '如果您已经身处用户群，请勿随意点击解封，否则会导致您被移除出群组.',
+                    'text' => 'اگر قبلاً در گروه کاربری هستید، لطفاً به دلخواه برای رفع انسداد کلیک نکنید، در غیر این صورت از گروه حذف خواهید شد..',
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
                     'reply_markup' => \json_encode(
@@ -744,7 +744,7 @@ final class Callback
                             'inline_keyboard' => [
                                 [
                                     [
-                                        'text' => '点击提交解封',
+                                        'text' => 'برای رفع انسداد روی ارسال کلیک کنید',
                                         'callback_data' => 'user.edit.unban_update',
                                     ],
                                 ],
@@ -764,16 +764,16 @@ final class Callback
                     ]
                 );
                 $this->answerCallbackQuery([
-                    'text' => '已提交解封，如您仍无法加入群组，请联系管理员.',
+                    'text' => 'برای رفع انسداد ارسال شد، اگر هنوز نمی توانید به گروه بپیوندید، لطفاً با سرپرست تماس بگیرید.',
                     'show_alert' => true,
                 ]);
                 break;
             default:
                 $temp = $this->getUserEditKeyboard();
-                $text = '您可在此编辑您的资料或连接信息：' . PHP_EOL . PHP_EOL;
-                $text .= '端口：' . $this->User->port . PHP_EOL;
-                $text .= '密码：' . $this->User->passwd . PHP_EOL;
-                $text .= '加密：' . $this->User->method;
+                $text = 'در اینجا می توانید مشخصات یا اطلاعات اتصال خود را ویرایش کنید：' . PHP_EOL . PHP_EOL;
+                $text .= 'پورت：' . $this->User->port . PHP_EOL;
+                $text .= 'کلمه عبور：' . $this->User->passwd . PHP_EOL;
+                $text .= 'رمزگذاری：' . $this->User->method;
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -808,7 +808,7 @@ final class Callback
             ],
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
             ],
@@ -831,11 +831,11 @@ final class Callback
             $temp['keyboard'] = [
                 [
                     [
-                        'text' => '回主菜单',
+                        'text' => 'بازگشت به منوی اصلی',
                         'callback_data' => 'user.index',
                     ],
                     [
-                        'text' => '回上一页',
+                        'text' => 'بازگشت به صفحه قبل',
                         'callback_data' => 'user.subscribe',
                     ],
                 ],
@@ -844,7 +844,7 @@ final class Callback
             $UserApiUrl = SubController::getUniversalSub($this->User);
             switch ($CallbackDataExplode[1]) {
                 case 'clash':
-                    $temp['text'] = '您的 Clash 配置文件.' . PHP_EOL . '同时，您也可使用该订阅链接：' . $UserApiUrl . '/clash';
+                    $temp['text'] = 'نمایه کلش شما.' . PHP_EOL . 'همچنین، می توانید از این لینک اشتراک استفاده کنید：' . $UserApiUrl . '/clash';
                     $filename = 'Clash_' . $token . '_' . \time() . '.yaml';
                     $filepath = BASE_PATH . '/storage/SendTelegram/' . $filename;
                     $fh = fopen($filepath, 'w+');
@@ -893,24 +893,24 @@ final class Callback
         }
         $invitation = Setting::getClass('invite');
         $text = [
-            '<strong>分享计划，您每邀请 1 位用户注册：</strong>',
+            '<strong>طرح اشتراک گذاری، به ازای هر 1 کاربری که برای ثبت نام دعوت می کنید：</strong>',
             '',
-            '- 您会获得 <strong>' . $invitation['invitation_to_register_traffic_reward'] . 'G</strong> 流量奖励.',
-            '- 对方将获得 <strong>' . $invitation['invitation_to_register_balance_reward'] . ' 元</strong> 奖励作为初始资金.',
-            '- 对方充值时您还会获得对方充值金额的 <strong>' . $invitation['rebate_ratio'] . '%</strong> 的返利.',
+            '- دریافت خواهید کرد <strong>' . $invitation['invitation_to_register_traffic_reward'] . 'G</strong> پاداش ترافیک.',
+            '- طرف مقابل خواهد گرفت <strong>' . $invitation['invitation_to_register_balance_reward'] . ' تومان</strong> پاداش به عنوان بودجه اولیه.',
+            '- هنگامی که طرف مقابل شارژ می شود، مبلغ شارژ طرف مقابل را نیز دریافت خواهید کرد <strong>' . $invitation['rebate_ratio'] . '%</strong> تخفیف.',
             '',
-            '已获得返利：' . $paybacks_sum . ' 元.',
+            'تخفیف دریافت کرد：' . $paybacks_sum . ' تومان.',
         ];
         $keyboard = [
             [
                 [
-                    'text' => '获取我的邀请链接',
+                    'text' => 'لینک دعوت من را دریافت کنید',
                     'callback_data' => 'user.invite.get',
                 ],
             ],
             [
                 [
-                    'text' => '回主菜单',
+                    'text' => 'بازگشت به منوی اصلی',
                     'callback_data' => 'user.index',
                 ],
             ],
@@ -988,11 +988,11 @@ final class Callback
             $temp['text'] .= PHP_EOL . PHP_EOL;
             $temp['text'] .= Reply::getUserTrafficInfo($this->User);
             $temp['text'] .= PHP_EOL;
-            $temp['text'] .= '流量重置时间：' . $this->User->validUseLoop();
+            $temp['text'] .= 'زمان تنظیم مجدد ترافیک：' . $this->User->validUseLoop();
             $temp['keyboard'] = [
                 [
                     [
-                        'text' => (!$this->User->isAbleToCheckin() ? '已签到' : '签到'),
+                        'text' => (!$this->User->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن'),
                         'callback_data' => 'user.checkin.' . $this->triggerUser['id'],
                     ],
                 ],

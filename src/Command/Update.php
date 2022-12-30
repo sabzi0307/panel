@@ -6,16 +6,16 @@ namespace App\Command;
 
 final class Update extends Command
 {
-    public $description = '├─=: php xcat Update         - 更新并迁移配置' . PHP_EOL;
+    public $description = '├─=: php xcat Update         - Update and migrate configuration' . PHP_EOL;
 
     public function boot(): void
     {
         global $_ENV;
         $copy_result = copy(BASE_PATH . '/config/.config.php', BASE_PATH . '/config/.config.php.bak');
         if ($copy_result === true) {
-            echo '备份成功' . PHP_EOL;
+            echo 'backup successful' . PHP_EOL;
         } else {
-            echo '备份失败，迁移终止' . PHP_EOL;
+            echo 'Backup failed, migration terminated' . PHP_EOL;
         }
 
         echo PHP_EOL;
@@ -30,7 +30,7 @@ final class Update extends Command
             $matches_new = [];
             preg_match($regex, $config_new, $matches_new);
             if (isset($matches_new[0]) === false) {
-                echo '未找到配置项：' . $key . ' 未能在新config文件中找到，可能已被更名或废弃' . PHP_EOL;
+                echo 'Configuration item not found：' . $key . ' Could not be found in the new config file, may have been renamed or obsolete' . PHP_EOL;
                 continue;
             }
 
@@ -69,11 +69,11 @@ final class Update extends Command
             $difference = substr($difference, 15);
             $difference = substr($difference, 0, -2);
 
-            echo '新增配置项：' . $difference . ':' . $comment . PHP_EOL;
+            echo 'New configuration item：' . $difference . ':' . $comment . PHP_EOL;
         }
-        echo '新增配置项通常带有默认值，因此通常即使不作任何改动网站也可以正常运行' . PHP_EOL;
+        echo 'Newly added configuration items usually have default values, so the website can usually run normally without any changes' . PHP_EOL;
 
         file_put_contents(BASE_PATH . '/config/.config.php', $config_new);
-        echo PHP_EOL . '迁移完成' . PHP_EOL;
+        echo PHP_EOL . 'Migration complete' . PHP_EOL;
     }
 }

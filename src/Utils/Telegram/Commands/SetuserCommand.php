@@ -23,7 +23,7 @@ final class SetuserCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] 修改用户数据，管理员命令.';
+    protected $description = '[چت گروهی/خصوصی] تغییر داده های کاربر، دستور مدیر.';
 
     /**
      * {@inheritdoc}
@@ -108,18 +108,18 @@ final class SetuserCommand extends Command
 
         if ($arguments === '/setuser') {
             $strArray = [
-                '/setuser [用户识别] [操作字段] [操作参数]',
+                '/setuser [شناسایی کاربر] [میدان اقدام] [پارامترهای عملیاتی]',
                 '',
-                '用户识别：[使用回复消息方式则无需填写]',
-                '- [' . implode(' | ', array_keys(TelegramTools::getUserSearchMethods())) . ']，可省略，默认：email',
-                '- 例 1：/setuser admin@admin 操作字段 操作参数',
-                '- 例 2：/setuser port:10086  操作字段 操作参数',
+                'شناسایی کاربر：[اگر از روش پیام پاسخ استفاده می کنید، نیازی به پر کردن نیست]',
+                '- [' . implode(' | ', array_keys(TelegramTools::getUserSearchMethods())) . ']，می توان حذف کرد، پیش فرض：email',
+                '- مثال 1：/setuser admin@admin پارامترهای عمل میدان عمل',
+                '- مثال 2：/setuser port:10086  پارامترهای عمل میدان عمل',
                 '',
-                '操作字段：',
+                'میدان اقدام：',
                 '[' . implode(' | ', array_keys(TelegramTools::getUserActionOption())) . ']',
                 '',
-                '操作参数：',
-                '- 请查看对应选项支持的写法.',
+                'پارامترهای عملیاتی：',
+                '- لطفاً روش نوشتن پشتیبانی شده توسط گزینه مربوطه را بررسی کنید.',
             ];
             $this->replyWithMessage(
                 [
@@ -141,7 +141,7 @@ final class SetuserCommand extends Command
             if (count($Options) < 3) {
                 $this->replyWithMessage(
                     [
-                        'text' => '没有提供选项或操作值.',
+                        'text' => 'هیچ گزینه یا ارزش عملی ارائه نشده است.',
                         'parse_mode' => 'HTML',
                         'reply_to_message_id' => $MessageID,
                     ]
@@ -159,7 +159,7 @@ final class SetuserCommand extends Command
             if (count($Options) < 2) {
                 $this->replyWithMessage(
                     [
-                        'text' => '没有提供选项或操作值.',
+                        'text' => 'هیچ گزینه یا ارزش عملی ارائه نشده است.',
                         'parse_mode' => 'HTML',
                         'reply_to_message_id' => $MessageID,
                     ]

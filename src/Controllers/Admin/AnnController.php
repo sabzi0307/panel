@@ -17,10 +17,10 @@ final class AnnController extends BaseController
     public static $details =
     [
         'field' => [
-            'op' => '操作',
-            'id' => '公告ID',
-            'date' => '日期',
-            'content' => '公告内容',
+            'op' => 'operate',
+            'id' => 'Announcement ID',
+            'date' => 'date',
+            'content' => 'Announcement content',
         ],
     ];
 
@@ -66,7 +66,7 @@ final class AnnController extends BaseController
         $email_notify_class = (int) $request->getParam('email_notify_class');
         $email_notify = (int) $request->getParam('email_notify');
         $content = (string) $request->getParam('content');
-        $subject = $_ENV['appName'] . ' - 公告';
+        $subject = $_ENV['appName'] . ' - اطلاعیه';
 
         if ($content !== '') {
             $ann = new Ann();
@@ -76,7 +76,7 @@ final class AnnController extends BaseController
             if (! $ann->save()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => '公告保存失败',
+                    'msg' => 'اطلاعیه ذخیره نشد',
                 ]);
             }
         }
@@ -101,12 +101,12 @@ final class AnnController extends BaseController
         $converter = new HtmlConverter();
 
         if ($_ENV['enable_telegram']) {
-            Telegram::sendMarkdown('新公告：' . PHP_EOL . $converter->convert($request->getParam('content')));
+            Telegram::sendMarkdown('اعلان جدید：' . PHP_EOL . $converter->convert($request->getParam('content')));
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => $email_notify === 1 ? '公告添加成功，邮件发送成功' : '公告添加成功',
+            'msg' => $email_notify === 1 ? 'اعلان با موفقیت افزوده شد، ایمیل با موفقیت ارسال شد' : 'اعلان با موفقیت اضافه شد',
         ]);
     }
 
@@ -138,13 +138,13 @@ final class AnnController extends BaseController
         if (! $ann->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '修改失败',
+                'msg' => 'موفق به ویرایش نمی شوند',
             ]);
         }
-        Telegram::sendMarkdown('公告更新：' . PHP_EOL . $request->getParam('markdown'));
+        Telegram::sendMarkdown('به روز رسانی اعلان：' . PHP_EOL . $request->getParam('markdown'));
         return $response->withJson([
             'ret' => 1,
-            'msg' => '修改成功',
+            'msg' => 'با موفقیت اصلاح شد',
         ]);
     }
 
@@ -159,12 +159,12 @@ final class AnnController extends BaseController
         if (! $ann->delete()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '删除失败',
+                'msg' => 'حذف نشد',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -179,8 +179,8 @@ final class AnnController extends BaseController
 
         foreach ($anns as $ann) {
             $ann->op = '<button type="button" class="btn btn-red" id="delete-announcement-' . $ann->id . '" 
-            onclick="deleteAnn(' . $ann->id . ')">删除</button>
-            <a class="btn btn-blue" href="/admin/announcement/' . $ann->id . '/edit">编辑</a>';
+            onclick="deleteAnn(' . $ann->id . ')">حذف</button>
+            <a class="btn btn-blue" href="/admin/announcement/' . $ann->id . '/edit">ویرایش کنید</a>';
         }
 
         return $response->withJson([

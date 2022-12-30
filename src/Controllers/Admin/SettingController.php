@@ -122,14 +122,14 @@ final class SettingController extends BaseController
             if (! $setting->save()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "保存 ${item} 时出错",
+                    'msg' => "نگه داشتن ${item} خطا",
                 ]);
             }
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '保存成功',
+            'msg' => 'با موفقیت ذخیره شد',
         ]);
     }
 
@@ -140,7 +140,7 @@ final class SettingController extends BaseController
         try {
             Mail::send(
                 $to,
-                '测试邮件',
+                'نامه آزمایشی',
                 'auth/test.tpl',
                 [],
                 []
@@ -148,12 +148,12 @@ final class SettingController extends BaseController
         } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '测试邮件发送失败',
+                'msg' => 'ایمیل آزمایشی ارسال نشد',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '测试邮件发送成功',
+            'msg' => 'ایمیل آزمایشی با موفقیت ارسال شد',
         ]);
     }
 
@@ -190,7 +190,7 @@ final class SettingController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '保存成功',
+            'msg' => 'با موفقیت ذخیره شد',
         ]);
     }
 }

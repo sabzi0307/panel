@@ -22,15 +22,15 @@ final class DetectBanLogController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'user_id' => '用户ID',
-                    'user_name' => '用户名',
-                    'email' => '用户邮箱',
-                    'detect_number' => '违规次数',
-                    'ban_time' => '封禁时长(分钟)',
-                    'start_time' => '统计开始时间',
-                    'end_time' => '统计结束以及封禁开始时间',
-                    'ban_end_time' => '封禁结束时间',
-                    'all_detect_number' => '累计违规次数',
+                    'user_id' => 'شناسه کاربر',
+                    'user_name' => 'نام کاربری',
+                    'email' => 'ایمیل کاربر',
+                    'detect_number' => 'تعداد تخلفات',
+                    'ban_time' => 'مدت زمان ممنوعیت (دقیقه)',
+                    'start_time' => 'زمان شروع آمار',
+                    'end_time' => 'زمان پایان و ممنوعیت شروع آمار',
+                    'ban_end_time' => 'پایان زمان ممنوعیت',
+                    'all_detect_number' => 'تعداد تجمعی تخلفات',
                 ], 'ban/ajax'))
                 ->display('admin/detect/ban.tpl')
         );

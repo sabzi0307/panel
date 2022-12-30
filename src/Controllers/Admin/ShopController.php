@@ -23,15 +23,15 @@ final class ShopController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
-                    'op' => '操作',
+                    'op' => 'شرح عملیات',
                     'id' => 'ID',
-                    'name' => '商品名称',
-                    'price' => '价格',
-                    'content' => '商品内容',
-                    'auto_renew' => '自动续费',
-                    'auto_reset_bandwidth' => '续费时是否重置流量',
-                    'status' => '状态',
-                    'period_sales' => '周期销量',
+                    'name' => 'نام محصول',
+                    'price' => 'قیمت',
+                    'content' => 'محتوای محصول',
+                    'auto_renew' => 'تمدید خودکار',
+                    'auto_reset_bandwidth' => 'آیا هنگام تمدید ترافیک ریست شود',
+                    'status' => 'حالت',
+                    'period_sales' => 'فروش سیکل',
                 ], 'shop/ajax'))
                 ->display('admin/shop/index.tpl')
         );
@@ -106,12 +106,12 @@ final class ShopController extends BaseController
         if (! $shop->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '添加失败',
+                'msg' => 'افزودن ناموفق بود',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '添加成功',
+            'msg' => 'با موفقیت اضافه شد',
         ]);
     }
 
@@ -196,12 +196,12 @@ final class ShopController extends BaseController
         if (! $shop->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '保存失败',
+                'msg' => 'ذخیره ناموفق بود',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '保存成功',
+            'msg' => 'با موفقیت ذخیره شد',
         ]);
     }
 
@@ -218,7 +218,7 @@ final class ShopController extends BaseController
         if (! $shop->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '下架失败',
+                'msg' => 'حذف نشد',
             ]);
         }
         $boughts = Bought::where('shopid', $id)->get();
@@ -228,7 +228,7 @@ final class ShopController extends BaseController
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '下架成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -242,15 +242,15 @@ final class ShopController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
-                    'op' => '操作',
+                    'op' => 'شرح عملیات',
                     'id' => 'ID',
-                    'datetime' => '购买日期',
-                    'content' => '内容',
-                    'price' => '价格',
-                    'userid' => '用户ID',
-                    'user_name' => '用户名',
-                    'renew' => '自动续费时间',
-                    'auto_reset_bandwidth' => '续费时是否重置流量',
+                    'datetime' => 'تاریخ خرید',
+                    'content' => 'محتوا',
+                    'price' => 'قیمت',
+                    'userid' => 'شناسه کاربر',
+                    'user_name' => 'نام کاربری',
+                    'renew' => 'زمان تمدید خودکار',
+                    'auto_reset_bandwidth' => 'آیا هنگام تمدید ترافیک ریست شود',
                 ], 'bought/ajax'))
                 ->display('admin/shop/bought.tpl')
         );
@@ -269,12 +269,12 @@ final class ShopController extends BaseController
         if (! $shop->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '退订失败',
+                'msg' => 'لغو اشتراک ناموفق بود',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '退订成功',
+            'msg' => 'با موفقیت لغو اشتراک شد',
         ]);
     }
 
@@ -299,7 +299,7 @@ final class ShopController extends BaseController
             /** @var Shop $value */
 
             $tempdata = [];
-            $tempdata['op'] = '<a class="btn btn-brand" href="/admin/shop/' . $value->id . '/edit">编辑</a> <a class = "btn btn-brand-accent" ' . ($value->status === 0 ? 'disabled' : 'id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>下架</a>';
+            $tempdata['op'] = '<a class="btn btn-brand" href="/admin/shop/' . $value->id . '/edit">ویرایش کنید</a> <a class = "btn btn-brand-accent" ' . ($value->status === 0 ? 'disabled' : 'id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>از قفسه ها بردارید</a>';
             $tempdata['id'] = $value->id;
             $tempdata['name'] = $value->name;
             $tempdata['price'] = $value->price;
@@ -347,7 +347,7 @@ final class ShopController extends BaseController
             /** @var Bought $value */
 
             $tempdata = [];
-            $tempdata['op'] = '<a class="btn btn-brand-accent" ' . ($value->renew === 0 ? 'disabled' : ' id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>中止</a>';
+            $tempdata['op'] = '<a class="btn btn-brand-accent" ' . ($value->renew === 0 ? 'disabled' : ' id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>لغو</a>';
             $tempdata['id'] = $value->id;
             $tempdata['datetime'] = $value->datetime();
             $tempdata['content'] = $value->content();

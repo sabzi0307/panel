@@ -448,15 +448,15 @@ final class Tools
     public static function getTicketStatus($ticket)
     {
         if ($ticket->status === 'closed') {
-            return '已结单';
+            return 'بسته شده';
         }
         if ($ticket->status === 'open_wait_user') {
-            return '等待用户回复';
+            return 'در انتظار پاسخ کاربر';
         }
         if ($ticket->status === 'open_wait_admin') {
-            return '进行中';
+            return 'در حال انجام است';
         }
-        return '未知';
+        return 'ناشناخته';
     }
 
     /**
@@ -465,15 +465,15 @@ final class Tools
     public static function getTicketType($ticket)
     {
         if ($ticket->type === 'howto') {
-            return '使用';
+            return 'نحوه استفاده';
         }
         if ($ticket->type === 'billing') {
-            return '财务';
+            return 'مالی';
         }
         if ($ticket->type === 'account') {
-            return '账户';
+            return 'حساب';
         }
-        return '其他';
+        return 'دیگر';
     }
 
     /**
@@ -481,7 +481,7 @@ final class Tools
      */
     public static function getNodeType($node)
     {
-        return $node->type ? '显示' : '隐藏';
+        return $node->type ? 'نشان دادن' : 'پنهان شدن';
     }
 
     /**
@@ -494,7 +494,7 @@ final class Tools
                 $sort = 'Shadowsocks';
                 break;
             case 9:
-                $sort = 'ShadowsocksR 单端口多用户（旧）';
+                $sort = 'ShadowsocksR چند کاربره تک پورت (قدیمی)';
                 break;
             case 11:
                 $sort = 'V2Ray';
@@ -503,7 +503,7 @@ final class Tools
                 $sort = 'Trojan';
                 break;
             default:
-                $sort = '未知';
+                $sort = 'ناشناخته';
         }
         return $sort;
     }
@@ -513,6 +513,6 @@ final class Tools
      */
     public static function getGiftCardStatus($giftcard)
     {
-        return $giftcard->status ? '已使用' : '未使用';
+        return $giftcard->status ? 'استفاده شده' : 'استفاده نشده';
     }
 }

@@ -147,7 +147,7 @@ final class QQWry
         }
 
         if ($location['country'] === ' CZ88.NET') {
-            $location['country'] = '未知';
+            $location['country'] = 'ناشناخته';
         }
 
         if ($location['area'] === ' CZ88.NET') {

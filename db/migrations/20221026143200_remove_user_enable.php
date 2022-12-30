@@ -18,7 +18,7 @@ final class RemoveUserEnable extends AbstractMigration
     public function down(): void
     {
         $this->table('user')
-            ->addColumn('enable', 'boolean', [ 'comment' => '是否启用', 'default' => true ])
+            ->addColumn('enable', 'boolean', [ 'comment' => 'فعال کردن', 'default' => true ])
             ->save();
     }
 }

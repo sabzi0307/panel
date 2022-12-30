@@ -22,12 +22,12 @@ final class DetectController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
-                    'op' => '操作',
+                    'op' => 'شرح اقدام',
                     'id' => 'ID',
-                    'name' => '名称',
-                    'text' => '介绍',
-                    'regex' => '正则表达式',
-                    'type' => '类型',
+                    'name' => 'نام',
+                    'text' => 'معرفی کنید',
+                    'regex' => 'regular expression',
+                    'type' => 'نوع',
                 ], 'detect/ajax'))
                 ->display('admin/detect/index.tpl')
         );
@@ -99,10 +99,10 @@ final class DetectController extends BaseController
             ]);
         }
 
-        Telegram::sendMarkdown('有新的审计规则：' . $rule->name);
+        Telegram::sendMarkdown('قوانین فیلترینگ جدیدی وجود دارد：' . $rule->name);
         return $response->withJson([
             'ret' => 1,
-            'msg' => '添加成功',
+            'msg' => 'با موفقیت اضافه شد',
         ]);
     }
 
@@ -136,13 +136,13 @@ final class DetectController extends BaseController
         if (! $rule->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '修改失败',
+                'msg' => 'موفق به ویرایش نشدن',
             ]);
         }
-        Telegram::sendMarkdown('规则更新：' . PHP_EOL . $request->getParam('name'));
+        Telegram::sendMarkdown('به روز رسانی قوانین：' . PHP_EOL . $request->getParam('name'));
         return $response->withJson([
             'ret' => 1,
-            'msg' => '修改成功',
+            'msg' => 'با موفقیت اصلاح شد',
         ]);
     }
 
@@ -156,12 +156,12 @@ final class DetectController extends BaseController
         if (! $rule->delete()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '删除失败',
+                'msg' => 'حذف نشد',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -174,16 +174,16 @@ final class DetectController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'user_id' => '用户ID',
-                    'user_name' => '用户名',
-                    'node_id' => '节点ID',
-                    'node_name' => '节点名',
-                    'list_id' => '规则ID',
-                    'rule_name' => '规则名',
-                    'rule_text' => '规则描述',
-                    'rule_regex' => '规则正则表达式',
-                    'rule_type' => '规则类型',
-                    'datetime' => '时间',
+                    'user_id' => 'شناسه کاربر',
+                    'user_name' => 'نام کاربری',
+                    'node_id' => 'شناسه گره',
+                    'node_name' => 'نام گره',
+                    'list_id' => 'شناسه قانون',
+                    'rule_name' => 'نام قانون',
+                    'rule_text' => 'شرح قانون',
+                    'rule_regex' => 'rule regular expression',
+                    'rule_type' => 'نوع قانون',
+                    'datetime' => 'زمان',
                 ], 'log/ajax'))
                 ->display('admin/detect/log.tpl')
         );

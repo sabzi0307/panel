@@ -22,7 +22,7 @@ final class MyCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] 我的个人信息.';
+    protected $description = '[چت گروهی/خصوصی] اطلاعات شخصی من.';
 
     /**
      * {@inheritdoc}
@@ -88,7 +88,7 @@ final class MyCommand extends Command
         $text .= PHP_EOL . PHP_EOL;
         $text .= Reply::getUserTrafficInfo($User);
         $text .= PHP_EOL;
-        $text .= '流量重置时间：' . $User->validUseLoop();
+        $text .= 'زمان تنظیم مجدد ترافیک：' . $User->validUseLoop();
         // 回送信息
         return $this->replyWithMessage(
             [
@@ -100,7 +100,7 @@ final class MyCommand extends Command
                         'inline_keyboard' => [
                             [
                                 [
-                                    'text' => (! $User->isAbleToCheckin() ? '已签到' : '签到'),
+                                    'text' => (! $User->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن'),
                                     'callback_data' => 'user.checkin.' . $SendUser['id'],
                                 ],
                             ],

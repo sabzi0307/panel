@@ -7,7 +7,7 @@
         "is_public": 1,
         "type": "array",
         "default": "[]",
-        "mark": "支付网关"
+        "mark": "Payment Gateway"
     },
     {
         "id": null,
@@ -17,7 +17,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "当面付AppID"
+        "mark": "Pay AppID in person"
     },
     {
         "id": null,
@@ -27,7 +27,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "当面付PID"
+        "mark": "Pay PID face to face"
     },
     {
         "id": null,
@@ -37,7 +37,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "当面付公钥"
+        "mark": "Pay public key in person"
     },
     {
         "id": null,
@@ -47,7 +47,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "当面付私钥"
+        "mark": "Pay private key in person"
     },
     {
         "id": null,
@@ -57,7 +57,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "当面付自定义回调地址"
+        "mark": "Personal payment custom callback address"
     },
     {
         "id": null,
@@ -67,7 +67,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "V免签网关"
+        "mark": "V visa-free gateway"
     },
     {
         "id": null,
@@ -77,7 +77,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "V免签密钥"
+        "mark": "V Signature Free Key"
     },
     {
         "id": null,
@@ -147,7 +147,7 @@
         "is_public": 0,
         "type": "string",
         "default": "HKD",
-        "mark": "货币代码"
+        "mark": "Currency Code"
     },
     {
         "id": null,
@@ -177,7 +177,7 @@
         "is_public": 0,
         "type": "string",
         "default": "stripe_webhook_key",
-        "mark": "web_hook密钥"
+        "mark": "web_hook key"
     },
     {
         "id": null,
@@ -187,7 +187,7 @@
         "is_public": 1,
         "type": "int",
         "default": "10",
-        "mark": "最低充值限额"
+        "mark": "Minimum recharge limit"
     },
     {
         "id": null,
@@ -197,7 +197,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "银行卡支付"
+        "mark": "Bank card payment"
     },
     {
         "id": null,
@@ -207,7 +207,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "支付宝支付"
+        "mark": "Alipay payment"
     },
     {
         "id": null,
@@ -217,7 +217,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "微信支付"
+        "mark": "WeChat payment"
     },
     {
         "id": null,
@@ -227,19 +227,19 @@
         "is_public": 1,
         "type": "int",
         "default": "1000",
-        "mark": "最高充值限额"
+        "mark": "Maximum Recharge Limit"
     },
     {
-        "id": null,
+    "id": null,
         "item": "epay_url",
         "value": "1000",
         "class": "epay",
         "is_public": 0,
         "type": "string",
         "default": "1000",
-        "mark": "易支付url"
+        "mark": "Easy payment url"
     },
-	{
+{
         "id": null,
         "item": "epay_pid",
         "value": "1000",
@@ -247,9 +247,9 @@
         "is_public": 0,
         "type": "string",
         "default": "1000",
-        "mark": "易支付商户ID"
+        "mark": "Easy Payment Merchant ID"
     },
-	{
+{
         "id": null,
         "item": "epay_key",
         "value": "1000",
@@ -257,7 +257,7 @@
         "is_public": 0,
         "type": "string",
         "default": "1000",
-        "mark": "易支付商户Key"
+        "mark": "Easy Payment Merchant Key"
     },
     {
         "id": null,
@@ -267,7 +267,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "1",
-        "mark": "启用支付宝"
+        "mark": "Enable Alipay"
     },
     {
         "id": null,
@@ -277,7 +277,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "启用微信支付"
+        "mark": "Enable WeChat payment"
     },
     {
         "id": null,
@@ -287,7 +287,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "启用QQ钱包"
+        "mark": "Enable QQ Wallet"
     },
     {
         "id": null,
@@ -297,7 +297,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "启用USDT"
+        "mark": "Enable USDT"
     },
     {
         "id": null,
@@ -307,7 +307,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp发信主机"
+        "mark": "smtp sending host"
     },
     {
         "id": null,
@@ -317,7 +317,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp账户名称"
+        "mark": "smtp account name"
     },
     {
         "id": null,
@@ -327,7 +327,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp账户密码"
+        "mark": "smtp account password"
     },
     {
         "id": null,
@@ -337,7 +337,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp发信端口"
+        "mark": "smtp sending port"
     },
     {
         "id": null,
@@ -347,7 +347,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp发信名称"
+        "mark": "smtp sender name"
     },
     {
         "id": null,
@@ -357,7 +357,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "smtp发信地址"
+        "mark": "smtp sending address"
     },
     {
         "id": null,
@@ -367,7 +367,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否使用 TLS\/SSL 发信"
+        "mark": "Send with TLS\/SSL"
     },
     {
         "id": null,
@@ -377,7 +377,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "发给用户的邮件密送给指定邮箱备份"
+        "mark": "Emails sent to users are blind sent to the designated mailbox for backup"
     },
     {
         "id": null,
@@ -387,7 +387,7 @@
         "is_public": 0,
         "type": "string",
         "default": "none",
-        "mark": "邮件服务提供商"
+        "mark": "Mail Service Provider"
     },
     {
         "id": null,
@@ -397,7 +397,7 @@
         "is_public": 1,
         "type": "string",
         "default": "turnstile",
-        "mark": "验证码提供商"
+        "mark": "Verification Code Provider"
     },
     {
         "id": null,
@@ -407,7 +407,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "注册验证码"
+        "mark": "Registration Verification Code"
     },
     {
         "id": null,
@@ -417,7 +417,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "登录验证码"
+        "mark": "Login verification code"
     },
     {
         "id": null,
@@ -427,7 +427,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "签到验证码"
+        "mark": "Sign in verification code"
     },
     {
         "id": null,
@@ -437,7 +437,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "重置密码验证码"
+        "mark": "Reset password verification code"
     },
     {
         "id": null,
@@ -447,7 +447,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Turnstile网站密钥"
+        "mark": "Turnstile Site Key"
     },
     {
         "id": null,
@@ -457,7 +457,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Turnstile密钥"
+        "mark": "Turnstile key"
     },
     {
         "id": null,
@@ -467,7 +467,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "极验id"
+        "mark": "Great test id"
     },
     {
         "id": null,
@@ -477,7 +477,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "极验密钥"
+        "mark": "Extreme test key"
     },
     {
         "id": null,
@@ -487,7 +487,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "mailgun密钥"
+        "mark": "mailgun key"
     },
     {
         "id": null,
@@ -497,7 +497,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "mailgun域名"
+        "mark": "mailgun domain name"
     },
     {
         "id": null,
@@ -507,7 +507,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "mailgun发送者"
+        "mark": "mailgun sender"
     },
     {
         "id": null,
@@ -517,7 +517,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "sendgrid密钥"
+        "mark": "sendgrid key"
     },
     {
         "id": null,
@@ -527,7 +527,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "sendgrid发件邮箱"
+        "mark": "sendgrid sending email address"
     },
     {
         "id": null,
@@ -537,7 +537,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "sendgrid发件人名称"
+        "mark": "sendgrid sender name"
     },
     {
         "id": null,
@@ -547,7 +547,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "aws密钥id"
+        "mark": "aws key id"
     },
     {
         "id": null,
@@ -557,7 +557,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "aws密钥key"
+        "mark": "aws key key"
     },
     {
         "id": null,
@@ -567,7 +567,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "aws区域"
+        "mark": "aws region"
     },
     {
         "id": null,
@@ -577,7 +577,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "aws ses发送者"
+        "mark": "aws ses sender"
     },
     {
         "id": null,
@@ -587,7 +587,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "是否显示站长联系方式"
+        "mark": "Whether to display the contact information of the webmaster"
     },
     {
         "id": null,
@@ -597,7 +597,7 @@
         "is_public": 1,
         "type": "string",
         "default": "qq",
-        "mark": "站长联系方式一"
+        "mark": "Webmaster contact information one"
     },
     {
         "id": null,
@@ -607,7 +607,7 @@
         "is_public": 1,
         "type": "string",
         "default": "mail",
-        "mark": "站长联系方式二"
+        "mark": "Webmaster contact information 2"
     },
     {
         "id": null,
@@ -617,7 +617,7 @@
         "is_public": 1,
         "type": "string",
         "default": "telegram",
-        "mark": "站长联系方式三"
+        "mark": "Webmaster contact information three"
     },
     {
         "id": null,
@@ -667,7 +667,7 @@
         "is_public": 1,
         "type": "string",
         "default": "none",
-        "mark": "客服系统开关"
+        "mark": "Customer service system switch"
     },
     {
         "id": null,
@@ -677,7 +677,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "pmw公钥"
+        "mark": "pmw public key"
     },
     {
         "id": null,
@@ -687,7 +687,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "pmw私钥"
+        "mark": "pmw private key"
     },
     {
         "id": null,
@@ -717,7 +717,7 @@
         "is_public": 1,
         "type": "string",
         "default": "open",
-        "mark": "注册模式"
+        "mark": "Registration Mode"
     },
     {
         "id": null,
@@ -727,7 +727,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "邮箱验证"
+        "mark": "Email Verification"
     },
     {
         "id": null,
@@ -737,7 +737,7 @@
         "is_public": 0,
         "type": "int",
         "default": "3600",
-        "mark": "邮箱验证码有效期"
+        "mark": "Email verification code validity period"
     },
     {
         "id": null,
@@ -747,7 +747,7 @@
         "is_public": 0,
         "type": "int",
         "default": "5",
-        "mark": "验证码有效期内单个ip可请求的发信次数"
+        "mark": "The number of times a single ip can request to send letters within the validity period of the verification code"
     },
     {
         "id": null,
@@ -757,7 +757,7 @@
         "is_public": 1,
         "type": "bool",
         "default": "0",
-        "mark": "注册时是否要求用户输入IM联系方式"
+        "mark": "Whether the user is required to enter IM contact information when registering"
     },
     {
         "id": null,
@@ -767,7 +767,7 @@
         "is_public": 0,
         "type": "string",
         "default": "127.0.0.0/8,::1/128",
-        "mark": "注册时默认禁止访问IP列表"
+        "mark": "By default, access to the IP list is prohibited during registration"
     },
     {
         "id": null,
@@ -777,7 +777,7 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "注册时默认禁止访问端口列表"
+        "mark": "By default, access to the port list is prohibited during registration"
     },
     {
         "id": null,
@@ -787,7 +787,7 @@
         "is_public": 0,
         "type": "string",
         "default": "0",
-        "mark": "注册时随机分配到的分组"
+        "mark": "The group randomly assigned to when registering"
     },
     {
         "id": null,
@@ -797,7 +797,7 @@
         "is_public": 1,
         "type": "int",
         "default": "10000",
-        "mark": "用户端口池最小值"
+        "mark": "minimum user port pool"
     },
     {
         "id": null,
@@ -807,7 +807,7 @@
         "is_public": 1,
         "type": "int",
         "default": "65535",
-        "mark": "用户端口池最大值"
+        "mark": "Maximum user port pool"
     },
     {
         "id": null,
@@ -817,7 +817,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "免费用戶的流量重置日"
+        "mark": "Data reset date for free users"
     },
     {
         "id": null,
@@ -827,7 +827,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "需要重置的免费流量"
+        "mark": "Free traffic that needs to be reset"
     },
     {
         "id": null,
@@ -837,7 +837,7 @@
         "is_public": 0,
         "type": "int",
         "default": "20",
-        "mark": "注册时赠送的流量（单位：GB）"
+        "mark": "Registration bonus traffic (unit: GB)"
     },
     {
         "id": null,
@@ -847,7 +847,7 @@
         "is_public": 0,
         "type": "int",
         "default": "7",
-        "mark": "注册时赠送的时长（单位：天）"
+        "mark": "The duration of the free registration (unit: day)"
     },
     {
         "id": null,
@@ -857,7 +857,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "连接设备限制"
+        "mark": "Connection device limit"
     },
     {
         "id": null,
@@ -867,7 +867,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "使用速率限制"
+        "mark": "use rate limit"
     },
     {
         "id": null,
@@ -877,7 +877,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "注册时设定的等级"
+        "mark": "The grade set at registration"
     },
     {
         "id": null,
@@ -887,7 +887,7 @@
         "is_public": 0,
         "type": "int",
         "default": "7",
-        "mark": "注册时设定的等级过期时间（单位：天）"
+        "mark": "The level expiration time set during registration (unit: day)"
     },
     {
         "id": null,
@@ -897,7 +897,7 @@
         "is_public": 0,
         "type": "string",
         "default": "chacha20-ietf",
-        "mark": "默认加密"
+        "mark": "Default Encryption"
     },
     {
         "id": null,
@@ -907,7 +907,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "注册后是否默认接收每日用量邮件推送"
+        "mark": "Whether to receive daily usage email push by default after registration"
     },
     {
         "id": null,
@@ -917,7 +917,7 @@
         "is_public": 1,
         "type": "int",
         "default": "-1",
-        "mark": "用户购买邀请码所需要的价格"
+        "mark": "The price the user needs to purchase the invitation code"
     },
     {
         "id": null,
@@ -927,7 +927,7 @@
         "is_public": 1,
         "type": "int",
         "default": "-1",
-        "mark": "用户定制邀请码所需要的价格"
+        "mark": "The price required by the user to customize the invitation code"
     },
     {
         "id": null,
@@ -937,7 +937,7 @@
         "is_public": 0,
         "type": "int",
         "default": "10",
-        "mark": "初始邀请注册链接使用次数限制"
+        "mark": "Limit on the number of times the initial invitation registration link can be used"
     },
     {
         "id": null,
@@ -947,7 +947,7 @@
         "is_public": 1,
         "type": "int",
         "default": "1",
-        "mark": "邀请注册余额奖励（单位：元）"
+        "mark": "Invite registration balance reward (unit: yuan)"
     },
     {
         "id": null,
@@ -957,7 +957,7 @@
         "is_public": 1,
         "type": "int",
         "default": "10",
-        "mark": "邀请注册流量奖励（单位：GB）"
+        "mark": "Invite registration traffic reward (unit: GB)"
     },
     {
         "id": null,
@@ -967,7 +967,7 @@
         "is_public": 0,
         "type": "string",
         "default": "after_purchase",
-        "mark": "邀请模式"
+        "mark": "Invitation Mode"
     },
     {
         "id": null,
@@ -977,7 +977,7 @@
         "is_public": 0,
         "type": "string",
         "default": "limit_amount",
-        "mark": "返利模式"
+        "mark": "Rebate Mode"
     },
     {
         "id": null,
@@ -987,7 +987,7 @@
         "is_public": 0,
         "type": "string",
         "default": "3",
-        "mark": "返利总次数限制"
+        "mark": "Total rebate times limit"
     },
     {
         "id": null,
@@ -997,7 +997,7 @@
         "is_public": 0,
         "type": "int",
         "default": "100",
-        "mark": "返利总金额限制"
+        "mark": "Rebate total amount limit"
     },
     {
         "id": null,
@@ -1007,7 +1007,7 @@
         "is_public": 1,
         "type": "string",
         "default": "0.2",
-        "mark": "返利比例"
+        "mark": "Rebate ratio"
     },
     {
         "id": null,
@@ -1017,7 +1017,7 @@
         "is_public": 0,
         "type": "int",
         "default": "180",
-        "mark": "返利时间范围限制（单位：天）"
+        "mark": "Rebate time limit (unit: day)"
     },
     {
         "id": null,
@@ -1027,7 +1027,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "是否启用Telegram机器人"
+        "mark": "Whether to enable Telegram bot"
     },
     {
         "id": null,
@@ -1037,17 +1037,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人添加节点通知"
+        "mark": "Whether to enable Telegram robot to add node notification"
     },
     {
         "id": null,
         "item": "telegram_add_node_text",
-        "value": "%node_name% 已被添加",
+        "value": "%node_name% has been added",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "%node_name% 已被添加",
-        "mark": "Telegram机器人添加节点通知文本"
+        "default": "%node_name% has been added",
+        "mark": "Telegram robot added node notification text"
     },
     {
         "id": null,
@@ -1057,17 +1057,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人修改节点通知"
+        "mark": "Whether to enable Telegram robot modification node notification"
     },
     {
         "id": null,
         "item": "telegram_update_node_text",
-        "value": "%node_name% 已被修改",
+        "value": "%node_name% has been modified",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "%node_name% 已被修改",
-        "mark": "Telegram机器人修改节点通知文本"
+        "default": "%node_name% has been modified",
+        "mark": "Telegram robot modify node notification text"
     },
     {
         "id": null,
@@ -1077,17 +1077,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人删除节点通知"
+        "mark": "Whether to enable Telegram robot delete node notification"
     },
     {
         "id": null,
         "item": "telegram_delete_node_text",
-        "value": "%node_name% 被刪除了",
+        "value": "%node_name% was deleted",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "%node_name% 被刪除了",
-        "mark": "Telegram机器人删除节点通知文本"
+        "default": "%node_name% was deleted",
+        "mark": "Telegram robot delete node notification text"
     },
     {
         "id": null,
@@ -1097,17 +1097,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人节点被墙通知"
+        "mark": "Whether to enable the Telegram robot node to be notified by the wall"
     },
     {
         "id": null,
         "item": "telegram_node_gfwed_text",
-        "value": "喵喵喵~ %node_name% 节点被墙了喵~",
+        "value": "Meow meow~ %node_name% node is walled~",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "喵喵喵~ %node_name% 节点被墙了喵~",
-        "mark": "Telegram机器人节点被墙通知"
+        "default": "Meow meow~ %node_name% node is walled~",
+        "mark": "Telegram robot node is notified by the wall"
     },
     {
         "id": null,
@@ -1117,17 +1117,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人节点被墙恢复通知"
+        "mark": "Whether to enable the notification that the Telegram robot node is restored by the wall"
     },
     {
         "id": null,
         "item": "telegram_node_ungfwed_text",
-        "value": "喵喵喵~ 被墙的 %node_name% 节点恢复了喵~",
+        "value": "Meow meow~ The %node_name% node that was blocked by the wall has recovered meow~",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "喵喵喵~ 被墙的 %node_name% 节点恢复了喵~",
-        "mark": "Telegram机器人节点被墙恢复文本"
+        "default": "Meow meow~ The %node_name% node that was blocked by the wall recovered meow~",
+        "mark": "Telegram robot node is walled to restore text"
     },
     {
         "id": null,
@@ -1137,17 +1137,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人节点恢复上线通知"
+        "mark": "Whether to enable the Telegram robot node recovery online notification"
     },
     {
         "id": null,
         "item": "telegram_node_online_text",
-        "value": "%node_name% 被修好了",
+        "value": "%node_name% was fixed",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "%node_name% 被修好了",
-        "mark": "Telegram机器人节点恢复上线通知文本"
+        "default": "%node_name% is fixed",
+        "mark": "Telegram robot node back online notification text"
     },
     {
         "id": null,
@@ -1157,17 +1157,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人节点离线通知"
+        "mark": "Whether to enable Telegram robot node offline notification"
     },
     {
         "id": null,
         "item": "telegram_node_offline_text",
-        "value": "%node_name% 出现了一些故障",
+        "value": "%node_name% has some failures",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "%node_name% 出现了一些故障",
-        "mark": "Telegram机器人节点离线通知文本"
+        "default": "%node_name% has some failures",
+        "mark": "Telegram robot node offline notification text"
     },
     {
         "id": null,
@@ -1177,17 +1177,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人每日任务通知"
+        "mark": "Whether to enable Telegram robot daily task notification"
     },
     {
         "id": null,
         "item": "telegram_daily_job_text",
-        "value": "成功执行每日任务",
+        "value": "Daily successfully executed",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "成功执行每日任务",
-        "mark": "Telegram机器人每日任务通知文本"
+        "default": "dailies successfully executed",
+        "mark": "Telegram robot daily task notification text"
     },
     {
         "id": null,
@@ -1197,17 +1197,17 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "是否启用Telegram机器人系统运行状况通知"
+        "mark": "Whether to enable Telegram robot system health notification"
     },
     {
         "id": null,
         "item": "telegram_diary_text",
-        "value": "今日签到人数：%getTodayCheckinUser% \n 今日使用总流量：%lastday_total%",
+        "value": "Today's checkin number: %getTodayCheckinUser% \n Today's total traffic usage: %lastday_total%",
         "class": "telegram",
         "is_public": 0,
         "type": "string",
-        "default": "今日签到人数：%getTodayCheckinUser% \n 今日使用总流量：%lastday_total%",
-        "mark": "Telegram机器人系统运行状况通知文本"
+        "default": "Today's checkin number: %getTodayCheckinUser% \n Today's total traffic usage: %lastday_total%",
+        "mark": "Telegram bot system health notification text"
     },
     {
         "id": null,
@@ -1217,7 +1217,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "解绑Telegram账户后自动踢出群组"
+        "mark": "Automatically kick out of the group after unbinding the Telegram account"
     },
     {
         "id": null,
@@ -1227,7 +1227,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "是否仅允许已绑定Telegram账户的用户加入群组"
+        "mark": "Whether only users with bound Telegram accounts are allowed to join the group"
     },
     {
         "id": null,
@@ -1237,7 +1237,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "是否启用Telegram机器人显示用户群组链接"
+        "mark": "Whether to enable Telegram bots to display user group links"
     },
     {
         "id": null,
@@ -1247,6 +1247,6 @@
         "is_public": 0,
         "type": "string",
         "default": "https://t.me/joinchat/XXXXX",
-        "mark": "用户群组链接"
+        "mark": "Usergroup link"
     }
 ]

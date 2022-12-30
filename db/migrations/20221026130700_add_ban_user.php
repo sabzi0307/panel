@@ -10,12 +10,12 @@ final class AddBanUser extends AbstractMigration
     {
         if (! $this->table('user')->hasColumn('is_banned')) {
             $this->table('user')
-                ->addColumn('is_banned', 'integer', [ 'comment' => '是否封禁', 'default' => 0 ])
+                ->addColumn('is_banned', 'integer', [ 'comment' => 'ممنوعیت', 'default' => 0 ])
                 ->save();
         }
         if (! $this->table('user')->hasColumn('banned_reason')) {
             $this->table('user')
-                ->addColumn('banned_reason', 'string', [ 'comment' => '封禁理由', 'default' => '' ])
+                ->addColumn('banned_reason', 'string', [ 'comment' => 'دلیل ممنوعیت', 'default' => '' ])
                 ->save();
         }
         if ($this->table('user')->hasColumn('is_hide')) {

@@ -17,27 +17,27 @@ final class IpController extends BaseController
     public static $login_details =
     [
         'field' => [
-            'id' => '事件ID',
-            'userid' => '用户ID',
-            'user_name' => '用户名',
+            'id' => 'شناسه رویداد',
+            'userid' => 'شناسه کاربر',
+            'user_name' => 'نام کاربری',
             'ip' => 'IP',
-            'location' => 'IP归属地',
-            'datetime' => '时间',
-            'type' => '类型',
+            'location' => 'انتساب IP',
+            'datetime' => 'زمان',
+            'type' => 'نوع',
         ],
     ];
 
     public static $ip_details =
     [
         'field' => [
-            'id' => '事件ID',
-            'userid' => '用户ID',
-            'user_name' => '用户名',
-            'nodeid' => '节点ID',
-            'node_name' => '节点名',
+            'id' => 'شناسه رویداد',
+            'userid' => 'شناسه کاربر',
+            'user_name' => 'نام کاربری',
+            'nodeid' => 'شناسه گره',
+            'node_name' => 'نام گره',
             'ip' => 'IP',
-            'location' => 'IP归属地',
-            'datetime' => '时间',
+            'location' => 'انتساب IP',
+            'datetime' => 'زمان',
         ],
     ];
 

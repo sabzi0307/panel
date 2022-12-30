@@ -9,7 +9,7 @@ final class CustomConfigJson extends AbstractMigration
     public function up(): void
     {
         $this->table('node')
-            ->changeColumn('custom_config', 'json', [ 'comment' => '自定义配置', 'default' => '{}' ])
+            ->changeColumn('custom_config', 'json', [ 'comment' => 'تنظیمات سفارشی', 'default' => '{}' ])
             ->save();
     }
 

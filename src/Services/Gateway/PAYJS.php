@@ -95,7 +95,7 @@ final class PAYJS extends AbstractPayment
     {
         $price = $request->getParam('price');
         if ($price <= 0) {
-            return \json_encode(['code' => -1, 'errmsg' => '非法的金额.']);
+            return \json_encode(['code' => -1, 'errmsg' => 'مقدار غیر مجاز.']);
         }
         $user = Auth::getUser();
         $pl = new Paylist();

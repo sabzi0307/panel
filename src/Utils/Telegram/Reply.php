@@ -14,11 +14,11 @@ final class Reply
     public static function getUserTrafficInfo(\App\Models\User $user): string
     {
         $text = [
-            '您当前的流量状况：',
+            'وضعیت ترافیک فعلی شما:',
             '',
-            '今日已使用 ' . $user->todayUsedTrafficPercent() . '% ：' . $user->todayUsedTraffic(),
-            '之前已使用 ' . $user->lastUsedTrafficPercent() . '% ：' . $user->lastUsedTraffic(),
-            '流量约剩余 ' . $user->unusedTrafficPercent() . '% ：' . $user->unusedTraffic(),
+            'امروزه استفاده می شود ' . $user->todayUsedTrafficPercent() . '% ：' . $user->todayUsedTraffic(),
+            'قبل استفاده شده ' . $user->lastUsedTrafficPercent() . '% ：' . $user->lastUsedTraffic(),
+            'ترافیک تقریباً باقی مانده است ' . $user->unusedTrafficPercent() . '% ：' . $user->unusedTraffic(),
         ];
         return implode(PHP_EOL, $text);
     }
@@ -29,11 +29,11 @@ final class Reply
     public static function getUserInfo(\App\Models\User $user): string
     {
         $text = [
-            '当前余额：' . $user->money,
-            '在线设备：' . ($user->node_connector !== 0 ? $user->onlineIpCount() . ' / ' . $user->node_connector : $user->onlineIpCount() . ' / 不限制'),
-            '端口速率：' . ($user->node_speedlimit !== 0 ? $user->node_speedlimit . 'Mbps' : '无限制'),
-            '上次使用：' . $user->lastSsTime(),
-            '过期时间：' . $user->class_expire,
+            'موجودی فعلی: ' . $user->money,
+            'دستگاه آنلاین：' . ($user->node_connector !== 0 ? $user->onlineIpCount() . ' / ' . $user->node_connector : $user->onlineIpCount() . ' / بدون محدودیت'),
+            'سرعت پورت：' . ($user->node_speedlimit !== 0 ? $user->node_speedlimit . 'Mbps' : 'نامحدود'),
+            'آخرین استفاده：' . $user->lastSsTime(),
+            'تاریخ انقضا：' . $user->class_expire,
         ];
         return implode(PHP_EOL, $text);
     }
@@ -44,9 +44,9 @@ final class Reply
     public static function getUserTitle(\App\Models\User $user): string
     {
         if ($user->class > 0) {
-            $text = '尊敬的 VIP ' . $user->class . ' 您好：';
+            $text = 'عزیز VIP ' . $user->class . ' سلام：';
         } else {
-            $text = '尊敬的用户您好：';
+            $text = 'کاربران گرامی سلام：';
         }
         return $text;
     }
@@ -68,11 +68,11 @@ final class Reply
             }
             if ($bought->valid()) {
                 $strArray = [];
-                $strArray[] = ' - 商品套餐名称：' . $shop->name;
-                $strArray[] = ' - 套餐购买时间：' . $bought->datetime();
-                $strArray[] = ' - 套餐自动续费：' . $bought->renew();
-                $strArray[] = ' - 下次流量重置：' . $bought->resetTime();
-                $strArray[] = ' - 套餐过期时间：' . $bought->expTime();
+                $strArray[] = ' - نام بسته کالا：' . $shop->name;
+                $strArray[] = ' - زمان خرید بسته：' . $bought->datetime();
+                $strArray[] = ' - تمدید خودکار بسته：' . $bought->renew();
+                $strArray[] = ' - تنظیم مجدد ترافیک بعدی：' . $bought->resetTime();
+                $strArray[] = ' - زمان انقضای بسته：' . $bought->expTime();
                 $strArray[] = '';
                 $data[] = implode(PHP_EOL, $strArray);
             }
@@ -86,22 +86,22 @@ final class Reply
     public static function getUserInfoFromAdmin(\App\Models\User $user, int $ChatID): string
     {
         $strArray = [
-            '#' . $user->id . ' ' . $user->user_name . ' 的用户信息',
+            '#' . $user->id . ' ' . $user->user_name . ' اطلاعات کاربر',
             '',
-            '用户邮箱：' . TelegramTools::getUserEmail($user->email, $ChatID),
-            '账户余额：' . $user->money,
-            '账户状态：' . ((int) $user->is_banned === 1 ? '封禁' : '正常'),
-            '用户等级：' . $user->class,
-            '剩余流量：' . $user->unusedTraffic(),
-            '等级到期：' . $user->class_expire,
-            '账户到期：' . $user->expire_in,
-            '套餐详情：',
+            'ایمیل کاربر：' . TelegramTools::getUserEmail($user->email, $ChatID),
+            'موجودی حساب：' . $user->money,
+            'وضعیت حساب：' . ((int) $user->is_banned === 1 ? 'ممنوع شده' : 'نرمال'),
+            'سطح کاربر：' . $user->class,
+            'ترافیک باقیمانده：' . $user->unusedTraffic(),
+            'انقضای سطح：' . $user->class_expire,
+            'انقصای حساب：' . $user->expire_in,
+            'جزئیات بسته：',
         ];
         $boughts = self::getUserBoughts($user);
         if (count($boughts) !== 0) {
             $strArray = array_merge($strArray, $boughts);
         } else {
-            $strArray[] = ' - 该用户无生效套餐.';
+            $strArray[] = ' - کاربر بسته معتبری ندارد.';
         }
         return implode(PHP_EOL, $strArray);
     }

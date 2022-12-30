@@ -12,13 +12,13 @@ final class Check
         $res['ret'] = 0;
 
         if (! Tools::isEmail($email)) {
-            $res['msg'] = '邮箱不规范';
+            $res['msg'] = 'ایمیل استاندارد نیست';
             return $res;
         }
 
         $mail_suffix = explode('@', $email)[1];
         $mail_filter_list = $_ENV['mail_filter_list'];
-        $res['msg'] = '我们无法将邮件投递至域 ' . $mail_suffix . ' ，请更换邮件地址';
+        $res['msg'] = 'ما نتوانستیم نامه را به دامنه تحویل دهیم ' . $mail_suffix . ' ，لطفا آدرس ایمیل را تغییر دهید';
 
         switch ($_ENV['mail_filter']) {
             case 0:

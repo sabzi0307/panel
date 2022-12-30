@@ -16,11 +16,11 @@ final class TrafficLogController extends BaseController
     public static $details =
     [
         'field' => [
-            'id' => '记录ID',
-            'user_id' => '用户ID',
-            'traffic' => '累计流量/GB',
-            'hourly_usage' => '过去一小时使用流量/GB',
-            'datetime' => '时间',
+            'id' => 'شناسه ثبت',
+            'user_id' => 'شناسه کاربر',
+            'traffic' => 'ترافیک باقیمانده/GB',
+            'hourly_usage' => 'استفاده از ترافیک در یک ساعت گذشته/GB',
+            'datetime' => 'زمان',
         ],
     ];
 

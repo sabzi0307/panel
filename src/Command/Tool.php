@@ -16,22 +16,22 @@ use Ramsey\Uuid\Uuid;
 final class Tool extends Command
 {
     public $description = <<<EOL
-├─=: php xcat Tool [选项]
-│ ├─ setTelegram             - 设置 Telegram 机器人
-│ ├─ resetAllSettings        - 使用默认值覆盖设置中心设置
-│ ├─ exportAllSettings       - 导出所有设置
-│ ├─ importAllSettings       - 导入所有设置
-│ ├─ upgradeDatabase         - 升级(如果不存在的话初始化) 数据库
-│ ├─ resetNodePassword       - 重置所有节点通讯密钥
-│ ├─ getCookie               - 获取指定用户的 Cookie
-│ ├─ resetPort               - 重置单个用户端口
-│ ├─ createAdmin             - 创建管理员帐号
-│ ├─ resetAllPort            - 重置所有用户端口
-│ ├─ resetTraffic            - 重置所有用户流量
-│ ├─ generateUUID            - 为所有用户生成新的 UUID
-│ ├─ generateGa              - 为所有用户生成新的 Ga Secret
-| ├─ generateApiToken        - 为所有用户生成新的 API Token
-│ ├─ setTheme                - 为所有用户设置新的主题
+├─=: php xcat Tool [options]
+│ ├─ setTelegram             - Set up a Telegram bot
+│ ├─ resetAllSettings        - Override Settings Center settings with default values
+│ ├─ exportAllSettings       - export all settings
+│ ├─ importAllSettings       - import all settings
+│ ├─ upgradeDatabase         - Upgrade (initialize if not present) the database
+│ ├─ resetNodePassword       - Reset all node communication keys
+│ ├─ getCookie               - Get the specified user's cookie
+│ ├─ resetPort               - Reset individual user ports
+│ ├─ createAdmin             - Create an administrator account
+│ ├─ resetAllPort            - Reset all user ports
+│ ├─ resetTraffic            - Reset all user traffic
+│ ├─ generateUUID            - Generate new UUIDs for all users
+│ ├─ generateGa              - Generate new Ga Secrets for all users
+| ├─ generateApiToken        - Generate a new API Token for all users
+│ ├─ setTheme                - Set a new theme for all users
 
 EOL;
 
@@ -44,7 +44,7 @@ EOL;
             if (method_exists($this, $methodName)) {
                 $this->$methodName();
             } else {
-                echo '方法不存在.' . PHP_EOL;
+                echo 'method does not exist.' . PHP_EOL;
             }
         }
     }
@@ -55,9 +55,9 @@ EOL;
         $telegram = new \Telegram\Bot\Api($_ENV['telegram_token']);
         $telegram->removeWebhook();
         if ($telegram->setWebhook(['url' => $WebhookUrl])) {
-            echo 'Bot @' . $telegram->getMe()->getUsername() . ' 设置成功！' . PHP_EOL;
+            echo 'Bot @' . $telegram->getMe()->getUsername() . ' successfully set！' . PHP_EOL;
         } else {
-            echo '设置失败！' . PHP_EOL;
+            echo 'Setup failed！' . PHP_EOL;
         }
     }
 
@@ -70,7 +70,7 @@ EOL;
             $setting->save();
         }
 
-        echo '已使用默认值覆盖所有设置.' . PHP_EOL;
+        echo 'All settings overridden with default values.' . PHP_EOL;
     }
 
     public function exportAllSettings(): void
@@ -87,7 +87,7 @@ EOL;
         $json_settings = \json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents('./config/settings.json', $json_settings);
 
-        echo '已导出所有设置.' . PHP_EOL;
+        echo 'All settings exported.' . PHP_EOL;
     }
 
     public function importAllSettings(): void
@@ -116,7 +116,7 @@ EOL;
                 $new_item->mark = $item['mark'];
                 $new_item->save();
 
-                echo "添加新设置：${item_name}" . PHP_EOL;
+                echo "add new settings：${item_name}" . PHP_EOL;
                 $add_counter += 1;
             }
         }
@@ -130,12 +130,12 @@ EOL;
         }
 
         if ($add_counter !== 0) {
-            echo "总计添加了 ${add_counter} 条新设置." . PHP_EOL;
+            echo "Total added ${add_counter} new settings." . PHP_EOL;
         } else {
-            echo '没有任何新设置需要添加.' . PHP_EOL;
+            echo 'No new settings need to be added.' . PHP_EOL;
         }
         if ($del_counter !== 0) {
-            echo "总计移除了 ${del_counter} 条设置." . PHP_EOL;
+            echo "Total removed ${del_counter} strip settings." . PHP_EOL;
         }
     }
 
@@ -160,12 +160,12 @@ EOL;
      */
     public function resetPort(): void
     {
-        fwrite(STDOUT, '请输入用户id: ');
+        fwrite(STDOUT, 'Please enter user id: ');
         $user = ModelsUser::find(trim(fgets(STDIN)));
         if ($user !== null) {
             $user->port = Tools::getAvPort();
             if ($user->save()) {
-                echo '重置成功!';
+                echo 'reset successful!';
             }
         } else {
             echo 'not found user.';
@@ -255,21 +255,21 @@ EOL;
     {
         if (count($this->argv) === 3) {
             // ask for input
-            fwrite(STDOUT, '(1/3) 请输入管理员邮箱：') . PHP_EOL;
+            fwrite(STDOUT, '(1/3) Please enter the administrator email：') . PHP_EOL;
             // get input
             $email = trim(fgets(STDIN));
             if ($email === null) {
-                die("必须输入管理员邮箱.\r\n");
+                die("Administrator email must be entered.\r\n");
             }
 
             // write input back
             fwrite(STDOUT, '(2/3) 请输入管理员账户密码：') . PHP_EOL;
             $passwd = trim(fgets(STDIN));
             if ($passwd === null) {
-                die("必须输入管理员密码.\r\n");
+                die("Administrator password must be entered.\r\n");
             }
 
-            fwrite(STDOUT, '(3/3) 按 Y 或 y 确认创建：');
+            fwrite(STDOUT, '(3/3) press Y or y Confirm creation：');
             $y = trim(fgets(STDIN));
         } elseif (count($this->argv) === 5) {
             [,,, $email, $passwd] = $this->argv;
@@ -312,12 +312,12 @@ EOL;
             $user->ga_enable = 0;
 
             if ($user->save()) {
-                echo '创建成功，请在主页登录' . PHP_EOL;
+                echo 'Created successfully, please log in on the homepage' . PHP_EOL;
             } else {
-                echo '创建失败，请检查数据库配置' . PHP_EOL;
+                echo 'Creation failed, please check the database configuration' . PHP_EOL;
             }
         } else {
-            echo '已取消创建' . PHP_EOL;
+            echo 'Canceled' . PHP_EOL;
         }
     }
 
@@ -338,7 +338,7 @@ EOL;
      */
     public function setTheme(): void
     {
-        fwrite(STDOUT, '请输入要设置的主题名称: ');
+        fwrite(STDOUT, 'Please enter a theme name to set: ');
         $theme = trim(fgets(STDIN));
         $users = ModelsUser::all();
         foreach ($users as $user) {

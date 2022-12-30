@@ -68,7 +68,7 @@ final class AuthController extends BaseController
             if (! $ret) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => '系统无法接受您的验证结果，请刷新页面后重试。',
+                    'msg' => 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
                 ]);
             }
         }
@@ -82,7 +82,7 @@ final class AuthController extends BaseController
         if ($user === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邮箱不存在',
+                'msg' => 'ایمیل وجود ندارد',
             ]);
         }
 
@@ -91,7 +91,7 @@ final class AuthController extends BaseController
             $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邮箱或者密码错误',
+                'msg' => 'خطای ایمیل یا رمز عبور',
             ]);
         }
 
@@ -101,7 +101,7 @@ final class AuthController extends BaseController
             if (! $rcode) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => '两步验证码错误，如果您是丢失了生成器或者错误地设置了这个选项，您可以尝试重置密码，即可取消这个选项。',
+                    'msg' => 'کد تأیید دو مرحله ای اشتباه است. اگر ژنراتور را گم کردید یا این گزینه را به اشتباه تنظیم کردید، می توانید برای لغو این گزینه رمز عبور را بازنشانی کنید.',
                 ]);
             }
         }
@@ -117,7 +117,7 @@ final class AuthController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '登录成功',
+            'msg' => 'ورود با موفقیت',
         ]);
     }
 
@@ -131,7 +131,7 @@ final class AuthController extends BaseController
 
         $ret = TelegramSessionManager::step2VerifyLoginSession($token, $number);
         if ($ret === 0) {
-            return ResponseHelper::error($response, '此令牌无法被使用。');
+            return ResponseHelper::error($response, 'این توکن قابل استفاده نیست.');
         }
 
         $user = User::find($ret);
@@ -139,7 +139,7 @@ final class AuthController extends BaseController
         Auth::login($user->id, 3600 * 24);
         // 记录登录成功
         $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
-        return ResponseHelper::successfully($response, '登录成功');
+        return ResponseHelper::successfully($response, 'ورود با موفقیت');
     }
 
     /**
@@ -190,7 +190,7 @@ final class AuthController extends BaseController
             $email = trim($request->getParam('email'));
             $email = strtolower($email);
             if ($email === '') {
-                return ResponseHelper::error($response, '未填写邮箱');
+                return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
             }
             // check email format
             $check_res = Check::isEmailLegal($email);
@@ -199,19 +199,19 @@ final class AuthController extends BaseController
             }
             $user = User::where('email', $email)->first();
             if ($user !== null) {
-                return ResponseHelper::error($response, '此邮箱已经注册');
+                return ResponseHelper::error($response, 'این ایمیل قبلا ثبت شده است');
             }
             $ipcount = EmailVerify::where('ip', '=', $_SERVER['REMOTE_ADDR'])
                 ->where('expire_in', '>', \time())
                 ->count();
             if ($ipcount >= Setting::obtain('email_verify_ip_limit')) {
-                return ResponseHelper::error($response, '此IP请求次数过多');
+                return ResponseHelper::error($response, 'درخواست های این IP بسیار زیاد است');
             }
             $mailcount = EmailVerify::where('email', '=', $email)
                 ->where('expire_in', '>', \time())
                 ->count();
             if ($mailcount >= 3) {
-                return ResponseHelper::error($response, '此邮箱请求次数过多');
+                return ResponseHelper::error($response, 'این ایمیل بارها درخواست شده است');
             }
             $code = Tools::genRandomChar(6);
             $ev = new EmailVerify();
@@ -223,7 +223,7 @@ final class AuthController extends BaseController
             try {
                 Mail::send(
                     $email,
-                    $_ENV['appName'] . '- 验证邮件',
+                    $_ENV['appName'] . '- ایمیل تایید',
                     'auth/verify.tpl',
                     [
                         'code' => $code,
@@ -232,11 +232,11 @@ final class AuthController extends BaseController
                     []
                 );
             } catch (Exception $e) {
-                return ResponseHelper::error($response, '邮件发送失败，请联系网站管理员。');
+                return ResponseHelper::error($response, 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.');
             }
-            return ResponseHelper::successfully($response, '验证码发送成功，请查收邮件。');
+            return ResponseHelper::successfully($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید.');
         }
-        return ResponseHelper::error($response, ' 不允许注册');
+        return ResponseHelper::error($response, ' ثبت نام مجاز نیست');
     }
 
     /**
@@ -247,26 +247,26 @@ final class AuthController extends BaseController
     public static function registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, $telegram_id, $money, $is_admin_reg)
     {
         if (Setting::obtain('reg_mode') === 'close') {
-            return ResponseHelper::error($response, '暂时不对外开放注册');
+            return ResponseHelper::error($response, 'ثبت نام موقتا بسته شده است');
         }
 
         if (Setting::obtain('reg_mode') === 'invite' && $code === '') {
-            return ResponseHelper::error($response, '注册需要填写邀请码');
+            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوتنامه را پر کنید');
         }
 
         $c = InviteCode::where('code', $code)->first();
         if ($c === null) {
             if (Setting::obtain('reg_mode') === 'invite') {
-                return ResponseHelper::error($response, '这个邀请码不存在');
+                return ResponseHelper::error($response, 'این کد دعوت وجود ندارد');
             }
         } elseif ($c->user_id !== 0) {
             $gift_user = User::where('id', $c->user_id)->first();
             if ($gift_user === null) {
-                return ResponseHelper::error($response, '邀请码已失效');
+                return ResponseHelper::error($response, 'کد دعوت منقضی شده است');
             }
 
             if ($gift_user->invite_num === 0) {
-                return ResponseHelper::error($response, '邀请码不可用');
+                return ResponseHelper::error($response, 'کد دعوت در دسترس نیست');
             }
         }
 
@@ -348,10 +348,10 @@ final class AuthController extends BaseController
             Auth::login($user->id, 3600);
             $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
 
-            return ResponseHelper::successfully($response, '注册成功！正在进入登录界面');
+            return ResponseHelper::successfully($response, 'ثبت نام با موفقیت انجام شد . در حال هدایت به صفحه ورود');
         }
 
-        return ResponseHelper::error($response, '未知错误');
+        return ResponseHelper::error($response, 'اشتباه ناشناخته');
     }
 
     /**
@@ -360,13 +360,13 @@ final class AuthController extends BaseController
     public function registerHandle(Request $request, Response $response, array $args)
     {
         if (Setting::obtain('reg_mode') === 'close') {
-            return ResponseHelper::error($response, '未开放注册。');
+            return ResponseHelper::error($response, 'ثبت نام باز نیست');
         }
 
         if (Setting::obtain('enable_reg_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
-                return ResponseHelper::error($response, '系统无法接受您的验证结果，请刷新页面后重试。');
+                return ResponseHelper::error($response, 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
             }
         }
 
@@ -382,11 +382,11 @@ final class AuthController extends BaseController
             $imtype = $request->getParam('im_type');
             $imvalue = $request->getParam('im_value');
             if ($imtype === '' || $imvalue === '') {
-                return ResponseHelper::error($response, '请填上你的联络方式');
+                return ResponseHelper::error($response, 'لطفا اطلاعات تماس خود را وارد کنید');
             }
             $user = User::where('im_value', $imvalue)->where('im_type', $imtype)->first();
             if ($user !== null) {
-                return ResponseHelper::error($response, '此联络方式已注册');
+                return ResponseHelper::error($response, 'این مخاطب قبلاً ثبت شده است');
             }
         } else {
             $imtype = 1;
@@ -401,7 +401,7 @@ final class AuthController extends BaseController
         // check email
         $user = User::where('email', $email)->first();
         if ($user !== null) {
-            return ResponseHelper::error($response, '邮箱已经被注册了');
+            return ResponseHelper::error($response, 'ایمیل ثبت شده است');
         }
 
         if (Setting::obtain('reg_email_verify')) {
@@ -411,18 +411,18 @@ final class AuthController extends BaseController
                 ->where('expire_in', '>', \time())
                 ->first();
             if ($mailcount === null) {
-                return ResponseHelper::error($response, '您的邮箱验证码不正确');
+                return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
             }
         }
 
         // check pwd length
         if (strlen($passwd) < 8) {
-            return ResponseHelper::error($response, '密码请大于8位');
+            return ResponseHelper::error($response, 'رمز عبور لطفا بزرگتر از 8 کاراکتر باشد');
         }
 
         // check pwd re
         if ($passwd !== $repasswd) {
-            return ResponseHelper::error($response, '两次密码输入不符');
+            return ResponseHelper::error($response, 'دو کلمه عبور وارد شده مطابقت ندارند');
         }
 
         if (Setting::obtain('reg_email_verify')) {
@@ -451,7 +451,7 @@ final class AuthController extends BaseController
         $number = $request->getParam('number');
         $user = Auth::getUser();
         if ($user->isLogin) {
-            return ResponseHelper::error($response, '用户已登陆');
+            return ResponseHelper::error($response, 'کاربر وارد شده است');
         }
         if ($_ENV['enable_telegram_login'] === true) {
             $ret = TelegramSessionManager::checkLoginSession($token, $number);
@@ -459,7 +459,7 @@ final class AuthController extends BaseController
                 'ret' => $ret,
             ]);
         }
-        return ResponseHelper::error($response, '不允许 QRCode 登陆');
+        return ResponseHelper::error($response, 'ورود QRCode مجاز نیست');
     }
 
     /**
@@ -474,8 +474,8 @@ final class AuthController extends BaseController
                 $user = User::query()->where('telegram_id', $telegram_id)->firstOrFail(); // Welcome Back :)
                 if ($user === null) {
                     return $this->view()
-                        ->assign('title', '您需要先进行邮箱注册后绑定Telegram才能使用授权登录')
-                        ->assign('message', '很抱歉带来的不便，请重新试试')
+                        ->assign('title', 'ابتدا باید ایمیل خود را ثبت کنید و سپس تلگرام را برای ورود با مجوز متصل کنید')
+                        ->assign('message', 'با عرض پوزش برای ناراحتی، لطفا دوباره امتحان کنید')
                         ->assign('redirect', '/auth/login')
                         ->display('telegram_error.tpl');
                 }
@@ -483,14 +483,14 @@ final class AuthController extends BaseController
                 $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
 
                 return $this->view()
-                    ->assign('title', '登录成功')
-                    ->assign('message', '正在前往仪表盘')
+                    ->assign('title', 'ورود با موفقیت')
+                    ->assign('message', 'رفتن به داشبورد')
                     ->assign('redirect', '/user')
                     ->display('telegram_success.tpl');
             }
             return $this->view()
-                ->assign('title', '登陆超时或非法构造信息')
-                ->assign('message', '很抱歉带来的不便，请重新试试')
+                ->assign('title', 'مهلت ورود به سیستم یا اطلاعات نادرست ایجاد شده')
+                ->assign('message', 'با عرض پوزش برای ناراحتی، لطفا دوباره امتحان کنید')
                 ->assign('redirect', '/auth/login')
                 ->display('telegram_error.tpl');
         }

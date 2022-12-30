@@ -9,17 +9,17 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">创建公告</span>
+                        <span class="home-title">ایجاد اطلاعیه</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">创建站点公告</span>
+                        <span class="home-subtitle">اطلاعیه سایت ایجاد کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <a id="create-ann" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
-                            保存
+                            نگه داشتن
                         </a>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         </form>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label col-3 col-form-label">公告通知的用户等级，0为不分级</label>
+                        <label class="form-label col-3 col-form-label">سطح کاربر اعلان اعلامیه، 0 به معنای عدم درجه بندی است</label>
                         <div class="col">
                             <input id="email_notify_class" type="text" class="form-control" value=""></input>
                         </div>
@@ -45,7 +45,7 @@
                         <div class="divide-y">
                             <div>
                                 <label class="row">
-                                    <span class="col">发送邮件通知</span>
+                                    <span class="col">ارسال اعلان ایمیل</span>
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
                                             <input id="email_notify" class="form-check-input" type="checkbox"

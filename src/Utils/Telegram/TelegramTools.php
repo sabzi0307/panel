@@ -94,29 +94,29 @@ final class TelegramTools
             case 'enable':
             case 'is_admin':
                 $strArray = [
-                    '// 支持的写法',
-                    '// [启用|是] —— 字面意思',
-                    '// [禁用|否] —— 字面意思',
+                    '// پشتیبانی از نوشتن',
+                    '// [فعال|بله] —— معنای لغوی',
+                    '// [غیرفعال کردن|خیر] —— معنای لغوی',
                 ];
                 if (strpos($value, ' ') !== false) {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
-                if (\in_array($value, ['启用', '是'])) {
+                if (\in_array($value, ['فعال کردن', 'بله'])) {
                     $User->$useOptionMethod = 1;
-                    $new = '启用';
-                } elseif (\in_array($value, ['禁用', '否'])) {
+                    $new = 'فعال کردن';
+                } elseif (\in_array($value, ['غیر فعال', 'خیر'])) {
                     $User->$useOptionMethod = 0;
-                    $new = '禁用';
+                    $new = 'غیر فعال';
                 } else {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش，املای پشتیبانی نشده.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
-                $old = ($old ? '启用' : '禁用');
+                $old = ($old ? 'فعال کردن' : 'غیر فعال');
                 break;
                 // ##############
             case 'port':
@@ -124,7 +124,7 @@ final class TelegramTools
                 if (! is_numeric($value) || strpos($value, '-') === 0) {
                     return [
                         'ok' => false,
-                        'msg' => '提供的端口非数值，如要随机重置请指定为 0.',
+                        'msg' => 'پورت ارائه شده غیر عددی است، 0 را برای تنظیم مجدد تصادفی مشخص کنید.',
                     ];
                 }
                 if ((int) $value === 0) {
@@ -133,11 +133,11 @@ final class TelegramTools
                 $temp = $User->setPort($value);
                 if ($temp['ok'] === false) {
                     $strArray = [
-                        '目标用户：' . $Email,
-                        '欲修改项：' . $useOptionMethodName . '[' . $useOptionMethod . ']',
-                        '当前值为：' . $old,
-                        '欲修改为：' . $value,
-                        '错误详情：' . $temp['msg'],
+                        'کاربران را مورد هدف قرار دهید：' . $Email,
+                        'موردی که باید اصلاح شود：' . $useOptionMethodName . '[' . $useOptionMethod . ']',
+                        'مقدار فعلی：' . $old,
+                        'می خواهند تغییر کنند به：' . $value,
+                        'جزئیات خطا：' . $temp['msg'],
                     ];
                     return [
                         'ok' => false,
@@ -150,25 +150,25 @@ final class TelegramTools
                 // ##############
             case 'transfer_enable':
                 $strArray = [
-                    '// 支持的写法，不支持单位 b，不区分大小写',
-                    '// 支持的单位：kb | mb | gb | tb | pb',
-                    '//  2kb —— 指定为该值得流量',
-                    '// +2kb —— 增加流量',
-                    '// -2kb —— 减少流量',
-                    '// *2   —— 以当前流量做乘法，不支持填写单位',
-                    '// /2   —— 以当前流量做除法，不支持填写单位',
+                    '// نوشتن پشتیبانی شده، واحد b را پشتیبانی نمی کند، به حروف بزرگ و کوچک حساس نیست',
+                    '// واحدهای پشتیبانی شده：kb | mb | gb | tb | pb',
+                    '//  2kb —— به عنوان جریان ارزش تعیین می شود',
+                    '// +2kb —— افزایش ترافیک',
+                    '// -2kb —— کاهش ترافیک',
+                    '// *2   —— ضرب در ترافیک کنونی، از پر کردن واحد پشتیبانی نمی کند',
+                    '// /2   —— تقسیم بر ترافیک فعلی، از پر کردن واحد پشتیبانی نمی کند',
                 ];
                 if (strpos($value, ' ') !== false) {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
                 $new = self::trafficMethod($User->$useOptionMethod, $value);
                 if ($new === null) {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
                 $User->$useOptionMethod = $new;
@@ -179,14 +179,14 @@ final class TelegramTools
             case 'expire_in':
             case 'class_expire':
                 $strArray = [
-                    '// 支持的写法，单位：天',
-                    '// 使用天数设置不能包含空格',
-                    '//  2 —— 以当前时间为基准的天数设置',
-                    '// +2 —— 增加天数',
-                    '// -2 —— 减少天数',
-                    '// 指定日期，在日期与时间中含有一个空格',
-                    '// 2020-02-30 —— 指定日期',
-                    '// 2020-02-30 08:00:00 —— 指定日期精确到秒',
+                    '// روش های نوشتاری پشتیبانی شده، واحد: روز',
+                    '// تنظیم روزهای استفاده نمی تواند حاوی فاصله باشد',
+                    '//  2 —— تعداد روزها را بر اساس زمان فعلی تنظیم کنید',
+                    '// +2 —— تعداد روزها را افزایش دهید',
+                    '// -2 —— تعداد روزها را کاهش دهید',
+                    '// تاریخ را با فاصله بین تاریخ و زمان مشخص کنید',
+                    '// 2020-02-30 —— تاریخ مشخص شده',
+                    '// 2020-02-30 08:00:00 —— تاریخ مشخص شده به دومی دقیق می باشد',
                 ];
                 if (
                     strpos($value, '+') === 0
@@ -204,7 +204,7 @@ final class TelegramTools
                         if (strtotime($value) === false) {
                             return [
                                 'ok' => false,
-                                'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                                'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                             ];
                         }
                         $new = strtotime($value);
@@ -220,7 +220,7 @@ final class TelegramTools
                         if (strtotime($value) === false) {
                             return [
                                 'ok' => false,
-                                'msg' => '处理出错，不支持的写法.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                                'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                             ];
                         }
                         $new = strtotime($value);
@@ -234,18 +234,18 @@ final class TelegramTools
             case 'passwd':
             case 'money':
                 $strArray = [
-                    '// 参数值中不允许有空格，结果会含小数 2 位',
-                    '// +2  —— 增加余额',
-                    '// -2  —— 减少余额',
-                    '// *2  —— 以当前余额做乘法',
-                    '// /2  —— 以当前余额做除法',
+                    '// فاصله در مقدار پارامتر مجاز نیست، نتیجه شامل 2 رقم اعشار خواهد بود',
+                    '// +2  —— افزایش اعتبار',
+                    '// -2  —— کاهش اعتبار',
+                    '// *2  —— ضرب در موجودی فعلی',
+                    '// /2  —— تقسیم بر موجودی فعلی',
                 ];
                 $value = explode(' ', $value)[0];
                 $new = self::computingMethod($User->$useOptionMethod, $value, true);
                 if ($new === null) {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.'  . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.'  . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
                 $User->$useOptionMethod = $new;
@@ -257,18 +257,18 @@ final class TelegramTools
             case 'node_connector':
             case 'node_speedlimit':
                 $strArray = [
-                    '// 参数值中不允许有空格',
-                    '// +2  —— 增加值',
-                    '// -2  —— 减少值',
-                    '// *2  —— 以当前值做乘法',
-                    '// /2  —— 以当前值做除法',
+                    '// فاصله در مقادیر پارامتر مجاز نیست',
+                    '// +2  —— افزودن سطح',
+                    '// -2  —— کاهش سطح',
+                    '// *2  —— ضرب در مقدار فعلی',
+                    '// /2  —— تقسیم بر مقدار فعلی',
                 ];
                 $value = explode(' ', $value)[0];
                 $new = self::computingMethod($User->$useOptionMethod, $value, false);
                 if ($new === null) {
                     return [
                         'ok' => false,
-                        'msg' => '处理出错，不支持的写法.'  . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
+                        'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.'  . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
                 $User->$useOptionMethod = $new;
@@ -277,7 +277,7 @@ final class TelegramTools
             default:
                 return [
                     'ok' => false,
-                    'msg' => '尚不支持.',
+                    'msg' => 'هنوز پشتیبانی نشده است.',
                 ];
                 break;
         }
@@ -286,10 +286,10 @@ final class TelegramTools
                 $User->addMoneyLog($new - $old);
             }
             $strArray = [
-                '目标用户：' . $Email,
-                '被修改项：' . $useOptionMethodName . '[' . $useOptionMethod . ']',
-                '修改前为：' . $old,
-                '修改后为：' . $new,
+                'کاربران را هدف قرار دهید：' . $Email,
+                'مورد اصلاح شده：' . $useOptionMethodName . '[' . $useOptionMethod . ']',
+                'قبل از تغییر：' . $old,
+                'اصلاح شده به：' . $new,
             ];
             return [
                 'ok' => true,

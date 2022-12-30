@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">在线IP</span>
+                        <span class="home-title my-3">IP آنلاین</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">查看现在在线的用户IP</span>
+                        <span class="home-subtitle">مشاهده IP فعلی کاربر آنلاین</span>
                     </div>
                 </div>
             </div>
@@ -62,27 +62,27 @@
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row card-footer d-flex d-flexalign-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             language: {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 条",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "第 _START_ 至 _END_ 项结果，共 _TOTAL_项",
-                "sInfoEmpty": "第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(在 _MAX_ 项中查找)",
+                "sProcessing": "در حال پردازش...",
+                "sLengthMenu": "نمایش موارد _MENU_",
+                "sZeroRecords": "نتایج منطبقی وجود ندارد",
+                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
+                "sInfoEmpty": "نتایج 0 تا 0 از 0",
+                "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",
                 "sInfoPostFix": "",
                 "sSearch": "<i class=\"ti ti-search\"></i> ",
                 "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
+                "sEmptyTable": "داده های جدول خالی است",
+                "sLoadingRecords": "بارگذاری...",
                 "sInfoThousands": ",",
                 "oPaginate": {
-                    "sFirst": "首页",
+                    "sFirst": "صفحه اول",
                     "sPrevious": "<i class=\"titi-arrow-left\"></i>",
                     "sNext": "<i class=\"ti ti-arrow-right\"><i>",
-                    "sLast": "末页"
+                    "sLast": "آخرین صفحه"
                 },
                 "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
+                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
+                    "sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
                 }
             },
         });

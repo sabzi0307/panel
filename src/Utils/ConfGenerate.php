@@ -79,7 +79,7 @@ final class ConfGenerate
         try {
             return Yaml::parse($Content);
         } catch (ParseException $exception) {
-            return printf('无法解析 YAML 字符串: %s', $exception->getMessage());
+            return printf('قادر به تجزیه رشته YAML نیست: %s', $exception->getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ final class ConfGenerate
             '#!MANAGED-CONFIG ' .((int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http') . '://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
             '',
             '#---------------------------------------------------#',
-            '## 上次更新于：' . date('Y-m-d H:i:s'),
+            '## آخرین به روز رسانی در：' . date('Y-m-d H:i:s'),
             '#---------------------------------------------------#',
             '',
             '[General]',
@@ -332,7 +332,7 @@ final class ConfGenerate
             '#!MANAGED-CONFIG ' .((int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http') . '://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
             '',
             '#---------------------------------------------------#',
-            '## 上次更新于：' . date('Y-m-d H:i:s'),
+            '## آخرین به روز رسانی در：' . date('Y-m-d H:i:s'),
             '#---------------------------------------------------#',
             '',
             Yaml::dump($tmp, 4, 2),

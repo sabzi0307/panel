@@ -20,7 +20,7 @@ final class PingCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = '[群组/私聊] 获取我或者群组的唯一 ID.';
+    protected $description = '[چت گروهی/خصوصی] یک شناسه منحصر به فرد برای من یا یک گروه دریافت کنید.';
 
     public function handle(): void
     {
@@ -38,7 +38,7 @@ final class PingCommand extends Command
 
             $text = [
                 'Pong！',
-                '您的 ID 是 ' . $ChatID . '.',
+                'شناسنامه شما هست ' . $ChatID . '.',
             ];
 
             // 回送信息
@@ -59,8 +59,8 @@ final class PingCommand extends Command
 
             $text = [
                 'Pong！',
-                '您的 ID 是 ' . $Message->getFrom()->getId() . '.',
-                '这个群组的 ID 是 ' . $ChatID . '.',
+                'شناسنامه شما هست ' . $Message->getFrom()->getId() . '.',
+                'شناسه این گروه است ' . $ChatID . '.',
             ];
 
             // 回送信息

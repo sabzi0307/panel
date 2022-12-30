@@ -85,10 +85,10 @@
                             <a href="/user/announcement"><i class="mdi mdi-bullhorn-variant icon-lg"></i>&nbsp;اطلاعیه سایت</a>
                         </li>
                         <li>
-                            <a href="/user/detect"><i class="mdi mdi-account-filter icon-lg"></i>&nbsp;قوانین ممیزی</a>
+                            <a href="/user/detect"><i class="mdi mdi-account-filter icon-lg"></i>&nbsp;قوانین فیلترینگ</a>
                         </li>
                         <li>
-                            <a href="/user/detect/log"><i class="mdi mdi-calendar-filter icon-lg"></i>&nbsp;سوابق ممیزی</a>
+                            <a href="/user/detect/log"><i class="mdi mdi-calendar-filter icon-lg"></i>&nbsp;سوابق فیلترینگ</a>
                         </li>
                     </ul>
                     <a class="waves-attach" data-toggle="collapse" href="#ui_menu_help">فروشگاه</a>

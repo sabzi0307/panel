@@ -60,7 +60,7 @@ final class TicketController extends BaseController
         if ($title === '' || $comment === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '非法输入',
+                'msg' => 'ورودی غیرمجاز',
             ]);
         }
 
@@ -88,10 +88,10 @@ final class TicketController extends BaseController
             $adminUser = User::where('is_admin', 1)->get();
             foreach ($adminUser as $user) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-新工单被开启',
+                    $_ENV['appName'] . '-یک تیکت جدید باز شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '管理员，有人开启了新的工单，请您及时处理。',
+                        'text' => 'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع باهاش ​​رسیدگی کنید.',
                     ],
                     []
                 );
@@ -100,7 +100,7 @@ final class TicketController extends BaseController
         if ($_ENV['useScFtqq'] === true) {
             $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
             $postdata = http_build_query([
-                'text' => $_ENV['appName'] . '-新工单被开启',
+                'text' => $_ENV['appName'] . '-یک تیکت جدید باز شده است',
                 'desp' => $title,
             ]);
             $opts = [
@@ -131,7 +131,7 @@ final class TicketController extends BaseController
         if ($comment === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '非法输入',
+                'msg' => 'ورودی غیرمجاز',
             ]);
         }
 
@@ -161,10 +161,10 @@ final class TicketController extends BaseController
             $adminUser = User::where('is_admin', 1)->get();
             foreach ($adminUser as $user) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-工单被回复',
+                    $_ENV['appName'] . '-تیکت پاسخ داده شده است',
                     'news/warn.tpl',
                     [
-                        'text' => '管理员，有人回复了<a href="' . $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">工</a>，请您及时处理。',
+                        'text' => 'ادمین یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">工</a>，لطفا به موقع به آن رسیدگی کنید.',
                     ],
                     []
                 );
@@ -173,7 +173,7 @@ final class TicketController extends BaseController
         if ($_ENV['useScFtqq'] === true) {
             $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
             $postdata = http_build_query([
-                'text' => $_ENV['appName'] . '-工单被回复',
+                'text' => $_ENV['appName'] . '-تیکت پاسخ داده شده است',
                 'desp' => $ticket->title,
             ]);
             $opts = [
@@ -189,7 +189,7 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '提交成功',
+            'msg' => 'با موفقیت ثبت شد',
         ]);
     }
 
@@ -210,7 +210,7 @@ final class TicketController extends BaseController
             if ($request->getParam('json') === 1) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => '无访问权限',
+                    'msg' => 'هیچ دسترسی',
                 ]);
             }
             return $response->withStatus(302)->withHeader('Location', '/user/ticket');

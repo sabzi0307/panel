@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">充值码管理</h1>
+            <h1 class="content-heading">مدیریت کد شارژ</h1>
         </div>
     </div>
     <div class="container">
@@ -12,15 +12,15 @@
                 <div class="card">
                     <div class="card-main">
                         <div class="card-inner">
-                            <p>系统中金额流转记录。</p>
+                            <p>سوابق انتقال مبلغ در سیستم.</p>
                             <p>
-                                今日流水：￥{$user->calIncome("today")}<br/>
-                                昨日流水：￥{$user->calIncome("yesterday")}<br/>
-                                这月流水：￥{$user->calIncome("this month")}<br/>
-                                上月流水：￥{$user->calIncome("last month")}<br/>
-                                总共流水：￥{$user->calIncome("total")}
+                                گردش امروز：${$user->calIncome("today")}<br/>
+                                گردش دیروز：${$user->calIncome("yesterday")}<br/>
+                                گردش این ماه：${$user->calIncome("this month")}<br/>
+                                گردش ماه گذشته：${$user->calIncome("last month")}<br/>
+                                کل گردش مالی：${$user->calIncome("total")}
                             </p>
-                            <p>显示表项:
+                            <p>نمایش ورودی ها:
                                 {include file='table/checkbox.tpl'}
                             </p>
                         </div>
@@ -41,7 +41,7 @@
                            data-toggle="dropdown"><span class="fbtn-ori mdi mdi-plus"></span><span class="fbtn-sub mdi mdi-close"></span></a>
                         <div class="fbtn-dropup">
                             <a class="fbtn fbtn-brand waves-attach waves-circle waves-light"
-                               href="/admin/code/create"><span class="fbtn-text fbtn-text-left">充值码</span><span
+                               href="/admin/code/create"><span class="fbtn-text fbtn-text-left">کد شارژ</span><span
                                         class="mdi mdi-code-tags"></span></a>
                         </div>
                     </div>

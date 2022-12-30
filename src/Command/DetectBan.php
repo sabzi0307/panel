@@ -10,7 +10,7 @@ use App\Models\User;
 
 final class DetectBan extends Command
 {
-    public $description = '├─=: php xcat DetectBan      - 审计封禁定时任务' . PHP_EOL;
+    public $description = '├─=: php xcat DetectBan      - Audit Ban Scheduled Tasks' . PHP_EOL;
 
     /**
      * 审计封禁任务
@@ -20,7 +20,7 @@ final class DetectBan extends Command
         if ($_ENV['enable_auto_detect_ban'] === false) {
             return;
         }
-        echo '审计封禁检查开始.' . PHP_EOL;
+        echo 'Audit ban check begins.' . PHP_EOL;
         $new_logs = DetectLog::where('status', '=', 0)->orderBy('id', 'asc')->take($_ENV['auto_detect_ban_numProcess'])->get();
         if (count($new_logs) !== 0) {
             $user_logs = [];
@@ -106,8 +106,8 @@ final class DetectBan extends Command
                 }
             }
         } else {
-            echo '- 暂无新记录.' . PHP_EOL;
+            echo '- No new record yet.' . PHP_EOL;
         }
-        echo '审计封禁检查结束.' . PHP_EOL;
+        echo 'Audit ban check ends.' . PHP_EOL;
     }
 }

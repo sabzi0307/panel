@@ -27,13 +27,13 @@ final class CodeController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'code' => '内容',
-                    'type' => '类型',
-                    'number' => '操作',
-                    'isused' => '是否已经使用',
-                    'userid' => '用户ID',
-                    'user_name' => '用户名',
-                    'usedatetime' => '使用时间',
+                    'code' => 'محتوا',
+                    'type' => 'انواع',
+                    'number' => 'عملیات',
+                    'isused' => 'آیا قبلا استفاده شده است',
+                    'userid' => 'شناسه کاربر',
+                    'user_name' => 'نام کاربری',
+                    'usedatetime' => 'زمان استفاده',
                 ], 'code/ajax'))
                 ->display('admin/code/index.tpl')
         );
@@ -103,14 +103,14 @@ final class CodeController extends BaseController
         if (Tools::isInt($amount) === false) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '请填写充值码生成数量',
+                'msg' => 'لطفاً مقدار تولید کد شارژ را پر کنید',
             ]);
         }
 
         if ($face_value === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '请填写充值码面额',
+                'msg' => 'لطفاً نام کد شارژ را وارد کنید',
             ]);
         }
 
@@ -131,7 +131,7 @@ final class CodeController extends BaseController
         if (Setting::obtain('mail_driver') !== 'none') {
             Mail::send(
                 $user->email,
-                $_ENV['appName'] . '- 充值码',
+                $_ENV['appName'] . '- کد شارژ',
                 'giftcard.tpl',
                 [
                     'text' => implode('<br/>', $cards),
@@ -140,6 +140,6 @@ final class CodeController extends BaseController
             );
         }
 
-        return ResponseHelper::successfully($response, '充值码添加成功');
+        return ResponseHelper::successfully($response, 'کد شارژ با موفقیت اضافه شد');
     }
 }

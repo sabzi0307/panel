@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">优惠码</h1>
+            <h1 class="content-heading">کد تبلیغاتی</h1>
         </div>
     </div>
     <div class="container">
@@ -12,35 +12,35 @@
                 <div class="card-main">
                     <div class="card-inner">
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="prefix">优惠码</label>
+                            <label class="floating-label" for="prefix">کد تبلیغاتی</label>
                             <input class="form-control maxwidth-edit" id="prefix" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>生成随机优惠码不填</p>
+                            <p class="form-control-guide"><i class="mdi mdi-information"></i>برای ایجاد کد تخفیف تصادفی خالی بگذارید</p>
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="credit">优惠码额度</label>
+                            <label class="floating-label" for="credit">مبلغ کد کوپن</label>
                             <input class="form-control maxwidth-edit" id="credit" type="text">
                             <p class="form-control-guide"><i class="mdi mdi-information"></i>百分比，九折就填 10</p>
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="expire">优惠码有效期(h)</label>
+                            <label class="floating-label" for="expire">مدت اعتبار کد کوپن(h)</label>
                             <input class="form-control maxwidth-edit" id="expire" type="number" value="1">
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">优惠码可用商品ID</label>
+                            <label class="floating-label" for="shop">شناسه محصول موجود کد تبلیغاتی</label>
                             <input class="form-control maxwidth-edit" id="shop" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>不填即为所有商品可用，多个的话用英文半角逗号分割</p>
+                            <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت پر نشدن، همه محصولات موجود هستند. اگر چند مورد وجود دارد، آنها را با کاماهای نیم پهن انگلیسی جدا کنید.</p>
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">优惠码每个用户可用次数，-1为无限次</label>
+                            <label class="floating-label" for="shop">کد کوپن برای هر کاربر در دسترس است، -1 به معنای زمان نامحدود است</label>
                             <input class="form-control maxwidth-edit" id="count" type="number" value="1">
                         </div>
                         <div class="form-group form-group-label">
                             <label for="generate-type">
-                                <label class="floating-label" for="sort">选择生成方式</label>
+                                <label class="floating-label" for="sort">نحوه تولید را انتخاب کنید</label>
                                 <select id="generate-type" class="form-control maxwidth-edit">
-                                    <option value="1">指定字符</option>
-                                    <option value="2">随机字符</option>
-                                    <option value="3">指定字符+随机字符</option>
+                                    <option value="1">شخصیت مشخص شده</option>
+                                    <option value="2">شخصیت های تصادفی</option>
+                                    <option value="3">کاراکتر مشخص + کاراکتر تصادفی</option>
                                 </select>
                             </label>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="row">
                                 <div class="col-md-10 col-md-push-1">
                                     <button id="coupon" type="submit"
-                                            class="btn btn-block btn-brand waves-attach waves-light">生成优惠码
+                                            class="btn btn-block btn-brand waves-attach waves-light">کد تبلیغاتی را ایجاد کنید
                                     </button>
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
             <div class="card margin-bottom-no">
                 <div class="card-main">
                     <div class="card-inner">
-                        <p class="card-heading">优惠码</p>
-                        <p>显示表项:
+                        <p class="card-heading">کد تبلیغاتی</p>
+                        <p>نمایش ورودی ها:
                             {include file='table/checkbox.tpl'}
                         </p>
                         <div class="card-table">
@@ -106,7 +106,7 @@
                     }
                 },
                 error: jqXHR => {
-                    alert(`发生错误：${
+                    alert(`خطایی رخ داده：${
                             jqXHR.status
                             }`);
                 }

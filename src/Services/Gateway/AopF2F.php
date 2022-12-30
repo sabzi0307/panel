@@ -30,7 +30,7 @@ final class AopF2F extends AbstractPayment
 
     public static function _readableName(): string
     {
-        return '支付宝在线充值';
+        return 'شارژ آنلاین Alipay';
     }
 
     public function purchase(Request $request, Response $response, array $args): ResponseInterface
@@ -40,7 +40,7 @@ final class AopF2F extends AbstractPayment
         if ($amount === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '订单金额错误：' . $amount,
+                'msg' => 'مبلغ سفارش اشتباه است：' . $amount,
             ]);
         }
 
@@ -86,7 +86,7 @@ final class AopF2F extends AbstractPayment
             $aliResponse = $aliRequest->send();
             $pid = $aliResponse->data('out_trade_no');
             if ($aliResponse->isPaid()) {
-                $this->postPayment($pid, '支付宝当面付 ' . $pid);
+                $this->postPayment($pid, 'پرداخت حضوری Alipay ' . $pid);
                 return $response->write('success');
             }
         } catch (Exception $e) {

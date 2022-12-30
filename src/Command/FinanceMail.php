@@ -12,10 +12,10 @@ use Ozdemir\Datatables\Datatables;
 final class FinanceMail extends Command
 {
     public $description = <<<EOL
-├─=: php xcat FinanceMail [选项]
-│ ├─ day                     - 日报
-│ ├─ week                    - 周报
-│ ├─ month                   - 月报
+├─=: php xcat FinanceMail [options]
+│ ├─ day                     - daily
+│ ├─ week                    - weekly
+│ ├─ month                   - monthly report
 EOL;
 
     public function boot(): void
@@ -27,7 +27,7 @@ EOL;
             if (method_exists($this, $methodName)) {
                 $this->$methodName();
             } else {
-                echo '方法不存在.' . PHP_EOL;
+                echo 'Method does not exist.' . PHP_EOL;
             }
         }
     }
@@ -42,7 +42,7 @@ EOL;
         $text_json = $datatables->generate();
         $text_array = \json_decode($text_json, true);
         $codes = $text_array['data'];
-        $text_html = '<table border=1><tr><td>金额</td><td>用户ID</td><td>用户名</td><td>充值时间</td>';
+        $text_html = '<table border=1><tr><td>مقدار</td><td>شناسه کاربر</td><td>نام کاربری</td><td>زمان شارژ مجدد</td>';
         $income_count = 0;
         $income_total = 0.00;
         foreach ($codes as $code) {
@@ -58,16 +58,16 @@ EOL;
         }
 
         $text_html .= '</table>';
-        $text_html .= '<br>昨日总收入笔数：' . $income_count . '<br>昨日总收入金额：' . $income_total;
+        $text_html .= '<br>کل درآمد دیروز：' . $income_count . '<br>کل درآمد دیروز：' . $income_total;
 
         $adminUser = User::where('is_admin', '=', '1')->get();
         foreach ($adminUser as $user) {
             echo 'Send offline mail to user: ' . $user->id;
             $user->sendMail(
-                $_ENV['appName'] . '-财务日报',
+                $_ENV['appName'] . '-مالی روزانه',
                 'news/finance.tpl',
                 [
-                    'title' => '财务日报',
+                    'title' => 'مالی روزانه',
                     'text' => $text_html,
                 ],
                 []
@@ -76,10 +76,10 @@ EOL;
 
         if ($_ENV['finance_public']) {
             Telegram::send(
-                '新鲜出炉的财务日报~' . PHP_EOL .
-                '昨日总收入笔数:' . $income_count . PHP_EOL .
-                '昨日总收入金额:' . $income_total . PHP_EOL .
-                '凌晨也在努力工作~'
+                'مالی تازه منتشر شده روزانه~' . PHP_EOL .
+                'کل درآمد دیروز:' . $income_count . PHP_EOL .
+                'کل درآمد دیروز:' . $income_total . PHP_EOL .
+                'کار سخت در صبح زود~'
             );
         }
     }
@@ -103,16 +103,16 @@ EOL;
             $income_total += $code['number'];
         }
 
-        $text_html .= '<br>上周总收入笔数：' . $income_count . '<br>上周总收入金额：' . $income_total;
+        $text_html .= '<br>کل درآمد هفته گذشته：' . $income_count . '<br>کل درآمد هفته گذشته：' . $income_total;
 
         $adminUser = User::where('is_admin', '=', '1')->get();
         foreach ($adminUser as $user) {
             echo 'Send offline mail to user: ' . $user->id;
             $user->sendMail(
-                $_ENV['appName'] . '-财务周报',
+                $_ENV['appName'] . '-گزارش مالی هفتگی',
                 'news/finance.tpl',
                 [
-                    'title' => '财务周报',
+                    'title' => 'هفته نامه مالی',
                     'text' => $text_html,
                 ],
                 []
@@ -121,10 +121,10 @@ EOL;
 
         if ($_ENV['finance_public']) {
             Telegram::send(
-                '新鲜出炉的财务周报~' . PHP_EOL .
-                '上周总收入笔数:' . $income_count . PHP_EOL .
-                '上周总收入金额:' . $income_total . PHP_EOL .
-                '周末也在努力工作~'
+                'گزارش مالی هفتگی تازه منتشر شده~' . PHP_EOL .
+                'کل درآمد هفته گذشته:' . $income_count . PHP_EOL .
+                'کل درآمد هفته گذشته:' . $income_total . PHP_EOL .
+                'آخر هفته ها سخت کار کنید~'
             );
         }
     }
@@ -146,16 +146,16 @@ EOL;
             ++$income_count;
             $income_total += $code['number'];
         }
-        $text_html .= '<br>上月总收入笔数：' . $income_count . '<br>上月总收入金额：' . $income_total;
+        $text_html .= '<br>کل درآمد ماه گذشته：' . $income_count . '<br>مقدار کل درآمد در ماه گذشته：' . $income_total;
 
         $adminUser = User::where('is_admin', '=', '1')->get();
         foreach ($adminUser as $user) {
             echo 'Send offline mail to user: ' . $user->id;
             $user->sendMail(
-                $_ENV['appName'] . '-财务月报',
+                $_ENV['appName'] . '-گزارش مالی ماهانه',
                 'news/finance.tpl',
                 [
-                    'title' => '财务月报',
+                    'title' => 'گزارش مالی ماهانه',
                     'text' => $text_html,
                 ],
                 []
@@ -164,10 +164,10 @@ EOL;
 
         if ($_ENV['finance_public']) {
             Telegram::send(
-                '新鲜出炉的财务月报~' . PHP_EOL .
-                '上月总收入笔数:' . $income_count . PHP_EOL .
-                '上月总收入金额:' . $income_total . PHP_EOL .
-                '月初也在努力工作~'
+                'گزارش مالی ماهانه تازه منتشر شده~' . PHP_EOL .
+                'کل درآمد ماه گذشته:' . $income_count . PHP_EOL .
+                'مقدار کل درآمد در ماه گذشته:' . $income_total . PHP_EOL .
+                'همچنین در ابتدای ماه سخت کار می کنیم~'
             );
         }
     }

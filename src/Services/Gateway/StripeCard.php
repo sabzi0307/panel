@@ -100,7 +100,7 @@ final class StripeCard extends AbstractPayment
         $session = $stripe->checkout->sessions->retrieve($session_id, []);
 
         if ($session->payment_status === 'paid') {
-            $this->postPayment($trade_no, '银行卡支付');
+            $this->postPayment($trade_no, 'پرداخت کارت بانکی');
         }
 
         return $response->withRedirect($_ENV['baseUrl'] . '/user/code');

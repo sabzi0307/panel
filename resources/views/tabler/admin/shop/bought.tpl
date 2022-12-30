@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">购买记录</h1>
+            <h1 class="content-heading">سابقه خرید</h1>
         </div>
     </div>
     <div class="container">
@@ -12,8 +12,8 @@
                 <div class="card">
                     <div class="card-main">
                         <div class="card-inner">
-                            <p>系统中所有购买记录。</p>
-                            <p>显示表项:
+                            <p>کلیه سوابق خرید در سیستم.</p>
+                            <p>نمایش ورودی ها:
                                 {include file='table/checkbox.tpl'}
                             </p>
                         </div>
@@ -28,18 +28,18 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">确认要退订？</h2>
+                                <h2 class="modal-title">آیا مطمئن هستید که می خواهید اشتراک خود را لغو کنید؟</h2>
                             </div>
                             <div class="modal-inner">
-                                <p>请您确认。</p>
+                                <p>لطفا تایید کنید.</p>
                             </div>
                             <div class="modal-footer">
                                 <p class="text-right">
                                     <button class="btn btn-flat btn-brand-accent waves-attach waves-effect"
-                                            data-dismiss="modal" type="button">取消
+                                            data-dismiss="modal" type="button">لغو کنید
                                     </button>
                                     <button class="btn btn-flat btn-brand-accent waves-attach" data-dismiss="modal"
-                                            id="delete_input" type="button">确定
+                                            id="delete_input" type="button">مطمئن
                                     </button>
                                 </p>
                             </div>
@@ -81,7 +81,7 @@
                 },
                 error: jqXHR => {
                     $("#result").modal();
-                    $$.getElementById('msg').innerHTML = `${ldelim}data.msg{rdelim} 发生错误了`;
+                    $$.getElementById('msg').innerHTML = `${ldelim}data.msg{rdelim} مشکلی پیش آمده`;
                 }
             });
         }

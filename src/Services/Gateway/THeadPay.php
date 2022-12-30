@@ -49,7 +49,7 @@ final class THeadPay extends AbstractPayment
         if ($amount <= 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '订单金额错误：' . $amount,
+                'msg' => 'مبلغ سفارش اشتباه است：' . $amount,
             ]);
         }
 
@@ -76,7 +76,7 @@ final class THeadPay extends AbstractPayment
         } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '创建支付订单错误：' . $e->getMessage(),
+                'msg' => 'خطا در ایجاد دستور پرداخت：' . $e->getMessage(),
             ]);
         }
     }
@@ -86,7 +86,7 @@ final class THeadPay extends AbstractPayment
         $params = $request->getParsedBody();
         if ($this->sdk->verify($params)) {
             $pid = $params['out_trade_no'];
-            $this->postPayment($pid, 'THeadPay 平头哥支付 ' . $pid);
+            $this->postPayment($pid, 'THeadPay Pingtouge می پردازد ' . $pid);
             die('success'); //The response should be 'success' only
         }
 

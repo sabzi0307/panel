@@ -64,7 +64,7 @@ final class User extends Model
     {
         switch ($this->im_type) {
             case 1:
-                return '微信';
+                return 'WeChat';
             case 2:
                 return 'QQ';
             case 5:
@@ -94,7 +94,7 @@ final class User extends Model
      */
     public function lastSsTime(): string
     {
-        return $this->t === 0 || $this->t === null ? '从未使用喵' : Tools::toDateTime($this->t);
+        return $this->t === 0 || $this->t === null ? 'هرگز از meow استفاده نکردم' : Tools::toDateTime($this->t);
     }
 
     /**
@@ -102,7 +102,7 @@ final class User extends Model
      */
     public function lastCheckInTime(): string
     {
-        return $this->last_check_in_time === 0 ? '从未签到' : Tools::toDateTime($this->last_check_in_time);
+        return $this->last_check_in_time === 0 ? 'هرگز استفاده نکردم' : Tools::toDateTime($this->last_check_in_time);
     }
 
     /**
@@ -292,7 +292,7 @@ final class User extends Model
     {
         $ga = new GA();
         return $ga->getUrl(
-            urlencode($_ENV['appName'] . '-' . $this->user_name . '-两步验证码'),
+            urlencode($_ENV['appName'] . '-' . $this->user_name . '-کدتایید 2 مرحله ای'),
             $this->ga_token
         );
     }
@@ -319,13 +319,13 @@ final class User extends Model
     public function refByUserName(): string
     {
         if ($this->ref_by === 0) {
-            return '系统邀请';
+            return 'دعوت نامه سیستم';
         }
 
         $refUser = $this->refByUser();
 
         if ($refUser === null) {
-            return '邀请人已经被删除';
+            return 'دعوت کننده حذف شده است';
         }
         return $refUser->user_name;
     }
@@ -449,7 +449,7 @@ final class User extends Model
         $reason_id = DetectLog::where('user_id', $this->id)->orderBy('id', 'DESC')->first();
         $reason = DetectRule::find($reason_id->list_id);
         if (is_null($reason)) {
-            return '特殊原因被禁用，了解详情请联系管理员';
+            return 'به دلایل خاص غیرفعال شده است، لطفاً برای جزئیات با مدیر تماس بگیرید';
         }
         return $reason->text;
     }
@@ -459,7 +459,7 @@ final class User extends Model
      */
     public function lastDetectBanTime(): string
     {
-        return $this->last_detect_ban_time === '1989-06-04 00:05:00' ? '未被封禁过' : $this->last_detect_ban_time;
+        return $this->last_detect_ban_time === '1989-06-04 00:05:00' ? 'ممنوع نیست' : $this->last_detect_ban_time;
     }
 
     /**
@@ -472,7 +472,7 @@ final class User extends Model
             $time = $logs->end_time + $logs->ban_time * 60;
             return date('Y-m-d H:i:s', $time);
         }
-        return '当前未被封禁';
+        return 'در حال حاضر ممنوع نیست';
     }
 
     /**
@@ -503,13 +503,13 @@ final class User extends Model
         ];
         if (! $this->isAbleToCheckin()) {
             $return['ok'] = false;
-            $return['msg'] = '您似乎已经签到过了...';
+            $return['msg'] = 'به نظر می رسد شما وارد سیستم شده اید...';
         } else {
             $traffic = random_int((int) $_ENV['checkinMin'], (int) $_ENV['checkinMax']);
             $this->transfer_enable += Tools::toMB($traffic);
             $this->last_check_in_time = \time();
             $this->save();
-            $return['msg'] = '获得了 ' . $traffic . 'MB 流量.';
+            $return['msg'] = 'برنده شد ' . $traffic . 'MB ترافیک.';
         }
 
         return $return;
@@ -522,7 +522,7 @@ final class User extends Model
     {
         $return = [
             'ok' => true,
-            'msg' => '解绑成功.',
+            'msg' => 'با موفقیت باز شد.',
         ];
         $telegram_id = $this->telegram_id;
         $this->telegram_id = 0;
@@ -547,7 +547,7 @@ final class User extends Model
         } else {
             $return = [
                 'ok' => false,
-                'msg' => '解绑失败.',
+                'msg' => 'باز کردن پیوند انجام نشد.',
             ];
         }
 
@@ -563,7 +563,7 @@ final class User extends Model
         if (\in_array($Port, $PortOccupied) === true) {
             return [
                 'ok' => false,
-                'msg' => '端口已被占用',
+                'msg' => 'پورت در حال حاضر در حال استفاده است',
             ];
         }
         $this->port = $Port;
@@ -588,12 +588,12 @@ final class User extends Model
             }
         }
         if (count($data) === 0) {
-            return '未购买套餐.';
+            return 'بسته خریداری نشده است.';
         }
         if (count($data) === 1) {
             return $data[0];
         }
-        return '多个有效套餐无法显示.';
+        return 'چند بسته معتبر قابل نمایش نیستند.';
     }
 
     /**
@@ -605,7 +605,7 @@ final class User extends Model
     {
         if ($_ENV['money_from_admin'] && $total !== 0) {
             $codeq = new Code();
-            $codeq->code = ($total > 0 ? '管理员赏赐' : '管理员惩戒');
+            $codeq->code = ($total > 0 ? 'پاداش مدیریت' : 'انضباط مدیر');
             $codeq->isused = 1;
             $codeq->type = -1;
             $codeq->number = $total;
@@ -695,11 +695,11 @@ final class User extends Model
             case 1:
                 echo 'Send daily mail to user: ' . $this->id;
                 $this->sendMail(
-                    $_ENV['appName'] . '-每日流量报告以及公告',
+                    $_ENV['appName'] . '-گزارش و اطلاعیه های ترافیک روزانه',
                     'news/daily-traffic-report.tpl',
                     [
                         'user' => $this,
-                        'text' => '下面是系统中目前的最新公告:<br><br>' . $ann . '<br><br>晚安！',
+                        'text' => 'در زیر آخرین اطلاعیه های موجود در این سیستم آمده است:<br><br>' . $ann . '<br><br>شب بخیر！',
                         'lastday_traffic' => $lastday_traffic,
                         'enable_traffic' => $enable_traffic,
                         'used_traffic' => $used_traffic,
@@ -711,11 +711,11 @@ final class User extends Model
                 break;
             case 2:
                 echo 'Send daily Telegram message to user: ' . $this->id;
-                $text = date('Y-m-d') . ' 流量使用报告' . PHP_EOL . PHP_EOL;
-                $text .= '流量总计：' . $enable_traffic . PHP_EOL;
-                $text .= '已用流量：' . $used_traffic . PHP_EOL;
-                $text .= '剩余流量：' . $unused_traffic . PHP_EOL;
-                $text .= '今日使用：' . $lastday_traffic;
+                $text = date('Y-m-d') . ' گزارش استفاده از ترافیک' . PHP_EOL . PHP_EOL;
+                $text .= 'کل ترافیک：' . $enable_traffic . PHP_EOL;
+                $text .= 'ترافیک استفاده شده：' . $used_traffic . PHP_EOL;
+                $text .= 'ترافیک باقیمانده：' . $unused_traffic . PHP_EOL;
+                $text .= 'استفاده از امروز：' . $lastday_traffic;
                 $this->sendTelegram(
                     $text
                 );

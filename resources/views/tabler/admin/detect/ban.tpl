@@ -3,7 +3,7 @@
 <main class="content">
 	<div class="content-header ui-content-header">
 		<div class="container">
-			<h1 class="content-heading">审计封禁记录</h1>
+			<h1 class="content-heading">گزارش های ممنوعیت فیلترینگ</h1>
 		</div>
 	</div>
 	<div class="container">
@@ -12,8 +12,8 @@
 				<div class="card">
 					<div class="card-main">
 						<div class="card-inner">
-							<p>系统中所有审计封禁记录。</p>
-							<p>显示表项:
+							<p>کلیه سوابق ممنوعیت فیلترینگ در سیستم.</p>
+							<p>نمایش ورودی ها:
 								{include file='table/checkbox.tpl'}
 							</p>
 						</div>

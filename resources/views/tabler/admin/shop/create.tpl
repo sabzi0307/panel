@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">添加商品</h1>
+            <h1 class="content-heading">افزودن کالا</h1>
         </div>
     </div>
     <div class="container">
@@ -13,17 +13,17 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="name">名称</label>
+                                <label class="floating-label" for="name">نام</label>
                                 <input class="form-control maxwidth-edit" id="name" type="text">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="price">价格</label>
+                                <label class="floating-label" for="price">قیمت</label>
                                 <input class="form-control maxwidth-edit" id="price" type="text">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="auto_renew">自动续订天数</label>
+                                <label class="floating-label" for="auto_renew">روزهای تمدید خودکار</label>
                                 <input class="form-control maxwidth-edit" id="auto_renew" type="text" value="0">
-                                <p class="form-control-guide"><i class="mdi mdi-information"></i>0为不允许自动续订，其他为到了那么多天之后就会自动从用户的账户上划钱抵扣
+                                <p class="form-control-guide"><i class="mdi mdi-information"></i>0 به این معنی است که تمدید خودکار مجاز نیست و دیگر به این معنی است که پس از گذشت چند روز، پول به طور خودکار از حساب کاربر کسر می شود.
                                 </p>
                             </div>
                         </div>
@@ -33,14 +33,14 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="bandwidth">流量（GB）</label>
+                                <label class="floating-label" for="bandwidth">ترافیک（GB）</label>
                                 <input class="form-control maxwidth-edit" id="bandwidth" type="text">
                             </div>
                             <div class="form-group form-group-label">
                                 <div class="checkbox switch">
                                     <label for="auto_reset_bandwidth">
                                         <input class="access-hide" id="auto_reset_bandwidth" type="checkbox"><span
-                                                class="switch-toggle"></span>续费时自动重置用户流量为上面这个流量值
+                                                class="switch-toggle"></span>هنگام تمدید، ترافیک کاربر را به مقدار ترافیک بالا بازنشانی کنید
                                     </label>
                                 </div>
                             </div>
@@ -52,22 +52,22 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="traffic-package-min">最低可购买用户等级</label>
+                                <label class="floating-label" for="traffic-package-min">حداقل سطح کاربر قابل خرید</label>
                                 <input class="form-control maxwidth-edit" id="traffic-package-min" type="text">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="traffic-package-max">最高可购买用户等级</label>
+                                <label class="floating-label" for="traffic-package-max">حداکثر سطح کاربر قابل خرید</label>
                                 <input class="form-control maxwidth-edit" id="traffic-package-max" type="text">
                             </div>
                             <div class="form-group form-group-label">
                                 <div class="checkbox switch">
                                     <label for="traffic-package-enable">
                                         <input class="access-hide" id="traffic-package-enable" type="checkbox"><span
-                                                class="switch-toggle"></span>是否设置此商品为流量叠加包
+                                                class="switch-toggle"></span>تنظیم این محصول به عنوان بسته ترافیک اضافه
                                     </label>
                                     <p class="form-control-guide">
                                         <i class="mdi mdi-information"></i>
-                                        设置为流量叠加包后除购买时获得流量外的设置无效
+                                        پس از تنظیم به عنوان بسته ترافیک اضافه، تنظیماتی غیر از ترافیک بدست آمده در زمان خرید نامعتبر است
                                     </p>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="expire">账户有效期天数</label>
+                                <label class="floating-label" for="expire">روزهای اعتبار حساب</label>
                                 <input class="form-control maxwidth-edit" id="expire" type="text" value="0">
                             </div>
                         </div>
@@ -89,14 +89,14 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="class">等级</label>
+                                <label class="floating-label" for="class">سطح</label>
                                 <input class="form-control maxwidth-edit" id="class" type="text" value="0">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="class_expire">等级有效期天数</label>
+                                <label class="floating-label" for="class_expire">روزهای اعتبار سطح</label>
                                 <input class="form-control maxwidth-edit" id="class_expire" type="text" value="0">
                             </div>
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>如需使用等级功能，请同时填写【等级】和【等级有效期天数】这两个项目</p>
+                            <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت نیاز به استفاده از تابع سطح، لطفاً دو مورد [سطح] و [دوره اعتبار سطح] را همزمان پر کنید.</p>
                         </div>
                     </div>
                 </div>
@@ -104,15 +104,15 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="reset_exp">多少天内</label>
+                                <label class="floating-label" for="reset_exp">در چند روز</label>
                                 <input class="form-control maxwidth-edit" id="reset_exp" type="number" value="0">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="reset">每多少天</label>
+                                <label class="floating-label" for="reset">چند روز</label>
                                 <input class="form-control maxwidth-edit" id="reset" type="number" value="0">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="reset_value">重置流量为多少G</label>
+                                <label class="floating-label" for="reset_value">حجم ترافیک ریستG</label>
                                 <input class="form-control maxwidth-edit" id="reset_value" type="number" value="0">
                             </div>
                         </div>
@@ -122,11 +122,11 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="speedlimit">端口限速</label>
+                                <label class="floating-label" for="speedlimit">محدودیت سرعت پورت</label>
                                 <input class="form-control maxwidth-edit" id="speedlimit" type="number" value="0">
                             </div>
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="connector">IP限制</label>
+                                <label class="floating-label" for="connector">محدودیت های IP</label>
                                 <input class="form-control maxwidth-edit" id="connector" type="number" value="0">
                             </div>
                         </div>
@@ -136,11 +136,11 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <div class="form-group form-group-label">
-                                <label class="floating-label" for="content_extra">服务支持</label>
+                                <label class="floating-label" for="content_extra">پشتیبانی خدمات</label>
                                 <input class="form-control maxwidth-edit" id="content_extra" type="text" value="">
-                                <p class="form-control-guide"><i class="mdi mdi-information"></i>例：<code>check-全球节点分布;clear-快速客服响应</code>，减号左边为icon代号右边为文字,以;隔开
+                                <p class="form-control-guide"><i class="mdi mdi-information"></i>مثال：<code>check-توزیع جهانی گره;clear-پاسخ سریع خدمات مشتری</code>，سمت چپ علامت منهای کد لوگو و سمت راست متن است که با ;
                                 </p>
-                                <p class="form-control-guide">icon代号参阅：<a
+                                <p class="form-control-guide">کد آیکون به：<a
                                             href="https://materialdesignicons.com/">Material Design Icons</a>
                                 </p>
                             </div>
@@ -154,7 +154,7 @@
                                 <div class="row">
                                     <div class="col-md-10 col-md-push-1">
                                         <button id="submit" type="submit"
-                                                class="btn btn-block btn-brand waves-attach waves-light">添加
+                                                class="btn btn-block btn-brand waves-attach waves-light">افزودن به
                                         </button>
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@
             }
             let contentExtra = $$getValue('content_extra');
             if (contentExtra === '') {
-                contentExtra = 'check-全球节点分布;check-快速客服响应;check-全平台客户端';
+                contentExtra = 'check-توزیع جهانی گره؛ پاسخ سریع خدمات مشتری را بررسی کنید;check-پاسخ سریع به خدمات مشتری;check-کلاینت پلتفرم کامل';
             }
             let data = {
                 name: $$getValue('name'),
@@ -222,7 +222,7 @@
                 },
                 error: jqXHR => {
                     $("#result").modal();
-                    $$.getElementById('msg').innerHTML = `发生错误：${
+                    $$.getElementById('msg').innerHTML = `خطایی رخ داده：${
                             jqXHR.status
                             }`;
                 }

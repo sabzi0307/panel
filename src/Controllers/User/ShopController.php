@@ -39,7 +39,7 @@ final class ShopController extends BaseController
         $shop = Shop::where('id', $shop)->where('status', 1)->first();
 
         if ($shop === null) {
-            return ResponseHelper::error($response, '非法请求');
+            return ResponseHelper::error($response, 'درخواست غیر مجاز');
         }
 
         if ($coupon === '') {
@@ -54,18 +54,18 @@ final class ShopController extends BaseController
         $coupon = Coupon::where('code', $coupon)->first();
 
         if ($coupon === null) {
-            return ResponseHelper::error($response, '优惠码无效');
+            return ResponseHelper::error($response, 'کد کوپن نامعتبر است');
         }
 
         if ($coupon->order($shop->id) === false) {
-            return ResponseHelper::error($response, '此优惠码不可用于此商品');
+            return ResponseHelper::error($response, 'این کد کوپن را نمی توان برای این مورد استفاده کرد');
         }
 
         $use_limit = $coupon->onetime;
         if ($use_limit > 0) {
             $use_count = Bought::where('userid', $user->id)->where('coupon', $coupon->code)->count();
             if ($use_count >= $use_limit) {
-                return ResponseHelper::error($response, '优惠码次数已用完');
+                return ResponseHelper::error($response, 'کدهای کوپن استفاده شده است');
             }
         }
 
@@ -73,7 +73,7 @@ final class ShopController extends BaseController
             'ret' => 1,
             'name' => $shop->name,
             'credit' => $coupon->credit . ' %',
-            'total' => $shop->price * ((100 - $coupon->credit) / 100) . '元',
+            'total' => $shop->price * ((100 - $coupon->credit) / 100) . 'تومان',
         ]);
     }
 
@@ -94,14 +94,14 @@ final class ShopController extends BaseController
             ->first();
 
         if ($shop === null) {
-            return ResponseHelper::error($response, '商品不存在或已下架');
+            return ResponseHelper::error($response, 'محصول وجود ندارد یا متوقف شده است');
         }
 
         $orders = Bought::where('userid', $user->id)->get();
         foreach ($orders as $order) {
             if ($order->shop()->useLoop()) {
                 if ($order->valid()) {
-                    return ResponseHelper::error($response, '您购买的含有自动重置系统的套餐还未过期，无法购买新套餐');
+                    return ResponseHelper::error($response, 'بسته ای که با سیستم تنظیم مجدد خودکار خریداری کرده اید منقضی نشده است، بنابراین نمی توانید بسته جدیدی خریداری کنید');
                 }
             }
         }
@@ -111,28 +111,28 @@ final class ShopController extends BaseController
         } else {
             $coupon = Coupon::where('code', $coupon)->first();
             if ($coupon === null) {
-                return ResponseHelper::error($response, '此优惠码不存在');
+                return ResponseHelper::error($response, 'این کد کوپن وجود ندارد');
             }
             $credit = $coupon->credit;
             if ($coupon->order($shop->id) === false) {
-                return ResponseHelper::error($response, '此优惠码不适用于此商品');
+                return ResponseHelper::error($response, 'این کد کوپن برای این مورد اعمال نمی شود');
             }
             if ($coupon->expire < \time()) {
-                return ResponseHelper::error($response, '此优惠码已过期');
+                return ResponseHelper::error($response, 'این کد کوپن منقضی شده است');
             }
             if ($coupon->onetime > 0) {
                 $use_count = Bought::where('userid', $user->id)
                     ->where('coupon', $coupon->code)
                     ->count();
                 if ($use_count >= $coupon->onetime) {
-                    return ResponseHelper::error($response, '此优惠码使用次数已达上限');
+                    return ResponseHelper::error($response, 'این کد کوپن حداکثر بار استفاده شده است');
                 }
             }
         }
 
         $price = $shop->price * (100 - $credit) / 100;
         if (bccomp((string) $user->money, (string) $price, 2) === -1) {
-            return ResponseHelper::error($response, '账户余额不足，请先充值');
+            return ResponseHelper::error($response, 'موجودی حساب کافی نیست، لطفاً ابتدا شارژ کنید');
         }
         $user->money = bcsub((string) $user->money, (string) $price, 2);
         $user->save();
@@ -164,7 +164,7 @@ final class ShopController extends BaseController
             Payback::rebate($user->id, $price);
         }
 
-        return ResponseHelper::successfully($response, '购买成功');
+        return ResponseHelper::successfully($response, 'خرید موفق');
     }
 
     /**
@@ -178,11 +178,11 @@ final class ShopController extends BaseController
         $price = $shop->price;
 
         if ($shop === null || $shop->trafficPackage() === 0) {
-            return ResponseHelper::error($response, '非法请求');
+            return ResponseHelper::error($response, 'درخواست غیر مجاز');
         }
 
         if ($user->class < $shop->content['traffic_package']['class']['min'] || $user->class > $shop->content['traffic_package']['class']['max']) {
-            return ResponseHelper::error($response, '您当前的会员等级无法购买此流量包');
+            return ResponseHelper::error($response, 'سطح عضویت فعلی شما نمی تواند این بسته ترافیک را خریداری کند');
         }
 
         if (! $user->isLogin) {
@@ -190,8 +190,8 @@ final class ShopController extends BaseController
         }
 
         if (bccomp((string) $user->money, (string) $price, 2) === -1) {
-            return ResponseHelper::error($response, '喵喵喵~ 当前余额不足，总价为'
-                . $price . '元。</br><a href="/user/code">点击进入充值界面</a>');
+            return ResponseHelper::error($response, 'میو میو~ موجودی فعلی کافی نیست، قیمت کل است'
+                . $price . 'تومان.</br><a href="/user/code">برای ورود به رابط شارژ کلیک کنید</a>');
         }
 
         $user->money = bcsub((string) $user->money, (string) $price, 2);
@@ -213,6 +213,6 @@ final class ShopController extends BaseController
             Payback::rebate($user->id, $price);
         }
 
-        return ResponseHelper::successfully($response, '购买成功');
+        return ResponseHelper::successfully($response, 'خرید موفق');
     }
 }

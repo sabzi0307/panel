@@ -11,12 +11,12 @@ final class GiftCardTable extends AbstractMigration
         if (! $this->hasTable('gift_card')) {
             $this->table('gift_card', [ 'id' => false, 'primary_key' => [ 'id' ]])
                 ->addColumn('id', 'biginteger', [ 'identity' => true,'signed' => false ])
-                ->addColumn('card', 'text', ['comment' => '卡号'])
-                ->addColumn('balance', 'integer', ['comment' => '余额'])
-                ->addColumn('create_time', 'integer', ['comment' => '创建时间'])
-                ->addColumn('status', 'integer', ['comment' => '使用状态'])
-                ->addColumn('use_time', 'integer', ['comment' => '使用时间'])
-                ->addColumn('use_user', 'integer', ['comment' => '使用用户'])
+                ->addColumn('card', 'text', ['comment' => 'شماره کارت'])
+                ->addColumn('balance', 'integer', ['comment' => 'اعتبار'])
+                ->addColumn('create_time', 'integer', ['comment' => 'زمان ایجاد'])
+                ->addColumn('status', 'integer', ['comment' => 'وضعیت استفاده'])
+                ->addColumn('use_time', 'integer', ['comment' => 'زمان استفاده'])
+                ->addColumn('use_user', 'integer', ['comment' => 'کاربر'])
                 ->addIndex([ 'id' ])
                 ->addIndex([ 'status' ])
                 ->create();

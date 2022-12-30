@@ -42,7 +42,7 @@ final class Node extends Model
      */
     public function type(): string
     {
-        return $this->type ? '显示' : '隐藏';
+        return $this->type ? 'نشان دادن' : 'پنهان شدن';
     }
 
     /**
@@ -58,13 +58,13 @@ final class Node extends Model
                 $sort = 'ShadowsocksR';
                 break;
             case 11:
-                $sort = 'V2Ray 节点';
+                $sort = 'V2Ray گره';
                 break;
             case 14:
                 $sort = 'Trojan';
                 break;
             default:
-                $sort = '系统保留';
+                $sort = 'سیستم رزرو شده';
         }
         return $sort;
     }
@@ -76,16 +76,16 @@ final class Node extends Model
     {
         switch ($this->mu_only) {
             case -1:
-                $mu_only = '只启用普通端口';
+                $mu_only = 'فقط پورت های معمولی فعال هستند';
                 break;
             case 0:
-                $mu_only = '单端口多用户与普通端口并存';
+                $mu_only = 'همزیستی چند کاربر در یک پورت واحد و پورت های مشترک';
                 break;
             case 1:
-                $mu_only = '只启用单端口多用户';
+                $mu_only = 'تنها چند کاربر تک پورت را فعال کنید';
                 break;
             default:
-                $mu_only = '错误类型';
+                $mu_only = 'نوع خطا';
         }
         return $mu_only;
     }

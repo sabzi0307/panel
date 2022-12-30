@@ -18,6 +18,6 @@ final class DetectRule extends Model
      */
     public function type(): string
     {
-        return $this->type === 1 ? '数据包明文匹配' : '数据包十六进制匹配';
+        return $this->type === 1 ? 'مطابقت متن ساده بسته' : 'بسته منطبق هگز';
     }
 }

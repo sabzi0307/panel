@@ -101,7 +101,7 @@ final class UserController extends BaseController
             ->where('usedatetime', '>', date('Y-m-d H:i:s', $time))
             ->first();
 
-        if ($codes !== null && strpos($codes->code, '充值') !== false) {
+        if ($codes !== null && strpos($codes->code, 'شارژ مجدد') !== false) {
             return $response->withJson([
                 'ret' => 1,
             ]);
@@ -118,12 +118,12 @@ final class UserController extends BaseController
     {
         $code = trim($request->getParam('code'));
         if ($code === '') {
-            return ResponseHelper::error($response, '请填写充值码');
+            return ResponseHelper::error($response, 'لطفا کد شارژ را وارد کنید');
         }
 
         $codeq = Code::where('code', $code)->where('isused', 0)->first();
         if ($codeq === null) {
-            return ResponseHelper::error($response, '没有这个充值码');
+            return ResponseHelper::error($response, 'بدون کد شارژ');
         }
 
         $user = $this->user;
@@ -143,7 +143,7 @@ final class UserController extends BaseController
 
             return $response->withJson([
                 'ret' => 1,
-                'msg' => '兑换成功，金额为 ' . $codeq->number . ' 元',
+                'msg' => 'مبادله موفقیت آمیز بود، مقدار آن برابر با ' . $codeq->number . ' تومان',
             ]);
         }
 
@@ -186,7 +186,7 @@ final class UserController extends BaseController
         if ($code === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '二维码不能为空',
+                'msg' => 'کد QR نمی تواند خالی باشد',
             ]);
         }
         $user = $this->user;
@@ -195,12 +195,12 @@ final class UserController extends BaseController
         if (! $rcode) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '测试错误',
+                'msg' => 'خطای تست',
             ]);
         }
         return $response->withJson([
             'ret' => 1,
-            'msg' => '测试成功',
+            'msg' => 'تست موفقیت آمیز بود',
         ]);
     }
 
@@ -213,7 +213,7 @@ final class UserController extends BaseController
         if ($enable === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '选项无效',
+                'msg' => 'گزینه نامعتبر',
             ]);
         }
         $user = $this->user;
@@ -221,7 +221,7 @@ final class UserController extends BaseController
         $user->save();
         return $response->withJson([
             'ret' => 1,
-            'msg' => '设置成功',
+            'msg' => 'با موفقیت تنظیم شد',
         ]);
     }
 
@@ -374,8 +374,8 @@ final class UserController extends BaseController
 
             if ($unlock !== null && $node !== null) {
                 $details = \json_decode($unlock->result, true);
-                $details = str_replace('Originals Only', '仅限自制', $details);
-                $details = str_replace('Oversea Only', '仅限海外', $details);
+                $details = str_replace('Originals Only', 'فقط خانگی', $details);
+                $details = str_replace('Oversea Only', 'فقط در خارج از کشور', $details);
 
                 foreach ($details as $key => $value) {
                     $info = [
@@ -399,8 +399,8 @@ final class UserController extends BaseController
 
                 if ($value_node !== null) {
                     $details = \json_decode($value_node->result, true);
-                    $details = str_replace('Originals Only', '仅限自制', $details);
-                    $details = str_replace('Oversea Only', '仅限海外', $details);
+                    $details = str_replace('Originals Only', 'فقط خانگی', $details);
+                    $details = str_replace('Oversea Only', 'فقط در خارج از کشور', $details);
 
                     $info = [
                         'node_name' => $key_node->name,
@@ -484,7 +484,7 @@ final class UserController extends BaseController
         $num = trim($num);
 
         if (! Tools::isInt($num) || $price < 0 || $num <= 0) {
-            return ResponseHelper::error($response, '非法请求');
+            return ResponseHelper::error($response, 'درخواست غیر مجاز');
         }
 
         $amount = $price * $num;
@@ -496,13 +496,13 @@ final class UserController extends BaseController
         }
 
         if ($user->money < $amount) {
-            return ResponseHelper::error($response, '余额不足，总价为' . $amount . '元。');
+            return ResponseHelper::error($response, 'موجودی ناکافی، قیمت کل' . $amount . 'تومان.');
         }
         $user->invite_num += $num;
         $user->money -= $amount;
         $user->save();
 
-        return ResponseHelper::successfully($response, '邀请次数添加成功');
+        return ResponseHelper::successfully($response, 'دعوت‌نامه‌ها با موفقیت اضافه شدند');
     }
 
     /**
@@ -517,12 +517,12 @@ final class UserController extends BaseController
         if (Tools::isSpecialChars($customcode) || $price < 0 || $customcode === '' || strlen($customcode) > 32) {
             return ResponseHelper::error(
                 $response,
-                '定制失败，邀请链接不能为空，后缀不能包含特殊符号且长度不能大于32字符'
+                'سفارشی‌سازی انجام نشد، پیوند دعوت نمی‌تواند خالی باشد، پسوند نمی‌تواند دارای نمادهای خاص باشد و طول آن نمی‌تواند از 32 کاراکتر تجاوز کند.'
             );
         }
 
         if (InviteCode::where('code', $customcode)->count() !== 0) {
-            return ResponseHelper::error($response, '此后缀名被抢注了');
+            return ResponseHelper::error($response, 'این پسوند ثبت شده است');
         }
 
         $user = $this->user;
@@ -534,7 +534,7 @@ final class UserController extends BaseController
         if ($user->money < $price) {
             return ResponseHelper::error(
                 $response,
-                '余额不足，总价为' . $price . '元。'
+                'موجودی ناکافی، قیمت کل' . $price . 'تومان.'
             );
         }
         $code = InviteCode::where('user_id', $user->id)->first();
@@ -542,7 +542,7 @@ final class UserController extends BaseController
         $user->money -= $price;
         $user->save();
         $code->save();
-        return ResponseHelper::successfully($response, '定制成功');
+        return ResponseHelper::successfully($response, 'با موفقیت سفارشی شد');
     }
 
     /**
@@ -555,14 +555,14 @@ final class UserController extends BaseController
         $repwd = $request->getParam('repwd');
         $user = $this->user;
         if (! Hash::checkPassword($user->pass, $oldpwd)) {
-            return ResponseHelper::error($response, '旧密码错误');
+            return ResponseHelper::error($response, 'خطای رمز قدیمی');
         }
         if ($pwd !== $repwd) {
-            return ResponseHelper::error($response, '两次输入不符合');
+            return ResponseHelper::error($response, 'این دو ورودی مطابقت ندارند');
         }
 
         if (strlen($pwd) < 8) {
-            return ResponseHelper::error($response, '密码太短啦');
+            return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
         }
         $hashPwd = Hash::passwordHash($pwd);
         $user->pass = $hashPwd;
@@ -572,7 +572,7 @@ final class UserController extends BaseController
             $user->cleanLink();
         }
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     /**
@@ -586,19 +586,19 @@ final class UserController extends BaseController
         $otheruser = User::where('email', $newemail)->first();
 
         if ($_ENV['enable_change_email'] !== true) {
-            return ResponseHelper::error($response, '此项不允许自行修改，请联系管理员操作');
+            return ResponseHelper::error($response, 'این مورد مجاز به تغییر توسط خودتان نیست، لطفاً برای عملیات با مدیر تماس بگیرید');
         }
 
         if (Setting::obtain('reg_email_verify')) {
             $emailcode = $request->getParam('emailcode');
             $mailcount = EmailVerify::where('email', '=', $newemail)->where('code', '=', $emailcode)->where('expire_in', '>', \time())->first();
             if ($mailcount === null) {
-                return ResponseHelper::error($response, '您的邮箱验证码不正确');
+                return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
             }
         }
 
         if ($newemail === '') {
-            return ResponseHelper::error($response, '未填写邮箱');
+            return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
         }
 
         $check_res = Check::isEmailLegal($newemail);
@@ -607,11 +607,11 @@ final class UserController extends BaseController
         }
 
         if ($otheruser !== null) {
-            return ResponseHelper::error($response, '邮箱已经被使用了');
+            return ResponseHelper::error($response, 'ایمیل در حال حاضر در حال استفاده می باشد');
         }
 
         if ($newemail === $oldemail) {
-            return ResponseHelper::error($response, '新邮箱不能和旧邮箱一样');
+            return ResponseHelper::error($response, 'ایمیل جدید نمی تواند مانند ایمیل قبلی باشد');
         }
 
         $antiXss = new AntiXSS();
@@ -632,7 +632,7 @@ final class UserController extends BaseController
         $user->user_name = $antiXss->xss_clean($newusername);
         $user->save();
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     /**
@@ -669,7 +669,7 @@ final class UserController extends BaseController
         $shop = Bought::where('id', $id)->where('userid', $this->user->id)->first();
 
         if ($shop === null) {
-            return ResponseHelper::error($response, '关闭自动续费失败，订单不存在。');
+            return ResponseHelper::error($response, 'تمدید خودکار خاموش نشد، سفارش وجود ندارد.');
         }
 
         if ($this->user->id === $shop->userid) {
@@ -677,9 +677,9 @@ final class UserController extends BaseController
         }
 
         if (! $shop->save()) {
-            return ResponseHelper::error($response, '关闭自动续费失败');
+            return ResponseHelper::error($response, 'تمدید خودکار خاموش نشد');
         }
-        return ResponseHelper::successfully($response, '关闭自动续费成功');
+        return ResponseHelper::successfully($response, 'تمدید خودکار را با موفقیت خاموش شد');
     }
 
     /**
@@ -695,17 +695,17 @@ final class UserController extends BaseController
         if ($user->telegram_id !== null) {
             return ResponseHelper::error(
                 $response,
-                '您绑定了 Telegram ，所以此项并不能被修改。'
+                'شما به تلگرام متصل هستید، بنابراین این مورد قابل تغییر نیست.'
             );
         }
 
         if ($contact === '' || $type === '') {
-            return ResponseHelper::error($response, '非法输入');
+            return ResponseHelper::error($response, 'ورودی غیرمجاز');
         }
 
         $user1 = User::where('im_value', $contact)->where('im_type', $type)->first();
         if ($user1 !== null) {
-            return ResponseHelper::error($response, '此联络方式已经被注册');
+            return ResponseHelper::error($response, 'این مخاطب قبلاً ثبت شده است');
         }
 
         $user->im_type = $type;
@@ -713,7 +713,7 @@ final class UserController extends BaseController
         $user->im_value = $antiXss->xss_clean($contact);
         $user->save();
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     /**
@@ -726,14 +726,14 @@ final class UserController extends BaseController
         $user = $this->user;
 
         if ($theme === '') {
-            return ResponseHelper::error($response, '非法输入');
+            return ResponseHelper::error($response, 'ورودی غیرمجاز');
         }
 
         $antiXss = new AntiXSS();
         $user->theme = $antiXss->xss_clean($theme);
         $user->save();
 
-        return ResponseHelper::successfully($response, '设置成功');
+        return ResponseHelper::successfully($response, 'با موفقیت تنظیم شد');
     }
 
     /**
@@ -747,14 +747,14 @@ final class UserController extends BaseController
             if ($value === 2 && $_ENV['enable_telegram'] === false) {
                 return ResponseHelper::error(
                     $response,
-                    '修改失败，当前无法使用 Telegram 接收每日报告'
+                    'ویرایش انجام نشد، در حال حاضر نمی‌توان گزارش‌های روزانه را با استفاده از تلگرام دریافت کرد'
                 );
             }
             $user->sendDailyMail = $value;
             $user->save();
-            return ResponseHelper::successfully($response, '修改成功');
+            return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
         }
-        return ResponseHelper::error($response, '非法输入');
+        return ResponseHelper::error($response, 'ورودی غیرمجاز');
     }
 
     /**
@@ -769,14 +769,14 @@ final class UserController extends BaseController
         $existing_uuid = User::where('uuid', $new_uuid)->first();
 
         if ($existing_uuid !== null) {
-            return ResponseHelper::error($response, '目前出现一些问题，请稍后再试');
+            return ResponseHelper::error($response, 'در حال حاضر مشکلاتی وجود دارد، لطفاً بعداً دوباره امتحان کنید');
         }
 
         $user->uuid = $new_uuid;
         $user->passwd = $pwd;
         $user->save();
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     /**
@@ -791,16 +791,16 @@ final class UserController extends BaseController
         $method = strtolower($antiXss->xss_clean($request->getParam('method')));
 
         if ($method === '') {
-            ResponseHelper::error($response, '非法输入');
+            ResponseHelper::error($response, 'ورودی غیرمجاز');
         }
         if (! Tools::isParamValidate('method', $method)) {
-            ResponseHelper::error($response, '加密无效');
+            ResponseHelper::error($response, 'رمزگذاری نامعتبر است');
         }
 
         $user->method = $method;
         $user->save();
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     /**
@@ -818,18 +818,18 @@ final class UserController extends BaseController
     public function doCheckIn(Request $request, Response $response, array $args)
     {
         if ($_ENV['enable_checkin'] === false) {
-            return ResponseHelper::error($response, '暂时还不能签到');
+            return ResponseHelper::error($response, 'هنوز قادر به ورود به سیستم نیست');
         }
 
         if (Setting::obtain('enable_checkin_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
-                return ResponseHelper::error($response, '系统无法接受您的验证结果，请刷新页面后重试');
+                return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }
         }
 
         if (strtotime($this->user->expire_in) < \time()) {
-            return ResponseHelper::error($response, '没有过期的账户才可以签到');
+            return ResponseHelper::error($response, 'فقط حساب‌هایی که منقضی نشده‌اند می‌توانند وارد شوند');
         }
 
         $checkin = $this->user->checkin();
@@ -867,15 +867,15 @@ final class UserController extends BaseController
 
         $passwd = $request->getParam('passwd');
         if (! Hash::checkPassword($user->pass, $passwd)) {
-            return ResponseHelper::error($response, '密码错误');
+            return ResponseHelper::error($response, 'رمز عبور اشتباه');
         }
 
         if ($_ENV['enable_kill'] === true) {
             Auth::logout();
             $user->killUser();
-            return ResponseHelper::successfully($response, '您的帐号已经从我们的系统中删除。欢迎下次光临');
+            return ResponseHelper::successfully($response, 'حساب شما از سیستم ما حذف شده است.');
         }
-        return ResponseHelper::error($response, '管理员不允许删除，如需删除请联系管理员。');
+        return ResponseHelper::error($response, 'مدیر اجازه حذف را نمی دهد، لطفاً در صورت نیاز به حذف با مدیر تماس بگیرید.');
     }
 
     /**
@@ -897,7 +897,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->telegramReset();
 
-        return ResponseHelper::successfully($response, '重置成功');
+        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
     /**
@@ -908,7 +908,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->cleanLink();
 
-        return ResponseHelper::successfully($response, '重置成功');
+        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
     /**
@@ -919,7 +919,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->clearInviteCodes();
 
-        return ResponseHelper::successfully($response, '重置成功');
+        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
     /**
@@ -1002,7 +1002,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '切换成功',
+            'msg' => 'با موفقیت تغییر دهید',
         ]);
     }
 }

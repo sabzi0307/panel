@@ -57,13 +57,13 @@ final class AdminController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'total' => '原始金额',
-                    'event_user_id' => '发起用户ID',
-                    'event_user_name' => '发起用户名',
-                    'ref_user_id' => '获利用户ID',
-                    'ref_user_name' => '获利用户名',
-                    'ref_get' => '获利金额',
-                    'datetime' => '时间',
+                    'total' => 'مقدار اصلی',
+                    'event_user_id' => 'شروع شناسه کاربر',
+                    'event_user_name' => 'شروع نام کاربری',
+                    'ref_user_id' => 'شناسه کاربری پاداش',
+                    'ref_user_name' => 'نام کاربری پاداش',
+                    'ref_get' => 'مقدار پاداش',
+                    'datetime' => 'زمان',
                 ], 'payback/ajax'))
                 ->display('admin/invite.tpl')
         );
@@ -97,7 +97,7 @@ final class AdminController extends BaseController
         if ($userid === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邀请者更改失败，检查用户id是否输入正确',
+                'msg' => 'دعوت کننده تغییر نکرد، بررسی کنید که آیا شناسه کاربری به درستی وارد شده است یا خیر',
             ]);
         }
         if (strpos($userid, '@') !== false) {
@@ -108,14 +108,14 @@ final class AdminController extends BaseController
         if ($user === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邀请者更改失败，检查用户id是否输入正确',
+                'msg' => 'دعوت کننده تغییر نکرد، بررسی کنید که آیا شناسه کاربری به درستی وارد شده است یا خیر',
             ]);
         }
         $user->ref_by = $request->getParam('refid', 0);  //如未提供，则删除用户的邀请者
         $user->save();
         return $response->withJson([
             'ret' => 1,
-            'msg' => '邀请者更改成功',
+            'msg' => 'دعوت کننده با موفقیت تغییر کرد',
         ]);
     }
 
@@ -130,13 +130,13 @@ final class AdminController extends BaseController
         if (Tools::isInt($num) === false) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '非法请求',
+                'msg' => 'درخواست غیر مجاز',
             ]);
         }
         if ($request->getParam('uid') === '0') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邀请次数添加失败，检查用户id或者用户邮箱是否输入正确',
+                'msg' => 'تعداد دعوت‌نامه‌ها اضافه نشد، بررسی کنید که آیا شناسه کاربری یا ایمیل کاربر به درستی وارد شده است',
             ]);
         }
         if (strpos($request->getParam('uid'), '@') !== false) {
@@ -147,13 +147,13 @@ final class AdminController extends BaseController
         if ($user === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '邀请次数添加失败，检查用户id或者用户邮箱是否输入正确',
+                'msg' => 'تعداد دعوت‌نامه‌ها اضافه نشد، بررسی کنید که آیا شناسه کاربری یا ایمیل کاربر به درستی وارد شده است',
             ]);
         }
         $user->addInviteNum((int) $num);
         return $response->withJson([
             'ret' => 1,
-            'msg' => '邀请次数添加成功',
+            'msg' => 'دعوت‌نامه‌ها با موفقیت اضافه شدند',
         ]);
     }
 
@@ -168,11 +168,11 @@ final class AdminController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'code' => '优惠码',
-                    'expire' => '过期时间',
-                    'shop' => '限定商品ID',
-                    'credit' => '额度',
-                    'onetime' => '次数',
+                    'code' => 'کد تبلیغاتی',
+                    'expire' => 'تاریخ انقضا',
+                    'shop' => 'شناسه محصول محدود',
+                    'credit' => 'سهمیه',
+                    'onetime' => 'مکرر',
                 ], 'coupon/ajax'))
                 ->display('admin/coupon.tpl')
         );
@@ -207,14 +207,14 @@ final class AdminController extends BaseController
         if (! isset($final_code) && \in_array($generate_type, [1, 3])) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '优惠码不能为空',
+                'msg' => 'کد کوپن نمی تواند خالی باشد',
             ]);
         }
         if ($generate_type === 1) {
             if (Coupon::where('code', $final_code)->count() !== 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => '优惠码已存在',
+                    'msg' => 'کد کوپن از قبل وجود دارد',
                 ]);
             }
         } else {
@@ -239,7 +239,7 @@ final class AdminController extends BaseController
         $code->save();
         return $response->withJson([
             'ret' => 1,
-            'msg' => '优惠码添加成功',
+            'msg' => 'کد کوپن با موفقیت اضافه شد',
         ]);
     }
 }

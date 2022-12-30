@@ -10,7 +10,7 @@ final class AddUserUseNewShop extends AbstractMigration
     {
         if (! $this->table('user')->hasColumn('use_new_shop')) {
             $this->table('user')
-                ->addColumn('use_new_shop', 'smallinteger', [ 'comment' => '是否启用新商店', 'null' => false, 'default' => 0 ])
+                ->addColumn('use_new_shop', 'smallinteger', [ 'comment' => 'برای فعال کردن فروشگاه های جدید', 'null' => false, 'default' => 0 ])
                 ->save();
         }
     }

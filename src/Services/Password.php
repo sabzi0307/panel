@@ -20,7 +20,7 @@ final class Password
         if (! $pwdRst->save()) {
             return false;
         }
-        $subject = $_ENV['appName'] . '重置密码';
+        $subject = $_ENV['appName'] . 'بازنشانی رمز عبور';
         $resetUrl = $_ENV['baseUrl'] . '/password/token/' . $pwdRst->token;
         try {
             Mail::send(

@@ -48,7 +48,7 @@ final class DetectLog extends Model
     public function userName(): string
     {
         if ($this->user() === null) {
-            return '用户已不存在';
+            return 'کاربر دیگر وجود ندارد';
         }
         return $this->user()->user_name;
     }
@@ -67,7 +67,7 @@ final class DetectLog extends Model
     public function nodeName(): string
     {
         if ($this->node() === null) {
-            return '节点已不存在';
+            return 'گره دیگر وجود ندارد';
         }
         return $this->node()->name;
     }
@@ -86,7 +86,7 @@ final class DetectLog extends Model
     public function ruleName(): string
     {
         if ($this->rule() === null) {
-            return '规则已不存在';
+            return 'قانون دیگر وجود ندارد';
         }
         return $this->rule()->name;
     }
@@ -97,7 +97,7 @@ final class DetectLog extends Model
     public function ruleText(): string
     {
         if ($this->rule() === null) {
-            return '规则已不存在';
+            return 'قانون دیگر وجود ندارد';
         }
         return $this->rule()->text;
     }
@@ -108,7 +108,7 @@ final class DetectLog extends Model
     public function ruleRegex(): string
     {
         if ($this->rule() === null) {
-            return '规则已不存在';
+            return 'قانون دیگر وجود ندارد';
         }
         return $this->rule()->regex;
     }
@@ -119,7 +119,7 @@ final class DetectLog extends Model
     public function ruleType(): string
     {
         if ($this->rule() === null) {
-            return '规则已不存在';
+            return 'قانون دیگر وجود ندارد';
         }
         return $this->rule()->type();
     }

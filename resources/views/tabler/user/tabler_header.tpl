@@ -161,17 +161,17 @@
                                         <i class="ti ti-shield-check icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        ممیزی
+                                        فیلترینگ
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/detect">
                                         <i class="ti ti-barrier-block"></i>&nbsp;
-                                        قوانین ممیزی
+                                        قوانین فیلترینگ
                                     </a>
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        گزارش ممیزی
+                                        گزارش فیلترینگ
                                     </a>
                                 </div>
                             </li>
