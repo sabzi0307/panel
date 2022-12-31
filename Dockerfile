@@ -4,11 +4,11 @@ COPY . /var/www
 WORKDIR /var/www
 
 RUN apt-get -y install wget && \
-    wget https://raw.githubusercontent.com/M1Screw/Airport-toolkit/master/b2_backup.sh && \
-    chmod +x b2_backup.sh && \
     cp config/.config.example.php "config/.config.php" && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
+    cp config/b2_backup.sh b2_backup.sh && \
+    chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
     chmod -R 777 /var/www/storage/framework/smarty/compile/ && \
     mv db/migrations/20000101000000_init_database.php.new db/migrations/20000101000000_init_database.php && \
