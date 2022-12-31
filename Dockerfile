@@ -3,8 +3,7 @@ FROM indexyz/php
 COPY . /var/www
 WORKDIR /var/www
 
-RUN apt-get -y install wget && \
-    cp config/.config.example.php "config/.config.php" && \
+RUN cp config/.config.example.php "config/.config.php" && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
@@ -19,7 +18,6 @@ RUN apt-get -y install wget && \
     php xcat Tool importAllSettings && \
     php xcat Tool createAdmin && \
     php xcat ClientDownload && \
-    wget https://cdn.jsdelivr.net/gh/sspanel-uim/qqwry.dat@latest/qqwry.dat -O storage/qqwry.dat && \
     crontab -l | { cat; echo "30 23 * * * php /var/www/xcat SendDiaryMail"; } | crontab - && \
     crontab -l | { cat; echo "0 0 * * * php /var/www/xcat Job DailyJob"; } | crontab - && \
     crontab -l | { cat; echo "*/1 * * * * php /var/www/xcat Job CheckJob"; } | crontab - && \
