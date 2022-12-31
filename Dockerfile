@@ -4,7 +4,7 @@ COPY . /var/www
 WORKDIR /var/www
 
 RUN apt-get update \
-    &&     apt-get -y wget install zlib1g-dev default-mysql-client libzip-dev libcurl4-openssl-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev cron git supervisor libonig-dev \
+    &&     apt-get -y install wget zlib1g-dev default-mysql-client libzip-dev libcurl4-openssl-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev cron git supervisor libonig-dev \
     &&     docker-php-ext-install pdo pdo_mysql mbstring bcmath zip curl mysqli gd opcache \
     &&     docker-php-ext-configure gd --with-freetype --with-jpeg \
     &&     apt clean autoclean -y \
