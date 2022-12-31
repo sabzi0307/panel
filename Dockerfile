@@ -19,8 +19,6 @@ RUN apt-get -y install wget && \
     php xcat Tool importAllSettings && \
     php xcat Tool createAdmin && \
     php xcat ClientDownload && \
-    rm -r storage/framework/smarty/compile/* && \
-    wget https://cdn.jsdelivr.net/gh/sspanel-uim/qqwry.dat@latest/qqwry.dat -O storage/qqwry.dat && \
     crontab -l | { cat; echo "30 23 * * * php /var/www/xcat SendDiaryMail"; } | crontab - && \
     crontab -l | { cat; echo "0 0 * * * php /var/www/xcat Job DailyJob"; } | crontab - && \
     crontab -l | { cat; echo "*/1 * * * * php /var/www/xcat Job CheckJob"; } | crontab - && \
