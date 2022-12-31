@@ -20,7 +20,7 @@ final class NodeController extends BaseController
     public static $details = [
         'field' => [
             'op' => 'شرح عملیات',
-            'id' => 'شناسه گره',
+            'id' => 'شناسه نود',
             'name' => 'نام',
             'server' => 'نشانی',
             'type' => 'وضعیت',
@@ -114,7 +114,7 @@ final class NodeController extends BaseController
         if (! $success) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'دریافت IP گره ناموفق بود، لطفاً بررسی کنید که آیا آدرس گره وارد شده صحیح است یا خیر！',
+                'msg' => 'دریافت IP نود ناموفق بود، لطفاً بررسی کنید که آیا آدرس نود وارد شده صحیح است یا خیر！',
             ]);
         }
 
@@ -148,7 +148,7 @@ final class NodeController extends BaseController
             } catch (Exception $e) {
                 return $response->withJson([
                     'ret' => 1,
-                    'msg' => 'گره با موفقیت اضافه شد، اما اعلان تلگرام ناموفق بود',
+                    'msg' => 'نود با موفقیت اضافه شد، اما اعلان تلگرام ناموفق بود',
                     'node_id' => $node->id,
                 ]);
             }
@@ -156,7 +156,7 @@ final class NodeController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'گره با موفقیت اضافه شد',
+            'msg' => 'نود با موفقیت اضافه شد',
             'node_id' => $node->id,
         ]);
     }
@@ -216,7 +216,7 @@ final class NodeController extends BaseController
         if (! $success) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'به روز رسانی IP گره انجام نشد، لطفاً بررسی کنید که آیا آدرس گره وارد شده صحیح است یا خیر！',
+                'msg' => 'به روز رسانی IP نود انجام نشد، لطفاً بررسی کنید که آیا آدرس نود وارد شده صحیح است یا خیر！',
             ]);
         }
 

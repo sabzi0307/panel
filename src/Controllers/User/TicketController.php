@@ -189,7 +189,7 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'با موفقیت ثبت شد',
+            'msg' => 'با موفقیت ذخیره شد',
         ]);
     }
 

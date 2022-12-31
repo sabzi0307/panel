@@ -4,6 +4,7 @@ services:
     sspanel:
         image: sspaneluim/panel
         container_name: sspanel
+        depend_on: sspaneldb
         restart: always
         ports:
             - 80:80
@@ -11,10 +12,11 @@ services:
             - ./config/.config.php:/var/www/config/.config.php
     mariadb:
         image: mariadb:10.9
-        container_name: mariadb
+        container_name: sspaneldb
         restart: always
         environment:
           MYSQL_ROOT_PASSWORD: sspanel
+          MYSQL_DATABASE: sspanel
 
     phpmyadmin:
         image: phpmyadmin

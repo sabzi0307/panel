@@ -191,7 +191,7 @@
                                 <span>محدودیت های تخصیص و استفاده</span>
                             </div>
                             <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">گروه گره</label>
+                                    <label class="form-label col-12 col-form-label">گروه نود</label>
                                     <div class="col">
                                         <input id="node_group" type="text" class="form-control"
                                             value="{$edit_user->node_group}">

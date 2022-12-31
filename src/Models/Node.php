@@ -58,7 +58,7 @@ final class Node extends Model
                 $sort = 'ShadowsocksR';
                 break;
             case 11:
-                $sort = 'V2Ray گره';
+                $sort = 'V2Ray نود';
                 break;
             case 14:
                 $sort = 'Trojan';

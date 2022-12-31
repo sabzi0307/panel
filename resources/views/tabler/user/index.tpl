@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">مرکز کاربران</span>
+                        <span class="home-title">پنل کاربر</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">اطلاعات حساب و آخرین اطلاعیه ها را اینجا ببینید</span>
@@ -381,11 +381,11 @@
                             <div class="row">
                                 <div class="col-auto d-flex align-items-center pe-2">
                                     <span class="legend me-2 bg-primary"></span>
-                                    <span>مقدار مصرف گذشته {$user->LastusedTraffic()}</span>
+                                    <span>میزان مصرف گذشته {$user->LastusedTraffic()}</span>
                                 </div>
                                 <div class="col-auto d-flex align-items-center px-2">
                                     <span class="legend me-2 bg-success"></span>
-                                    <span>مقدار مصرفی امروز {$user->TodayusedTraffic()}</span>
+                                    <span>میزان مصرفی امروز {$user->TodayusedTraffic()}</span>
                                 </div>
                                 <div class="col-auto d-flex align-items-center ps-2">
                                     <span class="legend me-2"></span>
@@ -433,11 +433,11 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <h3 class="card-title">每日签到</h3>
+                                <h3 class="card-title">ورود روزانه</h3>
                                 <p class="text-muted">
                                     برای دریافت وارد شوید
                                     {if $config['checkinMin'] !== $config['checkinMax']}
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> 至 <code>{$config['checkinMax']} MB</code>
+                                        &nbsp;<code>{$config['checkinMin']} MB</code> به <code>{$config['checkinMax']} MB</code>
                                         ترافیک در محدوده，
                                     {else}
                                         <code>{$config['checkinMin']} MB</code>

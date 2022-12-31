@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col">
                             <a id="success-confirm" href="" class="btn w-100" data-bs-dismiss="modal">
-                                خوب است
+                                باشه
                             </a>
                         </div>
                     </div>

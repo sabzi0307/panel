@@ -82,7 +82,7 @@
                                         <i class="ti ti-user icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        من
+                                        پروفایل من
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -117,17 +117,17 @@
                                         <i class="ti ti-brand-telegram icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        استفاده کنید
+                                        نحوه استفاده
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        لیست گره ها
+                                        لیست نود ها
                                     </a>
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
-                                        پخش استریم مسدود شد
+                                        استریم های مسدود شده
                                     </a>
                                 </div>
                             </li>

@@ -199,7 +199,7 @@ final class AuthController extends BaseController
             }
             $user = User::where('email', $email)->first();
             if ($user !== null) {
-                return ResponseHelper::error($response, 'این ایمیل قبلا ثبت شده است');
+                return ResponseHelper::error($response, 'این ایمیل قبلا ذخیره شده است');
             }
             $ipcount = EmailVerify::where('ip', '=', $_SERVER['REMOTE_ADDR'])
                 ->where('expire_in', '>', \time())
@@ -386,7 +386,7 @@ final class AuthController extends BaseController
             }
             $user = User::where('im_value', $imvalue)->where('im_type', $imtype)->first();
             if ($user !== null) {
-                return ResponseHelper::error($response, 'این مخاطب قبلاً ثبت شده است');
+                return ResponseHelper::error($response, 'این مخاطب قبلاً ذخیره شده است');
             }
         } else {
             $imtype = 1;
@@ -401,7 +401,7 @@ final class AuthController extends BaseController
         // check email
         $user = User::where('email', $email)->first();
         if ($user !== null) {
-            return ResponseHelper::error($response, 'ایمیل ثبت شده است');
+            return ResponseHelper::error($response, 'ایمیل ذخیره شده است');
         }
 
         if (Setting::obtain('reg_email_verify')) {

@@ -43,7 +43,7 @@
                                     <label for="auto_reset_bandwidth">
                                         <input {if $shop->auto_reset_bandwidth==1}checked{/if} class="access-hide"
                                                id="auto_reset_bandwidth" type="checkbox"><span
-                                                class="switch-toggle"></span>هنگام تمدید، ترافیک کاربر را به مقدار ترافیک بالا ریست کنید
+                                                class="switch-toggle"></span>هنگام تمدید، ترافیک کاربر را به میزان ترافیک بالا ریست کنید
                                     </label>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                 <label class="floating-label" for="content_extra">پشتیبانی خدمات</label>
                                 <input class="form-control maxwidth-edit" id="content_extra" type="text"
                                        value="{foreach $shop->contentExtra() as $service}{$service[0]}-{$service[1]}{if $service@last}{else};{/if}{/foreach}">
-                                <p class="form-control-guide"><i class="mdi mdi-information"></i>مثال：<code>check-توزیع جهانی گره;clear-پاسخ سریع خدمات مشتری</code>，سمت چپ علامت منهای کد لوگو و سمت راست متن است که با ;
+                                <p class="form-control-guide"><i class="mdi mdi-information"></i>مثال：<code>check-توزیع جهانی نود;clear-پاسخ سریع خدمات مشتری</code>，سمت چپ علامت منهای کد لوگو و سمت راست متن است که با ;
                                 </p>
                                 <p class="form-control-guide">کد نماد مراجعه کنید：<a
                                             href="https://materialdesignicons.com/">Material Design Icons</a>
@@ -192,7 +192,7 @@
             }
             let contentExtra = $$getValue('content_extra');
             if (contentExtra === '' || contentExtra === '-') {
-                contentExtra = 'check-توزیع جهانی گره;check-پاسخ سریع خدمات مشتری;check-کلاینت پلتفرم کامل';
+                contentExtra = 'check-توزیع جهانی نود;check-پاسخ سریع خدمات مشتری;check-کلاینت پلتفرم کامل';
             }
             let data = {
                 name: $$getValue('name'),

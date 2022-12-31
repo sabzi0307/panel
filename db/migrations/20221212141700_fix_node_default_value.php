@@ -9,7 +9,7 @@ final class FixNodeDefaultValue extends AbstractMigration
     public function up(): void
     {
         $this->table('node')
-            ->changeColumn('node_speedlimit', 'double', [ 'comment' => 'محدودیت سرعت گره', 'default' => 0, 'null' => false ])
+            ->changeColumn('node_speedlimit', 'double', [ 'comment' => 'محدودیت سرعت نود', 'default' => 0, 'null' => false ])
             ->save();
     }
 

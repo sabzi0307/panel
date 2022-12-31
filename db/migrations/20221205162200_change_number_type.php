@@ -11,13 +11,13 @@ final class ChangeNumberType extends AbstractMigration
         $this->table('user')
             ->changeColumn('port', 'smallinteger', [ 'comment' => 'پورت', 'signed' => false, 'null' => false ])
             ->changeColumn('class', 'integer', [ 'comment' => 'سطح', 'default' => 0, 'signed' => false, 'null' => false ])
-            ->changeColumn('node_group', 'integer', [ 'comment' => 'گروه بندی گره', 'default' => 0, 'signed' => false, 'null' => false ])
+            ->changeColumn('node_group', 'integer', [ 'comment' => 'گروه بندی نود', 'default' => 0, 'signed' => false, 'null' => false ])
             ->changeColumn('node_speedlimit', 'double', [ 'comment' => 'محدودیت سرعت کاربر', 'default' => 0, 'null' => false ])
             ->changeColumn('node_iplimit', 'smallinteger', [ 'comment' => 'تعداد IP هایی که می توان همزمان وصل کرد', 'default' => 0, 'signed' => false, 'null' => false ])
             ->changeColumn('uuid', 'uuid', [ 'comment' => 'UUID', 'null' => false ])
             ->save();
         $this->table('node')
-            ->changeColumn('node_speedlimit', 'double', [ 'comment' => 'محدودیت سرعت گره', 'default' => 0, 'null' => false ])
+            ->changeColumn('node_speedlimit', 'double', [ 'comment' => 'محدودیت سرعت نود', 'default' => 0, 'null' => false ])
             ->save();
     }
 
@@ -26,7 +26,7 @@ final class ChangeNumberType extends AbstractMigration
         $this->table('user')
             ->changeColumn('port', 'integer', [ 'comment' => 'پورت کاربر' ])
             ->changeColumn('class', 'integer', [ 'comment' => 'سطح کاربر', 'default' => 0 ])
-            ->changeColumn('node_group', 'integer', [ 'comment' => 'گروه بندی گره', 'default' => 0 ])
+            ->changeColumn('node_group', 'integer', [ 'comment' => 'گروه بندی نود', 'default' => 0 ])
             ->changeColumn('node_speedlimit', 'decimal', [ 'comment' => 'محدودیت سرعت در هر اتصال', 'default' => 0 ])
             ->changeColumn('uuid', 'string', [ 'comment' => 'UUID' ])
             ->save();

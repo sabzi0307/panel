@@ -110,7 +110,7 @@ final class Callback
                 ],
             ],
         ];
-        $text = 'سلام ، منوی BOT در زیر آمده است：' . PHP_EOL . PHP_EOL . 'کاربران این سایت لطفا برای انجام عملیات اتصال تلگرام به مرکز کاربران مراجعه کنند.';
+        $text = 'سلام ، منوی BOT در زیر آمده است：' . PHP_EOL . PHP_EOL . 'کاربران این سایت لطفا برای انجام عملیات اتصال تلگرام به پنل کاربر مراجعه کنند.';
         return [
             'text' => $text,
             'keyboard' => $Keyboard,
@@ -219,7 +219,7 @@ final class Callback
         $Keyboard = [
             [
                 [
-                    'text' => 'مرکز کاربران',
+                    'text' => 'پنل کاربر',
                     'callback_data' => 'user.center',
                 ],
                 [

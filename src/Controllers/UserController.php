@@ -522,7 +522,7 @@ final class UserController extends BaseController
         }
 
         if (InviteCode::where('code', $customcode)->count() !== 0) {
-            return ResponseHelper::error($response, 'این پسوند ثبت شده است');
+            return ResponseHelper::error($response, 'این پسوند ذخیره شده است');
         }
 
         $user = $this->user;
@@ -705,7 +705,7 @@ final class UserController extends BaseController
 
         $user1 = User::where('im_value', $contact)->where('im_type', $type)->first();
         if ($user1 !== null) {
-            return ResponseHelper::error($response, 'این مخاطب قبلاً ثبت شده است');
+            return ResponseHelper::error($response, 'این مخاطب قبلاً ذخیره شده است');
         }
 
         $user->im_type = $type;

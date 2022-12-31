@@ -9,7 +9,7 @@
                         <span class="home-title my-3">نمای کلی سیستم</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">نشانگرهای مختلف عملکرد سیستم را در اینجا مشاهده کنید</span>
+                        <span class="home-subtitle">نشاننودای مختلف عملکرد سیستم را در اینجا مشاهده کنید</span>
                     </div>
                 </div>
             </div>

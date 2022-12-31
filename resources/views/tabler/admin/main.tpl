@@ -74,9 +74,9 @@
                         <li><a href="/admin/announcement"><i class="mdi mdi-bullhorn-variant icon-lg"></i>&nbsp;مدیریت اطلاعیه</a></li>
                         <li><a href="/admin/ticket"><i class="mdi mdi-comment-question icon-lg"></i>&nbsp;مدیریت دستور کار</a></li>
                     </ul>
-                    <a class="waves-attach" data-toggle="collapse" href="#ui_menu_node">گره</a>
+                    <a class="waves-attach" data-toggle="collapse" href="#ui_menu_node">نود</a>
                     <ul class="menu-collapse collapse in" id="ui_menu_node">
-                        <li><a href="/admin/node"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست گره ها</a></li>
+                        <li><a href="/admin/node"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست نود ها</a></li>
                     </ul>
                     <a class="waves-attach" data-toggle="collapse" href="#ui_menu_user">کاربر</a>
                     <ul class="menu-collapse collapse in" id="ui_menu_user">
@@ -107,7 +107,7 @@
                         <li><a href="/admin/coupon"><i class="mdi mdi-code-tags icon-lg"></i>&nbsp;کد تبلیغاتی</a></li>
                         <li><a href="/admin/bought"><i class="mdi mdi-shopping-search icon-lg"></i>&nbsp;تاریخچه خرید</a></li>
                     </ul>
-                <li><a href="/user"><i class="mdi mdi-account icon-lg"></i>&nbsp;مرکز کاربران</a></li>
+                <li><a href="/user"><i class="mdi mdi-account icon-lg"></i>&nbsp;پنل کاربر</a></li>
             </ul>
         </div>
     </div>

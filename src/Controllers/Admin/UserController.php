@@ -124,7 +124,7 @@ final class UserController extends BaseController
             }
             $exist = User::where('email', $email)->first();
             if ($exist !== null) {
-                throw new \Exception('این ایمیل قبلا ثبت شده است');
+                throw new \Exception('این ایمیل قبلا ذخیره شده است');
             }
             if ($password === '') {
                 $password = Tools::genRandomChar(16);

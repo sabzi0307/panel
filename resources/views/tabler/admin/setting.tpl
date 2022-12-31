@@ -74,7 +74,7 @@
                                             </select>
                                         </div>
 
-                                        <button id="submit_mail" type="submit" class="btn  btn-brand btn-dense">ثبت</button>
+                                        <button id="submit_mail" type="submit" class="btn  btn-brand btn-dense">ذخیره</button>
 
                                         <!-- smtp_test_recipient -->
                                         <div class="form-group form-group-label">
@@ -145,7 +145,7 @@
                                             <p class="form-control-guide"><i class="mdi mdi-information"></i>اگر نمی خواهید از این ویژگی استفاده کنید، لطفا آن را خالی بگذارید</p>
                                         </div>
 
-                                        <button id="submit_smtp" type="submit" class="btn  btn-brand btn-dense">ثبت</button>
+                                        <button id="submit_smtp" type="submit" class="btn  btn-brand btn-dense">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="sendgrid">
                                         <!-- sendgrid_key -->
@@ -164,7 +164,7 @@
                                             <input class="form-control maxwidth-edit" id="sendgrid_name" value="{$settings['sendgrid_name']}">
                                         </div>
 
-                                        <button id="submit_sendgrid" type="submit" class="btn btn-brand btn-dense">ثبت</button>
+                                        <button id="submit_sendgrid" type="submit" class="btn btn-brand btn-dense">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="mailgun">
                                         <!-- mailgun_key -->
@@ -183,7 +183,7 @@
                                             <input class="form-control maxwidth-edit" id="mailgun_sender" value="{$settings['mailgun_sender']}">
                                         </div>
 
-                                        <button id="submit_mailgun" type="submit" class="btn btn-brand btn-dense">ثبت</button>
+                                        <button id="submit_mailgun" type="submit" class="btn btn-brand btn-dense">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="ses">
                                         <!-- aws_access_key_id -->
@@ -207,7 +207,7 @@
                                             <input class="form-control maxwidth-edit" id="aws_ses_sender" value="{$settings['aws_ses_sender']}">
                                         </div>
 
-                                        <button id="submit_ses" type="submit" class="btn btn-brand btn-dense">ثبت</button>
+                                        <button id="submit_ses" type="submit" class="btn btn-brand btn-dense">ذخیره</button>
                                     </div>
                                 </div>
 
@@ -240,7 +240,7 @@
                                         {/foreach}
                                         </div>
 
-                                        <button id="submit_payment" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_payment" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
 
                                     <div class="tab-pane fade" id="payjs">
@@ -261,7 +261,7 @@
                                             <input class="form-control maxwidth-edit" id="payjs_key" value="{$settings['payjs_key']}">
                                         </div>
 
-                                        <button id="submit_payjs_pay" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_payjs_pay" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
 
                                     <div class="tab-pane fade" id="paymentwall">
@@ -287,7 +287,7 @@
                                             <input class="form-control maxwidth-edit" id="pmw_height" value="{$settings['pmw_height']}">
                                         </div>
 
-                                        <button id="submit_paymentwall" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_paymentwall" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     
                                     <div class="tab-pane fade" id="theadpay">
@@ -308,7 +308,7 @@
                                             <input class="form-control maxwidth-edit" id="theadpay_key" value="{$settings['theadpay_key']}">
                                         </div>
 
-                                        <button id="submit_theadpay" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_theadpay" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
 
                                     <div class="tab-pane fade" id="stripe_card">
@@ -356,7 +356,7 @@
                                             <input class="form-control maxwidth-edit" id="stripe_webhook_key" value="{$settings['stripe_webhook_key']}">
                                         </div>
 
-                                        <button id="submit_stripe" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_stripe" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     
                                     <div class="tab-pane fade" id="vmqpay">
@@ -375,7 +375,7 @@
                                             <input class="form-control maxwidth-edit" id="vmq_key" value="{$settings['vmq_key']}">
                                         </div>
                                         
-                                        <button id="submit_vmq_pay" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_vmq_pay" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     
                                     <div class="tab-pane fade" id="f2fpay">
@@ -408,7 +408,7 @@
                                             <p class="form-control-guide"><i class="mdi mdi-information"></i>این مورد را می توان خالی گذاشت، تأثیری بر استفاده نخواهد داشت</p>
                                         </div>
                                         
-                                        <button id="submit_f2f_pay" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_f2f_pay" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
 								
 								<div class="tab-pane fade" id="epay">
@@ -471,7 +471,7 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <button id="submit_e_pay" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_e_pay" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                      </div>
                                 </div>
 
@@ -524,7 +524,7 @@
                                             <p class="form-control-guide"><i class="mdi mdi-information"></i>وجود داشته باشد <a href="https://www.mylivechat.com" target="view_window">https://www.mylivechat.com</a> درخواست بده، من در این مورد اطلاعی ندارم</p>
                                         </div>
 
-                                        <button id="submit_web_customer_service_system" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_web_customer_service_system" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="admin_contact">
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>توجه: اطلاعات تماس خالی نمایش داده نخواهد شد</p>
@@ -533,7 +533,7 @@
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>1. در صفحه ثبت نام یا بازنشانی رمز عبور، روی دکمه [عدم دریافت کد تأیید] کلیک کنید</p>
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>2. حساب کاربری به صفحه غیر فعال اطلاع داده می شود</p>
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>3. صفحه شارژ به کاربرانی که شارژ آنها نرسیده است، اطلاع می دهد</p>
-                                        <p class="form-control-guide"><i class="mdi mdi-information"></i>4. در زیر تابلوی اعلانات در صفحه اصلی مرکز کاربران</p>
+                                        <p class="form-control-guide"><i class="mdi mdi-information"></i>4. در زیر تابلوی اعلانات در صفحه اصلی پنل کاربر</p>
                                         <!-- enable_admin_contact -->
                                         <div class="form-group form-group-label">
                                             <label class="floating-label">آیا اطلاعات تماس مدیر وب سایت نمایش داده شود</label>
@@ -558,7 +558,7 @@
                                             <input class="form-control maxwidth-edit" id="admin_contact3" value="{htmlspecialchars($settings['admin_contact3'])}">
                                         </div>
 
-                                        <button id="submit_admin_contact" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_admin_contact" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                 </div>
 
@@ -619,7 +619,7 @@
                                             </select>
                                         </div>
 
-                                        <button id="submit_verify_code" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_verify_code" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="turnstile">
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>وجود داشته باشد <a href="https://developers.cloudflare.com/turnstile/get-started/#sitekey-and-secret-key" target="view_window">https://developers.cloudflare.com/turnstile/get-started/#sitekey-and-secret-key</a> برنامه</p>
@@ -634,7 +634,7 @@
                                             <input class="form-control maxwidth-edit" id="turnstile_secret" value="{$settings['turnstile_secret']}">
                                         </div>
 
-                                        <button id="submit_turnstile" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_turnstile" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                     <div class="tab-pane fade" id="geetest">
                                         <p class="form-control-guide"><i class="mdi mdi-information"></i>وجود داشته باشد <a href="https://gtaccount.geetest.com/sensebot/overview" target="view_window">https://gtaccount.geetest.com/sensebot/overview</a> برنامه</p>
@@ -649,7 +649,7 @@
                                             <input class="form-control maxwidth-edit" id="geetest_key" value="{$settings['geetest_key']}">
                                         </div>
 
-                                        <button id="submit_geetest" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_geetest" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                 </div>
 
@@ -694,7 +694,7 @@
                                             <input class="form-control maxwidth-edit" id="email_verify_ip_limit" value="{$settings['email_verify_ip_limit']}">
                                         </div>
 
-                                        <button type="submit" class="btn btn-block btn-brand submit_register_settings">ثبت</button>
+                                        <button type="submit" class="btn btn-block btn-brand submit_register_settings">ذخیره</button>
                                     </div>
 
                                     <div class="tab-pane fade" id="register_default_value">
@@ -794,7 +794,7 @@
                                             </select>
                                         </div>
 
-                                        <button type="submit" class="btn btn-block btn-brand submit_register_settings">ثبت</button>
+                                        <button type="submit" class="btn btn-block btn-brand submit_register_settings">ذخیره</button>
                                     </div>
                                 </div>
 
@@ -834,7 +834,7 @@
 
                                         <br/>
                                         
-                                        <button type="submit" class="btn btn-block btn-brand submit_invite_settings">ثبت</button>
+                                        <button type="submit" class="btn btn-block btn-brand submit_invite_settings">ذخیره</button>
                                     </div>
                                             
                                     <div class="tab-pane fade" id="rebate_mode">
@@ -892,7 +892,7 @@
                                         
                                         <br/>
                                         
-                                        <button type="submit" class="btn btn-block btn-brand submit_invite_settings">ثبت</button>
+                                        <button type="submit" class="btn btn-block btn-brand submit_invite_settings">ذخیره</button>
                                     </div>
                                 </div>
 
@@ -907,7 +907,7 @@
                                     <div class="tab-pane fade active in" id="telegram_gernal_settings">
                                         <!-- telegram_add_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">افزودن اطلاعیه گره</label>
+                                            <label class="floating-label">افزودن اطلاعیه نود</label>
                                             <select id="telegram_add_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_add_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_add_node'] == true}selected{/if}>فعال</option>
@@ -915,12 +915,12 @@
                                         </div>
                                         <!-- telegram_add_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اطلاع رسانی اضافه شدن  گره</label>
+                                            <label class="floating-label">متن اطلاع رسانی اضافه شدن  نود</label>
                                             <input class="form-control maxwidth-edit" id="telegram_add_node_text" value="{$settings['telegram_add_node_text']}">
                                         </div>
                                         <!-- telegram_update_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">تغییر اعلان گره</label>
+                                            <label class="floating-label">تغییر اعلان نود</label>
                                             <select id="telegram_update_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_update_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_update_node'] == true}selected{/if}>فعال</option>
@@ -928,12 +928,12 @@
                                         </div>
                                         <!-- telegram_update_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اطلاع رسانی تغییرات در گره</label>
+                                            <label class="floating-label">متن اطلاع رسانی تغییرات در نود</label>
                                             <input class="form-control maxwidth-edit" id="telegram_update_node_text" value="{$settings['telegram_update_node_text']}">
                                         </div>
                                         <!-- telegram_delete_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان حذف گره</label>
+                                            <label class="floating-label">اعلان حذف نود</label>
                                             <select id="telegram_delete_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_delete_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_delete_node'] == true}selected{/if}>فعال</option>
@@ -941,12 +941,12 @@
                                         </div>
                                         <!-- telegram_delete_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان حذف گره</label>
+                                            <label class="floating-label">متن اعلان حذف نود</label>
                                             <input class="form-control maxwidth-edit" id="telegram_delete_node_text" value="{$settings['telegram_delete_node_text']}">
                                         </div>
                                         <!-- telegram_node_gfwed -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان مسدود شدن گره توسط GFW</label>
+                                            <label class="floating-label">اعلان مسدود شدن نود توسط GFW</label>
                                             <select id="telegram_node_gfwed" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_gfwed'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_gfwed'] == true}selected{/if}>فعال</option>
@@ -954,12 +954,12 @@
                                         </div>
                                         <!-- telegram_node_gfwed_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان مسدود شدن گره توسط GFW</label>
+                                            <label class="floating-label">متن اعلان مسدود شدن نود توسط GFW</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_gfwed_text" value="{$settings['telegram_node_gfwed_text']}">
                                         </div>
                                         <!-- telegram_node_ungfwed -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان رفع مسدودی گره از GFW</label>
+                                            <label class="floating-label">اعلان رفع مسدودی نود از GFW</label>
                                             <select id="telegram_node_ungfwed" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_ungfwed'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_ungfwed'] == true}selected{/if}>فعال</option>
@@ -967,12 +967,12 @@
                                         </div>
                                         <!-- telegram_node_ungfwed_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان رفع مسدودی گره از GFW</label>
+                                            <label class="floating-label">متن اعلان رفع مسدودی نود از GFW</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_ungfwed_text" value="{$settings['telegram_node_ungfwed_text']}">
                                         </div>
                                         <!-- telegram_node_online -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان بازگشت گره به حالت آنلاین</label>
+                                            <label class="floating-label">اعلان بازگشت نود به حالت آنلاین</label>
                                             <select id="telegram_node_online" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_online'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_online'] == true}selected{/if}>فعال</option>
@@ -980,12 +980,12 @@
                                         </div>
                                         <!-- telegram_node_online_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان بازگشت گره به حالت آنلاین</label>
+                                            <label class="floating-label">متن اعلان بازگشت نود به حالت آنلاین</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_online_text" value="{$settings['telegram_node_online_text']}">
                                         </div>
                                         <!-- telegram_node_offline -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان آفلاین شدن گره</label>
+                                            <label class="floating-label">اعلان آفلاین شدن نود</label>
                                             <select id="telegram_node_offline" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_offline'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_offline'] == true}selected{/if}>فعال</option>
@@ -993,7 +993,7 @@
                                         </div>
                                         <!-- telegram_node_offline_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان آفلاین شدن گره</label>
+                                            <label class="floating-label">متن اعلان آفلاین شدن نود</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_offline_text" value="{$settings['telegram_node_offline_text']}">
                                         </div>
                                         <!-- telegram_daily_job -->
@@ -1052,7 +1052,7 @@
                                             <input class="form-control maxwidth-edit" id="telegram_group_link" value="{$settings['telegram_group_link']}">
                                         </div>
 
-                                        <button id="submit_telegram_gernal_settings" type="submit" class="btn btn-block btn-brand">ثبت</button>
+                                        <button id="submit_telegram_gernal_settings" type="submit" class="btn btn-block btn-brand">ذخیره</button>
                                     </div>
                                 </div>
                             </div>

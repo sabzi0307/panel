@@ -49,7 +49,7 @@ final class Ip extends Model
     public function nodeName(): string
     {
         if ($this->node() === null) {
-            return 'گره دیگر وجود ندارد';
+            return 'نود دیگر وجود ندارد';
         }
         return $this->node()->name;
     }

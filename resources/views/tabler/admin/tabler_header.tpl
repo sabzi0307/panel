@@ -99,7 +99,7 @@
                                             </a>
                                             <a class="dropdown-item" href="/admin/node">
                                                 <i class="ti ti-server-2"></i>&nbsp;
-                                                گره
+                                                نود
                                             </a>
                                         </div>
                                     </div>
