@@ -3,7 +3,8 @@ FROM indexyz/php
 COPY . /var/www
 WORKDIR /var/www
 
-RUN apt-get -y install wget && wget https://raw.githubusercontent.com/M1Screw/Airport-toolkit/master/b2_backup.sh && \
+RUN apt-get -y install wget && \
+    wget https://raw.githubusercontent.com/M1Screw/Airport-toolkit/master/b2_backup.sh && \
     chmod +x b2_backup.sh && \
     cp config/.config.example.php "config/.config.php" && \
     cp config/appprofile.example.php config/appprofile.php && \
@@ -34,5 +35,4 @@ RUN apt-get -y install wget && wget https://raw.githubusercontent.com/M1Screw/Ai
         echo 'autorestart=true'; \
         echo 'killasgroup=true'; \
         echo 'stopasgroup=true'; \
-    } | tee /etc/supervisor/crond.conf && \
-
+    } | tee /etc/supervisor/crond.conf
