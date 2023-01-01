@@ -1,7 +1,7 @@
 FROM indexyz/php
 
 COPY . /var/www
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 WORKDIR /var/www
 
 ENV DB_PORT=3306
