@@ -104,7 +104,7 @@
                                 &nbsp;تاریخچه شارژ مجدد</a>
                         </li>
                         <li><a href="/admin/shop"><i class="mdi mdi-shopping icon-lg"></i>&nbsp;فروشگاه</a></li>
-                        <li><a href="/admin/coupon"><i class="mdi mdi-code-tags icon-lg"></i>&nbsp;کد تبلیغاتی</a></li>
+                        <li><a href="/admin/coupon"><i class="mdi mdi-code-tags icon-lg"></i>&nbsp;کد تخفیف</a></li>
                         <li><a href="/admin/bought"><i class="mdi mdi-shopping-search icon-lg"></i>&nbsp;تاریخچه خرید</a></li>
                     </ul>
                 <li><a href="/user"><i class="mdi mdi-account icon-lg"></i>&nbsp;پنل کاربر</a></li>

@@ -3,7 +3,10 @@ FROM indexyz/php
 COPY . /var/www
 WORKDIR /var/www
 
-RUN cp config/.config.example.php "config/.config.php" && \
+ENV DB_PORT=3306
+
+
+RUN apt-get -y install wget && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
@@ -14,10 +17,7 @@ RUN cp config/.config.example.php "config/.config.php" && \
     curl -SL https://getcomposer.org/installer -o composer.phar && \
     php composer.phar && \
     php composer.phar install && \
-    php vendor/bin/phinx migrate && \
-    php xcat Tool importAllSettings && \
-    php xcat Tool createAdmin && \
-    php xcat ClientDownload && \
+    wget https://cdn.jsdelivr.net/gh/sspanel-uim/qqwry.dat@latest/qqwry.dat -O storage/qqwry.dat && \
     crontab -l | { cat; echo "30 23 * * * php /var/www/xcat SendDiaryMail"; } | crontab - && \
     crontab -l | { cat; echo "0 0 * * * php /var/www/xcat Job DailyJob"; } | crontab - && \
     crontab -l | { cat; echo "*/1 * * * * php /var/www/xcat Job CheckJob"; } | crontab - && \
@@ -25,6 +25,7 @@ RUN cp config/.config.example.php "config/.config.php" && \
     crontab -l | { cat; echo "5 0 * * * php /var/www/xcat FinanceMail day "; } | crontab - && \
     crontab -l | { cat; echo "6 0 * * 0 php /var/www/xcat FinanceMail week"; } | crontab - && \
     crontab -l | { cat; echo "7 0 1 * * php /var/www/xcat FinanceMail month"; } | crontab - && \
+    crontab -l | { cat; echo "1 0 * * * /usr/bin/bash /var/www/b2_backup.sh backup config/b2_backup_config"; } | crontab - && \
     { \
         echo '[program:crond]'; \
         echo 'command=cron -f'; \

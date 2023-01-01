@@ -149,7 +149,7 @@ final class LinkController extends BaseController
             switch ($node_raw->sort) {
                 case '11':
                     $v2_port = $node_custom_config['v2_port'] ?? ($node_custom_config['offset_port_user'] ?? ($node_custom_config['offset_port_node'] ?? 443));
-                    //默認值有問題的請懂 V2 怎麽用的人來改一改。
+                    //If there is a problem with the default value, please someone who understands how to use V2 can change it.
                     $alter_id = $node_custom_config['alter_id'] ?? '0';
                     $security = $node_custom_config['security'] ?? 'none';
                     $network = $node_custom_config['network'] ?? '';
@@ -188,7 +188,7 @@ final class LinkController extends BaseController
     public static function getTrojan($user): string
     {
         $links = '';
-        //篩選出用戶能連接的節點
+        //Filter out the nodes that users can connect to
         $nodes_raw = Node::where('type', 1)
             ->where('node_class', '<=', $user->class)
             ->whereIn('node_group', [0, $user->group])
@@ -199,7 +199,7 @@ final class LinkController extends BaseController
 
         foreach ($nodes_raw as $node_raw) {
             $node_custom_config = \json_decode($node_raw->custom_config, true);
-            //檢查是否配置“前端/订阅中下发的服务器地址”
+            //Check whether the "server address issued in the front end/subscription" is configured
             if (! \array_key_exists('server_user', $node_custom_config)) {
                 $server = $node_raw->server;
             } else {

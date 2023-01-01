@@ -1,7 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+@font-face {
+  font-family: "Yekan";
+  src: url("/theme/tabler/font/Yekan.eot");
+  src: url("/theme/tabler/font/Yekan.woff") format("woff"),
+  url("/theme/tabler/font/Yekan.otf") format("opentype"),
+  url("/theme/tabler/font/Yekan.svg#filename") format("svg");
+  }
+  @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
 
 .center-xy {
-  // width: inherit;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
@@ -9,7 +15,7 @@
 }
 
 html, body {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Yekan','Roboto Mono', monospace;
   font-size: 16px;
 }
 

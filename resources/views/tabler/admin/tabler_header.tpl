@@ -207,7 +207,7 @@
                                             </a>
                                             <a class="dropdown-item" href="/admin/coupon">
                                                 <i class="ti ti-ticket"></i>&nbsp;
-                                                کد تبلیغاتی
+                                                کد تخفیف
                                             </a>
                                             <a class="dropdown-item" href="/admin/giftcard">
                                                 <i class="ti ti-gift"></i>&nbsp;

@@ -394,7 +394,7 @@ final class UserController extends BaseController
                 $key_node = Node::where('id', $key)->first();
                 $value_node = StreamMedia::where('node_id', $value)
                     ->orderBy('id', 'desc')
-                    ->where('created_at', '>', \time() - 86460) // 只获取最近一天零一分钟内上报的数据
+                    ->where('created_at', '>', \time() - 86460) // Only get the data reported within the last day and one minute
                     ->first();
 
                 if ($value_node !== null) {

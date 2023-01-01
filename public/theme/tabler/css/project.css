@@ -603,6 +603,8 @@
 
 body {
   padding-bottom: 69px;
+  direction: rtl;
+  
 }
 
 .ui-content-header {

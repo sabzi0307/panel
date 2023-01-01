@@ -212,8 +212,18 @@ final class SubController extends BaseController
     {
         $nodes = [];
         $clash_config = $_ENV['Clash_Config'];
+        
+        str_replace(
+            [
+                'proxyproviderip',
+            ],
+            [
+                $_ENV['subUrl']
+            ],
+            $clash_config
+        )
 
-        //篩選出用戶能連接的節點
+        //Filter out the nodes that users can connect to
         $nodes_raw = Node::where('type', 1)
             ->where('node_class', '<=', $user->class)
             ->whereIn('node_group', [0, $user->group])
@@ -224,7 +234,7 @@ final class SubController extends BaseController
 
         foreach ($nodes_raw as $node_raw) {
             $node_custom_config = \json_decode($node_raw->custom_config, true);
-            //檢查是否配置“前端/订阅中下发的服务器地址”
+            //Check whether the "server address issued in the front end/subscription" is configured
             if (! \array_key_exists('server_user', $node_custom_config)) {
                 $server = $node_raw->server;
             } else {
@@ -234,7 +244,7 @@ final class SubController extends BaseController
                 case '0':
                     $plugin = $node_custom_config['plugin'] ?? '';
                     $plugin_option = $node_custom_config['plugin_option'] ?? null;
-                    // Clash 特定配置
+                    // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
 
                     $node = [
@@ -259,7 +269,7 @@ final class SubController extends BaseController
                     $host = $node_custom_config['host'] ?? '';
                     $allow_insecure = $node_custom_config['allow_insecure'] ?? false;
                     $tls = \in_array($security, ['tls', 'xtls']) ? true : false;
-                    // Clash 特定配置
+                    // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
                     $ws_opts = $node_custom_config['ws-opts'] ?? $node_custom_config['ws_opts'] ?? null;
                     $h2_opts = $node_custom_config['h2-opts'] ?? $node_custom_config['h2_opts'] ?? null;
@@ -291,7 +301,7 @@ final class SubController extends BaseController
                     $network = $node_custom_config['network'] ?? \array_key_exists('grpc', $node_custom_config) && $node_custom_config['grpc'] === '1' ? 'grpc' : 'tcp';
                     $host = $node_custom_config['host'] ?? '';
                     $allow_insecure = $node_custom_config['allow_insecure'] ?? false;
-                    // Clash 特定配置
+                    // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
                     $ws_opts = $node_custom_config['ws-opts'] ?? $node_custom_config['ws_opts'] ?? null;
                     $grpc_opts = $node_custom_config['grpc-opts'] ?? $node_custom_config['grpc_opts'] ?? null;

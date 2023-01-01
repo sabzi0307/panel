@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">کد تبلیغاتی</h1>
+            <h1 class="content-heading">کد تخفیف</h1>
         </div>
     </div>
     <div class="container">
@@ -12,7 +12,7 @@
                 <div class="card-main">
                     <div class="card-inner">
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="prefix">کد تبلیغاتی</label>
+                            <label class="floating-label" for="prefix">کد تخفیف</label>
                             <input class="form-control maxwidth-edit" id="prefix" type="text">
                             <p class="form-control-guide"><i class="mdi mdi-information"></i>برای ایجاد کد تخفیف تصادفی خالی بگذارید</p>
                         </div>
@@ -26,7 +26,7 @@
                             <input class="form-control maxwidth-edit" id="expire" type="number" value="1">
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">شناسه محصول موجود کد تبلیغاتی</label>
+                            <label class="floating-label" for="shop">شناسه محصول موجود کد تخفیف</label>
                             <input class="form-control maxwidth-edit" id="shop" type="text">
                             <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت پر نشدن، همه محصولات موجود هستند. اگر چند مورد وجود دارد، آنها را با کاماهای نیم پهن انگلیسی جدا کنید.</p>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="row">
                                 <div class="col-md-10 col-md-push-1">
                                     <button id="coupon" type="submit"
-                                            class="btn btn-block btn-brand waves-attach waves-light">کد تبلیغاتی را ایجاد کنید
+                                            class="btn btn-block btn-brand waves-attach waves-light">کد تخفیف را ایجاد کنید
                                     </button>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
             <div class="card margin-bottom-no">
                 <div class="card-main">
                     <div class="card-inner">
-                        <p class="card-heading">کد تبلیغاتی</p>
+                        <p class="card-heading">کد تخفیف</p>
                         <p>نمایش ورودی ها:
                             {include file='table/checkbox.tpl'}
                         </p>

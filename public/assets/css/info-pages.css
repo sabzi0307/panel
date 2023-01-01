@@ -1,8 +1,14 @@
+@font-face {
+  font-family: "Yekan";
+  src: url("/theme/tabler/font/Yekan.eot");
+  src: url("/theme/tabler/font/Yekan.woff") format("woff"),
+  url("/theme/tabler/font/Yekan.otf") format("opentype"),
+  url("/theme/tabler/font/Yekan.svg#filename") format("svg");
+  }
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC');
 
 .center-xy {
-  // width: inherit;
   top: 10%;
   left: 20%;
   right: 20%;
@@ -11,7 +17,7 @@
 }
 
 html, body {
-  font-family: 'Roboto Mono', 'Noto Sans SC', monospace;
+  font-family: 'Yekan','Roboto Mono', 'Noto Sans SC', monospace;
   font-size: 16px;
 }
 

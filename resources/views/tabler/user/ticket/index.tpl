@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">工单列表</span>
+                        <span class="home-title my-3">لیست تیکت ها</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">你可以在这里联系管理员获取支持</span>
+                        <span class="home-subtitle">برای پشتیبانی از اینجا می توانید با ادمین تماس بگیرید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -17,7 +17,7 @@
                         <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#create-ticket">
                             <i class="icon ti ti-plus"></i>
-                            创建工单
+                            دستور کار جدید
                         </a>
                         <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="#create-ticket">
@@ -58,12 +58,12 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="d-flex">
-                                                <!-- 工单状态标签 -->
+                                                <!-- صفحه وضعیت تیکت -->
                                                 <span class="status status-grey">{$ticket->status}</span>
-                                                <!-- 工单类型标签 -->
+                                                <!-- صفحه نوع تیکت -->
                                                 <span class="status status-grey">{$ticket->type}</span>
                                                 <a href="/user/ticket/{$ticket->id}/view"
-                                                    class="btn btn-primary ms-auto">查看</a>
+                                                    class="btn btn-primary ms-auto">بررسی</a>
                                             </div>
                                         </div>
                                     </div>
@@ -72,9 +72,9 @@
                         {else}
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">没有任何工单</h3>
+                                <h3 class="card-title">بدون تیکت</h3>
                             </div>
-                            <div class="card-body">如需帮助，请点击右上角按钮开启新工单</div>
+                            <div class="card-body">اگر به کمک نیاز دارید، لطفاً روی دکمه در گوشه سمت راست بالا کلیک کنید تا یک تیکت جدید باز شود</div>
                         </div>
                         {/if}
                     </div>
@@ -87,30 +87,30 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">创建工单</h5>
+                    <h5 class="modal-title">افزودن دستورکار</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <select id="ticket-type" class="form-select">
-                            <option value="0">请选择工单类型</option>
-                            <option value="howto">使用</option>
-                            <option value="billing">财务</option>
-                            <option value="account">账户</option>
-                            <option value="other">其他</option>
+                            <option value="0">لطفا نوع دستورکار را مشخص کنید</option>
+                            <option value="howto">نحوه استفاده</option>
+                            <option value="billing">فروش و مالی</option>
+                            <option value="account">حساب کاربری</option>
+                            <option value="other">سایر موارد</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <input id="ticket-title" type="text" class="form-control" placeholder="请输入工单主题">
+                        <input id="ticket-title" type="text" class="form-control" placeholder="لطفا موضوع تیکت را وارد کنید">
                     </div>
                     <div class="mb-3">
-                        <textarea id="ticket-comment" class="form-control" rows="12" placeholder="请输入工单内容"></textarea>
+                        <textarea id="ticket-comment" class="form-control" rows="12" placeholder="لطفا محتوای دستور کار را وارد کنید"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
                     <button id="create-ticket-button" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">创建</button>
+                        data-bs-dismiss="modal">ثبت درخواست</button>
                 </div>
             </div>
         </div>

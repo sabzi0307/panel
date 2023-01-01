@@ -168,7 +168,7 @@ final class AdminController extends BaseController
             $this->view()
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'id' => 'ID',
-                    'code' => 'کد تبلیغاتی',
+                    'code' => 'کد تخفیف',
                     'expire' => 'تاریخ انقضا',
                     'shop' => 'شناسه محصول محدود',
                     'credit' => 'سهمیه',

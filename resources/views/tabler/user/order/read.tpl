@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">                   
                     <h2 class="page-title">
-                        <span class="home-title">账单详情</span>
+                        <span class="home-title">جزئیات صورتحساب</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">在这里查看账单详情</span>
+                        <span class="home-subtitle">جزئیات صورتحساب را اینجا ببینید</span>
                     </div>
                 </div>
             </div>
@@ -74,10 +74,10 @@
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 1%">#</th>
-                                <th>商品</th>
-                                <th class="text-center" style="width: 10%">数量</th>
-                                <th class="text-end" style="width: 1%">单价</th>
-                                <th class="text-end" style="width: 1%">总价</th>
+                                <th>سرویس</th>
+                                <th class="text-center" style="width: 10%">تعداد</th>
+                                <th class="text-end" style="width: 1%">قیمت واحد</th>
+                                <th class="text-end" style="width: 1%">قیمت کل</th>
                             </tr>
                         </thead>
                         <tr>
@@ -94,31 +94,31 @@
                         </tr>
                         {if $order->order_coupon != null}
                             <tr>
-                                <td colspan="4" class="strong text-end">优惠券</td>
+                                <td colspan="4" class="strong text-end">کوپن</td>
                                 <td class="text-end"><code>{$order->order_coupon}</code></td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="strong text-end">折扣</td>
+                                <td colspan="4" class="strong text-end">تخفیف</td>
                                 <td class="text-end">{sprintf("%.2f", ($order->order_price - $order->product_price) / 100)}
                                 </td>
                             </tr>
                         {/if}
                         {if $order->balance_payment != '0'}
                             <tr>
-                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">余额抵扣</td>
+                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">مانده حساب</td>
                                 <td class="font-weight-bold text-end">
                                     -&nbsp;{sprintf("%.2f", $order->balance_payment / 100)}
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">应付</td>
+                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">بررسی</td>
                                 <td class="font-weight-bold text-end">
                                     {sprintf("%.2f", ($order->order_price - $order->balance_payment) / 100)}
                                 </td>
                             </tr>
                         {else}
                             <tr>
-                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">应付</td>
+                                <td colspan="4" class="strong font-weight-bold text-uppercase text-end">بررسی</td>
                                 <td class="font-weight-bold text-end">
                                     {sprintf("%.2f", $order->order_price / 100)}
                                 </td>
@@ -133,8 +133,8 @@
                                         <div class="card">
                                             <div class="card-status-top bg-danger"></div>
                                             <div class="card-body">
-                                                <h3 class="card-title">账单已过期</h3>
-                                                <p class="text-muted">这个账单过期了。如有需要，请前往 <a href="/user/product">商店</a> 重新下单</p>
+                                                <h3 class="card-title">سررسید صورت حساب</h3>
+                                                <p class="text-muted">این صورتحساب سررسیده. در صورت لزوم لطفا از <a href="/user/product">فروشگاه</a> دوباره سفارش دهید</p>
                                             </div>
                                         </div>
                                     </div>
@@ -147,9 +147,9 @@
                                         <div class="card">
                                             <div class="card-status-top bg-danger"></div>
                                             <div class="card-body">
-                                                <h3 class="card-title">账单异常</h3>
+                                                <h3 class="card-title">اخطار صورتحساب</h3>
                                                 <p class="text-muted">
-                                                    这份账单存在异常。原因是创建了多笔使用余额抵扣的账单，并支付了这些账单中的多份。请提交工单联系管理员，为此账单申请退款</p>
+                                                    چیزی غیرعادی در مورد این لایحه وجود دارد. دلیل آن این است که چندین قبض با استفاده از کسر موجودی ایجاد شد و چندین قبض پرداخت شد. لطفاً یک تیکت برای تماس با مدیر برای درخواست بازپرداخت این صورتحساب ارسال کنید</p>
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <div class="col-12 my-3">
-                                            <h1>支付方式</h1>
+                                            <h1>روش پرداخت</h1>
                                         </div>
                                         <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
                                             {if $order->product_type != 'recharge'}
@@ -174,7 +174,7 @@
                                                             <span class="form-selectgroup-check"></span>
                                                         </div>
                                                         <div>
-                                                            账户余额
+                                                            موجودی حساب
                                                         </div>
                                                     </div>
                                                 </label>
@@ -201,7 +201,7 @@
                                     </div>
                                     <div>
                                         <button id="submit-payment" href="#" class="btn btn-primary w-100">
-                                            支付
+                                            پرداخت
                                         </button>
                                     </div>
                                 </div>
@@ -215,8 +215,8 @@
                                     <div class="card">
                                         <div class="card-status-top bg-green"></div>
                                         <div class="card-body">
-                                            <h3 class="card-title">账单已支付</h3>
-                                            <p class="text-muted">商品内容已经添加到你的账户</p>
+                                            <h3 class="card-title">صورت حساب پرداخت شد</h3>
+                                            <p class="text-muted">سرویس به حساب شما افزوده شد</p>
                                         </div>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                 <div class="modal-body">
                     <div>
                         <p id="qrcode"></p>
-                        <p id="waiting-message" class="text-muted">等待</p>
+                        <p id="waiting-message" class="text-muted">لطفا شکیبا باشید</p>
                     </div>
                 </div>
             </div>
@@ -252,7 +252,7 @@
                 success: function(data) {
                     if (data.status == 'paid') {
                         clearInterval(cycle);
-                        $('#success-message').text('订单已确认');
+                        $('#success-message').text('سفارش تایید شد');
                         $('#waiting-dialog').modal('hide');
                         $('#success-dialog').modal('show');
                     }
@@ -263,7 +263,7 @@
         $("#submit-payment").click(function() {
             payment = $('input:radio:checked').val();
             $("#submit-payment").attr('disabled', true);
-            $('#submit-payment').text('正在处理');
+            $('#submit-payment').text('در حال پردازش');
 
             $.ajax({
                 url: '/user/order',
@@ -312,13 +312,13 @@
             $('#qrcode').html('');
             clearInterval(cycle);
             $("#submit-payment").attr('disabled', false);
-            $('#submit-payment').text('重新支付');
+            $('#submit-payment').text('دوباره پرداخت کنید');
         });
 
         $('#fail-dialog').on('hide.bs.modal', function() {
             $('#qrcode').html('');
             $("#submit-payment").attr('disabled', false);
-            $('#submit-payment').text('重新支付');
+            $('#submit-payment').text('دوباره پرداخت کنید');
         });
     </script>
     
