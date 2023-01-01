@@ -80,7 +80,7 @@
                     <a class="waves-attach" data-toggle="collapse" href="#ui_menu_use">استفاده</a>
                     <ul class="menu-collapse collapse in" id="ui_menu_use">
                         <li>
-                            <a href="/user/node"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست نود ها</a>
+                            <a href="/user/server"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست نودها</a>
                         </li>
                         <li>
                             <a href="/user/media"><i class="mdi mdi-multimedia icon-lg"></i>&nbsp;پخش جریان مسدود شد</a>
