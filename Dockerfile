@@ -12,6 +12,7 @@ RUN apt-get -y install wget mariadb-server && \
     cp config/b2_backup.sh b2_backup.sh && \
     rm -rf /entrypoint.sh && \
     cp entrypoint.sh /entrypoint.sh && \
+    chmod +x /entrypoint.sh && \
     cp -r config/rules public/clients/ && \
     chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
