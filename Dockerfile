@@ -1,6 +1,7 @@
 FROM indexyz/php
 
 COPY . /var/www
+COPY entrypoint.sh /usr/local/bin/
 WORKDIR /var/www
 
 ENV DB_PORT=3306
@@ -11,7 +12,6 @@ RUN apt-get -y install wget mariadb-server && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
     rm -rf /entrypoint.sh && \
-    mv entrypoint.sh /entrypoint.sh && \
     chmod +x /entrypoint.sh && \
     cp -r config/rules public/clients/ && \
     chmod +x b2_backup.sh && \
