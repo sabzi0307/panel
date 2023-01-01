@@ -36,4 +36,4 @@ RUN apt-get -y install wget mariadb-server && \
         echo 'stopasgroup=true'; \
     } | tee /etc/supervisor/crond.conf
 
-    ENTRYPOINT /usr/local/bin/docker-entry.sh
+    ENTRYPOINT "docker-entry.sh"
