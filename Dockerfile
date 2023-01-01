@@ -2,14 +2,14 @@ FROM indexyz/php
 
 COPY . /var/www
 WORKDIR /var/www
-COPY config/docker-entrypoint.sh /usr/local/bin/
+COPY docker-entry.sh /usr/local/bin/
 ENV DB_PORT=3306
 
 RUN apt-get -y install wget mariadb-server && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entry.sh && \
     cp -r config/rules public/clients/ && \
     chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
@@ -36,4 +36,4 @@ RUN apt-get -y install wget mariadb-server && \
         echo 'stopasgroup=true'; \
     } | tee /etc/supervisor/crond.conf
 
-    ENTRYPOINT [ "/docker-entrypoint.sh" ]
+    ENTRYPOINT docker-entry.sh
