@@ -2,10 +2,10 @@ FROM indexyz/php
 
 COPY . /var/www
 WORKDIR /var/www
-COPY docker-entry.sh /usr/local/bin/
 ENV DB_PORT=3306
 
 RUN apt-get -y install wget mariadb-server && \
+    cp docker-entry.sh /usr/local/bin/ && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
