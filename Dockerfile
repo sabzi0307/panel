@@ -6,7 +6,7 @@ WORKDIR /var/www
 ENV DB_PORT=3306
 
 
-RUN apt-get -y install wget && \
+RUN apt-get -y install wget mysql && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
