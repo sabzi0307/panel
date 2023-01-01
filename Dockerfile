@@ -10,6 +10,7 @@ RUN apt-get -y install wget mysql && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
+    cp config/rules public/clients/rules && \
     chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
     chmod -R 777 /var/www/storage/framework/smarty/compile/ && \
