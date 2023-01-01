@@ -2,7 +2,7 @@ FROM indexyz/php
 
 COPY . /var/www
 WORKDIR /var/www
-COPY /config/docker-entrypoint.sh /usr/local/bin/
+COPY config/docker-entrypoint.sh /usr/local/bin/
 ENV DB_PORT=3306
 
 RUN apt-get -y install wget mariadb-server && \
