@@ -1,7 +1,7 @@
 FROM indexyz/php
 
 COPY . /var/www
-COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 WORKDIR /var/www
 
 ENV DB_PORT=3306
@@ -37,4 +37,4 @@ RUN apt-get -y install wget mariadb-server && \
         echo 'stopasgroup=true'; \
     } | tee /etc/supervisor/crond.conf
 
-    ENTRYPOINT [ "entrypoint.sh" ]
+    ENTRYPOINT [ "/docker-entrypoint.sh" ]
