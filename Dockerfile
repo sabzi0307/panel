@@ -4,7 +4,7 @@ COPY . /var/www
 WORKDIR /var/www
 ENV DB_PORT=3306
 
-RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar nc python3-pip && \
+RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar netcat python3-pip && \
     pip3 install b2 && \
     cp docker-entry.sh /usr/local/bin/ && \
     cp config/.config.example.php config/.config.php && \
