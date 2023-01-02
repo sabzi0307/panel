@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh-cn">
+<html lang="fa-IR" dir="rtl" >
 <head>
     <title>خطا ایجاد کرد - {$config['appName']} </title>
     <meta name="keywords" content=""/>

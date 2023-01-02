@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh">
+<html lang="fa" dir="rtl" >
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noindex">

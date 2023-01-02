@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh-cn">
+<html lang="fa-IR" dir="rtl" >
 <head>
     <title>پرش به پنل کاربر - {$config['appName']} </title>
     <meta name="keywords" content=""/>
