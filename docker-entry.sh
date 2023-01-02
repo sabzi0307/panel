@@ -108,7 +108,7 @@ echo >&2 "Done"
 
 if [ -f config/.config.php ];then
     echo "Writting configuration..."
-    sed -e "s/SSPANEL_KEY/$SSPANEL_KEY/g" \
+    sed -i -e "s/SSPANEL_KEY/$SSPANEL_KEY/g" \
     -e "s/SSPANEL_APP_NAME/$SSPANEL_APP_NAME/g" \
     -e "s/SSPANEL_BASEURL/$SSPANEL_BASEURL/g" \
     -e "s/SSPANEL_MUKEY/$SSPANEL_MUKEY/g" \
