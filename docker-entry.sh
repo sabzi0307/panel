@@ -104,19 +104,17 @@ if [ "$B2_BACKUP" = true ];then
 fi
 echo >&2 "Done"
 
-
-^\$_ENV\['appName'].*=.*'(SSPanel-UIM)';
 if [ -f config/.config.php ];then
     echo "Writting configuration..."
-    sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/$_ENV['key']        = '$SSPANEL_KEY';/g" \
-    -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
-    -e "s|\$_ENV\['baseUrl'].*=.*'https://example.com';|$_ENV['baseUrl']        = '$SSPANEL_BASEURL';|g" \
-    -e "s|\$_ENV\['muKey'].*=.*'SSPanel';|$_ENV['muKey']        = '$SSPANEL_MUKEY';|g" \
-    -e "s|\$_ENV\['db_host'].*=.*'';|$_ENV['db_host']        = '$DB_HOST';|g" \
-    -e "s|\$_ENV\['db_database'].*=.*'sspanel';|$_ENV['db_database']        = '$DB_DATABASE';|g" \
-    -e "s|\$_ENV\['db_username'].*=.*'root';|$_ENV['db_username']        = '$DB_USERNAME';|g" \
-    -e "s|\$_ENV\['db_password'].*=.*'sspanel';|$_ENV['db_password']        = '$DB_PASSWORD';|g" \
-    -e "s|\$_ENV\['timeZone'].*=.*'PRC';|$_ENV['timeZone']        = '$TIME_ZONE';|g" \
+    sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/\$_ENV['key']        = '$SSPANEL_KEY';/g" \
+    -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/\$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
+    -e "s|\$_ENV\['baseUrl'].*=.*'https://example.com';|\$_ENV['baseUrl']        = '$SSPANEL_BASEURL';|g" \
+    -e "s|\$_ENV\['muKey'].*=.*'SSPanel';|\$_ENV['muKey']        = '$SSPANEL_MUKEY';|g" \
+    -e "s|\$_ENV\['db_host'].*=.*'';|\$_ENV['db_host']        = '$DB_HOST';|g" \
+    -e "s|\$_ENV\['db_database'].*=.*'sspanel';|\$_ENV['db_database']        = '$DB_DATABASE';|g" \
+    -e "s|\$_ENV\['db_username'].*=.*'root';|\$_ENV['db_username']        = '$DB_USERNAME';|g" \
+    -e "s|\$_ENV\['db_password'].*=.*'sspanel';|\$_ENV['db_password']        = '$DB_PASSWORD';|g" \
+    -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     config/.config.php
 
     if [ "$STREAMING_UNLOCK" = true ];then
@@ -126,25 +124,25 @@ if [ -f config/.config.php ];then
     fi
 
     if [ "$GITHUB_ACCESS_TOKEN" != false ];then
-        sed -i -e "s/\$_ENV\['github_access_token'].*=.*false;/$_ENV['github_access_token']        = '$GITHUB_ACCESS_TOKEN';/g" \
+        sed -i -e "s/\$_ENV\['github_access_token'].*=.*false;/\$_ENV['github_access_token']        = '$GITHUB_ACCESS_TOKEN';/g" \
         config/.config.php
     fi
 
     if [ "$DEBUG" = true ];then
-        sed -i -e "s/\$_ENV\['debug'].*=.*false;/$_ENV['debug']        = true;/g" \
+        sed -i -e "s/\$_ENV\['debug'].*=.*false;/\$_ENV['debug']        = true;/g" \
         config/.config.php
     else
-        sed -i -e "s/\$_ENV\['debug'].*=.*false;/$_ENV['debug']        = false;/g" \
+        sed -i -e "s/\$_ENV\['debug'].*=.*false;/\$_ENV['debug']        = false;/g" \
         config/.config.php
     fi
 
     if [ "$ENABLE_TELEGRAM" = true ];then
         echo "Writting Telegram configuration..."
-        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/$_ENV['enable_telegram']        = '$SSPANEL_KEY';/g" \
-        -e "s/\$_ENV\['telegram_token'].*=.*'';/$_ENV['telegram_token']        = '$SSPANEL_APP_NAME';/g" \
-        -e "s/\$_ENV\['telegram_chatid'].*=.*-111;/$_ENV['telegram_chatid']        = '$TELEGRAM_CHAT_ID';/g" \
-        -e "s/\$_ENV\['telegram_bot'].*=.*'_bot';/$_ENV['telegram_bot']        = '$TELEGRAM_BOT';/g" \
-        -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
+        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/\$_ENV['enable_telegram']        = '$SSPANEL_KEY';/g" \
+        -e "s/\$_ENV\['telegram_token'].*=.*'';/\$_ENV['telegram_token']        = '$SSPANEL_APP_NAME';/g" \
+        -e "s/\$_ENV\['telegram_chatid'].*=.*-111;/\$_ENV['telegram_chatid']        = '$TELEGRAM_CHAT_ID';/g" \
+        -e "s/\$_ENV\['telegram_bot'].*=.*'_bot';/\$_ENV['telegram_bot']        = '$TELEGRAM_BOT';/g" \
+        -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/\$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
         config/.config.php
     fi
 fi
