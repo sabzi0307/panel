@@ -242,7 +242,7 @@ if [ -z "$temp_sql_result" ]; then
 		echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
 	else
     echo -n >&2 "\n" 
-		printf $SSPANEL_ADMIN_EMAIL'\n'$SSPANEL_ADMIN_PASSWORD'\ny\n' | php xcat User createAdmin
+		printf $SSPANEL_ADMIN_EMAIL'\n'$SSPANEL_ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
 	fi
 fi
 
