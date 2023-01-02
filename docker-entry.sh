@@ -68,7 +68,7 @@ if [ -z "$DEBUG" ];then
     DEBUG=false
 fi
 
-if [! -z "$ENABLE_TELEGRAM" ] && [ "$ENABLE_TELEGRAM" = true ];then
+if [ ! -z "$ENABLE_TELEGRAM" ] && [ "$ENABLE_TELEGRAM" = true ];then
     if [ -z "$TELEGRAM_TOKEN" ];then
         echo >&2 "TELEGRAM_TOKEN not set!"
         exit
@@ -86,7 +86,7 @@ else
     echo >&2 "TELEGRAM not set!"
 fi
 
-if [! -z "$B2_BACKUP" ] && [ "$B2_BACKUP" = true ];then
+if [ ! -z "$B2_BACKUP" ] && [ "$B2_BACKUP" = true ];then
     echo >&2 "B2_BACKUP set!"
     if [ -z "$B2_APP_KEY_ID" ] && [ -z "$B2_APP_KEY" ];then
         echo >&2 "B2_APP_KEY_ID or B2_APP_KEY not set!"
