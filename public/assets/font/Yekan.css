@@ -12,3 +12,7 @@
 	text-rendering: optimizeLegibility;
 	font-display: auto;
 }
+
+btn .icon {
+	margin: 0 calc(var(--tblr-btn-padding-x)/ -4) 0 calc(var(--tblr-btn-padding-x)/ 2);
+}

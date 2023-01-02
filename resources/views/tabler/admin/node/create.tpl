@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سطح/label>
+                                <label class="form-label col-3 col-form-label">سطح</label>
                                 <div class="col">
                                     <input id="node_class" type="text" class="form-control" value="">
                                 </div>
