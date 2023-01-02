@@ -200,7 +200,7 @@ if [ -z "$DB_HOST" ]; then
 
 	    echo >&2 "Done"
     else
-        echo >&2 "\nCould not connect to database..."
+        echo >&2 "\nCould not connect to database with Database Socket..."
         exit
     fi
 else
@@ -216,7 +216,7 @@ else
 	
 	    echo >&2 "Done"
     else
-        echo >&2 "\nCould not connect to database..."
+        echo >&2 "\nCould not connect to database with Database Host..."
     fi
 fi
 
