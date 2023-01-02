@@ -187,37 +187,43 @@ echo >&2 "Good"
 echo -n >&2 "\nChecking if database exists..."
 
 if [ -z "$DB_HOST" ]; then
-    if ! mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+    if mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
         echo -n >&2 "\nInitialize database..."
-
-        mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        echo >&2 "Importing config to database..."
-        php vendor/bin/phinx migrate
-        php xcat Tool importAllSettings
+        temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+        if [ -z "$temp_sql_result" ]; then
+            echo >&2 "Importing config to database..."
+            php vendor/bin/phinx migrate
+            php xcat Tool importAllSettings
+        fi
+        # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        
 
 	    echo >&2 "Done"
     else
-        echo >&2 "Found"
+        echo >&2 "\nCould not connect to database..."
+        exit
     fi
 else
-    if ! mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+    if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
         echo -n >&2 "\nInitialize database..."
-
-        mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        echo >&2 "Importing config to database..."
-        php vendor/bin/phinx migrate
-        php xcat Tool importAllSettings
+        temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+        if [ -z "$temp_sql_result" ]; then
+            echo >&2 "Importing config to database..."
+            php vendor/bin/phinx migrate
+            php xcat Tool importAllSettings
+        fi
+        # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 	
 	    echo >&2 "Done"
     else
-        echo >&2 "Found"
+        echo >&2 "\nCould not connect to database..."
     fi
 fi
 
 
 echo -n >&2 "\nApplying permissions..."
 chmod 755 -R *
-chown www -R *
+# chown www -R *
 chmod -R 777 storage
 
 echo >&2 "Done"

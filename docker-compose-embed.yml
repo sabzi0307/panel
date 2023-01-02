@@ -17,15 +17,15 @@ services:
           SSPANEL_ADMIN_PASSWORD: V3ryL0ngP@ssw0rd
           DEBUG: false
           TIME_ZONE: Asia/Tehran
-          STREAMING_UNLOCK: true
+          STREAMING_UNLOCK: false
           GITHUB_ACCESS_TOKEN:
-          ENABLE_TELEGRAM: true
+          ENABLE_TELEGRAM: false
           TELEGRAM_TOKEN:
           TELEGRAM_CHAT_ID:
           TELEGRAM_BOT: EXAMPLE_bot
           TELEGRAM_LOGIN: false
           B2_BACKUP_NAME: SSPANEL
-          B2_BACKUP: true
+          B2_BACKUP: false
           B2_APP_KEY_ID:
           B2_APP_KEY:
           B2_BUCKET_NAME:
