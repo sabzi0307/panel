@@ -12,7 +12,7 @@
     <link href="/theme/tabler/css/user.min.css" rel="stylesheet">
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/assets/font/Yekan.css" rel="stylesheet">
-    <style>:root {--tblr-font-sans-serif: 'Yekan';}</style>
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
 
 
     <!-- jquery -->
