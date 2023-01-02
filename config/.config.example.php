@@ -1,14 +1,14 @@
 <?php
 
 //basic settings--------------------------------------------------------------------------------------------
-$_ENV['key']        = 'ChangeMe';                     //Be sure to modify this key to a random string
+$_ENV['key']        = 'SSPANEL_KEY';                     //Be sure to modify this key to a random string
 $_ENV['pwdMethod']  = 'bcrypt';                          //Password Encryption Optional md5, sha256, bcrypt, argon2i, argon2id（argon2i need at least php7.2）
 $_ENV['salt']       = '';                             //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
 
-$_ENV['debug']      = false;                          //debug mode switch，The production environment should be kept as false
-$_ENV['appName']    = 'SSPanel-UIM';                  // Site name
-$_ENV['baseUrl']    = 'https://example.com';           // site address
-$_ENV['muKey']      = 'SSPanel';                      //WebAPI Key, used for communication between the node server and the panel
+$_ENV['debug']      = DEBUG;                          //debug mode switch，The production environment should be kept as false
+$_ENV['appName']    = 'SSPANEL_APP_NAME';                  // Site name
+$_ENV['baseUrl']    = 'SSPANEL_BASEURL';           // site address
+$_ENV['muKey']      = 'SSPANEL_MUKEY';                      //WebAPI Key, used for communication between the node server and the panel
 
 $_ENV['enableAdminApi'] = false;                      // Whether to enable Admin API, If you don't know this purpose, please keep it as false
 $_ENV['adminApiToken']  = 'ChangeMe';                 // Admin API of Token, Please generate high intensity Token
@@ -18,11 +18,11 @@ $_ENV['adminApiToken']  = 'ChangeMe';                 // Admin API of Token, Ple
 // db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）, 10.0.0.2:4406（With port)
 // db_socket example：/var/run/mysqld/mysqld.sock（Absolute address is required）
 $_ENV['db_driver']    = 'mysql';
-$_ENV['db_host']      = '';
+$_ENV['db_host']      = 'DB_HOST';
 $_ENV['db_socket']    = '';
-$_ENV['db_database']  = 'sspanel';           //Database name
-$_ENV['db_username']  = 'root';              //database username
-$_ENV['db_password']  = 'sspanel';           //The password corresponding to the username
+$_ENV['db_database']  = 'DB_DATABASE';           //Database name
+$_ENV['db_username']  = 'DB_USERNAME';              //database username
+$_ENV['db_password']  = 'DB_PASSWORD';           //The password corresponding to the username
 #advanced
 $_ENV['db_charset']   = 'utf8mb4';
 $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
@@ -115,10 +115,10 @@ $_ENV['auto_detect_ban'] = [
 
 //Bot set up--------------------------------------------------------------------------------------------
 # Telegram bot
-$_ENV['enable_telegram']                    = false;        //whether to enable Telegram bot
-$_ENV['telegram_token']                     = '';           //Telegram bot,bot of token ，with father bot Application
-$_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
-$_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
+$_ENV['enable_telegram']                    = ENABLE_TELEGRAM;        //whether to enable Telegram bot
+$_ENV['telegram_token']                     = 'TELEGRAM_TOKEN';           //Telegram bot,bot of token ，with father bot Application
+$_ENV['telegram_chatid']                    = TELEGRAM_CHAT_ID;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
+$_ENV['telegram_bot']                       = 'TELEGRAM_BOT';       //Telegram bot account
 $_ENV['telegram_group_quiet']               = false;        //Telegram Bots don't respond in groups
 $_ENV['telegram_request_token']             = '';           //Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
@@ -165,7 +165,7 @@ $_ENV['telegram_general_terms']             = 'Terms of Service.';              
 
 //Social login settings
 #Telegram
-$_ENV['enable_telegram_login']              = false;   //Please configure Telegram bot first before enabling this setting, otherwise it will not take effect
+$_ENV['enable_telegram_login']              = TELEGRAM_LOGIN;   //Please configure Telegram bot first before enabling this setting, otherwise it will not take effect
 
 #Ticket System Settings
 $_ENV['enable_ticket']        = true;        //Whether to enable the ticket system
@@ -206,7 +206,7 @@ $_ENV['tokenDriver']            = 'db';                //optional: db
 $_ENV['enable_login_bind_ip']   = false;        //Whether to bind the login thread to the IP
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 
-$_ENV['timeZone']               = 'PRC';                 //PRC Chinese time UTC Green time
+$_ENV['timeZone']               = 'TIME_ZONE';                 //PRC Chinese time UTC Green time
 $_ENV['theme']                  = 'tabler';              //Default Theme
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
 $_ENV['checkNodeIp']            = true;                 //Whether webapi verifies node ip
@@ -237,6 +237,6 @@ foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
 $_ENV['sentry_dsn'] = '';
 
 // ClientDownload The command solves the problem that the API access frequency is high and the usage is restricted Github access token
-$_ENV['github_access_token'] = '';
+$_ENV['github_access_token'] = 'GITHUB_ACCESS_TOKEN';
 
 $_ENV['php_user_group'] = 'www:www';
