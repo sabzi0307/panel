@@ -115,6 +115,7 @@ if [ -f config/.config.php ];then
     -e "s|\$_ENV\['db_username'].*=.*'root';|\$_ENV['db_username']        = '$DB_USERNAME';|g" \
     -e "s|\$_ENV\['db_password'].*=.*'sspanel';|\$_ENV['db_password']        = '$DB_PASSWORD';|g" \
     -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
+    -e "s|\$_ENV\['php_user_group'].*=.*'www:www';|\$_ENV['php_user_group']        = 'www-data:www-data';|g" \
     config/.config.php
 
     if [ "$STREAMING_UNLOCK" = true ];then
@@ -196,6 +197,12 @@ if [ -z "$DB_HOST" ]; then
         exit
     fi
 else
+    until nc -z -v -w30 $DB_HOST 3306
+    do
+        echo "Waiting for database connection..."
+        # wait for 5 seconds before check again
+        sleep 5
+    done
     if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
         echo -n >&2 "\nInitialize database..."
         temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
@@ -215,7 +222,7 @@ fi
 
 echo -n >&2 "\nApplying permissions..."
 chmod 755 -R *
-# chown www:www -R *
+# chown www-data:www-data -R *
 chmod -R 777 storage
 
 echo >&2 "Done"
