@@ -17,7 +17,9 @@
                     </div>
                     <div class="mb-2">
                         <label class="form-label">
+                            <span style="padding-left:6px">
                             رمز عبور ورود
+                            </span>
                             <span class="form-label-description">
                                 <a href="/password/reset">رمز عبور را فراموش کرده اید</a>
                             </span>

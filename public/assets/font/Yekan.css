@@ -12,7 +12,56 @@
 	text-rendering: optimizeLegibility;
 	font-display: auto;
 }
+.nav-link-title{
+  margin-left: 6px;
+  margin-right: 4px;
+}
+.me-2 {
+  margin-left: .5rem !important;
+}
+.ps-2 {
+  padding-Right: .5rem !important;
+}
+html, body, h1, h2 {
+  font-family: 'Yekan' !important;
+}
+.dropdown-menu.dropdown-menu-right, .dropdown.pull-right .dropdown-menu {
+  border-radius: 2px 0 2px 2px;
+  left: 0;
+  right: auto;
+  transform-origin: 100% 0;
+  transform-origin: 100% 0;
+}
+  @media screen and (min-width: 992px){
+.nav-drawer.nav-drawer-md.menu-left ~ .content, .nav-drawer.nav-drawer-md.menu-left ~ .footer, .nav-drawer.nav-drawer-md.menu-left ~ .header {
+  margin-left: unset;
+  margin-right: 240px;
+}
+}
 
-btn .icon {
-	margin: 0 calc(var(--tblr-btn-padding-x)/ -4) 0 calc(var(--tblr-btn-padding-x)/ 2);
+.menu-backdrop, .menu-scroll {
+  position: fixed;
+  right: 0;
+  left: unset;
+  top: 0;
+}
+.pull-left {
+  float: right;
+}
+
+.pull-right {
+  float: left;
+}
+
+.card-stamp {
+    left: 0;
+    right: unset;
+}
+.card-stamp-icon {
+   right: calc(var(--tblr-stamp-size) * .25);
+   left: calc(var(--tblr-stamp-size) * -.25);
+}
+
+.form-label {
+  display: flex;
 }

@@ -63,7 +63,8 @@
                             <label class="form-check">
                                 <input id="tos" type="checkbox" class="form-check-input" />
                                 <span class="form-check-label">
-                                    خوانده ام و موافقم <a href="/tos" tabindex="-1"> شرایط خدمات و سیاست حفظ حریم خصوصی </a>
+                                    <a href="/tos" tabindex="-1"> شرایط خدمات و سیاست حفظ حریم خصوصی </a>
+                                    خوانده ام و موافقم 
                                 </span>
                             </label>
                         </div>
