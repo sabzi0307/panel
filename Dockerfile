@@ -4,8 +4,10 @@ COPY . /var/www
 WORKDIR /var/www
 ENV DB_PORT=3306
 
-RUN apt-get -y install wget mariadb-server && \
+RUN apt-get -y install wget mariadb-server gzip zip tar python3-pip && \
+    pip3 install b2 && \
     cp docker-entry.sh /usr/local/bin/ && \
+    cp config/.config.example.php config/.config.php && \
     cp config/appprofile.example.php config/appprofile.php && \
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
