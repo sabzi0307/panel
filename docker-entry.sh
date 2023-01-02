@@ -35,10 +35,10 @@ if [ -z "$DB_HOST" ] && [ -z "$DB_SOCKET" ];then
     echo >&2 "DB_HOST or DB_SOCKET not set!"
     exit
 fi
-# if [ -z "$DB_PORT" ];then
-#     echo >&2 "DB_PORT not set!"
-#     exit
-# fi
+if [ -z "$DB_PORT" ];then
+    echo >&2 "DB_PORT not set!"
+    exit
+fi
 if [ -z "$DB_DATABASE" ];then
     echo >&2 "DB_DATABASE not set!"
     exit
@@ -50,6 +50,23 @@ fi
 if [ -z "$SSPANEL_ADMIN_EMAIL" ] && [ -z "$SSPANEL_ADMIN_PASSWORD" ];then
     echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
     exit
+fi
+if [ -z "$TIME_ZONE" ];then
+    echo >&2 "DB_DATABASE not set!"
+    exit
+fi
+if [  -z "$STREAMING_UNLOCK"];then
+    echo >&2 "STREAMING_UNLOCK not set!"
+    STREAMING_UNLOCK=false
+
+fi
+if [  -z "$GITHUB_ACCESS_TOKEN"];then
+    echo >&2 "GITHUB_ACCESS_TOKEN not set!"
+    GITHUB_ACCESS_TOKEN=false
+fi
+if [  -z "$DEBUG"];then
+    echo >&2 "DEBUG not set!"
+    DEBUG=false
 fi
 
 if [! -z "$ENABLE_TELEGRAM" ] && [ "$ENABLE_TELEGRAM" = true ];then
@@ -97,7 +114,7 @@ echo >&2 "Done"
 
 if [ ! -f config/.config.php ];then
     echo "Writting configuration..."
-    sed -i -e "s/$_ENV['key']        = 'ChangeMe';/$_ENV['key']        = '$SSPANEL_KEY';/g" \
+    sed -e "s/$_ENV['key']        = 'ChangeMe';/$_ENV['key']        = '$SSPANEL_KEY';/g" \
     -e "s/$_ENV['appName']    = 'SSPanel-UIM';/$_ENV['appName']    = '$SSPANEL_APP_NAME';/g" \
     -e "s|$_ENV['baseUrl']    = 'https://example.com';|$_ENV['baseUrl']    = '$SSPANEL_BASEURL';|g" \
     -e "s/$_ENV['muKey']      = 'SSPanel';/$_ENV['muKey']      = '$SSPANEL_MUKEY';/g" \
@@ -105,7 +122,31 @@ if [ ! -f config/.config.php ];then
     -e "s/$_ENV['db_database']  = 'sspanel';/$_ENV['db_database']  = '$DB_DATABASE';/g" \
     -e "s/$_ENV['db_username']  = 'root';/$_ENV['db_username']  = '$DB_USERNAME';/g" \
     -e "s/$_ENV['db_password']  = 'sspanel';/$_ENV['db_password']  = '$DB_PASSWORD';/g" \
+    -e "s/$_ENV['timeZone']               = 'PRC';/$_ENV['timeZone']               = '$TIME_ZONE';/g" \
     config/.config.example.php > config/.config.php
+
+    if [ "$STREAMING_UNLOCK" = true ];then
+        sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
+        -e "s/\/\/'297' => '4',/'297' => '4',/g" \
+        config/.config.php
+    fi
+
+    if [ "$STREAMING_UNLOCK" = true ];then
+        sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
+        -e "s/\/\/'297' => '4',/'297' => '4',/g" \
+        config/.config.php
+    fi
+
+    if [ "$GITHUB_ACCESS_TOKEN" != false ];then
+        sed -i -e "s/$_ENV['github_access_token'] = '';/$_ENV['github_access_token'] = '$GITHUB_ACCESS_TOKEN';/g" \
+        -e "s/\/\/'297' => '4',/'297' => '4',/g" \
+        config/.config.php
+    fi
+
+    if [ "$DEBUG" = true ];then
+        sed -i -e "s/$_ENV['debug']      = false;/$_ENV['debug']      = $DEBUG;/g" \
+        config/.config.php
+    fi
 
     if [ "$ENABLE_TELEGRAM" = true ];then
         echo "Writting Telegram configuration..."
