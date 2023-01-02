@@ -105,53 +105,46 @@ fi
 echo >&2 "Done"
 
 
-
+^\$_ENV\['appName'].*=.*'(SSPanel-UIM)';
 if [ -f config/.config.php ];then
     echo "Writting configuration..."
-     sed -i -e "s/$_ENV['key']        = 'ChangeMe';/$_ENV['key']        = '$SSPANEL_KEY';/g" \
-    -e "s/$_ENV['appName']    = 'SSPanel-UIM';/$_ENV['appName']    = '$SSPANEL_APP_NAME';/g" \
-    -e "s|$_ENV['baseUrl']    = 'https://example.com';|$_ENV['baseUrl']    = '$SSPANEL_BASEURL';|g" \
-    -e "s/$_ENV['muKey']      = 'SSPanel';/$_ENV['muKey']      = '$SSPANEL_MUKEY';/g" \
-    -e "s/$_ENV['db_host']      = '';/$_ENV['db_host']      = '$DB_HOST';/g" \
-    -e "s/$_ENV['db_database']  = 'sspanel';/$_ENV['db_database']  = '$DB_DATABASE';/g" \
-    -e "s/$_ENV['db_username']  = 'root';/$_ENV['db_username']  = '$DB_PASSWORD';/g" \
-    -e "s/$_ENV['db_password']  = 'sspanel';/$_ENV['db_password']  = '$DB_PASSWORD';/g" \
+    sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/$_ENV['key']        = '$SSPANEL_KEY';/g" \
+    -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
+    -e "s|\$_ENV\['baseUrl'].*=.*'https://example.com';|$_ENV['baseUrl']        = '$SSPANEL_BASEURL';|g" \
+    -e "s|\$_ENV\['muKey'].*=.*'SSPanel';|$_ENV['muKey']        = '$SSPANEL_MUKEY';|g" \
+    -e "s|\$_ENV\['db_host'].*=.*'';|$_ENV['db_host']        = '$DB_HOST';|g" \
+    -e "s|\$_ENV\['db_database'].*=.*'sspanel';|$_ENV['db_database']        = '$DB_DATABASE';|g" \
+    -e "s|\$_ENV\['db_username'].*=.*'root';|$_ENV['db_username']        = '$DB_USERNAME';|g" \
+    -e "s|\$_ENV\['db_password'].*=.*'sspanel';|$_ENV['db_password']        = '$DB_PASSWORD';|g" \
+    -e "s|\$_ENV\['timeZone'].*=.*'PRC';|$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     config/.config.php
 
-    # sed -i -e "s/SSPANEL_KEY/$SSPANEL_KEY/g" \
-    # -e "s/SSPANEL_APP_NAME/$SSPANEL_APP_NAME/g" \
-    # -e "s/SSPANEL_BASEURL/$SSPANEL_BASEURL/g" \
-    # -e "s/SSPANEL_MUKEY/$SSPANEL_MUKEY/g" \
-    # -e "s/DB_HOST/$DB_HOST/g" \
-    # -e "s/DB_DATABASE/$DB_DATABASE/g" \
-    # -e "s/DB_USERNAME/$DB_USERNAME/g" \
-    # -e "s/DB_PASSWORD/$DB_PASSWORD/g" \
-    # -e "s/TIME_ZONE/$TIME_ZONE/g" \
-    # config/.config.php
-
-    # if [ "$STREAMING_UNLOCK" = true ];then
-    #     sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
-    #     -e "s/\/\/'297' => '4',/'297' => '4',/g" \
-    #     config/.config.php
-    # fi
+    if [ "$STREAMING_UNLOCK" = true ];then
+        sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
+        -e "s/\/\/'297' => '4',/'297' => '4',/g" \
+        config/.config.php
+    fi
 
     if [ "$GITHUB_ACCESS_TOKEN" != false ];then
-        sed -i -e "s/GITHUB_ACCESS_TOKEN/$GITHUB_ACCESS_TOKEN/g" \
+        sed -i -e "s/\$_ENV\['github_access_token'].*=.*false;/$_ENV['github_access_token']        = '$GITHUB_ACCESS_TOKEN';/g" \
         config/.config.php
     fi
 
     if [ "$DEBUG" = true ];then
-        sed -i -e "s/DEBUG/$DEBUG/g" \
+        sed -i -e "s/\$_ENV\['debug'].*=.*false;/$_ENV['debug']        = true;/g" \
+        config/.config.php
+    else
+        sed -i -e "s/\$_ENV\['debug'].*=.*false;/$_ENV['debug']        = false;/g" \
         config/.config.php
     fi
 
     if [ "$ENABLE_TELEGRAM" = true ];then
         echo "Writting Telegram configuration..."
-        sed -i -e "s/ENABLE_TELEGRAM/$ENABLE_TELEGRAM/g" \
-        -e "s/TELEGRAM_TOKEN/$TELEGRAM_TOKEN/g" \
-        -e "s/TELEGRAM_CHAT_ID/$TELEGRAM_CHAT_ID/g" \
-        -e "s/TELEGRAM_BOT/$TELEGRAM_BOT/g" \
-        -e "s/TELEGRAM_LOGIN/$TELEGRAM_LOGIN/g" \
+        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/$_ENV['enable_telegram']        = '$SSPANEL_KEY';/g" \
+        -e "s/\$_ENV\['telegram_token'].*=.*'';/$_ENV['telegram_token']        = '$SSPANEL_APP_NAME';/g" \
+        -e "s/\$_ENV\['telegram_chatid'].*=.*-111;/$_ENV['telegram_chatid']        = '$TELEGRAM_CHAT_ID';/g" \
+        -e "s/\$_ENV\['telegram_bot'].*=.*'_bot';/$_ENV['telegram_bot']        = '$TELEGRAM_BOT';/g" \
+        -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
         config/.config.php
     fi
 fi
@@ -224,7 +217,7 @@ fi
 
 echo -n >&2 "\nApplying permissions..."
 chmod 755 -R *
-# chown www -R *
+# chown www:www -R *
 chmod -R 777 storage
 
 echo >&2 "Done"
