@@ -3,24 +3,44 @@ version: '3'
 services:
     sspanel:
         image: sspaneluim/panel
-        env_file: .env
         container_name: sspanel
-        depend_on: sspaneldb
+        pull_policy: always
+        depends_on:
+          - *common-variables.DB_HOST
+          - "phpmyadmin"
         restart: always
+        environment:
+          SSPANEL_KEY: ChangeMe
+          SSPANEL_APP_NAME: SSPanel-UIM
+          SSPANEL_BASEURL: https://example.com
+          SSPANEL_MUKEY: SSPANEL
+          SSPANEL_ADMIN_EMAIL: admin@example.com
+          SSPANEL_ADMIN_PASSWORD: V3ryL0ngP@ssw0rd
+          DEBUG: false
+          TIME_ZONE: Asia/Tehran
+          STREAMING_UNLOCK: false
+          GITHUB_ACCESS_TOKEN:
+          ENABLE_TELEGRAM: false
+          TELEGRAM_TOKEN:
+          TELEGRAM_CHAT_ID:
+          TELEGRAM_BOT: EXAMPLE_bot
+          TELEGRAM_LOGIN: false
+          B2_BACKUP_NAME: SSPANEL
+          B2_BACKUP: false
+          B2_APP_KEY_ID:
+          B2_APP_KEY:
+          B2_BUCKET_NAME:
+          B2_COMPRESS_METHOD: zip
         ports:
             - 80:80
-        volumes:
-            - ./config/.config.php:/var/www/config/.config.php
     mariadb:
         image: mariadb:10.9
-        container_name: sspaneldb
+        container_name: *common-variables.DB_HOST
         restart: always
-        volumes:
-          - "/Users/yetongxue/docker_v/docker_test/db:/var/lib/mysql"
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         environment:
-          MYSQL_ROOT_PASSWORD: sspanel
-          MYSQL_DATABASE: sspanel
+          MYSQL_ROOT_PASSWORD: *common-variables.DB_PASSWORD
+          MYSQL_DATABASE: *common-variables.DB_DATABASE
 
     phpmyadmin:
         image: phpmyadmin
