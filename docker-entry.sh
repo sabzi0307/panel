@@ -1,4 +1,5 @@
-                                 
+set -eo pipefail
+
 echo >&2 " _____ _____ _____             _ "
 echo >&2 "|   __|   __|  _  |___ ___ ___| |"
 echo >&2 "|__   |__   |   __| .'|   | -_| |"
@@ -55,16 +56,15 @@ if [ -z "$TIME_ZONE" ];then
     echo >&2 "DB_DATABASE not set!"
     exit
 fi
-if [  -z "$STREAMING_UNLOCK"];then
+if [ -z "$STREAMING_UNLOCK" ];then
     echo >&2 "STREAMING_UNLOCK not set!"
     STREAMING_UNLOCK=false
-
 fi
-if [  -z "$GITHUB_ACCESS_TOKEN"];then
+if [ -z "$GITHUB_ACCESS_TOKEN" ];then
     echo >&2 "GITHUB_ACCESS_TOKEN not set!"
     GITHUB_ACCESS_TOKEN=false
 fi
-if [  -z "$DEBUG"];then
+if [ -z "$DEBUG" ];then
     echo >&2 "DEBUG not set!"
     DEBUG=false
 fi
@@ -123,7 +123,7 @@ if [ ! -f config/.config.php ];then
     -e "s/$_ENV['db_username']  = 'root';/$_ENV['db_username']  = '$DB_USERNAME';/g" \
     -e "s/$_ENV['db_password']  = 'sspanel';/$_ENV['db_password']  = '$DB_PASSWORD';/g" \
     -e "s/$_ENV['timeZone']               = 'PRC';/$_ENV['timeZone']               = '$TIME_ZONE';/g" \
-    config/.config.example.php > config/.config.php
+    config/.config.php
 
     if [ "$STREAMING_UNLOCK" = true ];then
         sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
