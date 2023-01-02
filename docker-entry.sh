@@ -68,8 +68,11 @@ if [ -z "$DEBUG" ];then
     DEBUG=false
 fi
 
-if [ ! -z "$ENABLE_TELEGRAM" ] && [ "$ENABLE_TELEGRAM" = true ];then
-    if [ -z "$TELEGRAM_TOKEN" ];then
+if [ -z "$ENABLE_TELEGRAM" ];then
+    ENABLE_TELEGRAM=false
+    echo >&2 "ENABLE_TELEGRAM not set!"
+else
+    if [ "$ENABLE_TELEGRAM" = true ];then
         echo >&2 "TELEGRAM_TOKEN not set!"
         exit
     fi
@@ -81,31 +84,30 @@ if [ ! -z "$ENABLE_TELEGRAM" ] && [ "$ENABLE_TELEGRAM" = true ];then
         echo >&2 "TELEGRAM_BOT not set!"
         exit
     fi
-else
-    ENABLE_TELEGRAM = false
-    echo >&2 "TELEGRAM not set!"
 fi
 
-if [ ! -z "$B2_BACKUP" ] && [ "$B2_BACKUP" = true ];then
-    echo >&2 "B2_BACKUP set!"
-    if [ -z "$B2_APP_KEY_ID" ] && [ -z "$B2_APP_KEY" ];then
-        echo >&2 "B2_APP_KEY_ID or B2_APP_KEY not set!"
-        exit
-    fi
-    if [ -z "$B2_BUCKET_NAME" ];then
-        echo >&2 "B2_BUCKET_NAME not set!"
-        exit
-    fi
-    if [ -z "$B2_BACKUP_NAME" ];then
-        echo >&2 "B2_BACKUP_NAME not set!... using default SSPANEL"
-        B2_BACKUP_NAME = "SSPANEL"
-    fi
-    if [ -z "$B2_COMPRESS_METHOD" ];then
-        echo >&2 "B2_BACKUP_NAME not set!... using default ZIP"
-        B2_COMPRESS_METHOD = "zip"
-    fi
-else
+if [ -z "$B2_BACKUP" ];then
+    B2_BACKUP=false
     echo >&2 "B2_BACKUP not set!"
+else
+    if [ "$B2_BACKUP" = true ];then
+        echo >&2 "B2_BACKUP set!"
+        if [ -z "$B2_APP_KEY_ID" ] && [ -z "$B2_APP_KEY" ];then
+            echo >&2 "B2_APP_KEY_ID or B2_APP_KEY not set!"
+            exit
+        fi
+        if [ -z "$B2_BUCKET_NAME" ];then
+            echo >&2 "B2_BUCKET_NAME not set!"
+            exit
+        fi
+        if [ -z "$B2_BACKUP_NAME" ];then
+            echo >&2 "B2_BACKUP_NAME not set!... using default SSPANEL"
+            B2_BACKUP_NAME = "SSPANEL"
+        fi
+        if [ -z "$B2_COMPRESS_METHOD" ];then
+            echo >&2 "B2_BACKUP_NAME not set!... using default ZIP"
+            B2_COMPRESS_METHOD = "zip"
+        fi
 fi
 echo >&2 "Done"
 
