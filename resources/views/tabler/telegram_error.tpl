@@ -195,6 +195,8 @@
     <noscript>
         <link rel="stylesheet" href="/assets/css/noscript.css"/>
     </noscript>
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
 </head>
 <body>
 <div class="empty valign" style="height:100vh">

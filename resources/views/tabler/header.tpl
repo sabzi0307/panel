@@ -17,6 +17,8 @@
             bottom: 0;
         }
     </style>
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- js -->
     <script src="/assets/js/fuck.min.js"></script>
 </head>

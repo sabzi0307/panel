@@ -7,6 +7,8 @@
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="bookmark" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="/assets/css/error-pages.min.css"/>
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
 </head>
 <body>
 <div class="container">

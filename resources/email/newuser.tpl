@@ -78,6 +78,8 @@
             }
         }
     </style>
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
 </head>
 
 <body itemscope itemtype="http://schema.org/EmailMessage"

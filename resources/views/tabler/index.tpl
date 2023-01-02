@@ -13,5 +13,7 @@
         window.location.href = "/auth/login"
     </script>
     {/if}
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
 </head>
 </html>

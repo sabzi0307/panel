@@ -12,6 +12,8 @@
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="//cdn.jsdelivr.net/npm/material-design-lite@1.3.0/material.min.css" rel="stylesheet">
     <link href="//cdn.datatables.net/1.12.1/css/dataTables.material.min.css" rel="stylesheet">
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- js -->
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <!-- ... -->
