@@ -15,7 +15,7 @@ final class DetectGFW extends Command
 
     public function boot(): void
     {
-        //节点被墙检测
+        // Node detected by wall
         $last_time = file_get_contents(BASE_PATH . '/storage/last_detect_gfw_time');
         for ($count = 1; $count <= 12; $count++) {
             if (\time() - $last_time >= $_ENV['detect_gfw_interval']) {
@@ -38,7 +38,7 @@ final class DetectGFW extends Command
                         [$node->node_ip, $_ENV['detect_gfw_port']],
                         $api_url
                     );
-                    //因为考虑到有v2ray之类的节点，所以不得不使用ip作为参数
+                    //Considering that there are nodes like v2ray, you have to use ip as a parameter
                     $result_tcping = false;
                     $detect_time = $_ENV['detect_gfw_count'];
                     for ($i = 1; $i <= $detect_time; $i++) {

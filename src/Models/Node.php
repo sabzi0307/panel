@@ -70,7 +70,7 @@ final class Node extends Model
     }
 
     /**
-     * 单端口多用户启用类型
+     * Single port multi-user enable type
      */
     public function muOnly(): string
     {
@@ -99,13 +99,13 @@ final class Node extends Model
     }
 
     /**
-     * 获取节点在线状态
+     * Get node online status
      *
      * @return int 0 = new node OR -1 = offline OR 1 = online
      */
     public function getNodeOnlineStatus(): int
     {
-        // 类型 9 或者心跳为 0
+        // Type 9 or heartbeat 0
         if ($this->node_heartbeat === 0 || \in_array($this->sort, [9])) {
             return 0;
         }

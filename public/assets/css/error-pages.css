@@ -1,11 +1,5 @@
-@font-face {
-  font-family: "Yekan";
-  src: url("/theme/tabler/font/Yekan.eot");
-  src: url("/theme/tabler/font/Yekan.woff") format("woff"),
-  url("/theme/tabler/font/Yekan.otf") format("opentype"),
-  url("/theme/tabler/font/Yekan.svg#filename") format("svg");
-  }
   @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+  @import url('/assets/font/Yekan.css');
 
 .center-xy {
   top: 50%;
