@@ -213,15 +213,7 @@ final class SubController extends BaseController
         $nodes = [];
         $clash_config = $_ENV['Clash_Config'];
         
-        str_replace(
-            [
-                'proxyproviderip',
-            ],
-            [
-                $_ENV['subUrl']
-            ],
-            $clash_config
-        )
+        str_replace(['proxyproviderip'],[$_ENV['subUrl']],$clash_config);
 
         //Filter out the nodes that users can connect to
         $nodes_raw = Node::where('type', 1)
