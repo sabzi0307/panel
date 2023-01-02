@@ -112,7 +112,7 @@ if [ -f config/.config.php ];then
     -e "s/SSPANEL_APP_NAME/$SSPANEL_APP_NAME/g" \
     -e "s/SSPANEL_BASEURL/$SSPANEL_BASEURL/g" \
     -e "s/SSPANEL_MUKEY/$SSPANEL_MUKEY/g" \
-    -e "s/DB_HOST;/$DB_HOST/g" \
+    -e "s/DB_HOST/$DB_HOST/g" \
     -e "s/DB_DATABASE/$DB_DATABASE/g" \
     -e "s/DB_USERNAME/$DB_USERNAME/g" \
     -e "s/DB_PASSWORD/$DB_PASSWORD/g" \
@@ -139,7 +139,7 @@ if [ -f config/.config.php ];then
         echo "Writting Telegram configuration..."
         sed -i -e "s/ENABLE_TELEGRAM/$ENABLE_TELEGRAM/g" \
         -e "s/TELEGRAM_TOKEN/$TELEGRAM_TOKEN/g" \
-        -e "s/TELEGRAM_CHAT_ID;/$TELEGRAM_CHAT_ID/g" \
+        -e "s/TELEGRAM_CHAT_ID/$TELEGRAM_CHAT_ID/g" \
         -e "s/TELEGRAM_BOT/$TELEGRAM_BOT/g" \
         -e "s/TELEGRAM_LOGIN/$TELEGRAM_LOGIN/g" \
         config/.config.php
