@@ -74,14 +74,16 @@
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <dev id="custom_config"></dev>
                                 <label class="form-label col-form-label">
-                                    مراجعه فرمایید <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a> پیکربندی سفارشی نود را تغییر دهید
+                                     جهت افزودن پیکربندی سفارشی به
+                                    <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a>
+                                     مراجعه فرمایید
                                 </label>
                             </div>
                             <div class="mb-3">
                                 <div class="divide-y">
                                     <div>
                                         <label class="row">
-                                            <span class="col">این نود را نشان دهد</span>
+                                            <span class="col">نمایش نود</span>
                                             <span class="col-auto">
                                                 <label class="form-check form-check-single form-switch">
                                                     <input id="type" class="form-check-input" type="checkbox"
@@ -98,7 +100,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">اطلاعات دیگر</h3>
+                            <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
