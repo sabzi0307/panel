@@ -16,15 +16,15 @@ final class ProductController extends AdminController
 {
     public static $details = [
         'field' => [
-            'op' => '操作',
-            'id' => '商品ID',
-            'name' => '名称',
-            'price' => '售价',
-            'status' => '销售状态',
-            'create_time' => '创建时间',
-            'update_time' => '更新时间',
-            'sale_count' => '累计销售',
-            'stock' => '库存',
+            'op' => 'عمل کنند',
+            'id' => 'شناسه محصول',
+            'name' => 'نام',
+            'price' => 'قیمت فروش',
+            'status' => 'وضعیت فروش',
+            'create_time' => 'زمان ایجاد',
+            'update_time' => 'زمان به روز رسانی',
+            'sale_count' => 'تعداد',
+            'stock' => 'موجودی',
         ],
     ];
 
@@ -85,21 +85,21 @@ final class ProductController extends AdminController
             $product = new Product();
 
             if ($name === '') {
-                throw new \Exception('请填写商品名称');
+                throw new \Exception('لطفا نام محصول را وارد کنید');
             }
             if ($price === '') {
-                throw new \Exception('请填写商品售价');
+                throw new \Exception('لطفا قیمت محصول را وارد نمایید');
             }
             if ($stock === '') {
-                throw new \Exception('请填写商品库存');
+                throw new \Exception('لطفا موجودی محصول را وارد کنید');
             }
 
             if ($type === 'tabp') {
                 if ($time === '') {
-                    throw new \Exception('请填写套餐时长');
+                    throw new \Exception('لطفا مدت زمان بسته را پر کنید');
                 }
                 if ($bandwidth === '') {
-                    throw new \Exception('请填写套餐流量');
+                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 ($class === '') && $class = '0';
@@ -117,7 +117,7 @@ final class ProductController extends AdminController
                 ];
             } elseif ($type === 'time') {
                 if ($time === '') {
-                    throw new \Exception('请填写套餐时长');
+                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
                 }
 
                 $content = [
@@ -125,14 +125,14 @@ final class ProductController extends AdminController
                 ];
             } elseif ($type === 'bandwidth') {
                 if ($bandwidth === '') {
-                    throw new \Exception('请填写套餐流量');
+                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 $content = [
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('商品类型错误');
+                throw new \Exception('نوع محصول اشتباه وارد شده');
             }
 
             $limit = [
@@ -161,7 +161,7 @@ final class ProductController extends AdminController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '添加成功',
+            'msg' => 'با موفقیت اضافه شد',
         ]);
     }
 
@@ -202,21 +202,21 @@ final class ProductController extends AdminController
             $product = Product::find($product_id);
 
             if ($name === '') {
-                throw new \Exception('请填写商品名称');
+                throw new \Exception('لطفا نام محصول را وارد کنید');
             }
             if ($price === '') {
-                throw new \Exception('请填写商品售价');
+                throw new \Exception('لطفا قیمت محصول را وارد نمایید');
             }
             if ($stock === '') {
-                throw new \Exception('请填写商品库存');
+                throw new \Exception('لطفا موجودی محصول را وارد کنید');
             }
 
             if ($type === 'tabp') {
                 if ($time === '') {
-                    throw new \Exception('请填写套餐时长');
+                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
                 }
                 if ($bandwidth === '') {
-                    throw new \Exception('请填写套餐流量');
+                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 ($class === '') && $product_class = '0';
@@ -234,7 +234,7 @@ final class ProductController extends AdminController
                 ];
             } elseif ($type === 'time') {
                 if ($time === '') {
-                    throw new \Exception('请填写套餐时长');
+                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
                 }
 
                 $content = [
@@ -242,14 +242,14 @@ final class ProductController extends AdminController
                 ];
             } elseif ($type === 'bandwidth') {
                 if ($bandwidth === '') {
-                    throw new \Exception('请填写套餐流量');
+                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 $content = [
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('商品类型错误');
+                throw new \Exception('نوع محصول اشتباه وارد شده');
             }
 
             $limit = [
@@ -275,7 +275,7 @@ final class ProductController extends AdminController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '更新成功',
+            'msg' => 'به روز رسانی تکمیل شد',
         ]);
     }
 
@@ -286,7 +286,7 @@ final class ProductController extends AdminController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '删除成功',
+            'msg' => 'با موفقیت حذف شد',
         ]);
     }
 
@@ -315,7 +315,7 @@ final class ProductController extends AdminController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => '复制成功',
+            'msg' => 'با موفقیت کپی کنید',
         ]);
     }
 
@@ -325,10 +325,10 @@ final class ProductController extends AdminController
 
         foreach ($products as $product) {
             $product->op = '<button type="button" class="btn btn-red" id="delete-product-' . $product->id . '" 
-            onclick="deleteNode(' . $product->id . ')">删除</button>
+            onclick="deleteNode(' . $product->id . ')">حذف</button>
             <button type="button" class="btn btn-orange" id="copy-product-' . $product->id . '" 
-            onclick="copyNode(' . $product->id . ')">复制</button>
-            <a class="btn btn-blue" href="/admin/product/' . $product->id . '/edit">编辑</a>';
+            onclick="copyNode(' . $product->id . ')">کپی</button>
+            <a class="btn btn-blue" href="/admin/product/' . $product->id . '/edit">ویرایش</a>';
             $product->create_time = Tools::toDateTime($product->create_time);
             $product->update_time = Tools::toDateTime($product->update_time);
         }
