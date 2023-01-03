@@ -67,5 +67,14 @@ html, body, h1, h2 {
 }
 
 .theme-dark .nav-link.active {
-  background-color: #206bc4;
+    background-color: #206bc4;
+}
+
+.apexcharts-legend-text {
+  padding-right: 6px;
+  margin-left: 15px;
+}
+.ms-lg-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
 }
