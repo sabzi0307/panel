@@ -29,8 +29,7 @@
         "symfony/console": "*",
         "symfony/yaml": "^6",
         "voku/anti-xss": "^4",
-        "zeuxisoo/slim-whoops": "0.6.*",
-        "geoip2/geoip2": "~2.0"
+        "zeuxisoo/slim-whoops": "0.6.*"
     },
     "autoload": {
         "psr-4": {
