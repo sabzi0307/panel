@@ -65,3 +65,7 @@ html, body, h1, h2 {
 .form-label {
   display: flex;
 }
+
+.theme-dark .nav-link.active {
+  background-color: #206bc4;
+}
