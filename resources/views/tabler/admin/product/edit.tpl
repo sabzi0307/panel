@@ -85,49 +85,49 @@
                                 <label class="form-label col-3 col-form-label">مدت زمان سرویس (天)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control" 
-                                        value="{$content->time}">
+                                        value="{$content['time']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">سطح</label>
                                 <div class="col">
                                     <input id="class" type="text" class="form-control" 
-                                        value="{$content->class}">
+                                        value="{$content['class']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">مدت زمان سطح (روز)</label>
                                 <div class="col">
                                     <input id="class_time" type="text" class="form-control" 
-                                        value="{$content->class_time}">
+                                        value="{$content['class_time']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="bandwidth" type="text" class="form-control" 
-                                        value="{$content->bandwidth}">
+                                        value="{$content['bandwidth']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" 
-                                        value="{$content->node_group}">
+                                        value="{$content['node_group']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
-                                        value="{$content->speed_limit}">
+                                        value="{$content['speed_limit']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
-                                        value="{$content->ip_limit}">
+                                        value="{$content['ip_limit']}">
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -137,14 +137,14 @@
                                 <label class="form-label col-3 col-form-label">نیازهای سطح کاربر</label>
                                 <div class="col">
                                     <input id="class_requried" type="text" class="form-control"
-                                        value="{$limit->class_requried}">
+                                        value="{$limit['class_requried']}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">گروه نودی که کاربر در آن قرار دارد</label>
                                 <div class="col">
                                     <input id="node_group_requried" type="text" class="form-control"
-                                        value="{$limit->node_group_requried}">
+                                        value="{$limit['node_group_requried']}">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -153,7 +153,7 @@
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
                                             <input id="new_user_requried" class="form-check-input" type="checkbox" 
-                                                {if $limit->new_user_requried == 1}checked="" {/if}>
+                                                {if $limit['new_user_requried'] === 1}checked="" {/if}>
                                         </label>
                                     </span>
                                 </label>
