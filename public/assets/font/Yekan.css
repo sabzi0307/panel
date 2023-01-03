@@ -82,3 +82,9 @@ html, body, h1, h2 {
 .btn .icon {
   margin: 0 calc(var(--tblr-btn-padding-x)/ -4) 0 calc(var(--tblr-btn-padding-x)/ 2);
 }
+
+
+.fbtn-container {
+  Right: unset;
+  left: 100px;
+}
