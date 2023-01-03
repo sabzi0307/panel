@@ -10,9 +10,6 @@ $_ENV['appName']    = 'SSPanel-UIM';                  // Site name
 $_ENV['baseUrl']    = 'https://example.com';           // site address
 $_ENV['muKey']      = 'SSPanel';                      //WebAPI Key, used for communication between the node server and the panel
 
-$_ENV['enableAdminApi'] = false;                      // Whether to enable Admin API, If you don't know this purpose, please keep it as false
-$_ENV['adminApiToken']  = 'ChangeMe';                 // Admin API of Token, Please generate high intensity Token
-
 //database settings--------------------------------------------------------------------------------------------
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
 // db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）, 10.0.0.2:4406（With port)
