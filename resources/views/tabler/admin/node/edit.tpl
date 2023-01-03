@@ -19,7 +19,7 @@
                     <div class="btn-list">
                         <a id="save-node" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
-                            نگه داشتن
+                            ذخیره
                         </a>
                     </div>
                 </div>

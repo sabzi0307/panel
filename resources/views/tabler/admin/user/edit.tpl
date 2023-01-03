@@ -16,7 +16,7 @@
                     <div class="btn-list">
                         <a id="save_changes" href="#" class="btn btn-primary d-none d-sm-inline-block">
                             <i class="icon ti ti-device-floppy"></i>
-                            نگه داشتن
+                            ذخیره
                         </a>
                         <a id="save_changes" href="#" class="btn btn-primary d-sm-none btn-icon">
                             <i class="icon ti ti-device-floppy"></i>

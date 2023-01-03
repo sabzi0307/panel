@@ -122,7 +122,7 @@ final class SettingController extends BaseController
             if (! $setting->save()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "نگه داشتن ${item} خطا",
+                    'msg' => "ذخیره ${item} خطا",
                 ]);
             }
         }
