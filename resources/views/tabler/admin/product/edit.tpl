@@ -6,17 +6,17 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">商品 #{$product->id}</span>
+                        <span class="home-title">سرویس #{$product->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">编辑商品信息</span>
+                        <span class="home-subtitle">اطلاعات محصول را ویرایش کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <a id="save-product" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
-                            保存
+                            ذخیره
                         </a>
                     </div>
                 </div>
@@ -29,46 +29,46 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">基础信息</h3>
+                            <h3 class="card-title">اطلاعات پایه</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">名称</label>
+                                <label class="form-label col-3 col-form-label">نام</label>
                                 <div class="col">
                                     <input id="name" type="text" class="form-control" 
                                         value="{$product->name}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">价格</label>
+                                <label class="form-label col-3 col-form-label">قیمت</label>
                                 <div class="col">
                                     <input id="price" type="text" class="form-control" 
                                         value="{$product->price}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">库存</label>
+                                <label class="form-label col-3 col-form-label">موجودی</label>
                                 <div class="col">
                                     <input id="stock" type="text" class="form-control" 
                                         value="{$product->stock}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">销售状态</label>
+                                <label class="form-label col-3 col-form-label">وضعیت فروش</label>
                                 <div class="col">
                                     <select id="status" class="col form-select">
-                                        <option value="1" {if $product->status === 1}selected{/if}>正常</option>
-                                        <option value="0" {if $product->status === 0}selected{/if}>下架</option>
+                                        <option value="1" {if $product->status === 1}selected{/if}>فعال</option>
+                                        <option value="0" {if $product->status === 0}selected{/if}>غیرفعال</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">类型</label>
+                                <label class="form-label col-3 col-form-label">نوع</label>
                                 <div class="col">
                                     <select id="type" class="col form-select">
-                                        <option value="tabp" {if $product->type === "tabp"}selected{/if}>时间流量包</option>
-                                        <option value="time" {if $product->type === "time"}selected{/if}>时间包</option>
-                                        <option value="bandwidth" {if $product->type === "bandwidth"}selected{/if}>流量包</option>
+                                        <option value="tabp" {if $product->type === "tabp"}selected{/if}>ترافیک زمان دار</option>
+                                        <option value="time" {if $product->type === "time"}selected{/if}>بسته زمانی</option>
+                                        <option value="bandwidth" {if $product->type === "bandwidth"}selected{/if}>ترافیک</option>
                                     </select>
                                 </div>
                             </div>
@@ -78,70 +78,70 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">商品内容</h3>
+                            <h3 class="card-title">عنوان سرویس</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">商品时长 (天)</label>
+                                <label class="form-label col-3 col-form-label">مدت زمان سرویس (天)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control" 
                                         value="{$content->time}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">等级</label>
+                                <label class="form-label col-3 col-form-label">سطح</label>
                                 <div class="col">
                                     <input id="class" type="text" class="form-control" 
                                         value="{$content->class}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">等级时长 (天)</label>
+                                <label class="form-label col-3 col-form-label">مدت زمان سطح (روز)</label>
                                 <div class="col">
                                     <input id="class_time" type="text" class="form-control" 
                                         value="{$content->class_time}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">可用流量 (GB)</label>
+                                <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="bandwidth" type="text" class="form-control" 
                                         value="{$content->bandwidth}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户分组</label>
+                                <label class="form-label col-3 col-form-label">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" 
                                         value="{$content->node_group}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">速率限制 (Mbps)</label>
+                                <label class="form-label col-3 col-form-label">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
                                         value="{$content->speed_limit}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">同时连接IP限制</label>
+                                <label class="form-label col-3 col-form-label">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="{$content->ip_limit}">
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>购买限制</span>
+                                <span>محدودیت خرید</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户等级要求</label>
+                                <label class="form-label col-3 col-form-label">نیازهای سطح کاربر</label>
                                 <div class="col">
                                     <input id="class_requried" type="text" class="form-control"
                                         value="{$limit->class_requried}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户所在的节点组</label>
+                                <label class="form-label col-3 col-form-label">گروه نودی که کاربر در آن قرار دارد</label>
                                 <div class="col">
                                     <input id="node_group_requried" type="text" class="form-control"
                                         value="{$limit->node_group_requried}">
@@ -149,7 +149,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="row">
-                                    <span class="col">仅限新用户购买</span>
+                                    <span class="col">فقط کاربران جدید</span>
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
                                             <input id="new_user_requried" class="form-check-input" type="checkbox" 

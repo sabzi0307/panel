@@ -6,17 +6,17 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">创建商品</span>
+                        <span class="home-title">افزودن سرویس</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">创建各类商品</span>
+                        <span class="home-subtitle">سرویس های متنوع را اضافه کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <a id="create-product" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
-                            保存
+                            ذخیره
                         </a>
                     </div>
                 </div>
@@ -29,43 +29,43 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">基础信息</h3>
+                            <h3 class="card-title">اطلاعات پایه</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">名称</label>
+                                <label class="form-label col-3 col-form-label">نام</label>
                                 <div class="col">
                                     <input id="name" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">价格</label>
+                                <label class="form-label col-3 col-form-label">قیمت</label>
                                 <div class="col">
                                     <input id="price" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">库存</label>
+                                <label class="form-label col-3 col-form-label">موجودی</label>
                                 <div class="col">
                                     <input id="stock" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">销售状态</label>
+                                <label class="form-label col-3 col-form-label">وضعیت فروش</label>
                                 <div class="col">
                                     <select id="status" class="col form-select">
-                                        <option value="1">正常</option>
-                                        <option value="0">下架</option>
+                                        <option value="1">فعال</option>
+                                        <option value="0">غیرفعال</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">类型</label>
+                                <label class="form-label col-3 col-form-label">انواع</label>
                                 <div class="col">
                                     <select id="type" class="col form-select">
-                                        <option value="tabp">时间流量包</option>
-                                        <option value="time">时间包</option>
-                                        <option value="bandwidth">流量包</option>
+                                        <option value="tabp">بسته ترافیک زمانی</option>
+                                        <option value="time">بسته زمانی</option>
+                                        <option value="bandwidth">بسته ترافیک</option>
                                     </select>
                                 </div>
                             </div>
@@ -75,65 +75,65 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">商品内容</h3>
+                            <h3 class="card-title">شرح سرویس</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">商品时长 (天)</label>
+                                <label class="form-label col-3 col-form-label">مدت زمان محصول (روز)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">等级</label>
+                                <label class="form-label col-3 col-form-label">سطح</label>
                                 <div class="col">
                                     <input id="class" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">等级时长 (天)</label>
+                                <label class="form-label col-3 col-form-label">مدت زمان سطح (روز)</label>
                                 <div class="col">
                                     <input id="class_time" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">可用流量 (GB)</label>
+                                <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="bandwidth" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户分组</label>
+                                <label class="form-label col-3 col-form-label">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">速率限制 (Mbps)</label>
+                                <label class="form-label col-3 col-form-label">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">同时连接IP限制</label>
+                                <label class="form-label col-3 col-form-label">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="hr-text">
-                                <span>购买限制</span>
+                                <span>محدودیت خرید</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户等级要求</label>
+                                <label class="form-label col-3 col-form-label">الزامات سطح کاربر</label>
                                 <div class="col">
                                     <input id="class_requried" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">用户所在的节点组</label>
+                                <label class="form-label col-3 col-form-label">گروه نودی که کاربر در آن قرار دارد</label>
                                 <div class="col">
                                     <input id="node_group_requried" type="text" class="form-control"
                                         value="">
@@ -141,7 +141,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="row">
-                                    <span class="col">仅限新用户购买</span>
+                                    <span class="col">فقط کاربران جدید</span>
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
                                             <input id="new_user_requried" class="form-check-input" type="checkbox">
