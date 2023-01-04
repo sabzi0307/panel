@@ -515,4 +515,40 @@ final class Tools
     {
         return $giftcard->status ? 'استفاده شده' : 'استفاده نشده';
     }
+
+    /**
+     * 商品类型
+     */
+    public static function getProductType($product)
+    {
+        if ($product->type === 'tabp') {
+            return 'بسته ترافیک زمانی';
+        }
+        if ($product->type === 'time') {
+            return 'بسته زمانی';
+        }
+        if ($product->type === 'bandwidth') {
+            return 'بسته ترافیک';
+        }
+        return 'سایر';
+    }
+
+    /**
+     * 商品状态
+     */
+    public static function getProductStatus($product)
+    {
+        return $product->status ? 'نرمال' : 'توقف فروش';
+    }
+
+    /**
+     * 商品库存
+     */
+    public static function getProductStock($product)
+    {
+        if ($product->stock === -1) {
+            return 'نامحدود';
+        }
+        return $product->stock;
+    }
 }
