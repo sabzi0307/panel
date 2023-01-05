@@ -303,8 +303,8 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getRawTodayTrafficUsage()}, {$sts->getRawLastTrafficUsage()}, {$sts->getRawUnusedTrafficUsage()}],
-                labels: ["امروز استفاده می شود"، "استفاده شده در گذشته"، "ترافیک باقی مانده"],
+                series: [{$sts->getRawGbTodayTrafficUsage()}, {$sts->getRawGbLastTrafficUsage()}, {$sts->getRawGbUnusedTrafficUsage()}],
+                labels: ["امروزه استفاده می شود({$sts->getTodayTrafficUsage()})", "در گذشته استفاده شده({$sts->getLastTrafficUsage()})", "ترافیک باقیمانده({$sts->getUnusedTrafficUsage()})"],
                 grid: {
                     strokeDashArray: 3,
                 },
