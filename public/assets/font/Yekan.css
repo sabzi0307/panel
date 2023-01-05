@@ -88,3 +88,8 @@ html, body, h1, h2 {
   Right: unset;
   left: 100px;
 }
+
+.apexcharts-tooltip-marker {
+  margin-left: 10px;
+  margin-right: unset;
+}
