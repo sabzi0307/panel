@@ -551,4 +551,41 @@ final class Tools
         }
         return $product->stock;
     }
+
+    /**
+     * 订单状态
+     */
+    public static function getOrderStatus($order)
+    {
+        if ($order->status === 'pending_payment') {
+            return 'منتظر پرداخت باشید';
+        }
+        if ($order->status === 'pending_activation') {
+            return 'منتظر فعال سازی';
+        }
+        if ($order->status === 'activated') {
+            return 'فعال شد';
+        }
+        if ($order->status === 'cancelled') {
+            return 'لغو شد';
+        }
+        return 'ناشناخته';
+    }
+
+    /**
+     * 订单商品类型
+     */
+    public static function getOrderProductType($order)
+    {
+        if ($order->product_type === 'tabp') {
+            return 'بسته ترافیک زمانی';
+        }
+        if ($order->product_type === 'time') {
+            return 'بسته زمانی';
+        }
+        if ($order->product_type === 'bandwidth') {
+            return 'بسته ترافیک';
+        }
+        return 'سایر';
+    }
 }
