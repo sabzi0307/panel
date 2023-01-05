@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">IP ورود</span>
+                        <span class="home-title">IP آنلاین</span>
                     </h2>
-                    <div class="page-pretitle">
-                        <span class="home-subtitle">مشاهده تاریخچه ورود به حساب کاربری</span>
+                    <div class="page-pretitle my-3">
+                        <span class="home-subtitle">مشاهده IP فعلی کاربر آنلاین<</span>
                     </div>
                 </div>
             </div>
@@ -43,9 +43,9 @@
             "searching": false,
             "ordering": false,
             ajax: {
-                url: '/admin/login/ajax',
+                url: '/admin/alive/ajax',
                 type: 'POST',
-                dataSrc: 'logins.data'
+                dataSrc: 'alives.data'
             },
             "autoWidth":false,
             'iDisplayLength': 10,

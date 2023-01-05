@@ -6,9 +6,9 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">کارت هدیه</span>
+                        <span class="home-title">کارت هدیه</span>
                     </h2>
-                    <div class="page-pretitle">
+                    <div class="page-pretitle my-3">
                         <span class="home-subtitle">
                             کارت های هدیه را مشاهده و مدیریت کنید
                         </span>

@@ -6,9 +6,9 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">مدیریت اطلاعیه</span>
+                        <span class="home-title">مدیریت اطلاعیه</span>
                     </h2>
-                    <div class="page-pretitle">
+                    <div class="page-pretitle my-3">
                         <span class="home-subtitle">مشاهده و مدیریت اطلاعیه ها در سایت</span>
                     </div>
                 </div>
