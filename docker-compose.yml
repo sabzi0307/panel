@@ -2,12 +2,8 @@ version: '3'
 
 services:
     sspanel:
-        image: sspaneluim/panel
+        image: ttracy/panel
         container_name: sspanel
-        pull_policy: always
-        depends_on:
-          - ss_db
-          - "phpmyadmin"
         restart: always
         environment:
           SSPANEL_KEY: ChangeMe
@@ -16,17 +12,17 @@ services:
           SSPANEL_MUKEY: SSPANEL
           SSPANEL_ADMIN_EMAIL: admin@example.com
           SSPANEL_ADMIN_PASSWORD: V3ryL0ngP@ssw0rd
-          DEBUG: false
+          DEBUG: "false"
           TIME_ZONE: Asia/Tehran
-          STREAMING_UNLOCK: false
+          STREAMING_UNLOCK: "false"
           GITHUB_ACCESS_TOKEN:
-          ENABLE_TELEGRAM: false
+          ENABLE_TELEGRAM: "false"
           TELEGRAM_TOKEN:
           TELEGRAM_CHAT_ID:
           TELEGRAM_BOT: EXAMPLE_bot
-          TELEGRAM_LOGIN: false
+          TELEGRAM_LOGIN: "false"
           B2_BACKUP_NAME: SSPANEL
-          B2_BACKUP: false
+          B2_BACKUP: "false"
           B2_APP_KEY_ID:
           B2_APP_KEY:
           B2_BUCKET_NAME:
