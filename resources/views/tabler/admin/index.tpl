@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">نمای کلی سیستم</span>
+                        <span class="home-title">نمای کلی سیستم</span>
                     </h2>
-                    <div class="page-pretitle">
-                        <span class="home-subtitle">نشاننودای مختلف عملکرد سیستم را در اینجا مشاهده کنید</span>
+                    <div class="page-pretitle my-3">
+                        <span class="home-subtitle">نشانگرهای مختلف عملکرد سیستم را در اینجا مشاهده کنید</span>
                     </div>
                 </div>
             </div>
