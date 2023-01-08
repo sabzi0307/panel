@@ -394,7 +394,9 @@
                             </div>
                             <p class="my-3">
                                 {if time() > strtotime($user->class_expire)}
-                                    بسته شما منقضی شده است، می توانید به <a href="/user/shop">فروشگاه</a> خرید بسته
+                                    بسته شما منقضی شده است، لطفا جهت خرید بسته به  
+                                    <a href="/user/shop">فروشگاه</a>
+                                    مراجعه نمایید.
                                 {else}
                                     {$diff = round((strtotime($user->class_expire) - time()) / 86400)}
                                     من LV. {$user->class} وجود دارد در مورد {$diff} روزهای یاقی مانده（{$user->class_expire}）
