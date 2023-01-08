@@ -76,9 +76,9 @@
                         <li><a href="/admin/announcement"><i class="mdi mdi-bullhorn-variant icon-lg"></i>&nbsp;مدیریت اطلاعیه</a></li>
                         <li><a href="/admin/ticket"><i class="mdi mdi-comment-question icon-lg"></i>&nbsp;مدیریت دستور کار</a></li>
                     </ul>
-                    <a class="waves-attach" data-toggle="collapse" href="#ui_menu_node">نود</a>
+                    <a class="waves-attach" data-toggle="collapse" href="#ui_menu_node">سرور</a>
                     <ul class="menu-collapse collapse in" id="ui_menu_node">
-                        <li><a href="/admin/node"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست نود ها</a></li>
+                        <li><a href="/admin/node"><i class="mdi mdi-server icon-lg"></i>&nbsp;لیست سرور ها</a></li>
                     </ul>
                     <a class="waves-attach" data-toggle="collapse" href="#ui_menu_user">کاربر</a>
                     <ul class="menu-collapse collapse in" id="ui_menu_user">

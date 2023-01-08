@@ -9,7 +9,7 @@
                         <span class="home-title">استریم های مسدود شده</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">در اینجا می توانید رفع انسداد جریان نود را بررسی کنید</span>
+                        <span class="home-subtitle">در اینجا می توانید رفع انسداد جریان سرور را بررسی کنید</span>
                     </div>
                 </div>
             </div>

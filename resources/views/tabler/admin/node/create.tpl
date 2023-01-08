@@ -9,10 +9,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">ایجاد نود</span>
+                        <span class="home-title">ایجاد سرور</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">نود های مختلف ایجاد کنید</span>
+                        <span class="home-subtitle">سرور های مختلف ایجاد کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -83,7 +83,7 @@
                                 <div class="divide-y">
                                     <div>
                                         <label class="row">
-                                            <span class="col">نمایش نود</span>
+                                            <span class="col">نمایش سرور</span>
                                             <span class="col-auto">
                                                 <label class="form-check form-check-single form-switch">
                                                     <input id="type" class="form-check-input" type="checkbox"

@@ -9,10 +9,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">نود #{$node->id}</span>
+                        <span class="home-title">سرور #{$node->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">ویرایش اطلاعات نود</span>
+                        <span class="home-subtitle">ویرایش اطلاعات سرور</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -74,14 +74,14 @@
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <dev id="custom_config"></dev>
                                 <label class="form-label col-form-label">
-                                    مراجعه فرمایید <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a> پیکربندی سفارشی نود را تغییر دهید
+                                    مراجعه فرمایید <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a> پیکربندی سفارشی سرور را تغییر دهید
                                 </label>
                             </div>
                             <div class="mb-3">
                                 <div class="divide-y">
                                     <div>
                                         <label class="row">
-                                            <span class="col">این نود را نشان دهد</span>
+                                            <span class="col">این سرور را نشان دهد</span>
                                             <span class="col-auto">
                                                 <label class="form-check form-check-single form-switch">
                                                     <input id="type" class="form-check-input" type="checkbox"
@@ -154,7 +154,7 @@
                                 <span>گزینه های پیشرفته</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">کلید ارتباطی نود</label>
+                                <label class="form-label col-3 col-form-label">کلید ارتباطی سرور</label>
                                 <input type="text" class="form-control" id="password" value="{$node->password}" disabled="">
                                 <div class="row my-3">
                                     <div class="col">

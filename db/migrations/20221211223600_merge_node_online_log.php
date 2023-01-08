@@ -13,7 +13,7 @@ final class MergeNodeOnlineLog extends AbstractMigration
         }
         if (! $this->table('node')->hasColumn('online_user')) {
             $this->table('node')
-                ->addColumn('online_user', 'integer', [ 'comment' => 'کاربر آنلاین نود', 'default' => 0 ])
+                ->addColumn('online_user', 'integer', [ 'comment' => 'کاربر آنلاین سرور', 'default' => 0 ])
                 ->save();
         }
     }

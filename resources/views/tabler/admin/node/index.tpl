@@ -6,11 +6,11 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">لیست نود ها</span>
+                        <span class="home-title">لیست سرور ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">
-                            لیست تمام نود های سیستم
+                            لیست تمام سرور های سیستم
                         </span>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
         }
 
         function deleteNode(node_id) {
-            $('#notice-message').text('آیا مطمئن هستید که می خواهید این نود را حذف کنید؟');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرور را حذف کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({
@@ -124,7 +124,7 @@
         };
 
         function copyNode(node_id) {
-            $('#notice-message').text('آیا مطمئن هستید که می خواهید این نود را کپی کنید؟');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرور را کپی کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({

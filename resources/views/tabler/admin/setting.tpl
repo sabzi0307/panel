@@ -907,7 +907,7 @@
                                     <div class="tab-pane fade active in" id="telegram_gernal_settings">
                                         <!-- telegram_add_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">افزودن اطلاعیه نود</label>
+                                            <label class="floating-label">افزودن اطلاعیه سرور</label>
                                             <select id="telegram_add_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_add_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_add_node'] == true}selected{/if}>فعال</option>
@@ -915,12 +915,12 @@
                                         </div>
                                         <!-- telegram_add_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اطلاع رسانی اضافه شدن  نود</label>
+                                            <label class="floating-label">متن اطلاع رسانی اضافه شدن  سرور</label>
                                             <input class="form-control maxwidth-edit" id="telegram_add_node_text" value="{$settings['telegram_add_node_text']}">
                                         </div>
                                         <!-- telegram_update_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">تغییر اعلان نود</label>
+                                            <label class="floating-label">تغییر اعلان سرور</label>
                                             <select id="telegram_update_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_update_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_update_node'] == true}selected{/if}>فعال</option>
@@ -928,12 +928,12 @@
                                         </div>
                                         <!-- telegram_update_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اطلاع رسانی تغییرات در نود</label>
+                                            <label class="floating-label">متن اطلاع رسانی تغییرات در سرور</label>
                                             <input class="form-control maxwidth-edit" id="telegram_update_node_text" value="{$settings['telegram_update_node_text']}">
                                         </div>
                                         <!-- telegram_delete_node -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان حذف نود</label>
+                                            <label class="floating-label">اعلان حذف سرور</label>
                                             <select id="telegram_delete_node" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_delete_node'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_delete_node'] == true}selected{/if}>فعال</option>
@@ -941,12 +941,12 @@
                                         </div>
                                         <!-- telegram_delete_node_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان حذف نود</label>
+                                            <label class="floating-label">متن اعلان حذف سرور</label>
                                             <input class="form-control maxwidth-edit" id="telegram_delete_node_text" value="{$settings['telegram_delete_node_text']}">
                                         </div>
                                         <!-- telegram_node_gfwed -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان مسدود شدن نود توسط GFW</label>
+                                            <label class="floating-label">اعلان مسدود شدن سرور توسط GFW</label>
                                             <select id="telegram_node_gfwed" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_gfwed'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_gfwed'] == true}selected{/if}>فعال</option>
@@ -954,12 +954,12 @@
                                         </div>
                                         <!-- telegram_node_gfwed_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان مسدود شدن نود توسط GFW</label>
+                                            <label class="floating-label">متن اعلان مسدود شدن سرور توسط GFW</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_gfwed_text" value="{$settings['telegram_node_gfwed_text']}">
                                         </div>
                                         <!-- telegram_node_ungfwed -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان رفع مسدودی نود از GFW</label>
+                                            <label class="floating-label">اعلان رفع مسدودی سرور از GFW</label>
                                             <select id="telegram_node_ungfwed" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_ungfwed'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_ungfwed'] == true}selected{/if}>فعال</option>
@@ -967,12 +967,12 @@
                                         </div>
                                         <!-- telegram_node_ungfwed_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان رفع مسدودی نود از GFW</label>
+                                            <label class="floating-label">متن اعلان رفع مسدودی سرور از GFW</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_ungfwed_text" value="{$settings['telegram_node_ungfwed_text']}">
                                         </div>
                                         <!-- telegram_node_online -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان بازگشت نود به حالت آنلاین</label>
+                                            <label class="floating-label">اعلان بازگشت سرور به حالت آنلاین</label>
                                             <select id="telegram_node_online" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_online'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_online'] == true}selected{/if}>فعال</option>
@@ -980,12 +980,12 @@
                                         </div>
                                         <!-- telegram_node_online_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان بازگشت نود به حالت آنلاین</label>
+                                            <label class="floating-label">متن اعلان بازگشت سرور به حالت آنلاین</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_online_text" value="{$settings['telegram_node_online_text']}">
                                         </div>
                                         <!-- telegram_node_offline -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">اعلان آفلاین شدن نود</label>
+                                            <label class="floating-label">اعلان آفلاین شدن سرور</label>
                                             <select id="telegram_node_offline" class="form-control maxwidth-edit">
                                                 <option value="0" {if $settings['telegram_node_offline'] == false}selected{/if}>غیرفعال</option>
                                                 <option value="1" {if $settings['telegram_node_offline'] == true}selected{/if}>فعال</option>
@@ -993,7 +993,7 @@
                                         </div>
                                         <!-- telegram_node_offline_text -->
                                         <div class="form-group form-group-label">
-                                            <label class="floating-label">متن اعلان آفلاین شدن نود</label>
+                                            <label class="floating-label">متن اعلان آفلاین شدن سرور</label>
                                             <input class="form-control maxwidth-edit" id="telegram_node_offline_text" value="{$settings['telegram_node_offline_text']}">
                                         </div>
                                         <!-- telegram_daily_job -->

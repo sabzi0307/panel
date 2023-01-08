@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">گروه نودی که کاربر در آن قرار دارد</label>
+                                <label class="form-label col-3 col-form-label">گروه سروری که کاربر در آن قرار دارد</label>
                                 <div class="col">
                                     <input id="node_group_required" type="text" class="form-control"
                                         value="">

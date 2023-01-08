@@ -138,7 +138,7 @@
                             <div class="form-group form-group-label">
                                 <label class="floating-label" for="content_extra">پشتیبانی خدمات</label>
                                 <input class="form-control maxwidth-edit" id="content_extra" type="text" value="">
-                                <p class="form-control-guide"><i class="mdi mdi-information"></i>مثال：<code>check-توزیع جهانی نود;clear-پاسخ سریع خدمات مشتری</code>，سمت چپ علامت منهای کد لوگو و سمت راست متن است که با ;
+                                <p class="form-control-guide"><i class="mdi mdi-information"></i>مثال：<code>check-توزیع جهانی سرور;clear-پاسخ سریع خدمات مشتری</code>，سمت چپ علامت منهای کد لوگو و سمت راست متن است که با ;
                                 </p>
                                 <p class="form-control-guide">کد آیکون به：<a
                                             href="https://materialdesignicons.com/">Material Design Icons</a>
@@ -179,7 +179,7 @@
             }
             let contentExtra = $$getValue('content_extra');
             if (contentExtra === '') {
-                contentExtra = 'check-توزیع جهانی نود؛ پاسخ سریع خدمات مشتری را بررسی کنید;check-پاسخ سریع به خدمات مشتری;check-کلاینت پلتفرم کامل';
+                contentExtra = 'check-توزیع جهانی سرور؛ پاسخ سریع خدمات مشتری را بررسی کنید;check-پاسخ سریع به خدمات مشتری;check-کلاینت پلتفرم کامل';
             }
             let data = {
                 name: $$getValue('name'),

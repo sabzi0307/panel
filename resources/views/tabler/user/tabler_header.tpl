@@ -125,7 +125,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        لیست نود ها
+                                        لیست سرور ها
                                     </a>
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
