@@ -60,7 +60,7 @@
                                                 <div class="ribbon bg-red">LV. {$server["class"]}</div>
                                                 {/if}
                                                 <div class="card-body">
-                                                    <div class="row g-3 align-items-center">
+                                                    <div class="row g-3 align-items-center" style="direction: ltr;">
                                                         <div class="col-auto">
                                                             <span
                                                                 class="status-indicator
