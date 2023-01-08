@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     cp config/b2_backup_config.example config/b2_backup_config && \
     cp config/b2_backup.sh b2_backup.sh && \
     chmod +x /usr/local/bin/docker-entry.sh && \
-    cp -r config/rules public/clients/ && \
+    cp -r config/rules public/rules/ && \
     chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
     chmod -R 777 /var/www/storage/framework/smarty/compile/ && \

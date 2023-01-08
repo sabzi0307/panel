@@ -165,6 +165,7 @@ tee -a $B2_CONF > /dev/null <<EOT
 EOT
 fi
 
+
 echo -n >&2 "\nChecking connection to database..."
 
 if [ -z "$DB_HOST" ]; then
