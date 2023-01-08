@@ -212,8 +212,12 @@ final class SubController extends BaseController
     {
         $nodes = [];
         $clash_config = $_ENV['Clash_Config'];
-        
-        str_replace(['proxyproviderip'],[$_ENV['subUrl']],$clash_config);
+        $rule_providers = $clash_config['rule-providers'];
+        $ruleprovider = [];
+        foreach ($rule_providers as $key=>$value) {
+            $rule_providers[$key] = str_replace(['http://proxyproviderip','https://proxyproviderip'],[$_ENV['subUrl'],$_ENV['subUrl']],$value);
+        }
+        $clash_config['rule-providers'] = $rule_providers;
 
         //Filter out the nodes that users can connect to
         $nodes_raw = Node::where('type', 1)
