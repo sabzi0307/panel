@@ -85,7 +85,7 @@
                                         <i class="ti ti-settings icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        مدیریت کنید
+                                        تنظیمات
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -114,7 +114,7 @@
                                         <i class="ti ti-brand-hipchat icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        اقدامات
+                                        پشتیبانی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -124,7 +124,7 @@
                                     </a>
                                     <a class="dropdown-item" href="/admin/ticket">
                                         <i class="ti ti-messages"></i>&nbsp;
-                                        دستور کار
+                                        تیکت
                                     </a>
                                 </div>
                             </li>
