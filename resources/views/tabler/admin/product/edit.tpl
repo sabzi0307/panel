@@ -9,7 +9,7 @@
                         <span class="home-title">سرویس #{$product->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">اطلاعات محصول را ویرایش کنید</span>
+                        <span class="home-subtitle">اطلاعات سرویس را ویرایش کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">

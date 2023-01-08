@@ -79,7 +79,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">مدت زمان محصول (روز)</label>
+                                <label class="form-label col-3 col-form-label">مدت زمان سرویس (روز)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control" value="">
                                 </div>

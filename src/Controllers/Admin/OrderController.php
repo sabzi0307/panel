@@ -59,7 +59,7 @@ final class OrderController extends BaseController
         if ($order->status === 'activated') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'محصول فعال شده را نمی توان لغو کرد',
+                'msg' => 'سرویس فعال شده را نمی توان لغو کرد',
             ]);
         }
 

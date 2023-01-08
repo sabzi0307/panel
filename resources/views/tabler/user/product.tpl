@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">لیست محصولات</span>
+                        <span class="home-title">لیست سرویس ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">اجناس فروشگاه را اینجا مرور کنید و در صورت تمایل سفارش دهید</span>
+                        <span class="home-subtitle">سرویس ها را در اینجا مشاهده کنید و در صورت تمایل سفارش دهید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -136,7 +136,7 @@
                                                 {/foreach}
                                             {else}
                                                 <div class="card-body">
-                                                    <p>در این دسته بندی هیچ محصولی وجود ندارد</p>
+                                                    <p>در این دسته بندی هیچ سرویسی وجود ندارد</p>
                                                 </div>
                                             {/if}
                                         </div>
@@ -159,7 +159,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <span>نام محصول：</span>
+                        <span>نام سرویس：</span>
                         <span id="product-buy-name" style="float: right"></span>
                     </div>
                     <div class="mb-3">

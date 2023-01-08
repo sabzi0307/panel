@@ -100,7 +100,7 @@
         }
 
         function deleteProduct(product_id) {
-            $('#notice-message').text('آیا مطمئن هستید که می خواهید این محصول را حذف کنید؟');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرویس را حذف کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({
@@ -122,7 +122,7 @@
         };
 
         function copyProduct(product_id) {
-            $('#notice-message').text('آیا مطمئن هستید که می خواهید این محصول را کپی کنید؟');
+            $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرویس را کپی کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').on('click', function() {
                 $.ajax({

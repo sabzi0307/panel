@@ -65,7 +65,7 @@ final class InitDatabase extends AbstractMigration
             ->addColumn('auto_reset_day', 'integer', [ 'default' => 0])
             ->addColumn('auto_reset_bandwidth', 'decimal', [ 'default' => '0.00', 'precision' => 12, 'scale' => 2 ])
             ->addColumn('api_token', 'uuid', [ 'comment' => 'API کلید', 'null' => false, 'default' => '' ])
-            ->addColumn('use_new_shop', 'smallinteger', [ 'comment' => 'برای فعال کردن فروشگاه های جدید', 'null' => false, 'default' => 0 ])
+            ->addColumn('use_new_shop', 'smallinteger', [ 'comment' => 'فعال کردن فروشگاه جدید', 'null' => false, 'default' => 0 ])
             ->addIndex([ 'user_name' ])
             ->create();
 

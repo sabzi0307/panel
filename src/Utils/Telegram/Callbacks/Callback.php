@@ -101,7 +101,7 @@ final class Callback
         $Keyboard = [
             [
                 [
-                    'text' => 'توضیحات محصول',
+                    'text' => 'توضیحات سرویس',
                     'callback_data' => 'general.pricing',
                 ],
                 [

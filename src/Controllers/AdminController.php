@@ -170,7 +170,7 @@ final class AdminController extends BaseController
                     'id' => 'ID',
                     'code' => 'کد تخفیف',
                     'expire' => 'تاریخ انقضا',
-                    'shop' => 'شناسه محصول محدود',
+                    'shop' => 'شناسه سرویس محدود',
                     'credit' => 'سهمیه',
                     'onetime' => 'مکرر',
                 ], 'coupon/ajax'))

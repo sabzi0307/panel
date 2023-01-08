@@ -16,7 +16,7 @@ final class ProductController extends BaseController
     public static array $details = [
         'field' => [
             'op' => 'عمل کنند',
-            'id' => 'شناسه محصول',
+            'id' => 'شناسه سرویس',
             'type' => 'نوع',
             'name' => 'نام',
             'price' => 'قیمت فروش',
@@ -88,13 +88,13 @@ final class ProductController extends BaseController
             $product = new Product();
 
             if ($name === '') {
-                throw new \Exception('لطفا نام محصول را وارد کنید');
+                throw new \Exception('لطفا نام سرویس را وارد کنید');
             }
             if ($price === '') {
-                throw new \Exception('لطفا قیمت محصول را وارد نمایید');
+                throw new \Exception('لطفا قیمت سرویس را وارد نمایید');
             }
             if ($stock === '') {
-                throw new \Exception('لطفا موجودی محصول را وارد کنید');
+                throw new \Exception('لطفا موجودی سرویس را وارد کنید');
             }
 
             if ($type === 'tabp') {
@@ -136,7 +136,7 @@ final class ProductController extends BaseController
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('نوع محصول اشتباه وارد شده');
+                throw new \Exception('نوع سرویس اشتباه وارد شده');
             }
 
             $limit = [
@@ -211,13 +211,13 @@ final class ProductController extends BaseController
             $product = Product::find($product_id);
 
             if ($name === '') {
-                throw new \Exception('لطفا نام محصول را وارد کنید');
+                throw new \Exception('لطفا نام سرویس را وارد کنید');
             }
             if ($price === '') {
-                throw new \Exception('لطفا قیمت محصول را وارد نمایید');
+                throw new \Exception('لطفا قیمت سرویس را وارد نمایید');
             }
             if ($stock === '') {
-                throw new \Exception('لطفا موجودی محصول را وارد کنید');
+                throw new \Exception('لطفا موجودی سرویس را وارد کنید');
             }
 
             if ($type === 'tabp') {
@@ -259,7 +259,7 @@ final class ProductController extends BaseController
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('نوع محصول اشتباه وارد شده');
+                throw new \Exception('نوع سرویس اشتباه وارد شده');
             }
 
             $limit = [

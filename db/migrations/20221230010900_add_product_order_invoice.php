@@ -10,7 +10,7 @@ final class AddProductOrderInvoice extends AbstractMigration
     {
         if (! $this->hasTable('product')) {
             $this->table('product', [ 'id' => false, 'primary_key' => [ 'id' ]])
-                ->addColumn('id', 'integer', [ 'comment' => 'شناسه محصول', 'identity' => true ])
+                ->addColumn('id', 'integer', [ 'comment' => 'شناسه سرویس', 'identity' => true ])
                 ->addColumn('type', 'string', [ 'comment' => 'انواع' ])
                 ->addColumn('name', 'string', [ 'comment' => 'نام' ])
                 ->addColumn('price', 'double', [ 'comment' => 'قیمت فروش' ])
@@ -30,10 +30,10 @@ final class AddProductOrderInvoice extends AbstractMigration
             $this->table('order', [ 'id' => false, 'primary_key' => [ 'id' ]])
                 ->addColumn('id', 'integer', [ 'comment' => 'شماره سفارش', 'identity' => true ])
                 ->addColumn('user_id', 'integer', [ 'comment' => 'شناسه کاربر' ])
-                ->addColumn('product_id', 'integer', [ 'comment' => 'شناسه محصول' ])
-                ->addColumn('product_type', 'string', [ 'comment' => 'انواع محصول' ])
-                ->addColumn('product_name', 'string', [ 'comment' => 'نام محصول' ])
-                ->addColumn('product_content', 'json', [ 'comment' => 'محتوای محصول' ])
+                ->addColumn('product_id', 'integer', [ 'comment' => 'شناسه سرویس' ])
+                ->addColumn('product_type', 'string', [ 'comment' => 'انواع سرویس' ])
+                ->addColumn('product_name', 'string', [ 'comment' => 'نام سرویس' ])
+                ->addColumn('product_content', 'json', [ 'comment' => 'محتوای سرویس' ])
                 ->addColumn('coupon', 'string', [ 'comment' => 'سفارش کد تخفیف'])
                 ->addColumn('price', 'double', [ 'comment' => 'تعداد' ])
                 ->addColumn('status', 'string', [ 'comment' => 'وضعیت سفارش' ])

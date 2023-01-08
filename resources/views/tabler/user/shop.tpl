@@ -39,7 +39,7 @@
                         <div class="card-main">
                             <div class="dropdown btn-group">
                                 <a href="javascript:void(0);" type="button" class="btn btn-dropdown-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  نوع محصول را انتخاب کنید <span class="caret"></span>
+                                  نوع سرویس را انتخاب کنید <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                   <li class="order-type"><a href="javascript:void(0)" id="orders">خرید بسته</a></li>
@@ -244,7 +244,7 @@
                                 <h2 class="modal-title">تایید سفارش</h2>
                             </div>
                             <div class="modal-inner">
-                                <p id="name">نام محصول:</p>
+                                <p id="name">نام سرویس:</p>
                                 <p id="credit">مبلغ تخفیف:</p>
                                 <p id="total">مبلغ کل:</p>
                                 <div class="checkbox switch">
@@ -360,7 +360,7 @@
             },
             success: (data) => {
                 if (data.ret) {
-                    $$.getElementById('name').innerHTML = `نام محصول:${
+                    $$.getElementById('name').innerHTML = `نام سرویس:${
                             data.name
                             }`;
                     $$.getElementById('credit').innerHTML = `مبلغ تخفیف:${

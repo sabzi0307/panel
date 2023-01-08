@@ -3,7 +3,7 @@
 <main class="content">
     <div class="content-header ui-content-header">
         <div class="container">
-            <h1 class="content-heading">لیست محصولات</h1>
+            <h1 class="content-heading">لیست سرویس ها</h1>
         </div>
     </div>
     <div class="container">
@@ -35,7 +35,7 @@
                         <div class="modal-content">
                             <div class="modal-heading">
                                 <a class="modal-close" data-dismiss="modal">×</a>
-                                <h2 class="modal-title">آیا مطمئن هستید که می خواهید آن را از قفسه بردارید؟</h2>
+                                <h2 class="modal-title">آیا مطمئن هستید که می خواهید آن را از چرخه فروش خارج کنید؟</h2>
                             </div>
                             <div class="modal-inner">
                                 <p>نکته: با برداشتن از قفسه، تمدید خودکار همه بسته‌های خریداری‌شده خاموش می‌شود！</p>

@@ -25,9 +25,9 @@ final class ShopController extends BaseController
                 ->assign('table_config', ResponseHelper::buildTableConfig([
                     'op' => 'شرح عملیات',
                     'id' => 'ID',
-                    'name' => 'نام محصول',
+                    'name' => 'نام سرویس',
                     'price' => 'قیمت',
-                    'content' => 'محتوای محصول',
+                    'content' => 'محتوای سرویس',
                     'auto_renew' => 'تمدید خودکار',
                     'auto_reset_bandwidth' => 'آیا هنگام تمدید ترافیک ریست شود',
                     'status' => 'حالت',
@@ -299,7 +299,7 @@ final class ShopController extends BaseController
             /** @var Shop $value */
 
             $tempdata = [];
-            $tempdata['op'] = '<a class="btn btn-brand" href="/admin/shop/' . $value->id . '/edit">ویرایش کنید</a> <a class = "btn btn-brand-accent" ' . ($value->status === 0 ? 'disabled' : 'id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>از قفسه ها بردارید</a>';
+            $tempdata['op'] = '<a class="btn btn-brand" href="/admin/shop/' . $value->id . '/edit">ویرایش کنید</a> <a class = "btn btn-brand-accent" ' . ($value->status === 0 ? 'disabled' : 'id="row_delete_' . $value->id . '" href="javascript:void(0);" onClick="delete_modal_show(\'' . $value->id . '\')"') . '>حذف از چرخه فروش</a>';
             $tempdata['id'] = $value->id;
             $tempdata['name'] = $value->name;
             $tempdata['price'] = $value->price;

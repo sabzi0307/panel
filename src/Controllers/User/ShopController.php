@@ -94,7 +94,7 @@ final class ShopController extends BaseController
             ->first();
 
         if ($shop === null) {
-            return ResponseHelper::error($response, 'محصول وجود ندارد یا متوقف شده است');
+            return ResponseHelper::error($response, 'سرویس وجود ندارد یا متوقف شده است');
         }
 
         $orders = Bought::where('userid', $user->id)->get();

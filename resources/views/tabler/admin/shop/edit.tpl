@@ -67,7 +67,7 @@
                                 <div class="checkbox switch">
                                     <label for="traffic-package-enable">
                                         <input {if $shop->trafficPackage()}checked{/if} class="access-hide" id="traffic-package-enable" type="checkbox">
-                                        <span class="switch-toggle"></span>تنظیم این محصول به عنوان بسته ترافیک اضافه
+                                        <span class="switch-toggle"></span>تنظیم این سرویس به عنوان بسته ترافیک اضافه
                                     </label>
                                     <p class="form-control-guide">
                                         <i class="mdi mdi-information"></i>

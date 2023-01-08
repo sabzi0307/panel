@@ -26,9 +26,9 @@
                             <input class="form-control maxwidth-edit" id="expire" type="number" value="1">
                         </div>
                         <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">شناسه محصول موجود کد تخفیف</label>
+                            <label class="floating-label" for="shop">شناسه سرویس موجود کد تخفیف</label>
                             <input class="form-control maxwidth-edit" id="shop" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت پر نشدن، همه محصولات موجود هستند. اگر چند مورد وجود دارد، آنها را با کاماهای نیم پهن انگلیسی جدا کنید.</p>
+                            <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت پر نشدن، همه سرویس ها موجود هستند. اگر چند مورد وجود دارد، آنها را با کاماهای نیم پهن انگلیسی جدا کنید.</p>
                         </div>
                         <div class="form-group form-group-label">
                             <label class="floating-label" for="shop">کد کوپن برای هر کاربر در دسترس است، -1 به معنای زمان نامحدود است</label>
