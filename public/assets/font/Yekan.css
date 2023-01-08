@@ -95,5 +95,5 @@ html, body, h1, h2 {
 }
 
 .form-select {
-  -moz-padding-start: unset;
+  padding-inline-start: unset;
 }
