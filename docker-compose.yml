@@ -1,10 +1,13 @@
-version: '3'
+version: '2.1'
 
 services:
     sspanel:
         image: ttracy/panel
         container_name: sspanel
         restart: always
+        depends_on:
+          mariadb:
+            condition: service_healthy
         environment:
           SSPANEL_KEY: ChangeMe
           SSPANEL_APP_NAME: SSPanel-UIM
@@ -42,6 +45,10 @@ services:
         environment:
           MYSQL_ROOT_PASSWORD: sspanel
           MYSQL_DATABASE: sspanel
+        healthcheck:
+          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          timeout: 20s
+          retries: 10
 
     phpmyadmin:
         image: phpmyadmin
