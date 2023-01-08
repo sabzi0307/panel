@@ -446,7 +446,7 @@
                                     {/if}
                                 </p>
                                 <p class="text-muted">
-                                    آخرین زمان ورود：<code>{$user->lastCheckInTime()}</code>
+                                    آخرین زمان استفاده：<code>{$user->lastCheckInTime()}</code>
                                 </p>
                             </div>
                             <div class="card-footer">
