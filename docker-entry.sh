@@ -256,7 +256,7 @@ if [ ! -d "public/clients" ]; then
 else
 	echo >&2 "Found"
 fi
-
+mv public/rules/ public/clients/
 echo >&2  "\nAll set, please enjoy!\n\n"
 
 /usr/bin/supervisord -c /etc/supervisord.conf -n
