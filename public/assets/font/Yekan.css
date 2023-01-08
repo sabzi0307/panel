@@ -111,3 +111,7 @@ html, body, h1, h2 {
   left: unset;
   right: 1em;
 }
+
+.form-select {
+  padding-inline-start: 2.3rem;
+}
