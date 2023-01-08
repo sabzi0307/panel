@@ -102,7 +102,7 @@ final class User extends Model
      */
     public function lastCheckInTime(): string
     {
-        return $this->last_check_in_time === 0 ? 'هرگز استفاده نکردم' : Tools::toDateTime($this->last_check_in_time);
+        return $this->last_check_in_time === 0 ? 'تا کنون استفاده نشده' : Tools::toDateTime($this->last_check_in_time);
     }
 
     /**

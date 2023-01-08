@@ -435,12 +435,12 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <h3 class="card-title">ورود روزانه</h3>
+                                <h3 class="card-title">ترافیک هدیه ورود روزانه</h3>
                                 <p class="text-muted">
-                                    برای دریافت وارد شوید
+                                    جهت دریافت حجم هدیه بین 
                                     {if $config['checkinMin'] !== $config['checkinMax']}
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> به <code>{$config['checkinMax']} MB</code>
-                                        ترافیک در محدوده，
+                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
+                                        دکمه بررسی را بفشارید.
                                     {else}
                                         <code>{$config['checkinMin']} MB</code>
                                     {/if}
