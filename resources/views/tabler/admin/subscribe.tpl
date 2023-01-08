@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title my-3">تاریخچه اشتراک</span>
+                        <span class="home-title my-3">سابقه اشتراک</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">مشاهده تاریخچه اشتراک کاربر</span>
+                        <span class="home-subtitle">مشاهده سابقه اشتراک کاربر</span>
                     </div>
                 </div>
             </div>

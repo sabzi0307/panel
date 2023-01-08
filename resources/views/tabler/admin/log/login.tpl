@@ -9,7 +9,7 @@
                         <span class="home-title">IP ورود</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">مشاهده تاریخچه ورود به حساب کاربری</span>
+                        <span class="home-subtitle">مشاهده سابقه ورود به حساب کاربری</span>
                     </div>
                 </div>
             </div>

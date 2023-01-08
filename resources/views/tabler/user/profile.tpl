@@ -63,7 +63,7 @@
                 <div class="col-md-6 com-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">تاریخچه ورود اخیر</h3>
+                            <h3 class="card-title">سابقه ورود اخیر</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap card-table">

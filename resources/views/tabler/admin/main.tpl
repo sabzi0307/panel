@@ -84,9 +84,9 @@
                     <ul class="menu-collapse collapse in" id="ui_menu_user">
                         <li><a href="/admin/user"><i class="mdi mdi-account-group icon-lg"></i>&nbsp;فهرست کاربران</a></li>
                         <li><a href="/admin/invite"><i class="mdi mdi-account-multiple-plus icon-lg"></i>&nbsp;دعوت و تخفیف</a></li>
-                        <li><a href="/admin/subscribe"><i class="mdi mdi-file-find icon-lg"></i>&nbsp;تاریخچه اشتراک</a></li>
-                        <li><a href="/admin/login"><i class="mdi mdi-text-account icon-lg"></i>&nbsp;تاریخچه ثبت نام</a></li>
-                        <li><a href="/admin/trafficlog"><i class="mdi mdi-swap-vertical icon-lg"></i>&nbsp;تاریخچه ترافیک</a></li>
+                        <li><a href="/admin/subscribe"><i class="mdi mdi-file-find icon-lg"></i>&nbsp;سابقه اشتراک</a></li>
+                        <li><a href="/admin/login"><i class="mdi mdi-text-account icon-lg"></i>&nbsp;سابقه ثبت نام</a></li>
+                        <li><a href="/admin/trafficlog"><i class="mdi mdi-swap-vertical icon-lg"></i>&nbsp;سابقه ترافیک</a></li>
                         <li><a href="/admin/alive"><i class="mdi mdi-account-badge icon-lg"></i>&nbsp;IP آنلاین</a></li>
                     </ul>
                     <a class="waves-attach" data-toggle="collapse" href="#ui_menu_config">تنظیمات</a>
@@ -103,11 +103,11 @@
                     <ul class="menu-collapse collapse in" id="ui_menu_trade">
                         <li><a href="/admin/code">
                                 <i class="mdi mdi-currency-usd icon-lg"></i>
-                                &nbsp;تاریخچه شارژ مجدد</a>
+                                &nbsp;سابقه شارژ مجدد</a>
                         </li>
                         <li><a href="/admin/shop"><i class="mdi mdi-shopping icon-lg"></i>&nbsp;فروشگاه</a></li>
                         <li><a href="/admin/coupon"><i class="mdi mdi-code-tags icon-lg"></i>&nbsp;کد تخفیف</a></li>
-                        <li><a href="/admin/bought"><i class="mdi mdi-shopping-search icon-lg"></i>&nbsp;تاریخچه خرید</a></li>
+                        <li><a href="/admin/bought"><i class="mdi mdi-shopping-search icon-lg"></i>&nbsp;سابقه خرید</a></li>
                     </ul>
                 <li><a href="/user"><i class="mdi mdi-account icon-lg"></i>&nbsp;پنل کاربر</a></li>
             </ul>

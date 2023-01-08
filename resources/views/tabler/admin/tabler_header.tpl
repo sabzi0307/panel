@@ -178,7 +178,7 @@
                                     </a>
                                     <a class="dropdown-item" href="/admin/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        تاریخچه
+                                        سابقه
                                     </a>
                                 </div>
                             </li>

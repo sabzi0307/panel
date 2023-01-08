@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">تاریخچه ترافیک</span>
+                        <span class="home-title">سابقه ترافیک</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">مشاهده سوابق ترافیک کاربر در ساعت</span>
