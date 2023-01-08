@@ -94,6 +94,20 @@ html, body, h1, h2 {
   margin-right: unset;
 }
 
-.form-select {
-  padding-inline-start: unset;
+.col {
+  padding-inline-start: calc(2.3rem - 3px);
+}
+
+.floating-label {
+  left: unset;
+  right: 1em;
+}
+
+.form-control {
+  padding: 7px 1em 8px 0em;
+}
+
+.floating-label {
+  left: unset;
+  right: 1em;
 }

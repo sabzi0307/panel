@@ -79,7 +79,7 @@
                 "sInfoPostFix": "",
                 "sSearch": "<i class=\"ti ti-search\"></i> ",
                 "sUrl": "",
-                "sEmptyTable": "داده های جدول خالی است",
+                "sEmptyTable": "هیچ داده ای یافت نشد",
                 "sLoadingRecords": "در حال بارگذاری...",
                 "sInfoThousands": ",",
                 "oPaginate": {

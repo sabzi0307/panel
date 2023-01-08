@@ -8,7 +8,7 @@ language: {
 "sInfoPostFix": "",
 "sSearch": "جستجو کردن:",
 "sUrl": "",
-"sEmptyTable": "داده های جدول خالی است",
+"sEmptyTable": "هیچ داده ای یافت نشد",
 "sLoadingRecords": "بارگذاری...",
 "sInfoThousands": ",",
 "oPaginate": {
