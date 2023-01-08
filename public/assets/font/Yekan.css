@@ -93,3 +93,7 @@ html, body, h1, h2 {
   margin-left: 10px;
   margin-right: unset;
 }
+
+.form-select {
+  -moz-padding-start: unset;
+}
