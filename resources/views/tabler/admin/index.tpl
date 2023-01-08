@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$user->calIncome("today") تومان}
+                                                {$user->calIncome("today")} تومان
                                             </div>
                                             <div class="text-muted">
                                                 گردش مالی امروز
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$user->calIncome("yesterday") تومان}
+                                                {$user->calIncome("yesterday")} تومان
                                             </div>
                                             <div class="text-muted">
                                                 گردش مالی دیروز
@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$user->calIncome("this month") تومان}
+                                                {$user->calIncome("this month")} تومان
                                             </div>
                                             <div class="text-muted">
                                                 گردش مالی این ماه
@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$user->calIncome("total") تومان}
+                                                {$user->calIncome("total")} تومان
                                             </div>
                                             <div class="text-muted">
                                                 گردش مالی کل
