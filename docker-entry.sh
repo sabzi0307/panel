@@ -106,11 +106,11 @@ echo >&2 "Done"
 
 
 if [ ! -f config/.config.php ];then
-    init = true
+    init=true
     echo >&2 "Start Init"
 fi
 
-if [ "$init" = true];then
+if [ "$init" = true ];then
     cp config/.config.example.php config/.config.php
     cp config/appprofile.example.php config/appprofile.php
     echo "Writting configuration..."
@@ -189,7 +189,7 @@ else
 fi
 
 echo >&2 "Good"
-if [ "$init" = true];then
+if [ "$binit" = true ];then
     echo -n >&2 "\nChecking if database exists..."
 
     if [ -z "$DB_HOST" ]; then
