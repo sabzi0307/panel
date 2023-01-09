@@ -56,6 +56,9 @@ services:
         image: phpmyadmin
         container_name: phpmyadmin
         restart: always
+        depends_on:
+          mariadb:
+            condition: service_healthy
         ports:
           - 8081:80
         environment:
