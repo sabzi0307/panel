@@ -179,18 +179,18 @@ $_ENV['Clash_Config'] = [
             'path: ./ruleset/netflix.yaml',
             'interval: 432000',
         ],
-        'irbroadcaste' => [
+        'irbroadcast' => [
             'type: http',
             'behavior: classical',
-            'url: "https://proxyproviderip/clients/clash/irbroadcaste.yml',
-            'path: ./ruleset/irbroadcaste.yaml',
+            'url: "https://proxyproviderip/clients/clash/irbroadcast.yml',
+            'path: ./ruleset/irbroadcast.yaml',
             'interval: 432000',
         ],
-        'broadcaste' => [
+        'broadcast' => [
             'type: http',
             'behavior: classical',
-            'url: "https://proxyproviderip/clients/clash/broadcaste.yml',
-            'path: ./ruleset/broadcaste.yaml',
+            'url: "https://proxyproviderip/clients/clash/broadcast.yml',
+            'path: ./ruleset/broadcast.yaml',
             'interval: 432000',
         ],
         'telegram' => [
@@ -205,14 +205,14 @@ $_ENV['Clash_Config'] = [
         '- RULE-SET,tmpblocked,🔰 انتخاب سرور',
         '- RULE-SET,blocked,🔰 انتخاب سرور',
         '- RULE-SET,ads,⛔️ مسدود کردن تبلیغات',
-        '- RULE-SET,irbroadcaste,🌏 رسانه های داخلی',
+        '- RULE-SET,irbroadcast,🌏 رسانه های داخلی',
         '- RULE-SET,iran,🎯 اتصال مستقیم',
         '- RULE-SET,open,🎯 اتصال مستقیم',
         '- RULE-SET,telegram,📲 تلگرام',
         '- RULE-SET,apple,🍎 سرویس های اپل',
         '- RULE-SET,microsoft,Ⓜ️ سرویس های مایکروسافت',
         '- RULE-SET,netflix,🎥 NETFLIX',
-        '- RULE-SET,broadcaste,🌍 رسانه های خارجی',
+        '- RULE-SET,broadcast,🌍 رسانه های خارجی',
         '- MATCH,🐟 اتصال پراکسی',
     ],
 ];
