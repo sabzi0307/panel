@@ -104,7 +104,15 @@ if [ "$B2_BACKUP" = true ];then
 fi
 echo >&2 "Done"
 
-if [ -f config/.config.php ];then
+
+if [ ! -f config/.config.php ];then
+    init = true
+    echo >&2 "Start Init"
+fi
+
+if [ "$init" = true];then
+    cp config/.config.example.php config/.config.php
+    cp config/appprofile.example.php config/appprofile.php
     echo "Writting configuration..."
     sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/\$_ENV['key']        = '$SSPANEL_KEY';/g" \
     -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/\$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
@@ -146,12 +154,12 @@ if [ -f config/.config.php ];then
         -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/\$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
         config/.config.php
     fi
-fi
 
-WEBSITE_DIR=$(pwd)
-B2_CONF=b2_backup_config
-if [ "$B2_BACKUP" = true ] && [ ! -f "$B2_CONF" ];then
-tee -a $B2_CONF > /dev/null <<EOT
+
+    WEBSITE_DIR=$(pwd)
+    B2_CONF=b2_backup_config
+    if [ "$B2_BACKUP" = true ] && [ ! -f "$B2_CONF" ];then
+    tee -a $B2_CONF > /dev/null <<EOT
     backup_name="$B2_BACKUP_NAME"
     b2_app_key_id="$B2_APP_KEY_ID"
     b2_app_key="$B2_APP_KEY"
@@ -163,8 +171,9 @@ tee -a $B2_CONF > /dev/null <<EOT
     compress_method="$B2_COMPRESS_METHOD"
     website_dir="$WEBSITE_DIR"
 EOT
-fi
+    fi
 
+fi
 
 echo -n >&2 "\nChecking connection to database..."
 
@@ -180,73 +189,69 @@ else
 fi
 
 echo >&2 "Good"
-echo -n >&2 "\nChecking if database exists..."
+if [ "$init" = true];then
+    echo -n >&2 "\nChecking if database exists..."
 
-if [ -z "$DB_HOST" ]; then
-    if mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
-        echo -n >&2 "\nInitialize database..."
+    if [ -z "$DB_HOST" ]; then
+        if mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+            echo -n >&2 "\nInitialize database..."
+            temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+            if [ -z "$temp_sql_result" ]; then
+                echo >&2 "Importing config to database..."
+                php vendor/bin/phinx migrate
+                php xcat Tool importAllSettings
+            fi
+            # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            echo >&2 "Done"
+        else
+            echo >&2 "\nCould not connect to database with Database Socket..."
+            exit
+        fi
+    else
+
+        if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+            echo -n >&2 "\nInitialize database..."
+            temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+            if [ -z "$temp_sql_result" ]; then
+                echo >&2 "Importing config to database..."
+                php vendor/bin/phinx migrate
+                php xcat Tool importAllSettings
+            fi
+            # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        
+            echo >&2 "Done"
+        else
+            echo >&2 "\nCould not connect to database with Database Host..."
+        fi
+    fi
+
+
+    echo -n >&2 "\nApplying permissions..."
+    chmod 755 -R *
+    # chown www-data:www-data -R *
+    chmod -R 777 storage
+
+    echo >&2 "Done"
+
+    echo -n >&2 "\nChecking if admin account exists..."
+
+    if [ -z "$DB_HOST" ]; then
         temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-        if [ -z "$temp_sql_result" ]; then
-            echo >&2 "Importing config to database..."
-            php vendor/bin/phinx migrate
-            php xcat Tool importAllSettings
-        fi
-        # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-	    echo >&2 "Done"
     else
-        echo >&2 "\nCould not connect to database with Database Socket..."
-        exit
-    fi
-else
-    until nc -z -v -w30 $DB_HOST 3306
-    do
-        echo "Waiting for database connection..."
-        # wait for 5 seconds before check again
-        sleep 5
-    done
-    if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
-        echo -n >&2 "\nInitialize database..."
         temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-        if [ -z "$temp_sql_result" ]; then
-            echo >&2 "Importing config to database..."
-            php vendor/bin/phinx migrate
-            php xcat Tool importAllSettings
+    fi
+
+    if [ -z "$temp_sql_result" ]; then
+        echo >&2 "Not found"
+        echo -n >&2 "\nAttemping to create admin account..."
+        if [ -z "$SSPANEL_ADMIN_EMAIL" ] || [ -z "$SSPANEL_ADMIN_PASSWORD" ];then
+            echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
+        else
+        echo -n >&2 "\n" 
+            printf $SSPANEL_ADMIN_EMAIL'\n'$SSPANEL_ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
         fi
-        # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-	
-	    echo >&2 "Done"
-    else
-        echo >&2 "\nCould not connect to database with Database Host..."
     fi
 fi
-
-
-echo -n >&2 "\nApplying permissions..."
-chmod 755 -R *
-# chown www-data:www-data -R *
-chmod -R 777 storage
-
-echo >&2 "Done"
-
-echo -n >&2 "\nChecking if admin account exists..."
-
-if [ -z "$DB_HOST" ]; then
-	temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-else
-	temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-fi
-
-if [ -z "$temp_sql_result" ]; then
-	echo >&2 "Not found"
-	echo -n >&2 "\nAttemping to create admin account..."
-	if [ -z "$SSPANEL_ADMIN_EMAIL" ] || [ -z "$SSPANEL_ADMIN_PASSWORD" ];then
-		echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
-	else
-    echo -n >&2 "\n" 
-		printf $SSPANEL_ADMIN_EMAIL'\n'$SSPANEL_ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
-	fi
-fi
-
 echo -n >&2 "\nChecking if client binaries exist..."
 
 if [ ! -d "public/clients" ]; then
@@ -256,7 +261,7 @@ if [ ! -d "public/clients" ]; then
 else
 	echo >&2 "Found"
 fi
-mv public/rules/ public/clients/
+
 echo >&2  "\nAll set, please enjoy!\n\n"
 
 /usr/bin/supervisord -c /etc/supervisord.conf -n

@@ -5,6 +5,8 @@ services:
         image: ttracy/panel
         container_name: sspanel
         restart: always
+        volumes:
+            - ./config/.config.php:/var/www/config/.config.php
         depends_on:
           mariadb:
             condition: service_healthy
