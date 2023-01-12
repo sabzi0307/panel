@@ -588,4 +588,24 @@ final class Tools
         }
         return 'سایر';
     }
+
+    /**
+     * 账单状态
+     */
+    public static function getInvoiceStatus($invoice)
+    {
+        if ($invoice->status === 'unpaid') {
+            return 'پرداخت نشده';
+        }
+        if ($invoice->status === 'paid_gateway') {
+            return 'پرداخت شده (درگاه پرداخت) ';
+        }
+        if ($invoice->status === 'paid_balance') {
+            return 'پرداخت شده (موجودی حساب) ';
+        }
+        if ($invoice->status === 'cancelled') {
+            return 'لغو شده';
+        }
+        return 'ناشناخته';
+    }
 }
