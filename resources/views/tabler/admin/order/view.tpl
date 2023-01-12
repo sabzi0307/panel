@@ -14,21 +14,21 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <button href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-red d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="">
                             <i class="icon ti ti-user"></i>
                             مشاهده کاربران مرتبط
                         </button>
-                        <button href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-red d-sm-none btn-icon" data-bs-toggle="modal"
+                        <button href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="">
                             <i class="icon ti ti-user"></i>
                         </button>
-                        <button href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-red d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="">
                             <i class="icon ti ti-file-dollar"></i>
                             صورتحساب های مرتبط را مشاهده کنید
                         </button>
-                        <button href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-red d-sm-none btn-icon" data-bs-toggle="modal"
+                        <button href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="">
                             <i class="icon ti ti-file-dollar"></i>
                         </button>
@@ -65,32 +65,32 @@
                             <div class="datagrid-content">{$order->product_id}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">نوع سرویس</div>
-                          <div class="datagrid-content">{$order->product_type}</div>
+                            <div class="datagrid-title">نوع سرویس</div>
+                            <div class="datagrid-content">{$order->product_type}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">نام سرویس</div>
-                          <div class="datagrid-content">{$order->product_name}</div>
+                            <div class="datagrid-title">نام سرویس</div>
+                            <div class="datagrid-content">{$order->product_name}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">کدتخفیف سفارش</div>
-                          <div class="datagrid-content">{$order->coupon}</div>
+                            <div class="datagrid-title">کدتخفیف سفارش</div>
+                            <div class="datagrid-content">{$order->coupon}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">مبلغ سفارش</div>
-                          <div class="datagrid-content">{$order->price}</div>
+                            <div class="datagrid-title">مبلغ سفارش</div>
+                            <div class="datagrid-content">{$order->price}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">وضعیت سفارش</div>
-                          <div class="datagrid-content">{$order->status}</div>
+                            <div class="datagrid-title">وضعیت سفارش</div>
+                            <div class="datagrid-content">{$order->status}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">زمان ایجاد</div>
-                          <div class="datagrid-content">{$order->create_time}</div>
+                            <div class="datagrid-title">زمان ایجاد</div>
+                            <div class="datagrid-content">{$order->create_time}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">زمان به روز رسانی</div>
-                          <div class="datagrid-content">{$order->update_time}</div>
+                            <div class="datagrid-title">زمان به روز رسانی</div>
+                            <div class="datagrid-content">{$order->update_time}</div>
                         </div>
                     </div>
                 </div>
@@ -102,32 +102,38 @@
                 <div class="card-body">
                     <div class="datagrid">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان سرویس</div>
+                            <div class="datagrid-title">مدت زمان سرویس (روز)</div>
                             <div class="datagrid-content">{$product_content['time']}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">پهنای باند</div>
+                            <div class="datagrid-title"> پهنای باند موجود (GB)</div>
                             <div class="datagrid-content">{$product_content['bandwidth']}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">سطح</div>
-                          <div class="datagrid-content">{$product_content['class']}</div>
+                            <div class="datagrid-title">سطح</div>
+                            <div class="datagrid-content">{$product_content['class']}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">مدت زمان سطح</div>
-                          <div class="datagrid-content">{$product_content['class_time']}</div>
+                            <div class="datagrid-title">مدت زمان سطح (روز)</div>
+                            <div class="datagrid-content">{$product_content['class_time']}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">گروه سرور</div>
-                          <div class="datagrid-content">{$product_content['node_group']}</div>
+                            <div class="datagrid-title">گروه کاربران</div>
+                            <div class="datagrid-content">{$product_content['node_group']}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">محدودیت سرعت</div>
-                          <div class="datagrid-content">{$product_content['speed_limit']}</div>
+                            <div class="datagrid-title">محدودیت سرعت (Mbps)</div>
+                            <div class="datagrid-content">{$product_content['speed_limit']}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
-                          <div class="datagrid-content">{$product_content['ip_limit']}</div>
+                            <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
+                            <div class="datagrid-content">
+                            {if $product_content['ip_limit'] === -1}
+                            بدون محدودیت
+                            {else}
+                            {$product_content['ip_limit']}
+                            {/if}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,20 +172,20 @@
                             <div class="datagrid-content">{$invoice->price}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">وضعیت صورتحساب</div>
-                          <div class="datagrid-content">{$invoice->status}</div>
+                            <div class="datagrid-title">وضعیت صورتحساب</div>
+                            <div class="datagrid-content">{$invoice->status}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">زمان ایجاد</div>
-                          <div class="datagrid-content">{$invoice->create_time}</div>
+                            <div class="datagrid-title">زمان ایجاد</div>
+                            <div class="datagrid-content">{$invoice->create_time}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">زمان به روز رسانی</div>
-                          <div class="datagrid-content">{$invoice->update_time}</div>
+                            <div class="datagrid-title">زمان به روز رسانی</div>
+                            <div class="datagrid-content">{$invoice->update_time}</div>
                         </div>
                         <div class="datagrid-item">
-                          <div class="datagrid-title">زمان پرداخت</div>
-                          <div class="datagrid-content">{$invoice->pay_time}</div>
+                            <div class="datagrid-title">زمان پرداخت</div>
+                            <div class="datagrid-content">{$invoice->pay_time}</div>
                         </div>
                     </div>
                 </div>
