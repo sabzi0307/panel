@@ -14,22 +14,18 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="">
+                        <a href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-none d-sm-inline-block">
                             <i class="icon ti ti-user"></i>
                             مشاهده کاربران مرتبط
                         </a>
-                        <a href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
-                            data-bs-target="">
+                        <a href="/admin/user/{$order->user_id}/edit" targer="_blank" class="btn btn-primary d-sm-none btn-icon">
                             <i class="icon ti ti-user"></i>
                         </a>
-                        <a href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="">
+                        <a href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-none d-sm-inline-block">
                             <i class="icon ti ti-file-dollar"></i>
                             صورتحساب های مرتبط را مشاهده کنید
                         </a>
-                        <a href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
-                            data-bs-target="">
+                        <a href="/admin/invoice/{$invoice->id}/view" targer="_blank" class="btn btn-primary d-sm-none btn-icon">
                             <i class="icon ti ti-file-dollar"></i>
                         </a>
                         {if $order->status !== 'cancelled'}
