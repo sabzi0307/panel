@@ -9,7 +9,7 @@
                         <span class="home-title">订单列表</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">在这里管理客户订单</span>
+                        <span class="home-subtitle">管理客户订单</span>
                     </div>
                 </div>
             </div>
