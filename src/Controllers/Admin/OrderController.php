@@ -126,7 +126,7 @@ final class OrderController extends BaseController
             $order->op = '<button type="button" class="btn btn-red" id="delete-order-' . $order->id . '" 
             onclick="deleteOrder(' . $order->id . ')">حذف</button>
             <button type="button" class="btn btn-orange" id="cancel-order-' . $order->id . '" 
-            onclick="cancelOrder(' . $order->id . ')">کپی</button>
+            onclick="cancelOrder(' . $order->id . ')">لغو</button>
             <a class="btn btn-blue" href="/admin/order/' . $order->id . '/view">بررسی</a>';
             $order->product_type = Tools::getOrderProductType($order);
             $order->status = Tools::getOrderStatus($order);
