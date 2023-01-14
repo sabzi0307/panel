@@ -9,7 +9,7 @@
                         <span class="home-title">سفارش #{$order->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">در اینجا می توانید سفارشات را مشاهده و مدیریت کنید</span>
+                        <span class="home-subtitle">جزئیات سفارش</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -144,7 +144,7 @@
                             <div class="datagrid-title">شرح صورت حساب</div>
                             <div class="datagrid-content">
                                 <div class="table-responsive">
-                                    <table id="data_table" class="table table-vcenter card-table">
+                                    <table id="invoice_content_table" class="table table-vcenter card-table">
                                         <thead>
                                             <tr>
                                                 <th>نام</th>

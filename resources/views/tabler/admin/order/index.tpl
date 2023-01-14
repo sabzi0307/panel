@@ -9,7 +9,7 @@
                         <span class="home-title">لیست سفارش</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">سفارشات مشتری را در اینجا مدیریت کنید</span>
+                        <span class="home-subtitle">مدیریت سفارشات مشتری</span>
                     </div>
                 </div>
             </div>

@@ -602,6 +602,9 @@ final class Tools
         if ($invoice->status === 'paid_balance') {
             return 'پرداخت شده (موجودی حساب) ';
         }
+        if ($invoice->status === 'paid_admin') {
+            return 'پرداخت شده (ادمین) ';
+        }
         if ($invoice->status === 'cancelled') {
             return 'لغو شده';
         }
