@@ -213,9 +213,8 @@ final class SubController extends BaseController
         $nodes = [];
         $clash_config = $_ENV['Clash_Config'];
         $rule_providers = $clash_config['rule-providers'];
-        $ruleprovider = [];
         foreach ($rule_providers as $key=>$value) {
-            $rule_providers[$key] = str_replace(['http://proxyproviderip','https://proxyproviderip'],[$_ENV['subUrl'],$_ENV['subUrl']],$value);
+            $rule_providers[$key] = str_replace(['http://proxyproviderip', 'https://proxyproviderip'], [$_ENV['subUrl'], $_ENV['subUrl']], $value);
         }
         $clash_config['rule-providers'] = $rule_providers;
 
