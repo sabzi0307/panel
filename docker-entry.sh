@@ -106,13 +106,13 @@ echo >&2 "Done"
 
 
 if [ ! -f config/.config.php ];then
+    cp /var/www/config/.config.example.php /var/www/config/.config.php
+    cp /var/www/config/appprofile.example.php /var/www/config/appprofile.php
     INIT=true
     echo >&2 "Start Init"
 fi
 
 if [ "$INIT" = true ];then
-    cp config/.config.example.php config/.config.php
-    cp config/appprofile.example.php config/appprofile.php
     echo "Writting configuration..."
     sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/\$_ENV['key']        = '$SSPANEL_KEY';/g" \
     -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/\$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
