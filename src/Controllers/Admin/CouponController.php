@@ -195,7 +195,7 @@ final class CouponController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'کد تخفیف <code>' . $code . '</code> با موفقیت اضافه شد',
+            'msg' => 'کد تخفیف ' . $code . ' با موفقیت اضافه شد',
         ]);
     }
 
@@ -221,7 +221,7 @@ final class CouponController extends BaseController
             $content = \json_decode($coupon->content);
             $limit = \json_decode($coupon->limit);
             $coupon->op = '<button type="button" class="btn btn-red" id="delete-coupon-' . $coupon->id . '" 
-        onclick="deleteCoupons(' . $coupon->id . ')">حذف</button>';
+        onclick="deleteCoupon(' . $coupon->id . ')">حذف</button>';
             $coupon->type = Tools::getCouponType($content);
             $coupon->value = $content->value;
             $coupon->product_id = $limit->product_id;
