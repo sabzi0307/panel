@@ -66,8 +66,11 @@ final class CouponController extends BaseController
             [
                 'id' => 'new_user',
                 'info' => 'فقط برای کاربران جدید',
-                'type' => 'input',
-                'placeholder' => '',
+                'type' => 'select',
+                'select' => [
+                    '1' => 'فعال کردن',
+                    '0' => 'غیر فعال',
+                ],
             ],
             [
                 'id' => 'generate_method',
