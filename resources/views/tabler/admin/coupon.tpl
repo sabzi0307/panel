@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="//cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="//cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+<script src="//cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fa.js"></script>
 
 <div class="page-wrapper">
     <div class="container-xl">
