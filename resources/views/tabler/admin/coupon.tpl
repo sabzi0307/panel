@@ -1,116 +1,228 @@
-{include file='admin/main.tpl'}
+{include file='admin/tabler_header.tpl'}
 
-<main class="content">
-    <div class="content-header ui-content-header">
-        <div class="container">
-            <h1 class="content-heading">کد تخفیف</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="page-wrapper">
+    <div class="container-xl">
+        <div class="page-header d-print-none text-white">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        <span class="home-title">کد تخفیف</span>
+                    </h2>
+                    <div class="page-pretitle my-3">
+                        <span class="home-subtitle">
+                            مشاهده و مدیریت کدهای تخفیف
+                        </span>
+                    </div>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                            data-bs-target="#create-dialog">
+                            <i class="icon ti ti-plus"></i>
+                            افزودن
+                        </a>
+                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                            data-bs-target="#create-dialog">
+                            <i class="icon ti ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="container">
-        <section class="content-inner margin-top-no">
-            <div class="card">
-                <div class="card-main">
-                    <div class="card-inner">
-                        <div class="form-group form-group-label">
-                            <label class="floating-label" for="prefix">کد تخفیف</label>
-                            <input class="form-control maxwidth-edit" id="prefix" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>برای ایجاد کد تخفیف تصادفی خالی بگذارید</p>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table id="data_table" class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        {foreach $details['field'] as $key => $value}
+                                            <th>{$value}</th>
+                                        {/foreach}
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
-                        <div class="form-group form-group-label">
-                            <label class="floating-label" for="credit">مبلغ کد کوپن</label>
-                            <input class="form-control maxwidth-edit" id="credit" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>百分比，九折就填 10</p>
-                        </div>
-                        <div class="form-group form-group-label">
-                            <label class="floating-label" for="expire">مدت اعتبار کد کوپن(h)</label>
-                            <input class="form-control maxwidth-edit" id="expire" type="number" value="1">
-                        </div>
-                        <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">شناسه سرویس موجود کد تخفیف</label>
-                            <input class="form-control maxwidth-edit" id="shop" type="text">
-                            <p class="form-control-guide"><i class="mdi mdi-information"></i>در صورت پر نشدن، همه سرویس ها موجود هستند. اگر چند مورد وجود دارد، آنها را با کاماهای نیم پهن انگلیسی جدا کنید.</p>
-                        </div>
-                        <div class="form-group form-group-label">
-                            <label class="floating-label" for="shop">کد کوپن برای هر کاربر در دسترس است، -1 به معنای زمان نامحدود است</label>
-                            <input class="form-control maxwidth-edit" id="count" type="number" value="1">
-                        </div>
-                        <div class="form-group form-group-label">
-                            <label for="generate-type">
-                                <label class="floating-label" for="sort">نحوه تولید را انتخاب کنید</label>
-                                <select id="generate-type" class="form-control maxwidth-edit">
-                                    <option value="1">شخصیت مشخص شده</option>
-                                    <option value="2">شخصیت های تصادفی</option>
-                                    <option value="3">کاراکتر مشخص + کاراکتر تصادفی</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-10 col-md-push-1">
-                                    <button id="coupon" type="submit"
-                                            class="btn btn-block btn-brand waves-attach waves-light">کد تخفیف را ایجاد کنید
-                                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-blur fade" id="create-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">محتوای کد تخفیف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {foreach $details['create_dialog'] as $detail}
+                        {if $detail['type'] == 'input'}
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">{$detail['info']}</label>
+                                <div class="col">
+                                    <input id="{$detail['id']}" type="text" class="form-control"
+                                        placeholder="{$detail['placeholder']}">
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card margin-bottom-no">
-                <div class="card-main">
-                    <div class="card-inner">
-                        <p class="card-heading">کد تخفیف</p>
-                        <p>نمایش ورودی ها:
-                            {include file='table/checkbox.tpl'}
-                        </p>
-                        <div class="card-table">
-                            <div class="table-responsive">
-                                {include file='table/table.tpl'}
+                        {/if}
+                        {if $detail['type'] == 'textarea'}
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">{$detail['info']}</label>
+                                <textarea id="{$detail['id']}" class="col form-control" rows="{$detail['rows']}"
+                                    placeholder="{$detail['placeholder']}"></textarea>
                             </div>
+                        {/if}
+                        {if $detail['type'] == 'select'}
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">{$detail['info']}</label>
+                                <div class="col">
+                                    <select id="{$detail['id']}" class="col form-select">
+                                        {foreach $detail['select'] as $key => $value}
+                                            <option value="{$key}">{$value}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        {/if}
+                    {/foreach}
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-3 col-form-label">انقضا</label>
+                        <div class="col">
+                            <input id="expire_time" type="text" class="form-control"
+                                placeholder="">
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
+                    <button id="create-button" onclick="createGiftCard()"
+                        type="button" class="btn btn-primary" data-bs-dismiss="modal">افزودن</button>
+                </div>
             </div>
-            {include file='dialog.tpl'}
-        </section>
+        </div>
     </div>
-</main>
 
-{include file='admin/footer.tpl'}
+    <script>
+        flatpickr("#expire_time", {
+            enableTime: true,
+            dateFormat: "U",
+            time_24hr: true,
+            minDate: "today",
+            locale: "fa"
+        });
 
-<script>
-    {include file='table/js_1.tpl'}
-    window.addEventListener('load', () => {
-        {include file='table/js_2.tpl'}
+        var table = $('#data_table').DataTable({
+            ajax: {
+                url: '/admin/coupon/ajax',
+                type: 'POST',
+                dataSrc: 'coupons'
+            },
+            "autoWidth":false,
+            'iDisplayLength': 10,
+            'scrollX': true,
+            'order': [
+                [1, 'desc']
+            ],
+            columns: [
+                {foreach $details['field'] as $key => $value}
+                { data: '{$key}' },
+                {/foreach}
+            ],
+            "columnDefs":[
+                { targets:[0],orderable:false }
+            ],
+            "dom": "<'row px-3 py-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row card-footer d-flex d-flexalign-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            language: {
+                "sProcessing": "در حال پردازش...",
+                "sLengthMenu": "نمایش موارد _MENU_",
+                "sZeroRecords": "نتایج منطبقی وجود ندارد",
+                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
+                "sInfoEmpty": "نتایج 0 تا 0 از 0",
+                "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",
+                "sInfoPostFix": "",
+                "sSearch": "<i class=\"ti ti-search\"></i> ",
+                "sUrl": "",
+                "sEmptyTable": "داده های جدول خالی است",
+                "sLoadingRecords": "بارگذاری...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "صفحه اول",
+                    "sPrevious": "<i class=\"titi-arrow-left\"></i>",
+                    "sNext": "<i class=\"ti ti-arrow-right\"><i>",
+                    "sLast": "آخرین صفحه"
+                },
+                "oAria": {
+                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
+                    "sSortDescending": ": این ستون را به ترتیب صعودی مرتب کنید"
+                }
+            },
+        });
 
-        $$.getElementById('coupon').addEventListener('click', () => {
-            let couponCode = $$getValue('prefix');
+        function loadTable() {
+            table;
+        }
 
+        function createCoupon() {
             $.ajax({
-                type: "POST",
-                url: "/admin/coupon",
+                url: '/admin/coupon',
+                type: 'POST',
                 dataType: "json",
                 data: {
-                    prefix: $$getValue('prefix'),
-                    credit: $$getValue('credit'),
-                    shop: $$getValue('shop'),
-                    onetime: $$getValue('count'),
-                    expire: $$getValue('expire'),
-                    generate_type: $$getValue('generate-type'),
+                    {foreach $details['create_dialog'] as $detail}
+                        {$detail['id']}: $('#{$detail['id']}').val(),
+                    {/foreach}
+                    expire_time: $('#expire_time').val(),
                 },
-                success: data => {
-                    $("#result").modal();
-                    $$.getElementById('msg').innerHTML = data.msg;
-                    if (data.ret) {
-                        window.setTimeout("location.href='/admin/coupon'", {$config['jump_delay']});
+                success: function(data) {
+                    if (data.ret == 1) {
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                        reloadTableAjax();
+                    } else {
+                        $('#fail-message').text(data.msg);
+                        $('#fail-dialog').modal('show');
                     }
-                },
-                error: jqXHR => {
-                    alert(`خطایی رخ داده：${
-                            jqXHR.status
-                            }`);
                 }
             })
-        })
-    })
-</script>
+        };
+
+        function deleteCoupon(coupon_id) {
+            $('#notice-message').text('آیا از حذف این کد تخفیف اطمینان دارید ؟');
+            $('#notice-dialog').modal('show');
+            $('#notice-confirm').on('click', function() {
+                $.ajax({
+                    url: "/admin/coupon/" + coupon_id,
+                    type: 'DELETE',
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.ret == 1) {
+                            $('#success-message').text(data.msg);
+                            $('#success-dialog').modal('show');
+                            reloadTableAjax();
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
+        };
+
+        function reloadTableAjax() {
+            table.ajax.reload(null, false);
+        }
+
+        loadTable();
+    </script>
+
+{include file='admin/tabler_footer.tpl'}

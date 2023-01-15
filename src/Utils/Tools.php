@@ -602,11 +602,39 @@ final class Tools
         if ($invoice->status === 'paid_balance') {
             return 'پرداخت شده (موجودی حساب) ';
         }
+        if ($invoice->status === 'paid_giftcard') {
+            return 'پرداخت شده (گیفت کارت) ';
+        }
         if ($invoice->status === 'paid_admin') {
             return 'پرداخت شده (ادمین) ';
         }
         if ($invoice->status === 'cancelled') {
             return 'لغو شده';
+        }
+        return 'ناشناخته';
+    }
+
+    /**
+     * 优惠码状态
+     */
+    public static function getCouponStatus($coupon)
+    {
+        if ($coupon->expire_time < \time()) {
+            return 'منقضی شده';
+        }
+        return 'فعال سازی';
+    }
+
+    /**
+     * 优惠码类型
+     */
+    public static function getCouponType($content)
+    {
+        if ($content->type === 'percentage') {
+            return 'درصد';
+        }
+        if ($content->type === 'fixed') {
+            return 'مبلغ ثابت';
         }
         return 'ناشناخته';
     }
