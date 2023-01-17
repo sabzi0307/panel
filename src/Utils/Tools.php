@@ -342,14 +342,14 @@ final class Tools
             if ($i === 1) {
                 // 当前为第一页
                 if ($currentPage === $i) {
-                    $html .= '<li class="page-item disabled"><a class="page-link">上一页</a></li>';
+                    $html .= '<li class="page-item disabled"><a class="page-link">صفحه قبلی</a></li>';
                     $html .= $active;
                     if ($i === $totalPage) {
-                        $html .= '<li class="page-item disabled"><a class="page-link">下一页</a></li>';
+                        $html .= '<li class="page-item disabled"><a class="page-link">صفحه بعد</a></li>';
                         continue;
                     }
                 } else {
-                    $html .= '<li class="page-item"><a class="page-link" href="' . $data->url($currentPage - 1) . '">上一页</a></li>';
+                    $html .= '<li class="page-item"><a class="page-link" href="' . $data->url($currentPage - 1) . '">صفحه قبلی</a></li>';
                     if ($currentPage > 4) {
                         $html .= '<li class="page-item disabled"><a class="page-link">...</a></li>';
                     } else {
@@ -361,14 +361,14 @@ final class Tools
                 // 当前为最后一页
                 if ($currentPage === $i) {
                     $html .= $active;
-                    $html .= '<li class="page-item disabled"><a class="page-link">下一页</a></li>';
+                    $html .= '<li class="page-item disabled"><a class="page-link">صفحه بعد</a></li>';
                 } else {
                     if ($totalPage - $currentPage > 3) {
                         $html .= '<li class="page-item disabled"><a class="page-link">...</a></li>';
                     } else {
                         $html .= $page;
                     }
-                    $html .= '<li class="page-item"><a class="page-link" href="' . $data->url($currentPage + 1) . '">下一页</a></li>';
+                    $html .= '<li class="page-item"><a class="page-link" href="' . $data->url($currentPage + 1) . '">صفحه بعد</a></li>';
                 }
             }
             if ($i > 1 && $i < $totalPage) {
