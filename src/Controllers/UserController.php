@@ -743,7 +743,7 @@ final class UserController extends BaseController
                 'msg' => 'موضوع نمی تواند خالی باشد',
             ]);
         }
-        
+
         $user->theme = $theme;
         $user->save();
 
