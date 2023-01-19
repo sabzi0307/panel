@@ -696,26 +696,35 @@ final class UserController extends BaseController
         $user = $this->user;
 
         if ($user->telegram_id !== null) {
-            return ResponseHelper::error(
-                $response,
-                'شما به تلگرام متصل هستید، بنابراین این مورد قابل تغییر نیست.'
-            );
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'حساب شما به تلگرام متصل است، بنابراین این مورد قابل تغییر نیست',
+            ]);
         }
 
-        if ($contact === '' || $type === '') {
-            return ResponseHelper::error($response, 'ورودی غیرمجاز');
+        if ($value === '' || $type === '') {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'اطلاعات تماس نمی تواند خالی باشد',
+            ]);
         }
 
-        $user1 = User::where('im_value', $contact)->where('im_type', $type)->first();
-        if ($user1 !== null) {
-            return ResponseHelper::error($response, 'این مخاطب قبلاً ذخیره شده است');
+        $user_exist = User::where('im_value', $value)->where('im_type', $type)->first();
+        if ($user_exist !== null) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'این مخاطب قبلاً ثبت شده است',
+            ]);
         }
 
         $user->im_type = $type;
         $user->im_value = $value;
         $user->save();
 
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت اصلاح شد',
+        ]);
     }
 
     /**
@@ -729,13 +738,19 @@ final class UserController extends BaseController
         $user = $this->user;
 
         if ($theme === '') {
-            return ResponseHelper::error($response, 'ورودی غیرمجاز');
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'موضوع نمی تواند خالی باشد',
+            ]);
         }
-
+        
         $user->theme = $theme;
         $user->save();
 
-        return ResponseHelper::successfully($response, 'با موفقیت تنظیم شد');
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت اصلاح شد',
+        ]);
     }
 
     /**
