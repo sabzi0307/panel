@@ -735,11 +735,11 @@
         $("#modify-im").click(function() {
             $.ajax({
                 type: "POST",
-                url: "/user/wechat",
+                url: "/user/contact_update",
                 dataType: "json",
                 data: {
                     imtype: $('#imtype').val(),
-                    wechat: $('#wechat').val()
+                    imvalue: $('#imvalue').val()
                 },
                 success: function(data) {
                     if (data.ret == 1) {

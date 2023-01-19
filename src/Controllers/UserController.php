@@ -688,8 +688,10 @@ final class UserController extends BaseController
      */
     public function updateContact(Request $request, Response $response, array $args)
     {
-        $type = $request->getParam('imtype');
-        $contact = trim($request->getParam('contact'));
+        $antiXss = new AntiXSS();
+
+        $type = $antiXss->xss_clean($request->getParam('imtype'));
+        $value = $antiXss->xss_clean($request->getParam('imvalue'));
 
         $user = $this->user;
 
@@ -710,8 +712,7 @@ final class UserController extends BaseController
         }
 
         $user->im_type = $type;
-        $antiXss = new AntiXSS();
-        $user->im_value = $antiXss->xss_clean($contact);
+        $user->im_value = $value;
         $user->save();
 
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
@@ -722,7 +723,8 @@ final class UserController extends BaseController
      */
     public function updateTheme(Request $request, Response $response, array $args)
     {
-        $theme = $request->getParam('theme');
+        $antiXss = new AntiXSS();
+        $theme = $antiXss->xss_clean($request->getParam('theme'));
 
         $user = $this->user;
 
@@ -730,8 +732,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'ورودی غیرمجاز');
         }
 
-        $antiXss = new AntiXSS();
-        $user->theme = $antiXss->xss_clean($theme);
+        $user->theme = $theme;
         $user->save();
 
         return ResponseHelper::successfully($response, 'با موفقیت تنظیم شد');
