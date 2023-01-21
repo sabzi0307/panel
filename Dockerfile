@@ -9,11 +9,8 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     cp docker-entry.sh /usr/local/bin/ && \
     rm -rf /etc/nginx/conf.d/site.conf && \
     cp config/site.conf /etc/nginx/conf.d/site.conf && \
-    cp config/b2_backup_config.example config/b2_backup_config && \
-    cp config/b2_backup.sh b2_backup.sh && \
     chmod +x /usr/local/bin/docker-entry.sh && \
     cp -r config/rules public/rules/ && \
-    chmod +x b2_backup.sh && \
     chmod -R 755 storage && \
     chmod -R 777 /var/www/storage/framework/smarty/compile/ && \
     mv db/migrations/20000101000000_init_database.php.new db/migrations/20000101000000_init_database.php && \
@@ -28,7 +25,6 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     crontab -l | { cat; echo "5 0 * * * php /var/www/xcat FinanceMail day "; } | crontab - && \
     crontab -l | { cat; echo "6 0 * * 0 php /var/www/xcat FinanceMail week"; } | crontab - && \
     crontab -l | { cat; echo "7 0 1 * * php /var/www/xcat FinanceMail month"; } | crontab - && \
-    crontab -l | { cat; echo "1 0 * * * /usr/bin/bash /var/www/b2_backup.sh backup config/b2_backup_config"; } | crontab - && \
     { \
         echo '[program:crond]'; \
         echo 'command=cron -f'; \

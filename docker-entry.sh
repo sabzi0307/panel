@@ -15,20 +15,20 @@ fi
 
 echo -n >&2 "\nChecking environment..."
 
-if [ -z "$SSPANEL_KEY" ]; then
-    echo >&2 "SSPANEL_KEY not set!"
+if [ -z "$API_KEY" ]; then
+    echo >&2 "API_KEY not set!"
     exit
 fi
-if [ -z "$SSPANEL_BASEURL" ];then
-    echo >&2 "SSPANEL_BASEURL not set!"
+if [ -z "$PANEL_DOMAIN" ];then
+    echo >&2 "PANEL_DOMAIN not set!"
     exit
 fi
-if [ -z "$SSPANEL_APP_NAME" ];then
-    echo >&2 "SSPANEL_APP_NAME not set!"
+if [ -z "$APP_NAME" ];then
+    echo >&2 "APP_NAME not set!"
     exit
 fi
-if [ -z "$SSPANEL_MUKEY" ];then
-    echo >&2 "SSPANEL_MUKEY not set!"
+if [ -z "$MUKEY" ];then
+    echo >&2 "MUKEY not set!"
     exit
 fi
 if [ -z "$DB_HOST" ] && [ -z "$DB_SOCKET" ];then
@@ -47,8 +47,8 @@ if [ -z "$DB_PASSWORD" ] && [ -z "$DB_USERNAME" ];then
     echo >&2 "DB_USERNAME or DB_PASSWORD not set!"
     exit
 fi
-if [ -z "$SSPANEL_ADMIN_EMAIL" ] && [ -z "$SSPANEL_ADMIN_PASSWORD" ];then
-    echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
+if [ -z "$ADMIN_EMAIL" ] && [ -z "$ADMIN_PASSWORD" ];then
+    echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
     exit
 fi
 if [ -z "$TIME_ZONE" ];then
@@ -77,31 +77,35 @@ if [ "$ENABLE_TELEGRAM" = true ];then
         echo >&2 "TELEGRAM_BOT not set!"
         exit
     fi
+    if [ -z "$TELEGRAM_TOKEN" ];then
+        echo >&2 "TELEGRAM_TOKEN not set!"
+        exit
+    fi
 fi
 
-if [ "$B2_BACKUP" = true ];then
-    echo >&2 "B2_BACKUP set!"
-    if [ -z "$B2_APP_KEY_ID" ];then
-        echo >&2 "B2_APP_KEY_ID not set!"
-        exit
-    fi
-    if [ -z "$B2_APP_KEY" ];then
-        echo >&2 "B2_APP_KEY not set!"
-        exit
-    fi
-    if [ -z "$B2_BUCKET_NAME" ];then
-        echo >&2 "B2_BUCKET_NAME not set!"
-        exit
-    fi
-    if [ -z "$B2_BACKUP_NAME" ];then
-        echo >&2 "B2_BACKUP_NAME not set!... using default SSPANEL"
-        B2_BACKUP_NAME = "SSPANEL"
-    fi
-    if [ -z "$B2_COMPRESS_METHOD" ];then
-        echo >&2 "B2_BACKUP_NAME not set!... using default ZIP"
-        B2_COMPRESS_METHOD = "zip"
-    fi
-fi
+# if [ "$B2_BACKUP" = true ];then
+#     echo >&2 "B2_BACKUP set!"
+#     if [ -z "$B2_APP_KEY_ID" ];then
+#         echo >&2 "B2_APP_KEY_ID not set!"
+#         exit
+#     fi
+#     if [ -z "$B2_APP_KEY" ];then
+#         echo >&2 "B2_APP_KEY not set!"
+#         exit
+#     fi
+#     if [ -z "$B2_BUCKET_NAME" ];then
+#         echo >&2 "B2_BUCKET_NAME not set!"
+#         exit
+#     fi
+#     if [ -z "$B2_BACKUP_NAME" ];then
+#         echo >&2 "B2_BACKUP_NAME not set!... using default SSPANEL"
+#         B2_BACKUP_NAME = "SSPANEL"
+#     fi
+#     if [ -z "$B2_COMPRESS_METHOD" ];then
+#         echo >&2 "B2_BACKUP_NAME not set!... using default ZIP"
+#         B2_COMPRESS_METHOD = "zip"
+#     fi
+# fi
 echo >&2 "Done"
 
 
@@ -114,14 +118,15 @@ fi
 
 if [ "$INIT" = true ];then
     echo "Writting configuration..."
-    sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/\$_ENV['key']        = '$SSPANEL_KEY';/g" \
-    -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/\$_ENV['appName']        = '$SSPANEL_APP_NAME';/g" \
-    -e "s|\$_ENV\['baseUrl'].*=.*'https://example.com';|\$_ENV['baseUrl']        = '$SSPANEL_BASEURL';|g" \
-    -e "s|\$_ENV\['muKey'].*=.*'SSPanel';|\$_ENV['muKey']        = '$SSPANEL_MUKEY';|g" \
+    sed -i -e "s/\$_ENV\['key'].*=.*'ChangeMe';/\$_ENV['key']        = '$API_KEY';/g" \
+    -e "s/\$_ENV\['appName'].*=.*'SSPanel-UIM';/\$_ENV['appName']        = '$APP_NAME';/g" \
+    -e "s|\$_ENV\['baseUrl'].*=.*'https://example.com';|\$_ENV['baseUrl']        = 'https://$PANEL_DOMAIN';|g" \
+    -e "s|\$_ENV\['muKey'].*=.*'SSPanel';|\$_ENV['muKey']        = '$MUKEY';|g" \
     -e "s|\$_ENV\['db_host'].*=.*'';|\$_ENV['db_host']        = '$DB_HOST';|g" \
     -e "s|\$_ENV\['db_database'].*=.*'sspanel';|\$_ENV['db_database']        = '$DB_DATABASE';|g" \
     -e "s|\$_ENV\['db_username'].*=.*'root';|\$_ENV['db_username']        = '$DB_USERNAME';|g" \
     -e "s|\$_ENV\['db_password'].*=.*'sspanel';|\$_ENV['db_password']        = '$DB_PASSWORD';|g" \
+    -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     -e "s|\$_ENV\['php_user_group'].*=.*'www:www';|\$_ENV['php_user_group']        = 'www-data:www-data';|g" \
     config/.config.php
@@ -147,8 +152,8 @@ if [ "$INIT" = true ];then
 
     if [ "$ENABLE_TELEGRAM" = true ];then
         echo "Writting Telegram configuration..."
-        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/\$_ENV['enable_telegram']        = '$SSPANEL_KEY';/g" \
-        -e "s/\$_ENV\['telegram_token'].*=.*'';/\$_ENV['telegram_token']        = '$SSPANEL_APP_NAME';/g" \
+        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/\$_ENV['enable_telegram']        = '$ENABLE_TELEGRAM';/g" \
+        -e "s/\$_ENV\['telegram_token'].*=.*'';/\$_ENV['telegram_token']        = '$TELEGRAM_TOKEN';/g" \
         -e "s/\$_ENV\['telegram_chatid'].*=.*-111;/\$_ENV['telegram_chatid']        = '$TELEGRAM_CHAT_ID';/g" \
         -e "s/\$_ENV\['telegram_bot'].*=.*'_bot';/\$_ENV['telegram_bot']        = '$TELEGRAM_BOT';/g" \
         -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/\$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
@@ -156,22 +161,22 @@ if [ "$INIT" = true ];then
     fi
 
 
-    WEBSITE_DIR=$(pwd)
-    B2_CONF=b2_backup_config
-    if [ "$B2_BACKUP" = true ] && [ ! -f "$B2_CONF" ];then
-    tee -a $B2_CONF > /dev/null <<EOT
-    backup_name="$B2_BACKUP_NAME"
-    b2_app_key_id="$B2_APP_KEY_ID"
-    b2_app_key="$B2_APP_KEY"
-    b2_bucket_name="$B2_BUCKET_NAME"
-    db_name="$DB_DATABASE"
-    db_password='$DB_PASSWORD'
-    db_user="$DB_USERNAME"
-    db_host="$DB_HOST"
-    compress_method="$B2_COMPRESS_METHOD"
-    website_dir="$WEBSITE_DIR"
-EOT
-    fi
+#     WEBSITE_DIR=$(pwd)
+#     B2_CONF=b2_backup_config
+#     if [ "$B2_BACKUP" = true ] && [ ! -f "$B2_CONF" ];then
+#     tee -a $B2_CONF > /dev/null <<EOT
+#     backup_name="$B2_BACKUP_NAME"
+#     b2_app_key_id="$B2_APP_KEY_ID"
+#     b2_app_key="$B2_APP_KEY"
+#     b2_bucket_name="$B2_BUCKET_NAME"
+#     db_name="$DB_DATABASE"
+#     db_password='$DB_PASSWORD'
+#     db_user="$DB_USERNAME"
+#     db_host="$DB_HOST"
+#     compress_method="$B2_COMPRESS_METHOD"
+#     website_dir="$WEBSITE_DIR"
+# EOT
+#     fi
 
 fi
 
@@ -244,11 +249,11 @@ if [ "$INIT" = true ];then
     if [ -z "$temp_sql_result" ]; then
         echo >&2 "Not found"
         echo -n >&2 "\nAttemping to create admin account..."
-        if [ -z "$SSPANEL_ADMIN_EMAIL" ] || [ -z "$SSPANEL_ADMIN_PASSWORD" ];then
-            echo >&2 "SSPANEL_ADMIN_EMAIL or SSPANEL_ADMIN_PASSWORD not set!"
+        if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
+            echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
         else
         echo -n >&2 "\n" 
-            printf $SSPANEL_ADMIN_EMAIL'\n'$SSPANEL_ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
+            printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
         fi
     fi
 fi
