@@ -5,10 +5,16 @@ services:
         image: ttracy/panel
         container_name: sspanel
         restart: always
+        labels:
+          - sh.acme.autoload.domain=${PANEL_DOMAIN}
+        volumes:
+          - ./etc/nginx/logs:/var/log/nginx
+          - ./etc/nginx/ssl:/etc/nginx/ssl
         depends_on:
           mariadb:
             condition: service_healthy
         environment:
+          IS_SSL: "true"
           SSPANEL_KEY: ChangeMe
           SSPANEL_APP_NAME: SSPanel-UIM
           SSPANEL_BASEURL: https://example.com
@@ -49,7 +55,6 @@ services:
           test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
           timeout: 20s
           retries: 10
-
     phpmyadmin:
         image: phpmyadmin
         container_name: phpmyadmin
@@ -61,3 +66,23 @@ services:
           - 8081:80
         environment:
           - PMA_ARBITRARY=1
+    acme.sh:
+      image: ttracy/acme.sh
+      container_name: acme.sh    
+      command: daemon
+      depends_on:
+        - sspanel
+      networks:
+        - panel
+      volumes:
+        - /usr/share/zoneinfo/Asia/Tehran:/etc/localtime:ro
+        - ./etc/acme:/acme.sh
+        - ./etc/nginx/ssl:/etc/nginx/ssl
+        - /var/run/docker.sock:/var/run/docker.sock 
+      environment:
+        - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=${PANEL_DOMAIN}
+        - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/ssl/${PANEL_DOMAIN}/key.pem
+        - DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/cert.pem"
+        - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/ca.pem"
+        - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/full.pem"
+        - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"

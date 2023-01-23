@@ -108,6 +108,10 @@ fi
 # fi
 echo >&2 "Done"
 
+if [ "$IS_SSL" = true ];then
+    mv /etc/nginx/conf.d/site.conf /etc/nginx/conf.d/site.conf.template
+    mv /etc/nginx/conf.d/site_ssl.conf.template /etc/nginx/conf.d/site_ssl.conf
+fi
 
 if [ ! -f config/.config.php ];then
     cp /var/www/config/.config.example.php /var/www/config/.config.php

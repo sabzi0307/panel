@@ -9,6 +9,7 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     cp docker-entry.sh /usr/local/bin/ && \
     rm -rf /etc/nginx/conf.d/site.conf && \
     cp config/site.conf /etc/nginx/conf.d/site.conf && \
+    cp config/site_ssl.conf /etc/nginx/conf.d/site_ssl.conf.template && \
     chmod +x /usr/local/bin/docker-entry.sh && \
     cp -r config/rules public/rules/ && \
     chmod -R 755 storage && \
