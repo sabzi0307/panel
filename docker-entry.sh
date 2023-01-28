@@ -6,6 +6,8 @@ echo >&2 "|_____|_____|__|  |__,|_|_|___|_|"
                                  
 echo -n >&2 "\nChecking if installation exists..."
 
+# some configurations for let's encrypt
+
 if [ ! -e public/index.php ]; then
     echo  >&2 "Not found"
     exit
@@ -111,6 +113,7 @@ echo >&2 "Done"
 if [ "$IS_SSL" = true ];then
     mv /etc/nginx/conf.d/site.conf /etc/nginx/conf.d/site.conf.template
     mv /etc/nginx/conf.d/site_ssl.conf.template /etc/nginx/conf.d/site_ssl.conf
+    openssl req -x509 -newkey rsa:2048 -keyout /etc/nginx/ssl/selfsigned.key -out /etc/nginx/ssl/selfsigned.crt -days 3650 -nodes -subj "/C=GB/ST=London/L=London/O=Google Trust Services LLC/CN=www.google.com"
 fi
 
 if [ ! -f config/.config.php ];then

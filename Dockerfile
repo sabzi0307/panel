@@ -5,7 +5,7 @@ WORKDIR /var/www
 ENV DB_PORT=3306
 
 RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar netcat python3-pip && \
-    pip3 install b2 && \
+    pip3 install b2 pip pyopenssl --upgrade && \
     cp docker-entry.sh /usr/local/bin/ && \
     rm -rf /etc/nginx/conf.d/site.conf && \
     cp config/site.conf /etc/nginx/conf.d/site.conf && \
