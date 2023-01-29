@@ -123,28 +123,6 @@ server {
     root /var/www/public;
     index index.php index.html;
 
-    location ^~ /.well-known/acme-challenge/ {
-      # Set correct content type. According to this:
-      # https://community.letsencrypt.org/t/using-the-webroot-domain-verification-method/1445/29
-      # Current specification requires "text/plain" or no content header at all.
-      # It seems that "text/plain" is a safe option.
-      default_type "text/plain";
-
-      # This directory must be the same as in /etc/letsencrypt/cli.ini
-      # as "webroot-path" parameter. Also don't forget to set "authenticator" parameter
-      # there to "webroot".
-      # Do NOT use alias, use root! Target directory is located here:
-      # /var/www/common/letsencrypt/.well-known/acme-challenge/
-      root         /var/www/letsencrypt;
-    }
-
-    # Hide /acme-challenge subdirectory and return 404 on all requests.
-    # It is somewhat more secure than letting Nginx return 403.
-    # Ending slash is important!
-    location = /.well-known/acme-challenge/ {
-      return 404;
-    }
-
     return 301 https://\$host\$request_uri;
 }   
 
@@ -159,8 +137,8 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
 
-    ssl_certificate /etc/nginx/${PANEL_DOMAIN}/cert.pem; 
-    ssl_certificate_key /etc/nginx/${PANEL_DOMAIN}/key.pem;
+    ssl_certificate /etc/nginx/ssl/${PANEL_DOMAIN}/fullchain.cer; 
+    ssl_certificate_key /etc/nginx/ssl/${PANEL_DOMAIN}/${PANEL_DOMAIN}.key;
 
 
     location / {
@@ -245,29 +223,6 @@ server {
     sendfile off;
     root /var/www/public;
     index index.php index.html;
-
-    location ^~ /.well-known/acme-challenge/ {
-      # Set correct content type. According to this:
-      # https://community.letsencrypt.org/t/using-the-webroot-domain-verification-method/1445/29
-      # Current specification requires "text/plain" or no content header at all.
-      # It seems that "text/plain" is a safe option.
-      default_type "text/plain";
-
-      # This directory must be the same as in /etc/letsencrypt/cli.ini
-      # as "webroot-path" parameter. Also don't forget to set "authenticator" parameter
-      # there to "webroot".
-      # Do NOT use alias, use root! Target directory is located here:
-      # /var/www/common/letsencrypt/.well-known/acme-challenge/
-      root         /var/www/letsencrypt;
-    }
-
-    # Hide /acme-challenge subdirectory and return 404 on all requests.
-    # It is somewhat more secure than letting Nginx return 403.
-    # Ending slash is important!
-    location = /.well-known/acme-challenge/ {
-      return 404;
-    }
-
 
     location / {
         # First attempt to serve request as file, then

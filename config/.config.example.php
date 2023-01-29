@@ -221,7 +221,7 @@ $_ENV['cloudflare_name']        = '';            //domain name
 $_ENV['enable_analytics_code']  = false;
 
 #Obtain the user's real ip after installing the CDN, if you don't know what it is, please don't mess around
-$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
+$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ARVAN_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
 foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
     if (isset($_SERVER[$cdn_forwarded_ip])) {
         $list = explode(',', $_SERVER[$cdn_forwarded_ip]);
