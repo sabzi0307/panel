@@ -110,9 +110,239 @@ fi
 # fi
 echo >&2 "Done"
 
+NGINX_CONF=/etc/nginx/conf.d/site.conf
+
+SSLTemp=
 if [ "$IS_SSL" = true ];then
-    mv /etc/nginx/conf.d/site.conf /etc/nginx/conf.d/site.conf.template
-    mv /etc/nginx/conf.d/site_ssl.conf.template /etc/nginx/conf.d/site_ssl.conf
+        cat > ${NGINX_CONF} <<-EOF
+server {
+    listen [::]:80 default_server;
+    listen 80 default_server;
+    server_name _;
+    sendfile off;
+    root /var/www/public;
+    index index.php index.html;
+
+    location ^~ /.well-known/acme-challenge/ {
+      # Set correct content type. According to this:
+      # https://community.letsencrypt.org/t/using-the-webroot-domain-verification-method/1445/29
+      # Current specification requires "text/plain" or no content header at all.
+      # It seems that "text/plain" is a safe option.
+      default_type "text/plain";
+
+      # This directory must be the same as in /etc/letsencrypt/cli.ini
+      # as "webroot-path" parameter. Also don't forget to set "authenticator" parameter
+      # there to "webroot".
+      # Do NOT use alias, use root! Target directory is located here:
+      # /var/www/common/letsencrypt/.well-known/acme-challenge/
+      root         /var/www/letsencrypt;
+    }
+
+    # Hide /acme-challenge subdirectory and return 404 on all requests.
+    # It is somewhat more secure than letting Nginx return 403.
+    # Ending slash is important!
+    location = /.well-known/acme-challenge/ {
+      return 404;
+    }
+
+    return 301 https://\$host\$request_uri;
+}   
+
+server {
+    listen [::]:443 ssl http2 default_server;
+    listen 443 ssl http2 default_server;
+    server_name _;
+    sendfile off;
+    root /var/www/public;
+    index index.php index.html;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+
+    ssl_certificate /etc/nginx/${PANEL_DOMAIN}/cert.pem; 
+    ssl_certificate_key /etc/nginx/${PANEL_DOMAIN}/key.pem;
+
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.php
+        try_files \$uri \$uri/ /index.php\$is_args\$args;
+    }
+
+    error_page 500 502 503 504 /50x.html;
+
+    # pass the PHP scripts to FastCGI server
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME \$fastcgi_script_name;
+        fastcgi_index index.php;
+        include /etc/nginx/fastcgi_params;
+    }
+
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+        expires 5d;
+    }
+
+    location /clients/clash/ {
+        alias /var/www/public/rules/;
+        types { }   default_type "text/plain";
+        sub_filter_types	text/plain;
+        sub_filter_once off;
+    }
+
+    if (\$request_uri ~ "^/redirect/(.*)(%3A%2F%2F|://)(.*)$") {
+    return 307 \$1://\$3;
+    }
+
+
+    location /ghr/ {
+        #for proxy github raw
+        proxy_set_header Host raw.githubusercontent.com;
+        proxy_pass https://raw.githubusercontent.com:443/;
+    }
+
+    location /gho/ {
+        #for proxy github object
+        proxy_set_header Host objects.githubusercontent.com;
+        proxy_pass https://objects.githubusercontent.com:443/;
+    }
+
+    location /gh/ {
+        #for proxy github
+        proxy_set_header Host github.com;
+        proxy_pass https://github.com:443/;
+        proxy_redirect https://raw.githubusercontent.com/ https://\$host/ghr/;
+        proxy_redirect https://objects.githubusercontent.com/ https://\$host/gho/;
+
+        proxy_set_header Accept-Encoding "";
+        sub_filter_once off;
+        sub_filter    https://github.com/ /gh/;
+        sub_filter    href="/ href="/gh/;
+        sub_filter    src="/ src="/gh/;
+    }
+
+    location /defaultusersecret/dns/ {
+        # use it in your browser as https://defaultserverhost/defaultusersecret/dns/dns-query{?dns}
+        proxy_pass https://dns.google:443/; 
+    }
+
+    # location /defaultusersecret/speedtest/ {
+    #     client_max_body_size 10000M;
+    #     proxy_pass          http://localhost:438/;
+    # }
+}
+
+EOF
+
+else
+    cat > ${NGINX_CONF} <<-EOF
+server {
+    listen [::]:80 default_server;
+    listen 80 default_server;
+    server_name _;
+    sendfile off;
+    root /var/www/public;
+    index index.php index.html;
+
+    location ^~ /.well-known/acme-challenge/ {
+      # Set correct content type. According to this:
+      # https://community.letsencrypt.org/t/using-the-webroot-domain-verification-method/1445/29
+      # Current specification requires "text/plain" or no content header at all.
+      # It seems that "text/plain" is a safe option.
+      default_type "text/plain";
+
+      # This directory must be the same as in /etc/letsencrypt/cli.ini
+      # as "webroot-path" parameter. Also don't forget to set "authenticator" parameter
+      # there to "webroot".
+      # Do NOT use alias, use root! Target directory is located here:
+      # /var/www/common/letsencrypt/.well-known/acme-challenge/
+      root         /var/www/letsencrypt;
+    }
+
+    # Hide /acme-challenge subdirectory and return 404 on all requests.
+    # It is somewhat more secure than letting Nginx return 403.
+    # Ending slash is important!
+    location = /.well-known/acme-challenge/ {
+      return 404;
+    }
+
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.php
+        try_files \$uri \$uri/ /index.php\$is_args\$args;
+    }
+
+    error_page 500 502 503 504 /50x.html;
+
+    # pass the PHP scripts to FastCGI server
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME \$fastcgi_script_name;
+        fastcgi_index index.php;
+        include /etc/nginx/fastcgi_params;
+    }
+
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+        expires 5d;
+    }
+
+    location /clients/clash/ {
+        alias /var/www/public/rules/;
+        types { }   default_type "text/plain";
+        sub_filter_types	text/plain;
+        sub_filter_once off;
+    }
+
+    if (\$request_uri ~ "^/redirect/(.*)(%3A%2F%2F|://)(.*)$") {
+    return 307 \$1://\$3;
+    }
+
+
+    location /ghr/ {
+        #for proxy github raw
+        proxy_set_header Host raw.githubusercontent.com;
+        proxy_pass https://raw.githubusercontent.com:443/;
+    }
+
+    location /gho/ {
+        #for proxy github object
+        proxy_set_header Host objects.githubusercontent.com;
+        proxy_pass https://objects.githubusercontent.com:443/;
+    }
+
+    location /gh/ {
+        #for proxy github
+        proxy_set_header Host github.com;
+        proxy_pass https://github.com:443/;
+        proxy_redirect https://raw.githubusercontent.com/ https://\$host/ghr/;
+        proxy_redirect https://objects.githubusercontent.com/ https://\$host/gho/;
+
+        proxy_set_header Accept-Encoding "";
+        sub_filter_once off;
+        sub_filter    https://github.com/ /gh/;
+        sub_filter    href="/ href="/gh/;
+        sub_filter    src="/ src="/gh/;
+    }
+
+    location /defaultusersecret/dns/ {
+        # use it in your browser as https://defaultserverhost/defaultusersecret/dns/dns-query{?dns}
+        proxy_pass https://dns.google:443/; 
+    }
+
+    # location /defaultusersecret/speedtest/ {
+    #     client_max_body_size 10000M;
+    #     proxy_pass          http://localhost:438/;
+    # }
+}
+EOF
+
+    # mv /etc/nginx/conf.d/site.conf /etc/nginx/conf.d/site.conf.template
+    # mv /etc/nginx/conf.d/site_ssl.conf.template /etc/nginx/conf.d/site_ssl.conf
     # openssl req -x509 -newkey rsa:2048 -keyout /etc/nginx/ssl/selfsigned.key -out /etc/nginx/ssl/selfsigned.crt -days 3650 -nodes -subj "/C=GB/ST=London/L=London/O=Google Trust Services LLC/CN=www.google.com"
 fi
 
