@@ -39,7 +39,7 @@ final class CaptchaController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('update_field', self::$update_field)
-                ->assign('settings', $settings) 
+                ->assign('settings', $settings)
                 ->fetch('admin/setting/captcha.tpl')
         );
     }
