@@ -31,7 +31,7 @@ final class RegController extends BaseController
         'connection_device_limit',
         'connection_rate_limit',
         'reg_forbidden_ip',
-        'reg_forbidden_port',     
+        'reg_forbidden_port',
     ];
 
     public function reg($request, $response, $args)
