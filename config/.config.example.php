@@ -2,13 +2,13 @@
 
 //basic settings--------------------------------------------------------------------------------------------
 $_ENV['key']        = 'ChangeMe';                     //Be sure to modify this key to a random string
-$_ENV['pwdMethod']  = 'bcrypt';                          //Password Encryption Optional md5, sha256, bcrypt, argon2i, argon2id（argon2i need at least php7.2）
+$_ENV['pwdMethod']  = 'bcrypt';                       //Password Encryption Optional md5, sha256, bcrypt, argon2i, argon2id（argon2i need at least php7.2）
 $_ENV['salt']       = '';                             //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
 
 $_ENV['debug']      = false;                          //debug mode switch，The production environment should be kept as false
 $_ENV['appName']    = 'SSPanel-UIM';                  // Site name
-$_ENV['baseUrl']    = 'https://example.com';           // site address
-$_ENV['muKey']      = 'SSPanel';                      //WebAPI Key, used for communication between the node server and the panel
+$_ENV['baseUrl']    = 'https://example.com';          // site address
+$_ENV['muKey']      = 'ChangeMe';                     //WebAPI Key, used for communication between the node server and the panel，请务必修改此key为随机字符串
 
 //database settings--------------------------------------------------------------------------------------------
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
@@ -207,7 +207,7 @@ $_ENV['timeZone']               = 'PRC';                 //PRC Chinese time UTC 
 $_ENV['theme']                  = 'tabler';              //Default Theme
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
 $_ENV['checkNodeIp']            = true;                 //Whether webapi verifies node ip
-$_ENV['muKeyList']              = [];                   //Multiple key lists
+
 $_ENV['keep_connect']           = false;               // If the traffic is exhausted, the speed limit is limited to 1Mbps
 $_ENV['money_from_admin']       = false;            //Whether to enable the administrator to create a recharge record when modifying the user's balance
 

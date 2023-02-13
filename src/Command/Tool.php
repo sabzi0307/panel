@@ -7,31 +7,30 @@ namespace App\Command;
 use App\Models\Node;
 use App\Models\Setting;
 use App\Models\User as ModelsUser;
-use App\Utils\GA;
 use App\Utils\Hash;
 use App\Utils\Tools;
 use Exception;
 use Ramsey\Uuid\Uuid;
+use Vectorface\GoogleAuthenticator;
 
 final class Tool extends Command
 {
     public $description = <<<EOL
 ├─=: php xcat Tool [options]
-│ ├─ setTelegram             - Set up a Telegram bot
-│ ├─ resetAllSettings        - Override Settings Center settings with default values
-│ ├─ exportAllSettings       - export all settings
-│ ├─ importAllSettings       - import all settings
-│ ├─ upgradeDatabase         - Upgrade (initialize if not present) the database
-│ ├─ resetNodePassword       - Reset all node communication keys
-│ ├─ getCookie               - Get the specified user's cookie
-│ ├─ resetPort               - Reset individual user ports
-│ ├─ createAdmin             - Create an administrator account
-│ ├─ resetAllPort            - Reset all user ports
-│ ├─ resetTraffic            - Reset all user traffic
-│ ├─ generateUUID            - Generate new UUIDs for all users
-│ ├─ generateGa              - Generate new Ga Secrets for all users
+│ ├─ setTelegram             - Set up a Telegram bot
+│ ├─ resetAllSettings        - Override Settings Center settings with default values
+│ ├─ exportAllSettings       - export all settings
+│ ├─ importAllSettings       - import all settings
+│ ├─ resetNodePassword       - Reset all node communication keys
+│ ├─ getCookie               - Get the specified user's cookie
+│ ├─ resetPort               - Reset individual user ports
+│ ├─ createAdmin             - Create an administrator account
+│ ├─ resetAllPort            - Reset all user ports
+│ ├─ resetTraffic            - Reset all user traffic
+│ ├─ generateUUID            - Generate new UUIDs for all users
+│ ├─ generateGa              - Generate new Ga Secrets for all users
 | ├─ generateApiToken        - Generate a new API Token for all users
-│ ├─ setTheme                - Set a new theme for all users
+│ ├─ setTheme                - Set a new theme for all users
 
 EOL;
 
@@ -44,7 +43,7 @@ EOL;
             if (method_exists($this, $methodName)) {
                 $this->$methodName();
             } else {
-                echo 'method does not exist.' . PHP_EOL;
+                echo 'method does not exist' . PHP_EOL;
             }
         }
     }
@@ -70,7 +69,7 @@ EOL;
             $setting->save();
         }
 
-        echo 'All settings overridden with default values.' . PHP_EOL;
+        echo 'All database settings have been overridden with default values' . PHP_EOL;
     }
 
     public function exportAllSettings(): void
@@ -87,7 +86,7 @@ EOL;
         $json_settings = \json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents('./config/settings.json', $json_settings);
 
-        echo 'All settings exported.' . PHP_EOL;
+        echo 'All database settings have been exported' . PHP_EOL;
     }
 
     public function importAllSettings(): void
@@ -116,7 +115,7 @@ EOL;
                 $new_item->mark = $item['mark'];
                 $new_item->save();
 
-                echo "add new settings：${item_name}" . PHP_EOL;
+                echo "Add new database settings：${item_name}" . PHP_EOL;
                 $add_counter += 1;
             }
         }
@@ -130,19 +129,13 @@ EOL;
         }
 
         if ($add_counter !== 0) {
-            echo "Total added ${add_counter} new settings." . PHP_EOL;
+            echo "Total added ${add_counter} item new database settings" . PHP_EOL;
         } else {
-            echo 'No new settings need to be added.' . PHP_EOL;
+            echo 'No new database settings need to be added' . PHP_EOL;
         }
         if ($del_counter !== 0) {
-            echo "Total removed ${del_counter} strip settings." . PHP_EOL;
+            echo "Total removed ${del_counter} item database settings" . PHP_EOL;
         }
-    }
-
-    public function upgradeDatabase(): void
-    {
-        $phinx = new \Phinx\Console\PhinxApplication();
-        $phinx->run();
     }
 
     public function resetNodePassword(): void
@@ -152,7 +145,7 @@ EOL;
             $node->password = Tools::genRandomChar(32);
             $node->save();
         }
-        echo '已重置所有节点密码.' . PHP_EOL;
+        echo 'All node passwords have been reset' . PHP_EOL;
     }
 
     /**
@@ -168,7 +161,7 @@ EOL;
                 echo 'reset successful!';
             }
         } else {
-            echo 'not found user.';
+            echo 'User does not exist';
         }
     }
 
@@ -225,9 +218,8 @@ EOL;
     {
         $users = ModelsUser::all();
         foreach ($users as $user) {
-            $ga = new GA();
+            $ga = new GoogleAuthenticator();
             $secret = $ga->createSecret();
-
             $user->ga_token = $secret;
             $user->save();
         }
@@ -263,7 +255,7 @@ EOL;
             }
 
             // write input back
-            fwrite(STDOUT, '(2/3) 请输入管理员账户密码：') . PHP_EOL;
+            fwrite(STDOUT, '(2/3) Please enter the administrator account password：') . PHP_EOL;
             $passwd = trim(fgets(STDIN));
             if ($passwd === null) {
                 die("Administrator password must be entered.\r\n");
@@ -306,7 +298,7 @@ EOL;
             $user->node_speedlimit = 0;
             $user->theme = $_ENV['theme'];
 
-            $ga = new GA();
+            $ga = new GoogleAuthenticator();
             $secret = $ga->createSecret();
             $user->ga_token = $secret;
             $user->ga_enable = 0;

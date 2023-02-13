@@ -8,27 +8,26 @@ use App\Controllers\BaseController;
 use App\Models\DetectRule;
 use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\ServerRequest;
 
 final class FuncController extends BaseController
 {
     /**
      * @param array     $args
      */
-    public function ping(Request $request, Response $response, array $args)
+    public function ping(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $res = [
+        return $response->withJson([
             'ret' => 1,
-            'data' => 'pong',
-        ];
-        return $response->withJson($res);
+            'data' => 'Pong? Pong!',
+        ]);
     }
 
     /**
      * @param array     $args
      */
-    public function getDetectLogs(Request $request, Response $response, array $args): ResponseInterface
+    public function getDetectLogs(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $rules = DetectRule::all();
 
@@ -42,7 +41,7 @@ final class FuncController extends BaseController
     /**
      * @param array     $args
      */
-    public function getBlockip(Request $request, Response $response, array $args): ResponseInterface
+    public function getBlockip(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         return ResponseHelper::etagJson($request, $response, [
             'ret' => 1,
@@ -53,7 +52,7 @@ final class FuncController extends BaseController
     /**
      * @param array     $args
      */
-    public function getUnblockip(Request $request, Response $response, array $args): ResponseInterface
+    public function getUnblockip(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         return ResponseHelper::etagJson($request, $response, [
             'ret' => 1,
@@ -64,12 +63,11 @@ final class FuncController extends BaseController
     /**
      * @param array     $args
      */
-    public function addBlockIp(Request $request, Response $response, array $args)
+    public function addBlockIp(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $res = [
+        return $response->withJson([
             'ret' => 1,
             'data' => 'ok',
-        ];
-        return $response->withJson($res);
+        ]);
     }
 }

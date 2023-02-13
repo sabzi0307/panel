@@ -12,15 +12,16 @@ use App\Services\Auth;
 use App\Services\Captcha;
 use App\Services\Mail;
 use App\Utils\Check;
-use App\Utils\GA;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
 use App\Utils\TelegramSessionManager;
 use App\Utils\Tools;
 use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
-use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\ServerRequest;
+use Vectorface\GoogleAuthenticator;
 use voku\helper\AntiXSS;
 
 /**
@@ -31,7 +32,7 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function login(Request $request, Response $response, array $args)
+    public function login(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $captcha = [];
 
@@ -49,23 +50,23 @@ final class AuthController extends BaseController
             $login_number = '';
         }
 
-        return $this->view()
+        return $response->write($this->view()
             ->assign('login_token', $login_token)
             ->assign('login_number', $login_number)
             ->assign('base_url', $_ENV['baseUrl'])
             ->assign('telegram_bot', $_ENV['telegram_bot'])
             ->assign('captcha', $captcha)
-            ->display('auth/login.tpl');
+            ->fetch('auth/login.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function loginHandle(Request $request, Response $response, array $args)
+    public function loginHandle(ServerRequest $request, Response $response, array $args)
     {
         if (Setting::obtain('enable_login_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
-            if (! $ret) {
+            if (!$ret) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
@@ -86,7 +87,7 @@ final class AuthController extends BaseController
             ]);
         }
 
-        if (! Hash::checkPassword($user->pass, $passwd)) {
+        if (!Hash::checkPassword($user->pass, $passwd)) {
             // 记录登录失败
             $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
             return $response->withJson([
@@ -96,9 +97,9 @@ final class AuthController extends BaseController
         }
 
         if ($user->ga_enable === 1) {
-            $ga = new GA();
+            $ga = new GoogleAuthenticator();
             $rcode = $ga->verifyCode($user->ga_token, $code);
-            if (! $rcode) {
+            if (!$rcode) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'کد تأیید دو مرحله ای اشتباه است. اگر ژنراتور را گم کردید یا این گزینه را به اشتباه تنظیم کردید، می توانید برای لغو این گزینه رمز عبور را بازنشانی کنید.',
@@ -124,7 +125,7 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function qrcodeLoginHandle(Request $request, Response $response, array $args)
+    public function qrcodeLoginHandle(ServerRequest $request, Response $response, array $args)
     {
         $token = $request->getParam('token');
         $number = $request->getParam('number');
@@ -145,7 +146,7 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function register(Request $request, Response $response, $next)
+    public function register(ServerRequest $request, Response $response, $next)
     {
         $captcha = [];
 
@@ -170,7 +171,7 @@ final class AuthController extends BaseController
             $login_number = '';
         }
 
-        return $this->view()
+        return $response->write($this->view()
             ->assign('code', $code)
             ->assign('base_url', $_ENV['baseUrl'])
             ->assign('login_token', $login_token)
@@ -178,17 +179,19 @@ final class AuthController extends BaseController
             ->assign('telegram_bot', $_ENV['telegram_bot'])
             ->assign('enable_email_verify', Setting::obtain('reg_email_verify'))
             ->assign('captcha', $captcha)
-            ->display('auth/register.tpl');
+            ->fetch('auth/register.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function sendVerify(Request $request, Response $response, $next)
+    public function sendVerify(ServerRequest $request, Response $response, $next)
     {
         if (Setting::obtain('reg_email_verify')) {
-            $email = trim($request->getParam('email'));
-            $email = strtolower($email);
+            $antiXss = new AntiXSS();
+
+            $email = strtolower(trim($antiXss->xss_clean($request->getParam('email'))));
+
             if ($email === '') {
                 return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
             }
@@ -240,33 +243,25 @@ final class AuthController extends BaseController
     }
 
     /**
-     * @param Request   $request
+     * @param ServerRequest   $request
      * @param Response  $response
      * @param array     $args
      */
     public static function registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, $telegram_id, $money, $is_admin_reg)
     {
-        if (Setting::obtain('reg_mode') === 'close') {
-            return ResponseHelper::error($response, 'ثبت نام موقتا بسته شده است');
-        }
-
-        if (Setting::obtain('reg_mode') === 'invite' && $code === '') {
-            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوتنامه را پر کنید');
-        }
-
-        $c = InviteCode::where('code', $code)->first();
-        if ($c === null) {
+        $user_invite = InviteCode::where('code', $code)->first();
+        if ($user_invite === null) {
             if (Setting::obtain('reg_mode') === 'invite') {
-                return ResponseHelper::error($response, 'این کد دعوت وجود ندارد');
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
             }
-        } elseif ($c->user_id !== 0) {
-            $gift_user = User::where('id', $c->user_id)->first();
+        } elseif ($user_invite->user_id !== 0) {
+            $gift_user = User::where('id', $user_invite->user_id)->first();
             if ($gift_user === null) {
-                return ResponseHelper::error($response, 'کد دعوت منقضی شده است');
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
             }
 
             if ($gift_user->invite_num === 0) {
-                return ResponseHelper::error($response, 'کد دعوت در دسترس نیست');
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
             }
         }
 
@@ -277,7 +272,7 @@ final class AuthController extends BaseController
         $current_timestamp = \time();
 
         $user->user_name = $antiXss->xss_clean($name);
-        $user->email = $email;
+        $user->email = $antiXss->xss_clean($email);
         $user->remark = '';
         $user->pass = Hash::passwordHash($passwd);
         $user->passwd = Tools::genRandomChar(16);
@@ -290,7 +285,7 @@ final class AuthController extends BaseController
         $user->method = $configs['sign_up_for_method'];
         $user->forbidden_ip = Setting::obtain('reg_forbidden_ip');
         $user->forbidden_port = Setting::obtain('reg_forbidden_port');
-        $user->im_type = $imtype;
+        $user->im_type = $antiXss->xss_clean($imtype);
         $user->im_value = $antiXss->xss_clean($imvalue);
 
         $user->transfer_enable = Tools::toGB($configs['sign_up_for_free_traffic']);
@@ -307,10 +302,10 @@ final class AuthController extends BaseController
 
         //dumplin：填写邀请人，写入邀请奖励
         $user->ref_by = 0;
-        if ($c !== null && $c->user_id !== 0) {
+        if ($user_invite !== null && $user_invite->user_id !== 0) {
             $invitation = Setting::getClass('invite');
             // 设置新用户
-            $user->ref_by = $c->user_id;
+            $user->ref_by = $user_invite->user_id;
             $user->money = $invitation['invitation_to_register_balance_reward'];
             // 给邀请人反流量
             $gift_user->transfer_enable += $invitation['invitation_to_register_traffic_reward'] * 1024 * 1024 * 1024;
@@ -325,10 +320,11 @@ final class AuthController extends BaseController
             $user->telegram_id = $telegram_id;
         }
 
-        $ga = new GA();
+        $ga = new GoogleAuthenticator();
         $secret = $ga->createSecret();
         $user->ga_token = $secret;
         $user->ga_enable = 0;
+
         $user->class_expire = date('Y-m-d H:i:s', \time() + $configs['sign_up_for_class_time'] * 86400);
         $user->class = $configs['sign_up_for_class'];
         $user->node_connector = $configs['connection_device_limit'];
@@ -357,30 +353,38 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function registerHandle(Request $request, Response $response, array $args)
+    public function registerHandle(ServerRequest $request, Response $response, array $args)
     {
         if (Setting::obtain('reg_mode') === 'close') {
             return ResponseHelper::error($response, 'ثبت نام باز نیست');
         }
 
+        if (Setting::obtain('reg_mode') === 'invite' && $request->getParam('code') === '') {
+            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوت نامه را پر کنید');
+        }
+
+        if (Setting::obtain('reg_mode') === 'invite' && $request->getParam('code') === '') {
+            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوت نامه را پر کنید');
+        }
+
         if (Setting::obtain('enable_reg_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
-            if (! $ret) {
+            if (!$ret) {
                 return ResponseHelper::error($response, 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
             }
         }
 
-        $name = $request->getParam('name');
-        $email = $request->getParam('email');
-        $email = trim($email);
-        $email = strtolower($email);
+        $antiXss = new AntiXSS();
+
+        $email = strtolower(trim($antiXss->xss_clean($request->getParam('email'))));
+        $name = $antiXss->xss_clean($request->getParam('name'));
         $passwd = $request->getParam('passwd');
         $repasswd = $request->getParam('repasswd');
-        $code = trim($request->getParam('code'));
+        $code = $antiXss->xss_clean(trim($request->getParam('code')));
 
         if (Setting::obtain('enable_reg_im') === true) {
-            $imtype = $request->getParam('im_type');
-            $imvalue = $request->getParam('im_value');
+            $imtype = $antiXss->xss_clean($request->getParam('im_type'));
+            $imvalue = $antiXss->xss_clean($request->getParam('im_value'));
             if ($imtype === '' || $imvalue === '') {
                 return ResponseHelper::error($response, 'لطفا اطلاعات تماس خود را وارد کنید');
             }
@@ -405,7 +409,7 @@ final class AuthController extends BaseController
         }
 
         if (Setting::obtain('reg_email_verify')) {
-            $email_code = trim($request->getParam('emailcode'));
+            $email_code = trim($antiXss->xss_clean($request->getParam('emailcode')));
             $mailcount = EmailVerify::where('email', '=', $email)
                 ->where('code', '=', $email_code)
                 ->where('expire_in', '>', \time())
@@ -435,7 +439,7 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function logout(Request $request, Response $response, $next)
+    public function logout(ServerRequest $request, Response $response, $next)
     {
         Auth::logout();
         return $response->withStatus(302)
@@ -445,27 +449,30 @@ final class AuthController extends BaseController
     /**
      * @param array     $args
      */
-    public function qrcodeCheck(Request $request, Response $response, array $args)
+    public function qrcodeCheck(ServerRequest $request, Response $response, array $args)
     {
         $token = $request->getParam('token');
         $number = $request->getParam('number');
         $user = Auth::getUser();
+
         if ($user->isLogin) {
             return ResponseHelper::error($response, 'کاربر وارد شده است');
         }
+
         if ($_ENV['enable_telegram_login'] === true) {
             $ret = TelegramSessionManager::checkLoginSession($token, $number);
             return $response->withJson([
                 'ret' => $ret,
             ]);
         }
+
         return ResponseHelper::error($response, 'ورود QRCode مجاز نیست');
     }
 
     /**
      * @param array     $args
      */
-    public function telegramOauth(Request $request, Response $response, array $args)
+    public function telegramOauth(ServerRequest $request, Response $response, array $args)
     {
         if ($_ENV['enable_telegram_login'] === true) {
             $auth_data = $request->getQueryParams();
@@ -473,33 +480,31 @@ final class AuthController extends BaseController
                 $telegram_id = $auth_data['id'];
                 $user = User::query()->where('telegram_id', $telegram_id)->firstOrFail(); // Welcome Back :)
                 if ($user === null) {
-                    return $this->view()
+                    return $response->write($this->view()
                         ->assign('title', 'ابتدا باید ایمیل خود را ثبت کنید و سپس تلگرام را برای ورود با مجوز متصل کنید')
                         ->assign('message', 'با عرض پوزش برای ناراحتی، لطفا دوباره امتحان کنید')
                         ->assign('redirect', '/auth/login')
-                        ->display('telegram_error.tpl');
+                        ->fetch('telegram_error.tpl'));
                 }
                 Auth::login($user->id, 3600);
                 $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
 
-                return $this->view()
+                return $response->write($this->view()
                     ->assign('title', 'ورود با موفقیت')
                     ->assign('message', 'رفتن به داشبورد')
                     ->assign('redirect', '/user')
-                    ->display('telegram_success.tpl');
+                    ->fetch('telegram_success.tpl'));
             }
-            return $this->view()
+            return $response->write($this->view()
                 ->assign('title', 'مهلت ورود به سیستم یا اطلاعات نادرست ایجاد شده')
                 ->assign('message', 'با عرض پوزش برای ناراحتی، لطفا دوباره امتحان کنید')
                 ->assign('redirect', '/auth/login')
-                ->display('telegram_error.tpl');
+                ->fetch('telegram_error.tpl'));
         }
         return $response->withRedirect('/404');
     }
 
     /**
-     * @param Request   $request
-     * @param Response  $response
      * @param array     $args
      */
     private function telegramOauthCheck($auth_data)

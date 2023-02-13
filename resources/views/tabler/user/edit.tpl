@@ -521,7 +521,7 @@
 
     <script>
         var qrcode = new QRCode('qrcode', {
-            text: "{$user->getGAurl()}",
+            text: "{$gaurl}",
             width: 128,
             height: 128,
             colorDark: '#000000',
@@ -756,7 +756,7 @@
         $("#reset-2fa").click(function() {
             $.ajax({
                 type: "POST",
-                url: "/user/gareset",
+                url: "/user/ga_reset",
                 dataType: "json",
                 success: function(data) {
                     if (data.ret == 1) {
@@ -773,7 +773,7 @@
         $("#test-2fa").click(function() {
             $.ajax({
                 type: "POST",
-                url: "/user/gacheck",
+                url: "/user/ga_check",
                 dataType: "json",
                 data: {
                     code: $('#2fa-test-code').val()
@@ -793,7 +793,7 @@
         $("#save-2fa").click(function() {
             $.ajax({
                 type: "POST",
-                url: "/user/gaset",
+                url: "/user/ga_set",
                 dataType: "json",
                 data: {
                     enable: $('#ga-enable').val()

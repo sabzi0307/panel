@@ -11,14 +11,14 @@
     <!-- CSS files -->
     <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
     <link href="//cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/v/bs5/dt-1.13.2/datatables.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="//cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="//cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script src="//cdn.datatables.net/v/bs5/dt-1.13.2/datatables.min.js"></script>
     <style>
         .home-subtitle {
             font-size: 14px;
@@ -91,10 +91,38 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="/admin/setting">
-                                                <i class="ti ti-tool"></i>&nbsp;
-                                                راه اندازی
-                                            </a>
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                                                    <i class="ti ti-settings"></i>&nbsp;
+                                                    راه اندازی
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a href="/admin/setting/billing" class="dropdown-item">
+                                                      امور مالی
+                                                    </a>
+                                                    <a href="/admin/setting/email" class="dropdown-item">
+                                                      پست الکترونیکی
+                                                    </a>
+                                                    <a href="/admin/setting/support" class="dropdown-item">
+                                                      پشتیبانی
+                                                    </a>
+                                                    <a href="/admin/setting/captcha" class="dropdown-item">
+                                                      CAPTCHA
+                                                    </a>
+                                                    <a href="/admin/setting/reg" class="dropdown-item">
+                                                      ثبت نام
+                                                    </a>
+                                                    <a href="/admin/setting/ref" class="dropdown-item">
+                                                      تخفیف دعوت
+                                                    </a>
+                                                    <a href="/admin/setting/im" class="dropdown-item">
+                                                      یکپارچه سازی IM
+                                                    </a>
+                                                    <a href="/admin/setting/other" class="dropdown-item">
+                                                      سایر
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <a class="dropdown-item" href="/admin/user">
                                                 <i class="ti ti-users"></i>&nbsp;
                                                 کاربر

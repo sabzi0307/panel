@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card my-3">
                         <div class="card-header">
                             <h3 class="card-title">سابقه تخفیف</h3>
                         </div>

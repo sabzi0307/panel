@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Services\Mail;
-use App\Utils\GA;
 use App\Utils\Hash;
 use App\Utils\Telegram;
 use App\Utils\Tools;
@@ -286,15 +285,6 @@ final class User extends Model
     public function isAbleToCheckin(): bool
     {
         return date('Ymd') !== date('Ymd', $this->last_check_in_time);
-    }
-
-    public function getGAurl()
-    {
-        $ga = new GA();
-        return $ga->getUrl(
-            urlencode($_ENV['appName'] . '-' . $this->user_name . '-کدتایید 2 مرحله ای'),
-            $this->ga_token
-        );
     }
 
     /**

@@ -21,19 +21,19 @@ use App\Models\UserSubscribeLog;
 use App\Services\Auth;
 use App\Services\Captcha;
 use App\Services\Config;
+use App\Services\DB;
+use App\Services\MFA;
 use App\Services\Payment;
 use App\Utils\Check;
 use App\Utils\Cookie;
-use App\Utils\DatatablesHelper;
-use App\Utils\GA;
 use App\Utils\Hash;
 use App\Utils\QQWry;
 use App\Utils\ResponseHelper;
 use App\Utils\TelegramSessionManager;
 use App\Utils\Tools;
 use Ramsey\Uuid\Uuid;
-use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\ServerRequest;
 use voku\helper\AntiXSS;
 
 /**
@@ -44,7 +44,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function index(Request $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args)
     {
         $captcha = [];
 
@@ -65,14 +65,14 @@ final class UserController extends BaseController
                 ->assign('getTraditionalSub', LinkController::getTraditionalSub($this->user))
                 ->assign('data', $data)
                 ->assign('captcha', $captcha)
-                ->display('user/index.tpl')
+                ->fetch('user/index.tpl')
         );
     }
 
     /**
      * @param array     $args
      */
-    public function code(Request $request, Response $response, array $args)
+    public function code(ServerRequest $request, Response $response, array $args)
     {
         $pageNum = $request->getQueryParams()['page'] ?? 1;
         $codes = Code::where('type', '<>', '-2')
@@ -87,14 +87,14 @@ final class UserController extends BaseController
                 ->assign('codes', $codes)
                 ->assign('payments', Payment::getPaymentsEnabled())
                 ->assign('render', $render)
-                ->display('user/code.tpl')
+                ->fetch('user/code.tpl')
         );
     }
 
     /**
      * @param array     $args
      */
-    public function codeCheck(Request $request, Response $response, array $args)
+    public function codeCheck(ServerRequest $request, Response $response, array $args)
     {
         $time = $request->getQueryParams()['time'];
         $codes = Code::where('userid', '=', $this->user->id)
@@ -114,7 +114,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function codePost(Request $request, Response $response, array $args)
+    public function codePost(ServerRequest $request, Response $response, array $args)
     {
         $code = trim($request->getParam('code'));
         if ($code === '') {
@@ -180,55 +180,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function checkGa(Request $request, Response $response, array $args)
-    {
-        $code = $request->getParam('code');
-        if ($code === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'کد QR نمی تواند خالی باشد',
-            ]);
-        }
-        $user = $this->user;
-        $ga = new GA();
-        $rcode = $ga->verifyCode($user->ga_token, $code);
-        if (! $rcode) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'خطای تست',
-            ]);
-        }
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'تست موفقیت آمیز بود',
-        ]);
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function setGa(Request $request, Response $response, array $args)
-    {
-        $enable = $request->getParam('enable');
-        if ($enable === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'گزینه نامعتبر',
-            ]);
-        }
-        $user = $this->user;
-        $user->ga_enable = $enable;
-        $user->save();
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'با موفقیت تنظیم شد',
-        ]);
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function resetPort(Request $request, Response $response, array $args)
+    public function resetPort(ServerRequest $request, Response $response, array $args)
     {
         $temp = $this->user->resetPort();
         return $response->withJson([
@@ -240,7 +192,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function specifyPort(Request $request, Response $response, array $args)
+    public function specifyPort(ServerRequest $request, Response $response, array $args)
     {
         $temp = $this->user->specifyPort((int) $request->getParam('port'));
         return $response->withJson([
@@ -252,20 +204,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function resetGa(Request $request, Response $response, array $args)
-    {
-        $ga = new GA();
-        $secret = $ga->createSecret();
-        $user = $this->user;
-        $user->ga_token = $secret;
-        $user->save();
-        return $response->withStatus(302)->withHeader('Location', '/user/edit');
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function profile(Request $request, Response $response, array $args)
+    public function profile(ServerRequest $request, Response $response, array $args)
     {
         $pageNum = $request->getQueryParams()['page'] ?? 1;
         $paybacks = Payback::where('ref_by', $this->user->id)
@@ -309,14 +248,14 @@ final class UserController extends BaseController
                 ->assign('userloginip', $totallogin)
                 ->assign('paybacks', $paybacks)
                 ->registerClass('Tools', Tools::class)
-                ->display('user/profile.tpl')
+                ->fetch('user/profile.tpl')
         );
     }
 
     /**
      * @param array     $args
      */
-    public function announcement(Request $request, Response $response, array $args)
+    public function announcement(ServerRequest $request, Response $response, array $args)
     {
         $Anns = Ann::orderBy('date', 'desc')->get();
 
@@ -330,14 +269,14 @@ final class UserController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('anns', $Anns)
-                ->display('user/announcement.tpl')
+                ->fetch('user/announcement.tpl')
         );
     }
 
     /**
      * @param array     $args
      */
-    public function docs(Request $request, Response $response, array $args)
+    public function docs(ServerRequest $request, Response $response, array $args)
     {
         $docs = Docs::orderBy('id', 'desc')->get();
 
@@ -351,18 +290,18 @@ final class UserController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('docs', $docs)
-                ->display('user/docs.tpl')
+                ->fetch('user/docs.tpl')
         );
     }
 
     /**
      * @param array     $args
      */
-    public function media(Request $request, Response $response, array $args)
+    public function media(ServerRequest $request, Response $response, array $args)
     {
         $results = [];
-        $db = new DatatablesHelper();
-        $nodes = $db->query('SELECT DISTINCT node_id FROM stream_media');
+        $pdo = DB::getPdo();
+        $nodes = $pdo->query('SELECT DISTINCT node_id FROM stream_media');
 
         foreach ($nodes as $node_id) {
             $node = Node::where('id', $node_id)->first();
@@ -416,34 +355,36 @@ final class UserController extends BaseController
         $node_names = array_column($results, 'node_name');
         array_multisort($node_names, SORT_ASC, $results);
 
-        return $this->view()
+        return $response->write($this->view()
             ->assign('results', $results)
-            ->display('user/media.tpl');
+            ->fetch('user/media.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function edit(Request $request, Response $response, array $args)
+    public function edit(ServerRequest $request, Response $response, array $args)
     {
         $themes = Tools::getDir(BASE_PATH . '/resources/views');
         $bind_token = TelegramSessionManager::addBindSession($this->user);
         $methods = Config::getSupportParam('method');
+        $gaurl = MFA::getGAurl($this->user);
 
-        return $this->view()
+        return $response->write($this->view()
             ->assign('user', $this->user)
             ->assign('themes', $themes)
             ->assign('bind_token', $bind_token)
             ->assign('methods', $methods)
+            ->assign('gaurl', $gaurl)
             ->assign('telegram_bot', $_ENV['telegram_bot'])
             ->registerClass('Config', Config::class)
-            ->display('user/edit.tpl');
+            ->fetch('user/edit.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function invite(Request $request, Response $response, array $args)
+    public function invite(ServerRequest $request, Response $response, array $args)
     {
         $code = InviteCode::where('user_id', $this->user->id)->first();
         if ($code === null) {
@@ -466,22 +407,24 @@ final class UserController extends BaseController
 
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
 
-        return $this->view()
+        return $response->write($this->view()
             ->assign('code', $code)
             ->assign('render', $render)
             ->assign('paybacks', $paybacks)
             ->assign('invite_url', $invite_url)
             ->assign('paybacks_sum', $paybacks_sum)
-            ->display('user/invite.tpl');
+            ->fetch('user/invite.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function buyInvite(Request $request, Response $response, array $args)
+    public function buyInvite(ServerRequest $request, Response $response, array $args)
     {
+        $antiXss = new AntiXSS();
+
         $price = Setting::obtain('invite_price');
-        $num = $request->getParam('num');
+        $num = $antiXss->xss_clean($request->getParam('num'));
         $num = trim($num);
 
         if (! Tools::isInt($num) || $price < 0 || $num <= 0) {
@@ -509,11 +452,12 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function customInvite(Request $request, Response $response, array $args)
+    public function customInvite(ServerRequest $request, Response $response, array $args)
     {
+        $antiXss = new AntiXSS();
+
         $price = Setting::obtain('custom_invite_price');
-        $customcode = $request->getParam('customcode');
-        $customcode = trim($customcode);
+        $customcode = trim($antiXss->xss_clean($request->getParam('customcode')));
 
         if (Tools::isSpecialChars($customcode) || $price < 0 || $customcode === '' || strlen($customcode) > 32) {
             return ResponseHelper::error(
@@ -549,7 +493,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updatePassword(Request $request, Response $response, array $args)
+    public function updatePassword(ServerRequest $request, Response $response, array $args)
     {
         $oldpwd = $request->getParam('oldpwd');
         $pwd = $request->getParam('pwd');
@@ -579,10 +523,12 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateEmail(Request $request, Response $response, array $args)
+    public function updateEmail(ServerRequest $request, Response $response, array $args)
     {
+        $antiXss = new AntiXSS();
+
         $user = $this->user;
-        $newemail = $request->getParam('newemail');
+        $newemail = $antiXss->xss_clean($request->getParam('newemail'));
         $oldemail = $user->email;
         $otheruser = User::where('email', $newemail)->first();
 
@@ -615,8 +561,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'ایمیل جدید نمی تواند مانند ایمیل قبلی باشد');
         }
 
-        $antiXss = new AntiXSS();
-        $user->email = $antiXss->xss_clean($newemail);
+        $user->email = $newemail;
         $user->save();
 
         return ResponseHelper::successfully($response, '修改成功');
@@ -625,12 +570,14 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateUsername(Request $request, Response $response, array $args)
+    public function updateUsername(ServerRequest $request, Response $response, array $args)
     {
-        $newusername = $request->getParam('newusername');
-        $user = $this->user;
         $antiXss = new AntiXSS();
-        $user->user_name = $antiXss->xss_clean($newusername);
+
+        $newusername = $antiXss->xss_clean($request->getParam('newusername'));
+        $user = $this->user;
+
+        $user->user_name = $newusername;
         $user->save();
 
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
@@ -639,7 +586,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function bought(Request $request, Response $response, array $args)
+    public function bought(ServerRequest $request, Response $response, array $args)
     {
         $pageNum = $request->getQueryParams()['page'] ?? 1;
         $shops = Bought::where('userid', $this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
@@ -655,16 +602,16 @@ final class UserController extends BaseController
             ]);
         }
         $render = Tools::paginateRender($shops);
-        return $this->view()
+        return $response->write($this->view()
             ->assign('shops', $shops)
             ->assign('render', $render)
-            ->display('user/bought.tpl');
+            ->fetch('user/bought.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function deleteBoughtGet(Request $request, Response $response, array $args)
+    public function deleteBoughtGet(ServerRequest $request, Response $response, array $args)
     {
         $id = $request->getParam('id');
         $shop = Bought::where('id', $id)->where('userid', $this->user->id)->first();
@@ -686,7 +633,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateContact(Request $request, Response $response, array $args)
+    public function updateContact(ServerRequest $request, Response $response, array $args)
     {
         $antiXss = new AntiXSS();
 
@@ -730,7 +677,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateTheme(Request $request, Response $response, array $args)
+    public function updateTheme(ServerRequest $request, Response $response, array $args)
     {
         $antiXss = new AntiXSS();
         $theme = $antiXss->xss_clean($request->getParam('theme'));
@@ -756,7 +703,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateMail(Request $request, Response $response, array $args)
+    public function updateMail(ServerRequest $request, Response $response, array $args)
     {
         $value = (int) $request->getParam('mail');
         if (\in_array($value, [0, 1, 2])) {
@@ -777,7 +724,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function resetPasswd(Request $request, Response $response, array $args)
+    public function resetPasswd(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
         $pwd = Tools::genRandomChar(16);
@@ -799,11 +746,11 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function updateMethod(Request $request, Response $response, array $args)
+    public function updateMethod(ServerRequest $request, Response $response, array $args)
     {
-        $user = $this->user;
-
         $antiXss = new AntiXSS();
+
+        $user = $this->user;
 
         $method = strtolower($antiXss->xss_clean($request->getParam('method')));
 
@@ -823,7 +770,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function logout(Request $request, Response $response, array $args)
+    public function logout(ServerRequest $request, Response $response, array $args)
     {
         Auth::logout();
         return $response->withStatus(302)->withHeader('Location', '/');
@@ -832,7 +779,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function doCheckIn(Request $request, Response $response, array $args)
+    public function doCheckIn(ServerRequest $request, Response $response, array $args)
     {
         if ($_ENV['enable_checkin'] === false) {
             return ResponseHelper::error($response, 'هنوز قادر به ورود به سیستم نیست');
@@ -870,19 +817,20 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function kill(Request $request, Response $response, array $args)
+    public function kill(ServerRequest $request, Response $response, array $args)
     {
-        return $this->view()->display('user/kill.tpl');
+        return $response->write($this->view()->fetch('user/kill.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function handleKill(Request $request, Response $response, array $args)
+    public function handleKill(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
 
         $passwd = $request->getParam('passwd');
+
         if (! Hash::checkPassword($user->pass, $passwd)) {
             return ResponseHelper::error($response, 'رمز عبور اشتباه');
         }
@@ -898,18 +846,18 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function banned(Request $request, Response $response, array $args)
+    public function banned(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
-        return $this->view()
+        return $response->write($this->view()
             ->assign('banned_reason', $user->banned_reason)
-            ->display('user/banned.tpl');
+            ->fetch('user/banned.tpl'));
     }
 
     /**
      * @param array     $args
      */
-    public function resetTelegram(Request $request, Response $response, array $args)
+    public function resetTelegram(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
         $user->telegramReset();
@@ -920,7 +868,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function resetURL(Request $request, Response $response, array $args)
+    public function resetURL(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
         $user->cleanLink();
@@ -931,7 +879,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function resetInviteURL(Request $request, Response $response, array $args)
+    public function resetInviteURL(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
         $user->clearInviteCodes();
@@ -942,7 +890,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function backtoadmin(Request $request, Response $response, array $args)
+    public function backtoadmin(ServerRequest $request, Response $response, array $args)
     {
         $userid = Cookie::get('uid');
         $adminid = Cookie::get('old_uid');
@@ -987,7 +935,7 @@ final class UserController extends BaseController
      *
      * @param array    $args
      */
-    public function subscribeLog(Request $request, Response $response, array $args)
+    public function subscribeLog(ServerRequest $request, Response $response, array $args)
     {
         if ($_ENV['subscribeLog_show'] === false) {
             return $response->withStatus(302)->withHeader('Location', '/user');
@@ -1007,7 +955,7 @@ final class UserController extends BaseController
     /**
      * @param array     $args
      */
-    public function switchThemeMode(Request $request, Response $response, array $args)
+    public function switchThemeMode(ServerRequest $request, Response $response, array $args)
     {
         $user = $this->user;
         if ($user->is_dark_mode === 1) {

@@ -13,9 +13,9 @@ final class Update extends Command
         global $_ENV;
         $copy_result = copy(BASE_PATH . '/config/.config.php', BASE_PATH . '/config/.config.php.bak');
         if ($copy_result === true) {
-            echo 'backup successful' . PHP_EOL;
+            echo '.config.php File backup successful' . PHP_EOL;
         } else {
-            echo 'Backup failed, migration terminated' . PHP_EOL;
+            echo '.config.php File backup failed, migration terminated' . PHP_EOL;
         }
 
         echo PHP_EOL;
@@ -30,7 +30,7 @@ final class Update extends Command
             $matches_new = [];
             preg_match($regex, $config_new, $matches_new);
             if (isset($matches_new[0]) === false) {
-                echo 'Configuration item not found：' . $key . ' Could not be found in the new config file, may have been renamed or obsolete' . PHP_EOL;
+                echo 'Configuration item not found:' . $key . ' Could not be found in new version .config.php file, may have been renamed or obsolete' . PHP_EOL;
                 continue;
             }
 
@@ -69,9 +69,9 @@ final class Update extends Command
             $difference = substr($difference, 15);
             $difference = substr($difference, 0, -2);
 
-            echo 'New configuration item：' . $difference . ':' . $comment . PHP_EOL;
+            echo 'New .config.php configuration item：' . $difference . ':' . $comment . PHP_EOL;
         }
-        echo 'Newly added configuration items usually have default values, so the website can usually run normally without any changes' . PHP_EOL;
+        echo 'No new .config.php configuration items need to be added' . PHP_EOL;
 
         file_put_contents(BASE_PATH . '/config/.config.php', $config_new);
         echo PHP_EOL . 'Migration complete' . PHP_EOL;

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\Coupon;
 use App\Models\User;
 use App\Services\Analytics;
-use App\Utils\DatatablesHelper;
+use App\Services\Config;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use Ozdemir\Datatables\Datatables;
-use Slim\Http\Request;
+use Ozdemir\Datatables\DB\MySQL;
 use Slim\Http\Response;
+use Slim\Http\ServerRequest;
 
 /*
  *  Admin Controller
@@ -24,25 +24,12 @@ final class AdminController extends BaseController
      *
      * @param array     $args
      */
-    public function index(Request $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args)
     {
         return $response->write(
             $this->view()
                 ->assign('sts', new Analytics())
-                ->display('admin/index.tpl')
-        );
-    }
-
-    /**
-     * 统计信息
-     *
-     * @param array     $args
-     */
-    public function sys(Request $request, Response $response, array $args)
-    {
-        return $response->write(
-            $this->view()
-                ->display('admin/index.tpl')
+                ->fetch('admin/index.tpl')
         );
     }
 
@@ -51,7 +38,7 @@ final class AdminController extends BaseController
      *
      * @param array     $args
      */
-    public function invite(Request $request, Response $response, array $args)
+    public function invite(ServerRequest $request, Response $response, array $args)
     {
         return $response->write(
             $this->view()
@@ -65,7 +52,7 @@ final class AdminController extends BaseController
                     'ref_get' => 'مقدار پاداش',
                     'datetime' => 'زمان',
                 ], 'payback/ajax'))
-                ->display('admin/invite.tpl')
+                ->fetch('admin/invite.tpl')
         );
     }
 
@@ -74,15 +61,15 @@ final class AdminController extends BaseController
      *
      * @param array     $args
      */
-    public function ajaxPayback(Request $request, Response $response, array $args)
+    public function ajaxPayback(ServerRequest $request, Response $response, array $args)
     {
-        $datatables = new Datatables(new DatatablesHelper());
+        $datatables = new Datatables(new MySQL(Config::getDbConfig()));
         $datatables->query('Select payback.id,payback.total,payback.userid as event_user_id,event_user.user_name as event_user_name,payback.ref_by as ref_user_id,ref_user.user_name as ref_user_name,payback.ref_get,payback.datetime from payback,user as event_user,user as ref_user where event_user.id = payback.userid and ref_user.id = payback.ref_by');
         $datatables->edit('datetime', static function ($data) {
             return date('Y-m-d H:i:s', $data['datetime']);
         });
         return $response->write(
-            $datatables->generate()
+            (string) $datatables->generate()
         );
     }
 
@@ -91,7 +78,7 @@ final class AdminController extends BaseController
      *
      * @param array     $args
      */
-    public function chgInvite(Request $request, Response $response, array $args)
+    public function chgInvite(ServerRequest $request, Response $response, array $args)
     {
         $userid = $request->getParam('userid');
         if ($userid === null) {
@@ -124,7 +111,7 @@ final class AdminController extends BaseController
      *
      * @param array     $args
      */
-    public function addInvite(Request $request, Response $response, array $args)
+    public function addInvite(ServerRequest $request, Response $response, array $args)
     {
         $num = $request->getParam('num');
         if (Tools::isInt($num) === false) {
@@ -154,92 +141,6 @@ final class AdminController extends BaseController
         return $response->withJson([
             'ret' => 1,
             'msg' => 'دعوت‌نامه‌ها با موفقیت اضافه شدند',
-        ]);
-    }
-
-    /**
-     * 后台商品优惠码页面
-     *
-     * @param array     $args
-     */
-    public function coupon(Request $request, Response $response, array $args)
-    {
-        return $response->write(
-            $this->view()
-                ->assign('table_config', ResponseHelper::buildTableConfig([
-                    'id' => 'ID',
-                    'code' => 'کد تخفیف',
-                    'expire' => 'تاریخ انقضا',
-                    'shop' => 'شناسه سرویس محدود',
-                    'credit' => 'سهمیه',
-                    'onetime' => 'مکرر',
-                ], 'coupon/ajax'))
-                ->display('admin/coupon.tpl')
-        );
-    }
-
-    /**
-     * 后台商品优惠码页面 AJAX
-     *
-     * @param array     $args
-     */
-    public function ajaxCoupon(Request $request, Response $response, array $args)
-    {
-        $datatables = new Datatables(new DatatablesHelper());
-        $datatables->query('Select id,code,expire,shop,credit,onetime from coupon');
-        $datatables->edit('expire', static function ($data) {
-            return date('Y-m-d H:i:s', $data['expire']);
-        });
-        return $response->write(
-            $datatables->generate()
-        );
-    }
-
-    /**
-     * 添加优惠码
-     *
-     * @param array     $args
-     */
-    public function addCoupon(Request $request, Response $response, array $args)
-    {
-        $generate_type = (int) $request->getParam('generate_type');
-        $final_code = $request->getParam('prefix');
-        if (! isset($final_code) && \in_array($generate_type, [1, 3])) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'کد کوپن نمی تواند خالی باشد',
-            ]);
-        }
-        if ($generate_type === 1) {
-            if (Coupon::where('code', $final_code)->count() !== 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'کد کوپن از قبل وجود دارد',
-                ]);
-            }
-        } else {
-            while (true) {
-                $code_str = Tools::genRandomChar(8);
-                if ($generate_type === 3) {
-                    $final_code .= $code_str;
-                } else {
-                    $final_code = $code_str;
-                }
-                if (Coupon::where('code', $final_code)->count() === 0) {
-                    break;
-                }
-            }
-        }
-        $code = new Coupon();
-        $code->onetime = $request->getParam('onetime');
-        $code->code = $final_code;
-        $code->expire = \time() + $request->getParam('expire') * 3600;
-        $code->shop = $request->getParam('shop');
-        $code->credit = $request->getParam('credit');
-        $code->save();
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'کد کوپن با موفقیت اضافه شد',
         ]);
     }
 }
