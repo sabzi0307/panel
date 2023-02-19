@@ -34,24 +34,6 @@
                             <div class="tab-content">
                                 <div class="row row-cards">
                                     {foreach $servers as $server}
-                                        {if $user->class < $server["class"]}
-                                        <div class="col-lg-12">
-                                            <div class="card bg-primary-lt">
-                                                {if $server["class"] == 0}
-                                                <div class="ribbon bg-red">رایگان</div>
-                                                {else}
-                                                <div class="ribbon bg-red">LV. {$server["class"]}</div>
-                                                {/if}
-                                                <div class="card-body">
-                                                    <p class="text-muted">
-                                                        <i class="ti ti-info-circle icon text-blue"></i>
-                                                        سطح حساب فعلی شما کمتر از سطح سرور ذکر شده در زیر است، بنابراین نمی توان از آن استفاده کرد. می تواند به <a
-                                                            href="/user/shop">فروشگاه</a> بسته سطح مربوطه را سفارش دهید
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/if}
                                         <div class="col-lg-4 col-md-6 col-sm-12">
                                             <div class="card">
                                                 {if $server["class"] == 0}
@@ -121,6 +103,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {if $user->class < $server["class"]}
+                                            <div class="card bg-primary-lt">
+                                                <div class="card-body">
+                                                    <p class="text-muted">
+                                                        <i class="ti ti-info-circle icon text-blue"></i>
+                                                        سطح حساب فعلی شما کمتر از سطح سرور است، بنابراین نمی توان از آن استفاده کرد. می تواند به <a
+                                                            href="/user/shop">فروشگاه</a> بسته سطح مربوطه را سفارش دهید
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            {/if}
                                         </div>
                                     {/foreach}
                                 </div>
@@ -135,7 +128,7 @@
     <script>
         var clipboard = new ClipboardJS(".ti-copy");
         clipboard.on("success", function(e) {
-            $("#success-message").text("已复制到剪切板");
+            $("#success-message").text("در کلیپ بورد کپی شد");
             $("#success-dialog").modal("show");
         });
     </script>

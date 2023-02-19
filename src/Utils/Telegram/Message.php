@@ -142,7 +142,7 @@ final class Message
         ];
         if ($NewChatMember->getUsername() === $_ENV['telegram_bot']) {
             // 机器人加入新群组
-            if ($_ENV['allow_to_join_new_groups'] !== true && ! \in_array($this->ChatID, $_ENV['group_id_allowed_to_join'])) {
+            if (Setting::obtain('allow_to_join_new_groups') !== true && ! \in_array($this->ChatID, \json_decode(Setting::obtain('group_id_allowed_to_join')))) {
                 // 退群
                 $this->replyWithMessage(
                     [
@@ -156,8 +156,8 @@ final class Message
                         'user_id' => $Member['id'],
                     ]
                 );
-                if (count($_ENV['telegram_admins']) >= 1) {
-                    foreach ($_ENV['telegram_admins'] as $id) {
+                if (count(\json_decode(Setting::obtain('telegram_admins'))) >= 1) {
+                    foreach (\json_decode(Setting::obtain('telegram_admins')) as $id) {
                         $this->bot->sendMessage(
                             [
                                 'text' => 'ربات یک گروه را بر اساس تنظیمات شما ترک کرد.' . PHP_EOL . PHP_EOL . 'اسم گروه：' . $this->Message->getChat()->getTitle(),
@@ -169,7 +169,7 @@ final class Message
             } else {
                 $this->replyWithMessage(
                     [
-                        'text' => 'سلام رفقا، رفقای زحمتکش.',
+                        'text' => 'میمون',
                     ]
                 );
             }
@@ -188,7 +188,7 @@ final class Message
             ) {
                 $this->replyWithMessage(
                     [
-                        'text' => '由于 ' . $Member['name'] . ' حساب بدون محدودیت حذف خواهد شد.',
+                        'text' => 'زیرا ' . $Member['name'] . ' حساب بدون محدودیت حذف خواهد شد。',
                     ]
                 );
                 TelegramTools::sendPost(
@@ -200,8 +200,8 @@ final class Message
                 );
                 return;
             }
-            if ($_ENV['enable_welcome_message'] === true) {
-                $text = ($NewUser->class >= 1 ? 'خوش آمدی VIP' . $NewUser->class . ' کاربر ' . $Member['name'] . 'بازگشت به سازمان.' : 'خوش آمدی ' . $Member['name']);
+            if (Setting::obtain('enable_welcome_message') === true) {
+                $text = ($NewUser->class >= 1 ? 'به VIP ها خوش آمدید' . $NewUser->class . ' کاربر ' . $Member['name'] . 'به گروه ملحق بشید.' : 'خوش آمدی ' . $Member['name']);
                 $this->replyWithMessage(
                     [
                         'text' => $text,

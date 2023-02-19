@@ -66,7 +66,7 @@ final class AuthController extends BaseController
     {
         if (Setting::obtain('enable_login_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
-            if (!$ret) {
+            if (! $ret) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
@@ -87,7 +87,7 @@ final class AuthController extends BaseController
             ]);
         }
 
-        if (!Hash::checkPassword($user->pass, $passwd)) {
+        if (! Hash::checkPassword($user->pass, $passwd)) {
             // 记录登录失败
             $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
             return $response->withJson([
@@ -99,7 +99,7 @@ final class AuthController extends BaseController
         if ($user->ga_enable === 1) {
             $ga = new GoogleAuthenticator();
             $rcode = $ga->verifyCode($user->ga_token, $code);
-            if (!$rcode) {
+            if (! $rcode) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'کد تأیید دو مرحله ای اشتباه است. اگر ژنراتور را گم کردید یا این گزینه را به اشتباه تنظیم کردید، می توانید برای لغو این گزینه رمز عبور را بازنشانی کنید.',
@@ -195,27 +195,32 @@ final class AuthController extends BaseController
             if ($email === '') {
                 return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
             }
+
             // check email format
             $check_res = Check::isEmailLegal($email);
             if ($check_res['ret'] === 0) {
                 return $response->withJson($check_res);
             }
+
             $user = User::where('email', $email)->first();
             if ($user !== null) {
                 return ResponseHelper::error($response, 'این ایمیل قبلا ذخیره شده است');
             }
+
             $ipcount = EmailVerify::where('ip', '=', $_SERVER['REMOTE_ADDR'])
                 ->where('expire_in', '>', \time())
                 ->count();
-            if ($ipcount >= Setting::obtain('email_verify_ip_limit')) {
+            if ($ipcount > Setting::obtain('email_verify_ip_limit')) {
                 return ResponseHelper::error($response, 'درخواست های این IP بسیار زیاد است');
             }
+
             $mailcount = EmailVerify::where('email', '=', $email)
                 ->where('expire_in', '>', \time())
                 ->count();
-            if ($mailcount >= 3) {
+            if ($mailcount > Setting::obtain('email_verify_email_limit')) {
                 return ResponseHelper::error($response, 'این ایمیل بارها درخواست شده است');
             }
+
             $code = Tools::genRandomChar(6);
             $ev = new EmailVerify();
             $ev->expire_in = \time() + Setting::obtain('email_verify_ttl');
@@ -223,6 +228,7 @@ final class AuthController extends BaseController
             $ev->email = $email;
             $ev->code = $code;
             $ev->save();
+
             try {
                 Mail::send(
                     $email,
@@ -237,6 +243,7 @@ final class AuthController extends BaseController
             } catch (Exception $e) {
                 return ResponseHelper::error($response, 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.');
             }
+
             return ResponseHelper::successfully($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید.');
         }
         return ResponseHelper::error($response, ' ثبت نام مجاز نیست');
@@ -340,7 +347,7 @@ final class AuthController extends BaseController
             $user->node_group = $random_group[array_rand(explode(',', $random_group))];
         }
 
-        if ($user->save() && !$is_admin_reg) {
+        if ($user->save() && ! $is_admin_reg) {
             Auth::login($user->id, 3600);
             $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
 
@@ -369,7 +376,7 @@ final class AuthController extends BaseController
 
         if (Setting::obtain('enable_reg_captcha') === true) {
             $ret = Captcha::verify($request->getParams());
-            if (!$ret) {
+            if (! $ret) {
                 return ResponseHelper::error($response, 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
             }
         }

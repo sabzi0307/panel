@@ -74,7 +74,7 @@
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <dev id="custom_config"></dev>
                                 <label class="form-label col-form-label">
-                                    مراجعه فرمایید <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a> پیکربندی سفارشی سرور را تغییر دهید
+                                    مراجعه فرمایید <a href="//wiki.sspanel.org/#/custom-config" target="_blank">wiki.sspanel.org/#/custom-config</a> پیکربندی سفارشی سرور را تغییر دهید
                                 </label>
                             </div>
                             <div class="mb-3">

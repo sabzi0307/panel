@@ -64,7 +64,6 @@ $_ENV['trafficLog']               = false;                          //Whether to
 $_ENV['trafficLog_keep_days']     = 14;                             //Number of days to keep usage traffic records per hour
 
 $_ENV['subscribeLog']               = false;                        //Whether to record user subscription logs
-$_ENV['subscribeLog_show']          = true;                         //Whether to allow users to view subscription records
 $_ENV['subscribeLog_keep_days']     = 7;                            //Number of days to keep subscription records
 
 //subscription settings---------------------------------------------------------------------------------------
@@ -116,49 +115,7 @@ $_ENV['enable_telegram']                    = false;        //whether to enable 
 $_ENV['telegram_token']                     = '';           //Telegram bot,bot of token ，with father bot Application
 $_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
 $_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
-$_ENV['telegram_group_quiet']               = false;        //Telegram Bots don't respond in groups
 $_ENV['telegram_request_token']             = '';           //Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
-
-# general
-$_ENV['finance_public']                     = true;         // Whether the financial report is open to the public
-$_ENV['enable_welcome_message']             = true;         //The bot sends the welcome message
-
-# Telegram BOT other options
-$_ENV['allow_to_join_new_groups']           = true;         //Allow bots to join groups other than those configured below
-$_ENV['group_id_allowed_to_join']           = [];           //IDs of groups allowed to join, formatted as a PHP array
-$_ENV['telegram_admins']                    = [];           //Additional Telegram admin IDs in PHP array format
-$_ENV['enable_not_admin_reply']             = true;         //Whether the administrator function of non-administrator operation is restored
-$_ENV['not_admin_reply_msg']                = '!';          //Reply content of non-administrator operation administrator function
-$_ENV['no_user_found']                      = '!';          //When the administrator is operating, the user's reply cannot be found.
-$_ENV['no_search_value_provided']           = '!';          //When the administrator operates, there is no reply that provides the user search value
-$_ENV['data_method_not_found']              = '!';          //When the administrator operates, the field for modifying the data cannot be found.
-$_ENV['delete_message_time']                = 180;          //Delete the bot response triggered by the user command after the following time, unit: second, the deletion time may be different due to the timing task, 0 means this function is not enabled
-$_ENV['delete_admin_message_time']          = 86400;        //Delete the bot reply triggered by the management command after the following time, unit: second, the deletion time may be different due to the timing task, 0 means this function is not enabled
-$_ENV['enable_delete_user_cmd']             = false;        //Automatically delete the command sent by the user in the group, using the time configured by delete_message_time, the deletion time may vary due to the timing task
-$_ENV['help_any_command']                   = false;        //Allow any unknown command to trigger a /help reply
-
-$_ENV['remark_user_search_email']           = ['Mail'];                     //User Search Field email The alias of can be more than one, and the format is a PHP array
-$_ENV['remark_user_search_port']            = ['port'];                     //User search field port The alias of can be more than one, and the format is a PHP array
-
-$_ENV['remark_user_option_is_admin']        = ['administrator'];            //user search field is_admin The alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_enable']          = ['user enabled'];             //user search field enable alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_money']           = ['money', 'balance'];             //User Search Field money alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_port']            = ['port'];                     //User Search Field port alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_transfer_enable'] = ['traffic'];                     //User Search Field transfer_enable alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_passwd']          = ['connection password'];                 //User Search Field passwd alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_method']          = ['encryption'];                     //User Search Field method alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_invite_num']      = ['number of invites'];                 //User Search Field invite_num alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_node_group']      = ['User Group', 'User Group'];       //User Search Field node_group alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_class']           = ['level'];                     //User Search Field class alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_class_expire']    = ['Level Expiration Time'];             //User Search Field class_expire alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_expire_in']       = ['account expiration time'];             //User Search Field expire_in alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_node_speedlimit'] = ['speed limit'];                    //User Search Field node_speedlimit alias of can be multiple, the format is a PHP array
-$_ENV['remark_user_option_node_connector']  = ['Connections', 'clients'];         //User Search Field node_connector alias of can be multiple, the format is a PHP array
-
-$_ENV['enable_user_email_group_show']       = false;                      //Enable to display the user's complete email address when searching for user information in groups, and disable it to code the middle content of the email address, such as g****@gmail.com
-$_ENV['user_not_bind_reply']                = 'You have not bound the account of this site, you can enter **data editing** of the website, bind your account at the bottom right.';     //Unbound account reply
-$_ENV['telegram_general_pricing']           = 'product introduction.';                  //Product introduction for visitors
-$_ENV['telegram_general_terms']             = 'Terms of Service.';                  //Terms of Service for Visitors
 
 //Social login settings
 #Telegram
@@ -168,9 +125,9 @@ $_ENV['enable_telegram_login']              = false;   //Please configure Telegr
 $_ENV['enable_ticket']        = true;        //Whether to enable the ticket system
 $_ENV['mail_ticket']          = true;        //Whether to open ticket email reminder
 
-# Server When users submit new work orders or reply to work orders, they will use WeChat to remind the airport owner https://sct.ftqq.com/
-$_ENV['useScFtqq']            = false;        //Whether to enable ticket server sauce reminder
-$_ENV['ScFtqq_SCKEY']         = '';           //Please fill in the SCKEY you obtained in Server sauce, please check carefully and do not paste it wrong
+# Server sauce https://sct.ftqq.com/
+$_ENV['useScFtqq']            = false;        //Whether to enable Server sauce to remind work orders/nodes to go online and offline
+$_ENV['ScFtqq_SCKEY']         = '';           //Please fill in the SCKEY you got in Server sauce, please check carefully and do not paste it wrong
 
 #Background product list Sales statistics
 $_ENV['sales_period']         = 30;             //Count the sales in the specified period, the value is [expire/any integer greater than 0]
@@ -184,8 +141,6 @@ $_ENV['detect_gfw_count']                = '3';                                 
 
 #offline detection
 $_ENV['enable_detect_offline']           = true;
-#Offline detection whether to push to Server sauce Please configure the above Server configuration
-$_ENV['enable_detect_offline_useScFtqq'] = false;
 
 //All of the following are advanced settings (generally not used, do not need to change---------------------------------------------------------------------
 

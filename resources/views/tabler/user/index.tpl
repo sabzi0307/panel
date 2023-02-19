@@ -193,26 +193,33 @@
                                         <div class="tab-pane show" id="traditional-sub">
                                             <div>
                                                 <p>
-                                                    traditional subscription（Shadowsocks）：<code>{$getTraditionalSub}?sub=2</code>
+                                                    اشتراک سنتی（Shadowsocks）：<code>{$getTraditionalSub}?ss=1</code>
                                                 </p>
                                                 <p>
-                                                    traditional subscription（V2Ray）：<code>{$getTraditionalSub}?sub=3</code>
+                                                    اشتراک سنتی（Shadowsocks SIP002）：<code>{$getTraditionalSub}?sip002=1</code>
                                                 </p>
                                                 <p>
-                                                    traditional subscription（Trojan）：<code>{$getTraditionalSub}?sub=4</code>
+                                                    اشتراک سنتی（V2Ray）：<code>{$getTraditionalSub}?v2ray=1</code>
+                                                </p>
+                                                <p>
+                                                    اشتراک سنتی（Trojan）：<code>{$getTraditionalSub}?trojan=1</code>
                                                 </p>
                                                 <div class="btn-list justify-content-start">
-                                                    <a data-clipboard-text="{$getTraditionalSub}?sub=2"
+                                                    <a data-clipboard-text="{$getTraditionalSub}?ss=1"
                                                         class="copy btn btn-primary">
-                                                        Copy traditional subscription（Shadowsocks）
+                                                        کپی اشتراک سنتی（Shadowsocks）
                                                     </a>
-                                                    <a data-clipboard-text="{$getTraditionalSub}?sub=3"
+                                                    <a data-clipboard-text="{$getTraditionalSub}?sip002=1"
                                                         class="copy btn btn-primary">
-                                                        Copy traditional subscription（V2Ray）
+                                                        کپی اشتراک سنتی（Shadowsocks SIP002）
                                                     </a>
-                                                    <a data-clipboard-text="{$getTraditionalSub}?sub=4"
+                                                    <a data-clipboard-text="{$getTraditionalSub}?v2ray=1"
                                                         class="copy btn btn-primary">
-                                                        Copy traditional subscription（Trojan）
+                                                        کپی اشتراک سنتی（V2Ray）
+                                                    </a>
+                                                    <a data-clipboard-text="{$getTraditionalSub}?trojan=1"
+                                                        class="copy btn btn-primary">
+                                                        کپی اشتراک سنتی（Trojan）
                                                     </a>
                                                     <a href="/clients/v2rayN-Core.zip"
                                                         class="btn btn-primary">
@@ -286,26 +293,15 @@
                                         </div>
                                         <div class="tab-pane" id="ios">
                                             <p>
-                                                اشتراک برای Shadowrocket：<code>{$getUniversalSub}/clash</code>
+                                                اشتراک برای نرم افزارهای سازگار با کلش：<code>{$getUniversalSub}/clash</code>
                                             </p>
                                             <p>
-                                                پس از خرید و نصب Shadowrocket به سادگی <span style="color: red;">از مرورگر سافاری استفاده کنید</span> روی دکمه زیر کلیک کنید و سپس در پنجره پاپ آپ کلیک کنید <b>باز کن</b>，می توانید به سرعت تنظیمات اشتراک را تکمیل کنید
-                                            </p>
-                                            <p style="color: red;">
-                                                اگر درخواست باز نمی شود، به این دلیل است که APP مربوطه باید قبل از وارد کردن نصب شود
+                                                پس از خرید و نصب کلاینت سازگار با کلش، روی دکمه کپی کلش کلیک کنید، سپس کلاینت سازگار با کلش را برای وارد کردن باز کنید.。
                                             </p>
                                             <div class="btn-list justify-content-start">
-                                                <a href="https://apps.apple.com/us/app/shadowrocket/id932747118"
-                                                    class="btn btn-primary">
-                                                    Shadowrocket را بخرید
-                                                </a>
                                                 <a data-clipboard-text="{$getUniversalSub}/clash"
                                                     class="copy btn btn-primary">
-                                                    Copy  Shadowrocket
-                                                </a>
-                                                <a href="sub://{base64_encode("{$getUniversalSub}/clash")}"
-                                                    class="btn btn-primary">
-                                                    Shadowrocket را وارد کنید
+                                                    کپی کلش
                                                 </a>
                                             </div>
                                         </div>
@@ -455,10 +451,10 @@
                                     {if !$user->isAbleToCheckin()}
                                     <button id="check-in" class="btn btn-primary ms-auto" disabled>وارد شدن</button>
                                     {else}
-                                    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+                                    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
                                     <div class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
                                     {/if}
-                                    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+                                    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
                                     <div id="geetest"></div>
                                     {/if} 
                                     <button id="check-in" class="btn btn-primary ms-auto">بررسی</button>
@@ -486,10 +482,10 @@
                 url: "/user/checkin",
                 dataType: "json",              
                 data: {
-                    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+                    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
                     turnstile: turnstile.getResponse(),
                     {/if}
-                    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+                    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
                     geetest: geetest_result,
                     {/if}
                 },
@@ -506,10 +502,10 @@
         });
     </script>
 
-    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?compat=recaptcha" async defer></script>
     {/if}
-    {if $config['enable_checkin_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+    {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
     <script src="http://static.geetest.com/v4/gt4.js"></script>
     <script>
         var geetest_result = '';

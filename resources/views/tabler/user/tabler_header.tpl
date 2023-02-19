@@ -99,10 +99,10 @@
                                                 اصلاح اطلاعات
                                             </a>
                                             {if $config['enable_ticket'] == true}
-                                                <a class="dropdown-item" href="/user/ticket">
-                                                    <i class="ti ti-ticket"></i>&nbsp;
-                                                    پشتیبانی
-                                                </a>
+                                            <a class="dropdown-item" href="/user/ticket">
+                                                <i class="ti ti-ticket"></i>&nbsp;
+                                                پشتیبانی
+                                            </a>
                                             {/if}
                                             <a class="dropdown-item" href="/user/invite">
                                                 <i class="ti ti-friends"></i>&nbsp;
@@ -127,10 +127,12 @@
                                         <i class="ti ti-server"></i>&nbsp;
                                         لیست سرور ها
                                     </a>
+                                    {if $public_setting['display_media'] === true}
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
                                         استریم های مسدود شده
                                     </a>
+                                    {/if}
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
@@ -140,7 +142,7 @@
                                         <i class="ti ti-dots-circle-horizontal icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        بیشتر
+                                        اطلاعات
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -148,11 +150,11 @@
                                         <i class="ti ti-speakerphone"></i>&nbsp;
                                         اطلاعیه سایت
                                     </a>
-                                    {if $config['subscribeLog_show'] == true && $config['subscribeLog'] == true}
-                                        <a class="dropdown-item" href="/user/subscribe_log">
-                                            <i class="ti ti-rss"></i></i>&nbsp;
-                                            در مجله مشترک شوید
-                                        </a>
+                                    {if $public_setting['display_subscribe_log'] === true}
+                                    <a class="dropdown-item" href="/user/subscribe/log">
+                                        <i class="ti ti-rss"></i></i>&nbsp;
+                                        در خبرنامه مشترک شوید
+                                    </a>
                                     {/if}
                                 </div>
                             </li>
@@ -171,10 +173,12 @@
                                         <i class="ti ti-barrier-block"></i>&nbsp;
                                         قوانین فیلترینگ
                                     </a>
+                                    {if $public_setting['display_detect_log'] === true}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
                                         گزارش فیلترینگ
                                     </a>
+                                    {/if}
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
@@ -203,16 +207,16 @@
                                 </div>
                             </li>
                             {if $user->is_admin}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/admin">
-                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                            <i class="ti ti-settings icon"></i>
-                                        </span>
-                                        <span class="nav-link-title">
-                                            مدیریت
-                                        </span>
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-settings icon"></i>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        مدیریت
+                                    </span>
+                                </a>
+                            </li>
                             {/if}
                         </ul>
                     </div>

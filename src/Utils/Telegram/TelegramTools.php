@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Telegram;
 
+use App\Models\Setting;
 use App\Models\User;
 use App\Utils\Tools;
 
@@ -49,8 +50,8 @@ final class TelegramTools
     {
         return [
             'id' => [],
-            'email' => $_ENV['remark_user_search_email'],
-            'port' => $_ENV['remark_user_search_port'],
+            'email' => ['email'],
+            'port' => ['port'],
         ];
     }
 
@@ -62,20 +63,20 @@ final class TelegramTools
     public static function getUserActionOption(): array
     {
         return [
-            'is_admin' => $_ENV['remark_user_option_is_admin'],
-            'enable' => $_ENV['remark_user_option_enable'],
-            'money' => $_ENV['remark_user_option_money'],
-            'port' => $_ENV['remark_user_option_port'],
-            'transfer_enable' => $_ENV['remark_user_option_transfer_enable'],
-            'passwd' => $_ENV['remark_user_option_passwd'],
-            'method' => $_ENV['remark_user_option_method'],
-            'invite_num' => $_ENV['remark_user_option_invite_num'],
-            'node_group' => $_ENV['remark_user_option_node_group'],
-            'class' => $_ENV['remark_user_option_class'],
-            'class_expire' => $_ENV['remark_user_option_class_expire'],
-            'expire_in' => $_ENV['remark_user_option_expire_in'],
-            'node_speedlimit' => $_ENV['remark_user_option_node_speedlimit'],
-            'node_connector' => $_ENV['remark_user_option_node_connector'],
+            'is_admin' => ['is_admin'],
+            'banned' => ['banned'],
+            'money' => ['remark_user_option_money'],
+            'port' => ['port'],
+            'transfer_enable' => ['transfer_enable'],
+            'passwd' => ['passwd'],
+            'method' => ['method'],
+            'invite_num' => ['invite_num'],
+            'node_group' => ['node_group'],
+            'class' => ['class'],
+            'class_expire' => ['class_expire'],
+            'expire_in' => ['expire_in'],
+            'node_speedlimit' => ['node_speedlimit'],
+            'node_connector' => ['node_connector'],
         ];
     }
 
@@ -297,7 +298,7 @@ final class TelegramTools
         }
         return [
             'ok' => false,
-            'msg' => '保存出错',
+            'msg' => 'خطا در ذخیره',
         ];
     }
 
@@ -309,7 +310,7 @@ final class TelegramTools
      */
     public static function getUserEmail(string $email, int $ChatID): string
     {
-        if ($_ENV['enable_user_email_group_show'] === true || $ChatID > 0) {
+        if (Setting::obtain('enable_user_email_group_show') === true || $ChatID > 0) {
             return $email;
         }
         $a = strpos($email, '@');

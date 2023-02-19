@@ -6,7 +6,6 @@ namespace App\Command;
 
 use App\Models\User;
 use App\Services\Config;
-use App\Utils\Telegram;
 use Ozdemir\Datatables\Datatables;
 use Ozdemir\Datatables\DB\MySQL;
 
@@ -71,15 +70,6 @@ EOL;
                 []
             );
         }
-
-        if ($_ENV['finance_public']) {
-            Telegram::send(
-                'مالی تازه منتشر شده روزانه~' . PHP_EOL .
-                'کل درآمد دیروز:' . $text_array['recordsTotal'] . PHP_EOL .
-                'کل درآمد دیروز:' . $income_total . PHP_EOL .
-                'کار سخت در صبح زود~'
-            );
-        }
     }
 
     public function week(): void
@@ -113,15 +103,6 @@ EOL;
                 []
             );
         }
-
-        if ($_ENV['finance_public']) {
-            Telegram::send(
-                'گزارش مالی هفتگی تازه منتشر شده~' . PHP_EOL .
-                'کل درآمد هفته گذشته:' . $text_array['recordsTotal'] . PHP_EOL .
-                'کل درآمد هفته گذشته:' . $income_total . PHP_EOL .
-                'آخر هفته ها سخت کار کنید~'
-            );
-        }
     }
 
     public function month(): void
@@ -151,15 +132,6 @@ EOL;
                     'text' => $text_html,
                 ],
                 []
-            );
-        }
-
-        if ($_ENV['finance_public']) {
-            Telegram::send(
-                'گزارش مالی ماهانه تازه منتشر شده~' . PHP_EOL .
-                'کل درآمد ماه گذشته:' . $text_array['recordsTotal'] . PHP_EOL .
-                'مقدار کل درآمد در ماه گذشته:' . $income_total . PHP_EOL .
-                'همچنین در ابتدای ماه سخت کار می کنیم~'
             );
         }
     }

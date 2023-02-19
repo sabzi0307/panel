@@ -49,7 +49,7 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active show" id="captcha">
+                        <div class="tab-pane active show" id="email">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>

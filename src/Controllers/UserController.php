@@ -10,14 +10,12 @@ use App\Models\Code;
 use App\Models\Docs;
 use App\Models\EmailVerify;
 use App\Models\InviteCode;
-use App\Models\Ip;
 use App\Models\LoginIp;
 use App\Models\Node;
 use App\Models\Payback;
 use App\Models\Setting;
 use App\Models\StreamMedia;
 use App\Models\User;
-use App\Models\UserSubscribeLog;
 use App\Services\Auth;
 use App\Services\Captcha;
 use App\Services\Config;
@@ -27,7 +25,6 @@ use App\Services\Payment;
 use App\Utils\Check;
 use App\Utils\Cookie;
 use App\Utils\Hash;
-use App\Utils\QQWry;
 use App\Utils\ResponseHelper;
 use App\Utils\TelegramSessionManager;
 use App\Utils\Tools;
@@ -206,47 +203,12 @@ final class UserController extends BaseController
      */
     public function profile(ServerRequest $request, Response $response, array $args)
     {
-        $pageNum = $request->getQueryParams()['page'] ?? 1;
-        $paybacks = Payback::where('ref_by', $this->user->id)
-            ->orderBy('datetime', 'desc')
-            ->paginate(15, ['*'], 'page', $pageNum);
-
         // 登录IP
-        $totallogin = LoginIp::where('userid', '=', $this->user->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
-
-        // 使用IP
-        $userip = [];
-        $iplocation = new QQWry();
-        $total = Ip::where('datetime', '>=', \time() - 300)->where('userid', '=', $this->user->id)->get();
-        foreach ($total as $single) {
-            $single->ip = Tools::getRealIp($single->ip);
-            $is_node = Node::where('node_ip', $single->ip)->first();
-            if ($is_node) {
-                continue;
-            }
-            if (! isset($userip[$single->ip])) {
-                $location = $iplocation->getlocation($single->ip);
-                $userip[$single->ip] = iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']);
-            }
-        }
-
-        if ($request->getParam('json') === 1) {
-            return $response->withJson([
-                'ret' => 1,
-                'paybacks' => $paybacks,
-                'userloginip' => $totallogin,
-                'userip' => $userip,
-            ]);
-        }
-
-        $boughts = Bought::where('userid', $this->user->id)->orderBy('id', 'desc')->get();
+        $loginips = LoginIp::where('userid', '=', $this->user->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
 
         return $response->write(
             $this->view()
-                ->assign('boughts', $boughts)
-                ->assign('userip', $userip)
-                ->assign('userloginip', $totallogin)
-                ->assign('paybacks', $paybacks)
+                ->assign('loginips', $loginips)
                 ->registerClass('Tools', Tools::class)
                 ->fetch('user/profile.tpl')
         );
@@ -414,80 +376,6 @@ final class UserController extends BaseController
             ->assign('invite_url', $invite_url)
             ->assign('paybacks_sum', $paybacks_sum)
             ->fetch('user/invite.tpl'));
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function buyInvite(ServerRequest $request, Response $response, array $args)
-    {
-        $antiXss = new AntiXSS();
-
-        $price = Setting::obtain('invite_price');
-        $num = $antiXss->xss_clean($request->getParam('num'));
-        $num = trim($num);
-
-        if (! Tools::isInt($num) || $price < 0 || $num <= 0) {
-            return ResponseHelper::error($response, 'درخواست غیر مجاز');
-        }
-
-        $amount = $price * $num;
-
-        $user = $this->user;
-
-        if (! $user->isLogin) {
-            return $response->withJson([ 'ret' => -1 ]);
-        }
-
-        if ($user->money < $amount) {
-            return ResponseHelper::error($response, 'موجودی ناکافی، قیمت کل' . $amount . 'تومان.');
-        }
-        $user->invite_num += $num;
-        $user->money -= $amount;
-        $user->save();
-
-        return ResponseHelper::successfully($response, 'دعوت‌نامه‌ها با موفقیت اضافه شدند');
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function customInvite(ServerRequest $request, Response $response, array $args)
-    {
-        $antiXss = new AntiXSS();
-
-        $price = Setting::obtain('custom_invite_price');
-        $customcode = trim($antiXss->xss_clean($request->getParam('customcode')));
-
-        if (Tools::isSpecialChars($customcode) || $price < 0 || $customcode === '' || strlen($customcode) > 32) {
-            return ResponseHelper::error(
-                $response,
-                'سفارشی‌سازی انجام نشد، پیوند دعوت نمی‌تواند خالی باشد، پسوند نمی‌تواند دارای نمادهای خاص باشد و طول آن نمی‌تواند از 32 کاراکتر تجاوز کند.'
-            );
-        }
-
-        if (InviteCode::where('code', $customcode)->count() !== 0) {
-            return ResponseHelper::error($response, 'این پسوند ذخیره شده است');
-        }
-
-        $user = $this->user;
-
-        if (! $user->isLogin) {
-            return $response->withJson([ 'ret' => -1 ]);
-        }
-
-        if ($user->money < $price) {
-            return ResponseHelper::error(
-                $response,
-                'موجودی ناکافی، قیمت کل' . $price . 'تومان.'
-            );
-        }
-        $code = InviteCode::where('user_id', $user->id)->first();
-        $code->code = $customcode;
-        $user->money -= $price;
-        $user->save();
-        $code->save();
-        return ResponseHelper::successfully($response, 'با موفقیت سفارشی شد');
     }
 
     /**
@@ -928,28 +816,6 @@ final class UserController extends BaseController
             'old_local' => null,
         ], $expire_in);
         return $response->withStatus(302)->withHeader('Location', $local);
-    }
-
-    /**
-     * 订阅记录
-     *
-     * @param array    $args
-     */
-    public function subscribeLog(ServerRequest $request, Response $response, array $args)
-    {
-        if ($_ENV['subscribeLog_show'] === false) {
-            return $response->withStatus(302)->withHeader('Location', '/user');
-        }
-
-        $pageNum = $request->getQueryParams()['page'] ?? 1;
-        $logs = UserSubscribeLog::orderBy('id', 'desc')->where('user_id', $this->user->id)->paginate(15, ['*'], 'page', $pageNum);
-
-        $render = Tools::paginateRender($logs);
-        return $this->view()
-            ->assign('logs', $logs)
-            ->assign('render', $render)
-            ->registerClass('Tools', Tools::class)
-            ->fetch('user/subscribe_log.tpl');
     }
 
     /**

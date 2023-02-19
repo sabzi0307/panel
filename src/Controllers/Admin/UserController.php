@@ -119,7 +119,7 @@ final class UserController extends BaseController
             if ($email === '') {
                 throw new \Exception('لطفا ایمیل خود را وارد کن');
             }
-            if (!Check::isEmailLegal($email)) {
+            if (! Check::isEmailLegal($email)) {
                 throw new \Exception('قالب ایمیل نادرست است');
             }
             $exist = User::where('email', $email)->first();

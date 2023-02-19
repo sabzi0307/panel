@@ -327,7 +327,7 @@
         });
 
         {literal}                     
-            // https://zablog.me/2015/10/25/Popover/ 非常感谢
+            // https://zablog.me/2015/10/25/Popover/ خیلی ممنونم
             $(document).ready(
                 function() {
                     $(".pop").popover({placement:'left', trigger:'manual', delay: {show: 100, hide: 100}, html: true,
@@ -335,21 +335,21 @@
                         return $("#data-original-title").html();
                     },
                     content: function() {
-                        return $("#data-content").html(); // 把content变成html
+                        return $("#data-content").html(); // تغییر محتوا به html
                     }
                 });
             $('body').click(function(event) {
-                var target = $(event.target); // 判断自己当前点击的内容
+                var target = $(event.target); // مشخص کنید که در حال حاضر روی چه چیزی کلیک می کنید
                 if (!target.hasClass('popover') &&
                     !target.hasClass('pop') &&
                     !target.hasClass('popover-content') &&
                     !target.hasClass('popover-title') &&
                     !target.hasClass('arrow')) {
-                    $('.pop').popover('hide'); // 当点击body的非弹出框相关的内容的时候，关闭所有popover
+                    $('.pop').popover('hide'); // 当点击body的非弹出框相关的内容的时候，غیرفعال所有popover
                 }
             });
             $(".pop").click(function(event) {
-            $('.pop').popover('hide'); // 当点击一个按钮的时候把其他的所有内容先关闭
+            $('.pop').popover('hide'); // 当点击一个按钮的时候把其他的所有内容先غیرفعال
             });
             }
             );

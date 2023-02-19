@@ -100,7 +100,7 @@ final class TicketController extends BaseController
         if ($_ENV['useScFtqq'] === true) {
             $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
             $postdata = http_build_query([
-                'text' => $_ENV['appName'] . '-یک تیکت جدید باز شده است',
+                'title' => $_ENV['appName'] . '-یک تیکت جدید باز شده است',
                 'desp' => $title,
             ]);
             $opts = [
@@ -173,7 +173,7 @@ final class TicketController extends BaseController
         if ($_ENV['useScFtqq'] === true) {
             $ScFtqq_SCKEY = $_ENV['ScFtqq_SCKEY'];
             $postdata = http_build_query([
-                'text' => $_ENV['appName'] . '-تیکت پاسخ داده شده است',
+                'title' => $_ENV['appName'] . '-تیکت پاسخ داده شده است',
                 'desp' => $ticket->title,
             ]);
             $opts = [

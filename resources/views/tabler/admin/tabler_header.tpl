@@ -107,19 +107,19 @@
                                                       پشتیبانی
                                                     </a>
                                                     <a href="/admin/setting/captcha" class="dropdown-item">
-                                                      CAPTCHA
+                                                      تایید
                                                     </a>
                                                     <a href="/admin/setting/reg" class="dropdown-item">
                                                       ثبت نام
                                                     </a>
                                                     <a href="/admin/setting/ref" class="dropdown-item">
-                                                      تخفیف دعوت
+                                                      دعوت
                                                     </a>
                                                     <a href="/admin/setting/im" class="dropdown-item">
-                                                      یکپارچه سازی IM
+                                                      IM
                                                     </a>
-                                                    <a href="/admin/setting/other" class="dropdown-item">
-                                                      سایر
+                                                    <a href="/admin/setting/feature" class="dropdown-item">
+                                                      ویژگی ها
                                                     </a>
                                                 </div>
                                             </div>

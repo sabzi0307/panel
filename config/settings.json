@@ -671,46 +671,6 @@
     },
     {
         "id": null,
-        "item": "pmw_publickey",
-        "value": "",
-        "class": "pmw",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "pmw public key"
-    },
-    {
-        "id": null,
-        "item": "pmw_privatekey",
-        "value": "",
-        "class": "pmw",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "pmw private key"
-    },
-    {
-        "id": null,
-        "item": "pmw_widget",
-        "value": "m2_1",
-        "class": "pmw",
-        "is_public": 0,
-        "type": "string",
-        "default": "m2_1",
-        "mark": "pmw_widget"
-    },
-    {
-        "id": null,
-        "item": "pmw_height",
-        "value": "350px",
-        "class": "pmw",
-        "is_public": 0,
-        "type": "string",
-        "default": "350px",
-        "mark": "pmw_height"
-    },
-    {
-        "id": null,
         "item": "reg_mode",
         "value": "open",
         "class": "register",
@@ -748,6 +708,26 @@
         "type": "int",
         "default": "5",
         "mark": "The number of times a single ip can request to send letters within the validity period of the verification code"
+    },
+    {
+        "id": null,
+        "item": "email_verify_email_limit",
+        "value": "5",
+        "class": "register",
+        "is_public": 0,
+        "type": "int",
+        "default": "5",
+        "mark": "The number of times a single mailbox can request to send letters within the validity period of the verification code"
+    },
+    {
+        "id": null,
+        "item": "email_verify_email_limit",
+        "value": "5",
+        "class": "register",
+        "is_public": 0,
+        "type": "int",
+        "default": "5",
+        "mark": "The number of times a single mailbox can request to send letters within the validity period of the verification code"
     },
     {
         "id": null,
@@ -908,26 +888,6 @@
         "type": "bool",
         "default": "0",
         "mark": "Whether to receive daily usage email push by default after registration"
-    },
-    {
-        "id": null,
-        "item": "invite_price",
-        "value": "-1",
-        "class": "invite",
-        "is_public": 1,
-        "type": "int",
-        "default": "-1",
-        "mark": "The price the user needs to purchase the invitation code"
-    },
-    {
-        "id": null,
-        "item": "custom_invite_price",
-        "value": "-1",
-        "class": "invite",
-        "is_public": 1,
-        "type": "int",
-        "default": "-1",
-        "mark": "The price required by the user to customize the invitation code"
     },
     {
         "id": null,
@@ -1251,12 +1211,182 @@
     },
     {
         "id": null,
+        "item": "enable_welcome_message",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Telegram bot sends welcome message"
+    },
+    {
+        "id": null,
+        "item": "telegram_group_quiet",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "Telegram Bots not responding in groups"
+    },
+    {
+        "id": null,
+        "item": "allow_to_join_new_groups",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Allow bots to join groups other than those configured below"
+    },
+    {
+        "id": null,
+        "item": "group_id_allowed_to_join",
+        "value": "[]",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "array",
+        "default": "[]",
+        "mark": "Group IDs allowed to join"
+    },
+    {
+        "id": null,
+        "item": "telegram_admins",
+        "value": "[]",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "array",
+        "default": "[]",
+        "mark": "Additional Telegram admin ID"
+    },
+    {
+        "id": null,
+        "item": "enable_not_admin_reply",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Whether the administrator function of non-administrator operation is restored"
+    },
+    {
+        "id": null,
+        "item": "not_admin_reply_msg",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Reply content of non-administrator operation administrator function"
+    },
+    {
+        "id": null,
+        "item": "no_user_found",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "When the administrator operates, the user's reply cannot be found"
+    },
+    {
+        "id": null,
+        "item": "data_method_not_found",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "When the administrator operates, the field to modify the data is not found."
+    },
+    {
+        "id": null,
+        "item": "help_any_command",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Allow any unknown command to trigger a /help reply"
+    },
+    {
+        "id": null,
+        "item": "enable_user_email_group_show",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable to display the user's full mailbox when searching for user information in groups, and disable to code the middle content of the mailbox"
+    },
+    {
+        "id": null,
+        "item": "user_not_bind_reply",
+        "value": "You have not bound the account of this site, you can enter the **data editing** of the website, and bind your account at the bottom right.",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "You have not bound the account of this site, you can enter the **data editing** of the website, and bind your account at the bottom right.",
+        "mark": "Reply from unbound account"
+    },
+    {
+        "id": null,
+        "item": "telegram_general_pricing",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Product introduction for tourists"
+    },
+    {
+        "id": null,
+        "item": "telegram_general_terms",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Terms of Service for Visitors"
+    },
+    {
+        "id": null,
+        "item": "display_media",
+        "value": "1",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Display node streaming unlock status"
+    },
+    {
+        "id": null,
+        "item": "display_subscribe_log",
+        "value": "1",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Display user subscription records"
+    },
+    {
+        "id": null,
+        "item": "display_detect_log",
+        "value": "1",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "show user audit records"
+    },
+    {
+        "id": null,
         "item": "db_version",
-        "value": "20230201000",
+        "value": "20230201",
         "class": "db",
         "is_public": 0,
         "type": "int",
-        "default": "20230201000",
+        "default": "20230201",
         "mark": "current database version"
     }
 ]

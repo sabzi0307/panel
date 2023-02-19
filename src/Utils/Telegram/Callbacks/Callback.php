@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Telegram\Callbacks;
 
+use App\Controllers\LinkController;
 use App\Controllers\SubController;
 use App\Models\InviteCode;
 use App\Models\Ip;
@@ -17,7 +18,6 @@ use App\Utils\QQWry;
 use App\Utils\Telegram\Reply;
 use App\Utils\Telegram\TelegramTools;
 use App\Utils\Tools;
-use Telegram\Bot\FileUpload\InputFile;
 
 final class Callback
 {
@@ -75,7 +75,7 @@ final class Callback
         $this->CallbackData = $Callback->getData();
         $this->AllowEditMessage = \time() < $Callback->getMessage()->getDate() + 172800;
 
-        if ($this->ChatID < 0 && $_ENV['telegram_group_quiet'] === true) {
+        if ($this->ChatID < 0 && Setting::obtain('telegram_group_quiet') === true) {
             // 群组中不回应
             return;
         }
@@ -110,7 +110,7 @@ final class Callback
                 ],
             ],
         ];
-        $text = 'سلام ، منوی BOT در زیر آمده است：' . PHP_EOL . PHP_EOL . 'کاربران این سایت لطفا برای انجام عملیات اتصال تلگرام به پنل کاربر مراجعه کنند.';
+        $text = 'سلام ، منوی BOT در زیر آمده است：' . PHP_EOL . PHP_EOL . 'کاربران این سایت لطفا برای انجام عملیات اتصال تلگرام به پنل کاربر مراجعه کنند。';
         return [
             'text' => $text,
             'keyboard' => $Keyboard,
@@ -172,7 +172,7 @@ final class Callback
             case 'general.pricing':
                 // 产品介绍
                 $sendMessage = [
-                    'text' => $_ENV['telegram_general_pricing'],
+                    'text' => Setting::obtain('telegram_general_pricing'),
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
                     'reply_markup' => \json_encode(
@@ -185,7 +185,7 @@ final class Callback
             case 'general.terms':
                 // 服务条款
                 $sendMessage = [
-                    'text' => $_ENV['telegram_general_terms'],
+                    'text' => Setting::obtain('telegram_general_terms'),
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
                     'reply_markup' => \json_encode(
@@ -215,7 +215,7 @@ final class Callback
 
     public static function getUserIndexKeyboard($user)
     {
-        $checkin = (!$user->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن');
+        $checkin = (! $user->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن');
         $Keyboard = [
             [
                 [
@@ -272,7 +272,7 @@ final class Callback
             if ($this->ChatID < 0) {
                 // 群组内提示
                 return $this->answerCallbackQuery([
-                    'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید.',
+                    'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید。',
                     'show_alert' => true,
                 ]);
             }
@@ -388,20 +388,19 @@ final class Callback
         $OpEnd = end($Operate);
         switch ($OpEnd) {
             case 'login_log':
-                // 登录记录
+                // سابقه ثبت نام
                 $iplocation = new QQWry();
-                $totallogin = LoginIp::where('userid', '=', $this->User->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
-                $userloginip = [];
-                foreach ($totallogin as $single) {
+                $total = LoginIp::where('userid', '=', $this->User->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
+                $text = '<strong>موارد زیر 10 آخرین IP ورود به سیستم و مکان های جغرافیایی شما هستند：</strong>' . PHP_EOL;
+                $text .= PHP_EOL;
+
+                foreach ($total as $single) {
                     $location = $iplocation->getlocation($single->ip);
-                    $loginiplocation = iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']);
-                    if (!\in_array($loginiplocation, $userloginip)) {
-                        $userloginip[] = $loginiplocation;
-                    }
+                    $text .= $single->ip . ' - ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . PHP_EOL;
                 }
-                $text = '<strong>در اینجا 10 آخرین ورود شما وجود دارد：</strong>';
-                $text .= PHP_EOL . PHP_EOL;
-                $text .= implode('、', $userloginip);
+
+                $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -418,7 +417,9 @@ final class Callback
                 // 使用记录
                 $iplocation = new QQWry();
                 $total = Ip::where('datetime', '>=', \time() - 300)->where('userid', '=', $this->User->id)->get();
-                $userip = [];
+                $text = '<strong>در زیر IP و موقعیت جغرافیایی استفاده از 5 دقیقه آخر شما آمده است：</strong>' . PHP_EOL;
+                $text .= PHP_EOL;
+
                 foreach ($total as $single) {
                     $single->ip = Tools::getRealIp($single->ip);
                     $is_node = Node::where('node_ip', $single->ip)->first();
@@ -426,11 +427,11 @@ final class Callback
                         continue;
                     }
                     $location = $iplocation->getlocation($single->ip);
-                    $userip[$single->ip] = '[' . $single->ip . '] ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']);
+                    $text .= $single->ip . ' - ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . PHP_EOL;
                 }
-                $text = '<strong>در اینجا آی پی های استفاده شده شما در 5 دقیقه گذشته آمده است：</strong>';
-                $text .= PHP_EOL . PHP_EOL;
-                $text .= implode(PHP_EOL, $userip);
+
+                $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -525,16 +526,6 @@ final class Callback
                 [
                     'text' => 'تغییر روش رمزگذاری',
                     'callback_data' => 'user.edit.encrypt',
-                ],
-                [
-                    'text' => 'تغییر نوع پروتکل',
-                    'callback_data' => 'user.edit.protocol',
-                ],
-            ],
-            [
-                [
-                    'text' => 'نوع مبهم سازی را تغییر دهید',
-                    'callback_data' => 'user.edit.obfs',
                 ],
                 [
                     'text' => 'دریافت پستی روزانه',
@@ -798,12 +789,36 @@ final class Callback
 
     public function getUserSubscribeKeyboard()
     {
-        $text = '订阅中心.';
+        $text = 'نوع پیوند اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
         $keyboard = [
             [
                 [
                     'text' => 'Clash',
                     'callback_data' => 'user.subscribe|clash',
+                ],
+                [
+                    'text' => 'Json',
+                    'callback_data' => 'user.subscribe|json',
+                ],
+            ],
+            [
+                [
+                    'text' => 'Shadowsocks',
+                    'callback_data' => 'user.subscribe|ss',
+                ],
+                [
+                    'text' => 'Shadowsocks SIP002',
+                    'callback_data' => 'user.subscribe|sip002',
+                ],
+            ],
+            [
+                [
+                    'text' => 'Vmess/Vless',
+                    'callback_data' => 'user.subscribe|v2',
+                ],
+                [
+                    'text' => 'Trojan',
+                    'callback_data' => 'user.subscribe|trojan',
                 ],
             ],
             [
@@ -840,40 +855,101 @@ final class Callback
                     ],
                 ],
             ];
-            $token = Tools::generateSSRSubCode($this->User->id);
-            $UserApiUrl = SubController::getUniversalSub($this->User);
+            $UniversalSub_Url = SubController::getUniversalSub($this->User);
+            $TraditionalSub_Url = LinkController::getTraditionalSub($this->User);
             switch ($CallbackDataExplode[1]) {
                 case 'clash':
-                    $temp['text'] = 'نمایه کلش شما.' . PHP_EOL . 'همچنین، می توانید از این لینک اشتراک استفاده کنید：' . $UserApiUrl . '/clash';
-                    $filename = 'Clash_' . $token . '_' . \time() . '.yaml';
-                    $filepath = BASE_PATH . '/storage/SendTelegram/' . $filename;
-                    $fh = fopen($filepath, 'w+');
-                    $string = SubController::getClash($this->User);
-                    fwrite($fh, $string);
-                    fclose($fh);
-                    $this->bot->sendDocument(
-                        [
-                            'chat_id' => $this->ChatID,
-                            'document' => InputFile::create($filepath),
-                            'caption' => $temp['text'],
-                        ]
-                    );
-                    unlink($filepath);
+                    $text = 'Clash آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/clash</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
+                    break;
+                case 'json':
+                    $text = 'Json آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/json</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
+                    break;
+                case 'ss':
+                    $text = 'Shadowsocks آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?ss=1</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
+                    break;
+                case 'sip002':
+                    $text = 'Shadowsocks SIP002 آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?sip002=1</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
+                    break;
+                case 'v2':
+                    $text = 'V2Ray آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?v2ray=1</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
+                    break;
+                case 'trojan':
+                    $text = 'Trojan آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?trojan=1</code>' . PHP_EOL . PHP_EOL;
+                    $sendMessage = [
+                        'text' => $text,
+                        'disable_web_page_preview' => true,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => \json_encode(
+                            [
+                                'inline_keyboard' => $temp['keyboard'],
+                            ]
+                        ),
+                    ];
                     break;
             }
         } else {
             $temp = $this->getUserSubscribeKeyboard();
+            $sendMessage = [
+                'text' => $temp['text'],
+                'disable_web_page_preview' => false,
+                'reply_to_message_id' => null,
+                'reply_markup' => \json_encode(
+                    [
+                        'inline_keyboard' => $temp['keyboard'],
+                    ]
+                ),
+            ];
         }
-        $sendMessage = [
-            'text' => $temp['text'],
-            'disable_web_page_preview' => false,
-            'reply_to_message_id' => null,
-            'reply_markup' => \json_encode(
-                [
-                    'inline_keyboard' => $temp['keyboard'],
-                ]
-            ),
-        ];
         $this->replyWithMessage(
             array_merge(
                 [
@@ -888,7 +964,7 @@ final class Callback
     {
         $paybacks_sum = Payback::where('ref_by', $this->User->id)->sum('ref_get');
 
-        if (!is_null($paybacks_sum)) {
+        if (! is_null($paybacks_sum)) {
             $paybacks_sum = 0;
         }
         $invitation = Setting::getClass('invite');
@@ -992,7 +1068,7 @@ final class Callback
             $temp['keyboard'] = [
                 [
                     [
-                        'text' => (!$this->User->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن'),
+                        'text' => (! $this->User->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن'),
                         'callback_data' => 'user.checkin.' . $this->triggerUser['id'],
                     ],
                 ],

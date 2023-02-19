@@ -84,6 +84,9 @@
 </script>
 <script src="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 <script>console.table([['استعلام پایگاه داده', 'زمان اجرا'], ['{count($queryLog)} درجه دوم', '{$optTime} ms']])</script>
+
+{include file='live_chat.tpl'}
+
 </body>
 
 </html>

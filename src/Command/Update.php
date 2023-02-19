@@ -6,19 +6,19 @@ namespace App\Command;
 
 final class Update extends Command
 {
-    public $description = '├─=: php xcat Update         - Update and migrate configuration' . PHP_EOL;
+    public $description = <<< END
+├─=: php xcat Update         - Update and migrate configuration
+END;
 
     public function boot(): void
     {
         global $_ENV;
         $copy_result = copy(BASE_PATH . '/config/.config.php', BASE_PATH . '/config/.config.php.bak');
         if ($copy_result === true) {
-            echo '.config.php File backup successful' . PHP_EOL;
+            echo ".config.php File backup successful。\n";
         } else {
-            echo '.config.php File backup failed, migration terminated' . PHP_EOL;
+            echo ".config.php File backup failed, migration terminated。\n";
         }
-
-        echo PHP_EOL;
 
         $config_old = file_get_contents(BASE_PATH . '/config/.config.php');
         $config_new = file_get_contents(BASE_PATH . '/config/.config.example.php');
@@ -30,7 +30,7 @@ final class Update extends Command
             $matches_new = [];
             preg_match($regex, $config_new, $matches_new);
             if (isset($matches_new[0]) === false) {
-                echo 'Configuration item not found:' . $key . ' Could not be found in new version .config.php file, may have been renamed or obsolete' . PHP_EOL;
+                echo "Configuration item not found:" . $key . " Could not be found in new version .config.php file, may have been renamed or obsolete。\n";
                 continue;
             }
 
@@ -40,7 +40,6 @@ final class Update extends Command
             $config_new = str_replace($matches_new[0], $matches_old[0], $config_new);
             $migrated[] = '_ENV[\'' . $key . '\']';
         }
-        echo PHP_EOL;
 
         //检查新增了哪些config
         $regex_new = '/_ENV\[\'.*?\'\]/s';
@@ -69,11 +68,11 @@ final class Update extends Command
             $difference = substr($difference, 15);
             $difference = substr($difference, 0, -2);
 
-            echo 'New .config.php configuration item：' . $difference . ':' . $comment . PHP_EOL;
+            echo "New .config.php configuration item：" . $difference . ":" . $comment . " \n";
         }
-        echo 'No new .config.php configuration items need to be added' . PHP_EOL;
+        echo "No new .config.php configuration items need to be added。\n";
 
         file_put_contents(BASE_PATH . '/config/.config.php', $config_new);
-        echo PHP_EOL . 'Migration complete' . PHP_EOL;
+        echo "Migration complete。\n";
     }
 }

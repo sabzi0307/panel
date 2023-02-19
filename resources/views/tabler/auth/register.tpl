@@ -28,10 +28,10 @@
                                 <input id="repasswd" type="password" class="form-control" placeholder="تکرار رمز ورود به سیستم">
                             </div>
                         </div>
-                        {if $config['enable_reg_im'] == true}
+                        {if $public_setting['enable_reg_im'] == true}
                             <div class="mb-3">
                                 <select id="im_type" class="col form-select">
-                                    <option value="0">لطفا نرم افزار اجتماعی را انتخاب کنید</option>
+                                    <option value="0">لطفا نرم افزار فضای مجازی مورد نظر را انتخاب کنید</option>
                                     <option value="1">WeChat</option>
                                     <option value="2">QQ</option>
                                     <option value="4">Telegram</option>
@@ -44,14 +44,14 @@
                                 </div>
                             </div>
                         {/if}
-                        {if $config['register_mode'] != 'close' }
+                        {if $public_setting['reg_mode'] != 'close' }
                             <div class="mb-3">
                                 <div class="input-group input-group-flat">
-                                    <input id="code" type="text" class="form-control" placeholder="کد دعوت نامه ثبت نام{if $config['register_mode'] == 'open'}（可选）{else}（必填）{/if}" value="{$code}">
+                                    <input id="code" type="text" class="form-control" placeholder="کد دعوت نامه ثبت نام{if $public_setting['reg_mode'] == 'open'}（اختیاری）{else}（ضروری）{/if}" value="{$code}">
                                 </div>
                             </div>
                         {/if}
-                        {if $config['enable_email_verify'] == true}
+                        {if $public_setting['reg_email_verify'] == true}
                             <div class="mb-3">
                                 <div class="input-group mb-2">
                                     <input id="emailcode" type="text" class="form-control" placeholder="کد تایید ایمیل">
@@ -68,14 +68,14 @@
                                 </span>
                             </label>
                         </div>
-                        {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+                        {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
                         <div class="mb-3">
                             <div class="input-group mb-2">
                                 <div class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
                             </div>
                         </div>
                         {/if}
-                        {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+                        {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
                         <div class="mb-2">
                             <div class="input-group mb-2">
                                 <div id="geetest"></div>
@@ -99,7 +99,7 @@
     </div>
 
     <script>
-        {if $config['enable_email_verify'] == true}
+        {if $public_setting['reg_email_verify'] === true}
             $("#email-verify").click(function() {
                 $.ajax({
                     type: 'POST',
@@ -127,11 +127,11 @@
                 url: '/auth/register',
                 dataType: "json",
                 data: {
-                    {if $config['enable_reg_im'] == true}
+                    {if $public_setting['enable_reg_im'] === true}
                         im_value: $('#im_value').val(),
                         im_type: $('#im_type').val(),
                     {/if}
-                    {if $config['enable_email_verify'] == true}
+                    {if $public_setting['reg_email_verify'] === true}
                         emailcode: $('#emailcode').val(),
                     {/if}
                     tos: $('#tos').prop('checked'), // true / false (string)
@@ -140,10 +140,10 @@
                     email: $('#email').val(),
                     passwd: $('#passwd').val(),
                     repasswd: $('#repasswd').val(),
-                    {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+                    {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
                     turnstile: turnstile.getResponse(),
                     {/if}
-                    {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+                    {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
                     geetest: geetest_result,
                     {/if}
                 },
@@ -161,10 +161,10 @@
         });
     </script>
 
-    {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'turnstile'}
+    {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?compat=recaptcha" async defer></script>
     {/if}
-    {if $config['enable_reg_captcha'] === true && $config['captcha_provider'] === 'geetest'}
+    {if $public_setting['enable_reg_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
     <script src="http://static.geetest.com/v4/gt4.js"></script>
     <script>
         var geetest_result = '';

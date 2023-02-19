@@ -16,16 +16,16 @@
                                 <div class="card-inner">
                                     <p class="card-heading">موارد احتیاط</p>
                                     <p>پس از تکمیل شارژ، باید صفحه وب را به‌روزرسانی کنید تا تعادل را بررسی کنید، معمولاً در عرض یک دقیقه. اگر تمدید خودکار به دلیل موجودی ناکافی انجام نشود، در صورت کافی بودن موجودی، هزینه تمدید به طور خودکار کسر می شود.</p>
-                                    {if $config['enable_admin_contact'] == true}
+                                    {if $public_setting['enable_admin_contact'] == true}
                                         <p class="card-heading">در صورت عدم دریافت شارژ لطفا تماس بگیرید：</p>
-                                        {if $config['admin_contact1'] != ''}
-                                            <li>{$config['admin_contact1']}</li>
+                                        {if $public_setting['admin_contact1'] != ''}
+                                            <li>{$public_setting['admin_contact1']}</li>
                                         {/if}
-                                        {if $config['admin_contact2'] != ''}
-                                            <li>{$config['admin_contact2']}</li>
+                                        {if $public_setting['admin_contact2'] != ''}
+                                            <li>{$public_setting['admin_contact2']}</li>
                                         {/if}
-                                        {if $config['admin_contact3'] != ''}
-                                            <li>{$config['admin_contact3']}</li>
+                                        {if $public_setting['admin_contact3'] != ''}
+                                            <li>{$public_setting['admin_contact3']}</li>
                                         {/if}
                                     {/if}
                                     <br/>

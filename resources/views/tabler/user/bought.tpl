@@ -45,7 +45,7 @@
                                                 <td>{$shop->autoResetBandwidthString()}</td>
                                                 <td>
                                                     <a class="btn btn-brand"
-                                                       {if $shop->renew==0}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')"{/if}>关闭自动续费</a>
+                                                       {if $shop->renew==0}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')"{/if}>تمدید خودکار غیر فعال</a>
                                                 </td>
                                             </tr>
                                         {/foreach}

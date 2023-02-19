@@ -167,7 +167,7 @@
                                 <div class="row">
                                     <div class="col-md-10 col-md-push-1">
                                         <button id="submit" type="submit"
-                                                class="btn btn-block btn-brand waves-attach waves-light">保存
+                                                class="btn btn-block btn-brand waves-attach waves-light">ذخیره
                                         </button>
                                     </div>
                                 </div>

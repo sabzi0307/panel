@@ -29,7 +29,7 @@ final class Tool extends Command
 │ ├─ resetTraffic            - Reset all user traffic
 │ ├─ generateUUID            - Generate new UUIDs for all users
 │ ├─ generateGa              - Generate new Ga Secrets for all users
-| ├─ generateApiToken        - Generate a new API Token for all users
+│ ├─ generateApiToken        - Generate a new API Token for all users
 │ ├─ setTheme                - Set a new theme for all users
 
 EOL;

@@ -75,7 +75,7 @@
                                 <dev id="custom_config"></dev>
                                 <label class="form-label col-form-label">
                                      جهت افزودن پیکربندی سفارشی به
-                                    <a href="//wiki.sspanel.org/#/setup-custom-config" target="_blank">wiki.sspanel.org/#/setup-custom-config</a>
+                                    <a href="//wiki.sspanel.org/#/custom-config" target="_blank">wiki.sspanel.org/#/custom-config</a>
                                      مراجعه فرمایید
                                 </label>
                             </div>
