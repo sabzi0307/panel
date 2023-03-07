@@ -16,15 +16,11 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#create-dialog">
                             <i class="icon ti ti-plus"></i>
                             创建
-                        </a>
-                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
-                            data-bs-target="#create-dialog">
-                            <i class="icon ti ti-plus"></i>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,17 +86,6 @@
                             </div>
                         {/if}
                     {/foreach}
-                    <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">开通套餐</label>
-                        <div class="col">
-                            <select id="new_user_add_shop" class="col form-select">
-                                <option value="0">不开通</option>
-                                {foreach $shops as $shop}
-                                    <option value="{$shop->id}">{$shop->name}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
@@ -173,7 +158,6 @@
                     {foreach $details['create_dialog'] as $from}
                         {$from['id']}: $('#{$from['id']}').val(),
                     {/foreach}
-                    product: $('#new_user_add_shop').val(),
                 },
                 success: function(data) {
                     if (data.ret == 1) {
