@@ -17,11 +17,9 @@ final class SupportController extends BaseController
         'crisp_id',
         'livechat_id',
         'mylivechat_id',
-        // Admin Contact
-        'enable_admin_contact',
-        'admin_contact1',
-        'admin_contact2',
-        'admin_contact3',
+        // Ticket
+        'enable_ticket',
+        'mail_ticket',
     ];
 
     /**
