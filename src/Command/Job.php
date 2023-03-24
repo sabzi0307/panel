@@ -305,7 +305,7 @@ EOL;
                     foreach ($adminUser as $user) {
                         echo 'Send offline mail to user: ' . $user->id . PHP_EOL;
                         $user->sendMail(
-                            $_ENV['appName'] . '-系统提示',
+                            $_ENV['appName'] . '-system hint',
                             'news/warn.tpl',
                             [
                                 'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' back online.',
