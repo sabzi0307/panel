@@ -174,7 +174,10 @@ foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
 // https://sentry.io for production debugging
 $_ENV['sentry_dsn'] = '';
 
-// ClientDownload The command solves the problem that the API access frequency is high and the usage is restricted Github access token
+// MaxMind License Key
+$_ENV['maxmind_license_key'] = '';
+
+// The ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 $_ENV['github_access_token'] = '';
 
 $_ENV['php_user_group'] = 'www:www';

@@ -7,14 +7,12 @@ namespace App\Utils\Telegram\Callbacks;
 use App\Controllers\LinkController;
 use App\Controllers\SubController;
 use App\Models\InviteCode;
-use App\Models\Ip;
 use App\Models\LoginIp;
-use App\Models\Node;
+use App\Models\OnlineLog;
 use App\Models\Payback;
 use App\Models\Setting;
 use App\Models\UserSubscribeLog;
 use App\Services\Config;
-use App\Utils\QQWry;
 use App\Utils\Telegram\Reply;
 use App\Utils\Telegram\TelegramTools;
 use App\Utils\Tools;
@@ -406,14 +404,13 @@ final class Callback
         switch ($OpEnd) {
             case 'login_log':
                 // سابقه ثبت نام
-                $iplocation = new QQWry();
                 $total = LoginIp::where('userid', '=', $this->User->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
                 $text = '<strong>موارد زیر 10 آخرین IP ورود به سیستم و مکان های جغرافیایی شما هستند：</strong>' . PHP_EOL;
                 $text .= PHP_EOL;
 
                 foreach ($total as $single) {
-                    $location = $iplocation->getlocation($single->ip);
-                    $text .= $single->ip . ' - ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . PHP_EOL;
+                    $location = Tools::getIpLocation($single->ip);
+                    $text .= $single->ip . ' - ' . $location . PHP_EOL;
                 }
 
                 $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
@@ -432,19 +429,14 @@ final class Callback
                 break;
             case 'usage_log':
                 // 使用记录
-                $iplocation = new QQWry();
-                $total = Ip::where('datetime', '>=', time() - 300)->where('userid', '=', $this->User->id)->get();
-                $text = '<strong>در زیر IP و موقعیت جغرافیایی استفاده از 5 دقیقه آخر شما آمده است：</strong>' . PHP_EOL;
+                $logs = OnlineLog::where('user_id', '=', $this->User->id)->orderByDesc('last_time')->get('ip');
+                $text = '<strong>IP های استفاده شده و مکان های جغرافیایی شما در 30 روز گذشته:</strong>' . PHP_EOL;
                 $text .= PHP_EOL;
 
-                foreach ($total as $single) {
-                    $single->ip = Tools::getRealIp($single->ip);
-                    $is_node = Node::where('node_ip', $single->ip)->first();
-                    if ($is_node) {
-                        continue;
-                    }
-                    $location = $iplocation->getlocation($single->ip);
-                    $text .= $single->ip . ' - ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . PHP_EOL;
+                foreach ($logs as $log) {
+                    $ip = $log->ip();
+                    $location = Tools::getIpLocation($ip);
+                    $text .= "{$ip} - {$location}\n";
                 }
 
                 $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
@@ -485,12 +477,11 @@ final class Callback
                 break;
             case 'subscribe_log':
                 // 订阅记录
-                $iplocation = new QQWry();
                 $logs = UserSubscribeLog::orderBy('id', 'desc')->where('user_id', $this->User->id)->take(10)->get();
                 $temp = [];
                 foreach ($logs as $log) {
-                    $location = $iplocation->getlocation($log->request_ip);
-                    $temp[] = '<code>' . $log->request_time . ' وجود دارد [' . $log->request_ip . '] ' . iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']) . ' بازدید کرده است ' . $log->subscribe_type . ' اشتراک، ابونمان</code>';
+                    $location = Tools::getIpLocation($log->request_ip);
+                    $temp[] = '<code>' . $log->request_time . ' وجود دارد [' . $log->request_ip . '] ' . $location . ' بازدید کرده است ' . $log->subscribe_type . ' اشتراک، ابونمان</code>';
                 }
                 $text = '<strong>در اینجا 10 سابقه آخرین اشتراک شما آمده است：</strong>';
                 $text .= PHP_EOL . PHP_EOL;

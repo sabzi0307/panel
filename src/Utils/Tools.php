@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Utils;
 
 use App\Models\Link;
-use App\Models\Model;
 use App\Models\Paylist;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\Config;
+use GeoIp2\Exception\AddressNotFoundException;
+use MaxMind\Db\Reader\InvalidDatabaseException;
 use function floatval;
 use function in_array;
 use function intval;
@@ -21,11 +22,21 @@ final class Tools
     /**
      * 查询IP归属
      */
-    public static function getIpInfo($ip): false|string
+    public static function getIpLocation($ip): string
     {
-        $iplocation = new QQWry();
-        $location = $iplocation->getlocation($ip);
-        return iconv('gbk', 'utf-8//IGNORE', $location['country'] . $location['area']);
+        $geoip = new GeoIP2();
+        try {
+            $city = $geoip->getCity($ip);
+            $country = $geoip->getCountry($ip);
+        } catch (AddressNotFoundException|InvalidDatabaseException $e) {
+            return 'ناشناخته';
+        }
+
+        if ($city !== null) {
+            return $city . ', ' . $country;
+        }
+
+        return $country;
     }
 
     /**
@@ -187,24 +198,6 @@ final class Tools
             return true;
         }
         return false;
-    }
-
-    /**
-     * Filter key in `App\Models\Model` object
-     */
-    public static function keyFilter(Model $object, array $filter_array): Model
-    {
-        foreach ($object->toArray() as $key => $value) {
-            if (! in_array($key, $filter_array)) {
-                unset($object->$key);
-            }
-        }
-        return $object;
-    }
-
-    public static function getRealIp($rawIp): array|string
-    {
-        return str_replace('::ffff:', '', $rawIp);
     }
 
     public static function isEmail($input): bool

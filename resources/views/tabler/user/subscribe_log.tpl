@@ -9,7 +9,7 @@
                         <span class="home-title">سابقه اشتراک</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">به تازگی {$config['subscribeLog_keep_days']} تمام سوابق اشتراک در روز</span>
+                        <span class="home-subtitle">اخیراً {$config['subscribeLog_keep_days']} تمام سوابق اشتراک در روز</span>
                     </div>
                 </div>
             </div>
@@ -24,8 +24,8 @@
                             <table class="table table-vcenter card-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>انواع</th>
+                                        <th>شناسه رویداد</th>
+                                        <th>نوع</th>
                                         <th>IP</th>
                                         <th>انتساب</th>
                                         <th>زمان</th>
@@ -38,7 +38,7 @@
                                         <td>#{$log->id}</td>
                                         <td>{$log->subscribe_type}</td>
                                         <td>{$log->request_ip}</td>
-                                        <td>{Tools::getIpInfo($log->request_ip)}</td>
+                                        <td>{$log->location}</td>
                                         <td>{$log->request_time}</td>
                                         <td>{$log->request_user_agent}</td>
                                     </tr>
@@ -51,5 +51,3 @@
             </div>
         </div>
     </div>
-
-{include file='user/tabler_footer.tpl'}
