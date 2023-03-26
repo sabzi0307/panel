@@ -230,20 +230,6 @@ final class CouponController extends BaseController
         ]);
     }
 
-    public function disable(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $coupon_id = $args['id'];
-        $coupon = UserCoupon::find($coupon_id)->first();
-        $limit = json_decode($coupon->limit);
-        $limit->disabled = 1;
-        $coupon->limit = json_encode($limit);
-        $coupon->save();
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'با موفقیت غیرفعال شد',
-        ]);
-    }
-
     /**
      * 后台商品优惠码页面 AJAX
      */

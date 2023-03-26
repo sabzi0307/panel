@@ -591,16 +591,4 @@ final class Tools
             default => 'ناشناخته',
         };
     }
-
-    /**
-     * 优惠码类型
-     */
-    public static function getPaylistStatus($paylist): string
-    {
-        return match ($paylist->status) {
-            0 => 'پرداخت نشده',
-            1 => 'پرداخت شده',
-            default => 'ناشناخته',
-        };
-    }
 }
