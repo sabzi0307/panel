@@ -33,19 +33,19 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">نام</label>
+                                <label class="form-label col-3 col-form-label required">نام</label>
                                 <div class="col">
                                     <input id="name" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">قیمت</label>
+                                <label class="form-label col-3 col-form-label required">قیمت</label>
                                 <div class="col">
                                     <input id="price" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">موجودی</label>
+                                <label class="form-label col-3 col-form-label required">موجودی (نامحدود زمانی که کمتر از 0 باشد)</label>
                                 <div class="col">
                                     <input id="stock" type="text" class="form-control" value="">
                                 </div>

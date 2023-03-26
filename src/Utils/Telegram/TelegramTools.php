@@ -7,16 +7,21 @@ namespace App\Utils\Telegram;
 use App\Models\Setting;
 use App\Models\User;
 use App\Utils\Tools;
+use function count;
+use function in_array;
+use function json_encode;
+use function strlen;
+use function time;
 
 final class TelegramTools
 {
     /**
      * 搜索用户
      *
-     * @param string $value  搜索值
+     * @param int $value  搜索值
      * @param string $method 查找列
      */
-    public static function getUser($value, $method = 'telegram_id')
+    public static function getUser(int $value, string $method = 'telegram_id')
     {
         return User::where($method, $value)->first();
     }
@@ -25,12 +30,13 @@ final class TelegramTools
      * Sends a POST request to Telegram Bot API.
      * 伪异步，无结果返回.
      *
-     * @param array $params
+     * @param $Method
+     * @param $Params
      */
     public static function sendPost($Method, $Params): void
     {
         $URL = 'https://api.telegram.org/bot' . $_ENV['telegram_token'] . '/' . $Method;
-        $POSTData = \json_encode($Params);
+        $POSTData = json_encode($Params);
         $C = curl_init();
         curl_setopt($C, CURLOPT_URL, $URL);
         curl_setopt($C, CURLOPT_POST, 1);
@@ -76,16 +82,21 @@ final class TelegramTools
             'class_expire' => ['class_expire'],
             'expire_in' => ['expire_in'],
             'node_speedlimit' => ['node_speedlimit'],
-            'node_connector' => ['node_connector'],
+            'node_iplimit' => ['node_iplimit'],
         ];
     }
 
     /**
      * 待定
      *
-     * @return mixed
+     * @param $User
+     * @param $useOptionMethod
+     * @param $value
+     * @param $ChatID
+     *
+     * @return array
      */
-    public static function operationUser($User, $useOptionMethod, $value, $ChatID)
+    public static function operationUser($User, $useOptionMethod, $value, $ChatID): array
     {
         $Email = self::getUserEmail($User->email, $ChatID);
         $old = $User->$useOptionMethod;
@@ -99,16 +110,16 @@ final class TelegramTools
                     '// [فعال|بله] —— معنای لغوی',
                     '// [غیرفعال کردن|خیر] —— معنای لغوی',
                 ];
-                if (strpos($value, ' ') !== false) {
+                if (str_contains($value, ' ')) {
                     return [
                         'ok' => false,
                         'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
                     ];
                 }
-                if (\in_array($value, ['فعال کردن', 'بله'])) {
+                if (in_array($value, ['فعال کردن', 'بله'])) {
                     $User->$useOptionMethod = 1;
                     $new = 'فعال کردن';
-                } elseif (\in_array($value, ['غیر فعال', 'خیر'])) {
+                } elseif (in_array($value, ['غیر فعال', 'خیر'])) {
                     $User->$useOptionMethod = 0;
                     $new = 'غیر فعال';
                 } else {
@@ -122,7 +133,7 @@ final class TelegramTools
                 // ##############
             case 'port':
                 // 支持正整数或 0 随机选择
-                if (! is_numeric($value) || strpos((string) $value, '-') === 0) {
+                if (! is_numeric($value) || str_starts_with((string) $value, '-')) {
                     return [
                         'ok' => false,
                         'msg' => 'پورت ارائه شده غیر عددی است، 0 را برای تنظیم مجدد تصادفی مشخص کنید.',
@@ -159,7 +170,7 @@ final class TelegramTools
                     '// *2   —— ضرب در ترافیک کنونی، از پر کردن واحد پشتیبانی نمی کند',
                     '// /2   —— تقسیم بر ترافیک فعلی، از پر کردن واحد پشتیبانی نمی کند',
                 ];
-                if (strpos($value, ' ') !== false) {
+                if (str_contains($value, ' ')) {
                     return [
                         'ok' => false,
                         'msg' => 'خطای پردازش، نوشتن پشتیبانی نشده است.' . PHP_EOL . PHP_EOL . self::strArrayToCode($strArray),
@@ -190,9 +201,9 @@ final class TelegramTools
                     '// 2020-02-30 08:00:00 —— تاریخ مشخص شده به دومی دقیق می باشد',
                 ];
                 if (
-                    strpos($value, '+') === 0
+                    str_starts_with($value, '+')
                     ||
-                    strpos($value, '-') === 0
+                    str_starts_with($value, '-')
                 ) {
                     $operator = substr($value, 0, 1);
                     $number = substr($value, 1);
@@ -215,7 +226,7 @@ final class TelegramTools
                     $number = $value;
                     if (is_numeric($value)) {
                         $number *= 86400;
-                        $new = \time() + $number;
+                        $new = time() + $number;
                         $new = date('Y-m-d H:i:s', (int) $new);
                     } else {
                         if (strtotime($value) === false) {
@@ -255,7 +266,7 @@ final class TelegramTools
             case 'class':
             case 'invite_num':
             case 'node_group':
-            case 'node_connector':
+            case 'node_iplimit':
             case 'node_speedlimit':
                 $strArray = [
                     '// فاصله در مقادیر پارامتر مجاز نیست',
@@ -265,7 +276,7 @@ final class TelegramTools
                     '// /2  —— تقسیم بر مقدار فعلی',
                 ];
                 $value = explode(' ', $value)[0];
-                $new = self::computingMethod($User->$useOptionMethod, $value, false);
+                $new = self::computingMethod($User->$useOptionMethod, $value);
                 if ($new === null) {
                     return [
                         'ok' => false,
@@ -335,7 +346,7 @@ final class TelegramTools
         $return = [];
         $Str = trim($Str);
         for ($x = 0; $x <= 10; $x++) {
-            if (strpos($Str, $Delimiter) !== false && count($return) < $Quantity - 1) {
+            if (str_contains($Str, $Delimiter) && count($return) < $Quantity - 1) {
                 $temp = substr($Str, 0, strpos($Str, $Delimiter));
                 $return[] = $temp;
                 $Str = trim(substr($Str, strlen($temp)));
@@ -357,11 +368,9 @@ final class TelegramTools
     {
         $useMethod = '';
         foreach ($MethodGroup as $MethodName => $Remarks) {
-            if (strlen($MethodName) === strlen($Search)) {
-                if (stripos($MethodName, $Search) === 0) {
-                    $useMethod = $MethodName;
-                    break;
-                }
+            if (strlen($MethodName) === strlen($Search) && stripos($MethodName, $Search) === 0) {
+                $useMethod = $MethodName;
+                break;
             }
             if (count($Remarks) >= 1) {
                 foreach ($Remarks as $Remark) {
@@ -385,17 +394,23 @@ final class TelegramTools
     public static function computingMethod(string $Source, string $Value, bool $FloatingNumber = false): ?string
     {
         if (
-            (strpos($Value, '+') === 0
+            (str_starts_with($Value, '+')
                 ||
-                strpos($Value, '-') === 0
+                str_starts_with($Value, '-')
                 ||
-                strpos($Value, '*') === 0
+                str_starts_with($Value, '*')
                 ||
-                strpos($Value, '/') === 0)
+                str_starts_with($Value, '/'))
             &&
             is_numeric(substr($Value, 1))
         ) {
-            $Source = eval('return $Source ' . substr($Value, 0, 1) . '= ' . substr($Value, 1) . ';');
+            $Source = match (substr($Value, 0, 1)) {
+                '+' => (int) $Source + (int) substr($Value, 1),
+                '-' => (int) $Source - (int) substr($Value, 1),
+                '*' => (int) $Source * (int) substr($Value, 1),
+                '/' => (int) $Source / (int) substr($Value, 1),
+                default => null,
+            };
         } else {
             if (is_numeric($Value)) {
                 $Source = $Value;
@@ -420,16 +435,16 @@ final class TelegramTools
     public static function trafficMethod(string $Source, string $Value): ?int
     {
         if (
-            strpos($Value, '+') === 0
+            str_starts_with($Value, '+')
             ||
-            strpos($Value, '-') === 0
+            str_starts_with($Value, '-')
             ||
-            strpos($Value, '*') === 0
+            str_starts_with($Value, '*')
             ||
-            strpos($Value, '/') === 0
+            str_starts_with($Value, '/')
         ) {
             $operator = substr($Value, 0, 1);
-            if (! \in_array($operator, ['*', '/'])) {
+            if (! in_array($operator, ['*', '/'])) {
                 $number = Tools::flowAutoShowZ(substr($Value, 1));
             } else {
                 $number = substr($Value, 1, strlen($Value) - 1);
@@ -440,7 +455,14 @@ final class TelegramTools
             if ($number === null) {
                 return null;
             }
-            $Source = eval('return $Source ' . $operator . '= ' . $number . ';');
+
+            $Source = match ($operator) {
+                '+' => (int) $Source + (int) $number,
+                '-' => (int) $Source - (int) $number,
+                '*' => (int) $Source * (int) $number,
+                '/' => (int) $Source / (int) $number,
+                default => null,
+            };
         } else {
             if (is_numeric($Value)) {
                 if ((int) $Value === 0) {

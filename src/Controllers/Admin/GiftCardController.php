@@ -7,12 +7,15 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\GiftCard;
 use App\Utils\Tools;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function time;
 
 final class GiftCardController extends BaseController
 {
-    public static $details = [
+    public static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه کارت هدیه',
@@ -51,7 +54,10 @@ final class GiftCardController extends BaseController
         ],
     ];
 
-    public function index(ServerRequest $request, Response $response, array $args)
+    /**
+     * @throws Exception
+     */
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -60,7 +66,7 @@ final class GiftCardController extends BaseController
         );
     }
 
-    public function add(ServerRequest $request, Response $response, array $args)
+    public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $card_number = $request->getParam('card_number');
         $card_value = $request->getParam('card_value');
@@ -87,7 +93,7 @@ final class GiftCardController extends BaseController
             $giftcard = new GiftCard();
             $giftcard->card = $card;
             $giftcard->balance = $card_value;
-            $giftcard->create_time = \time();
+            $giftcard->create_time = time();
             $giftcard->status = 0;
             $giftcard->use_time = 0;
             $giftcard->use_user = 0;
@@ -101,7 +107,7 @@ final class GiftCardController extends BaseController
         ]);
     }
 
-    public function delete(ServerRequest $request, Response $response, array $args)
+    public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $card_id = $args['id'];
         GiftCard::find($card_id)->delete();
@@ -111,7 +117,7 @@ final class GiftCardController extends BaseController
         ]);
     }
 
-    public function ajax(ServerRequest $request, Response $response, array $args)
+    public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $giftcards = GiftCard::orderBy('id', 'desc')->get();
         foreach ($giftcards as $giftcard) {

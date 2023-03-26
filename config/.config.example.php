@@ -20,6 +20,7 @@ $_ENV['db_socket']    = '';
 $_ENV['db_database']  = 'sspanel';           //Database name
 $_ENV['db_username']  = 'root';              //database username
 $_ENV['db_password']  = 'sspanel';           //The password corresponding to the username
+$_ENV['db_port']      = '3306';              //database poprt
 #advanced
 $_ENV['db_charset']   = 'utf8mb4';
 $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
@@ -69,8 +70,6 @@ $_ENV['subscribeLog_keep_days']     = 7;                            //Number of 
 //subscription settings---------------------------------------------------------------------------------------
 $_ENV['Subscribe']                  = true;                         //Does this site provide a subscription function?
 $_ENV['subUrl']                     = $_ENV['baseUrl'];             //Subscription address, if it needs to be the same as the site name, please do not modify
-$_ENV['enable_forced_replacement']  = true;                         //Whether to force the subscription address to be changed when the user modifies the account login password
-
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 $_ENV['enable_auto_detect_ban']      = false;       // Audit Auto-Ban Switch
@@ -108,7 +107,6 @@ $_ENV['auto_detect_ban'] = [
     ]
 ];
 
-
 //Bot set up--------------------------------------------------------------------------------------------
 # Telegram bot
 $_ENV['enable_telegram']                    = false;        //whether to enable Telegram bot
@@ -117,20 +115,9 @@ $_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group
 $_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
 $_ENV['telegram_request_token']             = '';           //Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
-//Social login settings
-#Telegram
-$_ENV['enable_telegram_login']              = false;   //Please configure Telegram bot first before enabling this setting, otherwise it will not take effect
-
-#Ticket System Settings
-$_ENV['enable_ticket']        = true;        //Whether to enable the ticket system
-$_ENV['mail_ticket']          = true;        //Whether to open ticket email reminder
-
-# Server sauce https://sct.ftqq.com/
+# ServerSauce https://sct.ftqq.com/
 $_ENV['useScFtqq']            = false;        //Whether to enable Server sauce to remind work orders/nodes to go online and offline
 $_ENV['ScFtqq_SCKEY']         = '';           //Please fill in the SCKEY you got in Server sauce, please check carefully and do not paste it wrong
-
-#Background product list Sales statistics
-$_ENV['sales_period']         = 30;             //Count the sales in the specified period, the value is [expire/any integer greater than 0]
 
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
@@ -161,10 +148,9 @@ $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of 
 $_ENV['timeZone']               = 'PRC';                 //PRC Chinese time UTC Green time
 $_ENV['theme']                  = 'tabler';              //Default Theme
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
-$_ENV['checkNodeIp']            = true;                 //Whether webapi verifies node ip
 
-$_ENV['keep_connect']           = false;               // If the traffic is exhausted, the speed limit is limited to 1Mbps
-$_ENV['money_from_admin']       = false;            //Whether to enable the administrator to create a recharge record when modifying the user's balance
+$_ENV['checkNodeIp']            = true;                 //Whether webapi verifies node ip
+$_ENV['keep_connect']           = false;               // Speed limit to 1Mbps for traffic exhausted users
 
 #Cloudflare
 $_ENV['cloudflare_enable']      = false;         //Whether to enable Cloudflare analysis

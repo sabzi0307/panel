@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use function array_key_exists;
+use function count;
+use function time;
+
 final class Node extends Model
 {
     protected $connection = 'default';
@@ -29,23 +33,13 @@ final class Node extends Model
      */
     public function sort(): string
     {
-        switch ($this->sort) {
-            case 0:
-                $sort = 'Shadowsocks';
-                break;
-            case 1:
-                $sort = 'ShadowsocksR';
-                break;
-            case 11:
-                $sort = 'V2Ray سرور';
-                break;
-            case 14:
-                $sort = 'Trojan';
-                break;
-            default:
-                $sort = 'سیستم رزرو شده';
-        }
-        return $sort;
+        return match ($this->sort) {
+            0 => 'Shadowsocks',
+            1 => 'ShadowsocksR',
+            11 => 'V2Ray سرور',
+            14 => 'Trojan',
+            default => 'سیستم رزرو شده',
+        };
     }
 
     /**
@@ -53,20 +47,12 @@ final class Node extends Model
      */
     public function muOnly(): string
     {
-        switch ($this->mu_only) {
-            case -1:
-                $mu_only = 'فقط پورت های معمولی فعال هستند';
-                break;
-            case 0:
-                $mu_only = 'همزیستی چند کاربر در یک پورت واحد و پورت های مشترک';
-                break;
-            case 1:
-                $mu_only = 'تنها چند کاربر تک پورت را فعال کنید';
-                break;
-            default:
-                $mu_only = 'نوع خطا';
-        }
-        return $mu_only;
+        return match ($this->mu_only) {
+            -1 => 'فقط پورت های معمولی فعال هستند',
+            0 => 'همزیستی چند کاربر در یک پورت واحد و پورت های مشترک',
+            1 => 'تنها چند کاربر تک پورت را فعال کنید',
+            default => 'نوع خطا',
+        };
     }
 
     /**
@@ -85,10 +71,10 @@ final class Node extends Model
     public function getNodeOnlineStatus(): int
     {
         // Type 9 or heartbeat 0
-        if ($this->node_heartbeat === 0 || \in_array($this->sort, [9])) {
+        if ($this->node_heartbeat === 0 || $this->sort === 9) {
             return 0;
         }
-        return $this->node_heartbeat + 300 > \time() ? 1 : -1;
+        return $this->node_heartbeat + 300 > time() ? 1 : -1;
     }
 
     /**
@@ -113,7 +99,7 @@ final class Node extends Model
         if ($this->node_heartbeat === 0) {
             return false;
         }
-        return $this->node_heartbeat > \time() - 300;
+        return $this->node_heartbeat > time() - 300;
     }
 
     /**
@@ -135,7 +121,7 @@ final class Node extends Model
     /**
      * 更新节点 IP
      */
-    public function changeNodeIp(string $server_name): bool
+    public function changeNodeIp(string $server_name): void
     {
         $result = dns_get_record($server_name, DNS_A + DNS_AAAA);
         $dns = [];
@@ -150,7 +136,6 @@ final class Node extends Model
             $ip = $server_name;
         }
         $this->node_ip = $ip;
-        return true;
     }
 
     /**

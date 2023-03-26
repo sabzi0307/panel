@@ -18,13 +18,20 @@ use App\Utils\QQWry;
 use App\Utils\Telegram\Reply;
 use App\Utils\Telegram\TelegramTools;
 use App\Utils\Tools;
+use Telegram\Bot\Api;
+use Telegram\Bot\Exceptions\TelegramSDKException;
+use Telegram\Bot\Objects\CallbackQuery;
+use function in_array;
+use function is_null;
+use function json_encode;
+use function time;
 
 final class Callback
 {
     /**
      * Bot
      */
-    private $bot;
+    private Api $bot;
 
     /**
      * 触发用户
@@ -34,12 +41,12 @@ final class Callback
     /**
      * 触发用户TG信息
      */
-    private $triggerUser;
+    private array $triggerUser;
 
     /**
      * 回调
      */
-    private $Callback;
+    private CallbackQuery $Callback;
 
     /**
      * 回调数据内容
@@ -59,8 +66,12 @@ final class Callback
     /**
      * 源消息是否可编辑
      */
-    private $AllowEditMessage;
-    public function __construct(\Telegram\Bot\Api $bot, \Telegram\Bot\Objects\CallbackQuery $Callback)
+    private bool $AllowEditMessage;
+
+    /**
+     * @throws TelegramSDKException
+     */
+    public function __construct(Api $bot, CallbackQuery $Callback)
     {
         $this->bot = $bot;
         $this->triggerUser = [
@@ -73,22 +84,20 @@ final class Callback
         $this->Callback = $Callback;
         $this->MessageID = $Callback->getMessage()->getMessageId();
         $this->CallbackData = $Callback->getData();
-        $this->AllowEditMessage = \time() < $Callback->getMessage()->getDate() + 172800;
+        $this->AllowEditMessage = time() < $Callback->getMessage()->getDate() + 172800;
 
         if ($this->ChatID < 0 && Setting::obtain('telegram_group_quiet') === true) {
             // 群组中不回应
             return;
         }
-        switch (true) {
-            case strpos($this->CallbackData, 'user.') === 0:
-                // 用户相关
-                $this->userCallback();
-                break;
-            default:
-                //游客回调数据处理
-                $this->guestCallback();
-                break;
+
+        if (str_starts_with($this->CallbackData, 'user.')) {
+            // 用户相关
+            $this->userCallback();
+            return;
         }
+        //游客回调数据处理
+        $this->guestCallback();
     }
 
     /**
@@ -96,7 +105,7 @@ final class Callback
      *
      * @return array
      */
-    public static function getGuestIndexKeyboard()
+    public static function getGuestIndexKeyboard(): array
     {
         $Keyboard = [
             [
@@ -121,6 +130,8 @@ final class Callback
      * 响应回调查询 | 默认已添加 chat_id 和 message_id
      *
      * @param array $sendMessage
+     *
+     * @throws TelegramSDKException
      */
     public function replyWithMessage(array $sendMessage): void
     {
@@ -164,6 +175,8 @@ final class Callback
 
     /**
      * 回调数据处理
+     *
+     * @throws TelegramSDKException
      */
     public function guestCallback(): void
     {
@@ -175,7 +188,7 @@ final class Callback
                     'text' => Setting::obtain('telegram_general_pricing'),
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => self::getGuestIndexKeyboard()['keyboard'],
                         ]
@@ -188,7 +201,7 @@ final class Callback
                     'text' => Setting::obtain('telegram_general_terms'),
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => self::getGuestIndexKeyboard()['keyboard'],
                         ]
@@ -202,7 +215,7 @@ final class Callback
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
@@ -210,10 +223,11 @@ final class Callback
                 ];
                 break;
         }
+
         $this->replyWithMessage($sendMessage);
     }
 
-    public static function getUserIndexKeyboard($user)
+    public static function getUserIndexKeyboard($user): array
     {
         $checkin = (! $user->isAbleToCheckin() ? 'وارد شدن' : 'چک کردن');
         $Keyboard = [
@@ -265,18 +279,20 @@ final class Callback
 
     /**
      * 用户相关回调数据处理
+     *
+     * @throws TelegramSDKException
      */
-    public function userCallback()
+    public function userCallback(): void
     {
         if ($this->User === null) {
             if ($this->ChatID < 0) {
                 // 群组内提示
-                return $this->answerCallbackQuery([
+                $this->answerCallbackQuery([
                     'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید。',
                     'show_alert' => true,
                 ]);
             }
-            return $this->guestCallback();
+            $this->guestCallback();
         }
         $CallbackDataExplode = explode('|', $this->CallbackData);
         $Operate = explode('.', $CallbackDataExplode[0]);
@@ -301,7 +317,6 @@ final class Callback
                         'text' => 'سلام، شما نمی توانید حساب های دیگران را اداره کنید.',
                         'show_alert' => true,
                     ]);
-                    return;
                 }
                 $this->userCheckin();
                 break;
@@ -310,24 +325,24 @@ final class Callback
                 $this->userCenter();
                 break;
             default:
-                // 用户首页
+                // 用户صفحه اول
                 $temp = self::getUserIndexKeyboard($this->User);
+
                 $this->replyWithMessage([
                     'text' => $temp['text'],
                     'parse_mode' => 'HTML',
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
                     ),
                 ]);
-                return;
         }
     }
 
-    public function getUserCenterKeyboard()
+    public function getUserCenterKeyboard(): array
     {
         $text = Reply::getUserTitle($this->User);
         $text .= PHP_EOL . PHP_EOL;
@@ -368,6 +383,8 @@ final class Callback
 
     /**
      * 用户中心
+     *
+     * @throws TelegramSDKException
      */
     public function userCenter(): void
     {
@@ -406,7 +423,7 @@ final class Callback
                     'disable_web_page_preview' => false,
                     'parse_mode' => 'HTML',
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $back,
                         ]
@@ -416,7 +433,7 @@ final class Callback
             case 'usage_log':
                 // 使用记录
                 $iplocation = new QQWry();
-                $total = Ip::where('datetime', '>=', \time() - 300)->where('userid', '=', $this->User->id)->get();
+                $total = Ip::where('datetime', '>=', time() - 300)->where('userid', '=', $this->User->id)->get();
                 $text = '<strong>در زیر IP و موقعیت جغرافیایی استفاده از 5 دقیقه آخر شما آمده است：</strong>' . PHP_EOL;
                 $text .= PHP_EOL;
 
@@ -437,7 +454,7 @@ final class Callback
                     'disable_web_page_preview' => false,
                     'parse_mode' => 'HTML',
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $back,
                         ]
@@ -459,7 +476,7 @@ final class Callback
                     'disable_web_page_preview' => false,
                     'parse_mode' => 'HTML',
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $back,
                         ]
@@ -483,7 +500,7 @@ final class Callback
                     'disable_web_page_preview' => false,
                     'parse_mode' => 'HTML',
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $back,
                         ]
@@ -496,7 +513,7 @@ final class Callback
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
@@ -504,11 +521,11 @@ final class Callback
                 ];
                 break;
         }
+
         $this->replyWithMessage($sendMessage);
-        return;
     }
 
-    public function getUserEditKeyboard()
+    public function getUserEditKeyboard(): array
     {
         $text = Reply::getUserTitle($this->User);
         $keyboard = [
@@ -557,15 +574,18 @@ final class Callback
 
     /**
      * 用户编辑
+     *
+     * @throws TelegramSDKException
      */
-    public function userEdit()
+    public function userEdit(): void
     {
         if ($this->ChatID < 0) {
-            return $this->answerCallbackQuery([
+            $this->answerCallbackQuery([
                 'text' => 'این عمل را نمی توان در یک گروه انجام داد.',
                 'show_alert' => true,
             ]);
         }
+
         $back = [
             [
                 [
@@ -578,6 +598,9 @@ final class Callback
                 ],
             ],
         ];
+
+        $sendMessage = [];
+
         $CallbackDataExplode = explode('|', $this->CallbackData);
         $Operate = explode('.', $CallbackDataExplode[0]);
         $OpEnd = end($Operate);
@@ -594,7 +617,7 @@ final class Callback
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
@@ -603,7 +626,7 @@ final class Callback
                 break;
             case 'update_passwd':
                 // 重置链接密码
-                $this->User->passwd = Tools::genRandomChar(8);
+                $this->User->passwd = Tools::genRandomChar();
                 if ($this->User->save()) {
                     $answerCallbackQuery = 'رمز عبور اتصال با موفقیت به روز شد، لطفا اشتراک زیر را تمدید کنید.';
                     $temp = $this->getUserSubscribeKeyboard();
@@ -619,7 +642,7 @@ final class Callback
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
@@ -630,7 +653,7 @@ final class Callback
                 // 加密方式更改
                 $keyboard = $back;
                 if (isset($CallbackDataExplode[1])) {
-                    if (\in_array($CallbackDataExplode[1], Config::getSupportParam('method'))) {
+                    if (in_array($CallbackDataExplode[1], Config::getSupportParam('method'))) {
                         $temp = $this->User->setMethod($CallbackDataExplode[1]);
                         if ($temp['ok'] === true) {
                             $text = 'روش رمزگذاری فعلی شما این است：' . $this->User->method . PHP_EOL . PHP_EOL . $temp['msg'];
@@ -660,7 +683,7 @@ final class Callback
                     'text' => $text,
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $keyboard,
                         ]
@@ -679,30 +702,30 @@ final class Callback
                     $back[0],
                 ];
                 $OpEnd = end($Operate);
-                switch ($OpEnd) {
-                    case 'update':
-                        $this->User->sendDailyMail = ($this->User->sendDailyMail === 0 ? 1 : 0);
-                        if ($this->User->save()) {
-                            $text = 'تنظیمات با موفقیت تغییر کرد، دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
-                            $text .= '<strong>';
-                            $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
-                            $text .= '</strong>';
-                        } else {
-                            $text = 'خطایی رخ داد.';
-                        }
-                        break;
-                    default:
-                        $text = 'دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
+
+                if ($OpEnd === 'update') {
+                    $this->User->sendDailyMail = ($this->User->sendDailyMail === 0 ? 1 : 0);
+
+                    if ($this->User->save()) {
+                        $text = 'تنظیمات با موفقیت تغییر کرد، دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
                         $text .= '<strong>';
                         $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
                         $text .= '</strong>';
-                        break;
+                    } else {
+                        $text = 'خطایی رخ داد.';
+                    }
+                } else {
+                    $text = 'دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
+                    $text .= '<strong>';
+                    $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
+                    $text .= '</strong>';
                 }
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $keyboard,
                         ]
@@ -730,7 +753,7 @@ final class Callback
                     'text' => 'اگر قبلاً در گروه کاربری هستید، لطفاً به دلخواه برای رفع انسداد کلیک نکنید، در غیر این صورت از گروه حذف خواهید شد..',
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => [
                                 [
@@ -769,7 +792,7 @@ final class Callback
                     'text' => $text,
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
+                    'reply_markup' => json_encode(
                         [
                             'inline_keyboard' => $temp['keyboard'],
                         ]
@@ -777,17 +800,15 @@ final class Callback
                 ];
                 break;
         }
-        $this->replyWithMessage(
-            array_merge(
-                [
-                    'parse_mode' => 'HTML',
-                ],
-                $sendMessage
-            )
-        );
+
+        if (! isset($sendMessage['parse_mode'])) {
+            $sendMessage['parse_mode'] = 'HTML';
+        }
+
+        $this->replyWithMessage($sendMessage);
     }
 
-    public function getUserSubscribeKeyboard()
+    public function getUserSubscribeKeyboard(): array
     {
         $text = 'نوع پیوند اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
         $keyboard = [
@@ -799,6 +820,10 @@ final class Callback
                 [
                     'text' => 'Json',
                     'callback_data' => 'user.subscribe|json',
+                ],
+                [
+                    'text' => 'Shadowsocks SIP008',
+                    'callback_data' => 'user.subscribe|sip008',
                 ],
             ],
             [
@@ -813,7 +838,7 @@ final class Callback
             ],
             [
                 [
-                    'text' => 'Vmess/Vless',
+                    'text' => 'V2Ray',
                     'callback_data' => 'user.subscribe|v2',
                 ],
                 [
@@ -836,6 +861,8 @@ final class Callback
 
     /**
      * 用户订阅
+     *
+     * @throws TelegramSDKException
      */
     public function userSubscribe(): void
     {
@@ -843,6 +870,7 @@ final class Callback
         // 订阅中心
         if (isset($CallbackDataExplode[1])) {
             $temp = [];
+
             $temp['keyboard'] = [
                 [
                     [
@@ -855,101 +883,45 @@ final class Callback
                     ],
                 ],
             ];
+
+            $sendMessage = [];
+
             $UniversalSub_Url = SubController::getUniversalSub($this->User);
             $TraditionalSub_Url = LinkController::getTraditionalSub($this->User);
-            switch ($CallbackDataExplode[1]) {
-                case 'clash':
-                    $text = 'Clash آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/clash</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-                case 'json':
-                    $text = 'Json آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/json</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-                case 'ss':
-                    $text = 'Shadowsocks آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?ss=1</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-                case 'sip002':
-                    $text = 'Shadowsocks SIP002 آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?sip002=1</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-                case 'v2':
-                    $text = 'V2Ray آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?v2ray=1</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-                case 'trojan':
-                    $text = 'Trojan آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?trojan=1</code>' . PHP_EOL . PHP_EOL;
-                    $sendMessage = [
-                        'text' => $text,
-                        'disable_web_page_preview' => true,
-                        'reply_to_message_id' => null,
-                        'reply_markup' => \json_encode(
-                            [
-                                'inline_keyboard' => $temp['keyboard'],
-                            ]
-                        ),
-                    ];
-                    break;
-            }
+            $text = match ($CallbackDataExplode[1]) {
+                'clash' => 'Clash آدرس اشتراک هوشمند：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/clash</code>' . PHP_EOL . PHP_EOL,
+                'json' => 'Json آدرس اشتراک هوشمند：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/json</code>' . PHP_EOL . PHP_EOL,
+                'sip008' => 'Shadowsocks SIP008 آدرس اشتراک هوشمند：' . PHP_EOL . PHP_EOL . '<code>' . $UniversalSub_Url . '/sip008</code>' . PHP_EOL . PHP_EOL,
+                'ss' => 'Shadowsocks آدرس اشتراک قدیمی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?ss=1</code>' . PHP_EOL . PHP_EOL,
+                'sip002' => 'Shadowsocks SIP002 آدرس اشتراک قدیمی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?sip002=1</code>' . PHP_EOL . PHP_EOL,
+                'v2' => 'V2Ray آدرس اشتراک قدیمی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?v2ray=1</code>' . PHP_EOL . PHP_EOL,
+                'trojan' => 'Trojan آدرس اشتراک قدیمی：' . PHP_EOL . PHP_EOL . '<code>' . $TraditionalSub_Url . '?trojan=1</code>' . PHP_EOL . PHP_EOL,
+                default => 'پارامتر نامعلوم' . PHP_EOL . PHP_EOL,
+            };
+            $sendMessage = [
+                'text' => $text,
+                'disable_web_page_preview' => true,
+                'reply_to_message_id' => null,
+                'reply_markup' => json_encode(
+                    [
+                        'inline_keyboard' => $temp['keyboard'],
+                    ]
+                ),
+            ];
         } else {
             $temp = $this->getUserSubscribeKeyboard();
             $sendMessage = [
                 'text' => $temp['text'],
                 'disable_web_page_preview' => false,
                 'reply_to_message_id' => null,
-                'reply_markup' => \json_encode(
+                'reply_markup' => json_encode(
                     [
                         'inline_keyboard' => $temp['keyboard'],
                     ]
                 ),
             ];
         }
+
         $this->replyWithMessage(
             array_merge(
                 [
@@ -960,7 +932,7 @@ final class Callback
         );
     }
 
-    public function getUserInviteKeyboard()
+    public function getUserInviteKeyboard(): array
     {
         $paybacks_sum = Payback::where('ref_by', $this->User->id)->sum('ref_get');
 
@@ -999,43 +971,47 @@ final class Callback
 
     /**
      * 分享计划
+     *
+     * @throws TelegramSDKException
      */
     public function userInvite(): void
     {
         $CallbackDataExplode = explode('|', $this->CallbackData);
         $Operate = explode('.', $CallbackDataExplode[0]);
         $OpEnd = end($Operate);
-        switch ($OpEnd) {
-            case 'get':
-                $this->AllowEditMessage = false;
+
+        if ($OpEnd === 'get') {
+            $this->AllowEditMessage = false;
+            $code = InviteCode::where('user_id', $this->User->id)->first();
+
+            if ($code === null) {
+                $this->User->addInviteCode();
                 $code = InviteCode::where('user_id', $this->User->id)->first();
-                if ($code === null) {
-                    $this->User->addInviteCode();
-                    $code = InviteCode::where('user_id', $this->User->id)->first();
-                }
-                $inviteUrl = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
-                $text = '<a href="' . $inviteUrl . '">' . $inviteUrl . '</a>';
-                $sendMessage = [
-                    'text' => $text,
-                    'disable_web_page_preview' => false,
-                    'reply_to_message_id' => null,
-                    'reply_markup' => null,
-                ];
-                break;
-            default:
-                $temp = $this->getUserInviteKeyboard();
-                $sendMessage = [
-                    'text' => $temp['text'],
-                    'disable_web_page_preview' => false,
-                    'reply_to_message_id' => null,
-                    'reply_markup' => \json_encode(
-                        [
-                            'inline_keyboard' => $temp['keyboard'],
-                        ]
-                    ),
-                ];
-                break;
+            }
+
+            $inviteUrl = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
+            $text = '<a href="' . $inviteUrl . '">' . $inviteUrl . '</a>';
+
+            $sendMessage = [
+                'text' => $text,
+                'disable_web_page_preview' => false,
+                'reply_to_message_id' => null,
+                'reply_markup' => null,
+            ];
+        } else {
+            $temp = $this->getUserInviteKeyboard();
+            $sendMessage = [
+                'text' => $temp['text'],
+                'disable_web_page_preview' => false,
+                'reply_to_message_id' => null,
+                'reply_markup' => json_encode(
+                    [
+                        'inline_keyboard' => $temp['keyboard'],
+                    ]
+                ),
+            ];
         }
+
         $this->replyWithMessage(
             array_merge(
                 [
@@ -1048,6 +1024,8 @@ final class Callback
 
     /**
      * 每日签到
+     *
+     * @throws TelegramSDKException
      */
     public function userCheckin(): void
     {
@@ -1074,11 +1052,12 @@ final class Callback
                 ],
             ];
         }
+
         $this->replyWithMessage([
             'text' => $temp['text'] . PHP_EOL . PHP_EOL . $checkin['msg'],
             'reply_to_message_id' => $this->MessageID,
             'parse_mode' => 'Markdown',
-            'reply_markup' => \json_encode(
+            'reply_markup' => json_encode(
                 [
                     'inline_keyboard' => $temp['keyboard'],
                 ]

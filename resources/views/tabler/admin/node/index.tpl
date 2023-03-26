@@ -121,7 +121,7 @@
                     }
                 })
             });
-        };
+        }
 
         function copyNode(node_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرور را کپی کنید؟');
@@ -143,7 +143,7 @@
                     }
                 })
             });
-        };
+        }
 
         function reloadTableAjax() {
             table.ajax.reload(null, false);

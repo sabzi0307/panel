@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">IP ورود</span>
+                        <span class="home-title">سابقه ثبت نام</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">مشاهده سابقه ورود به حساب کاربری</span>

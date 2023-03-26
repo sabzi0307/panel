@@ -7,10 +7,13 @@ namespace App\Controllers\Admin\Setting;
 use App\Controllers\BaseController;
 use App\Models\Setting;
 use App\Services\Mail;
+use Exception;
+use Throwable;
+use function json_encode;
 
 final class EmailController extends BaseController
 {
-    public static $update_field = [
+    public static array $update_field = [
         'mail_driver',
         // SMTP
         'smtp_host',
@@ -25,6 +28,7 @@ final class EmailController extends BaseController
         'mailgun_key',
         'mailgun_domain',
         'mailgun_sender',
+        'mailgun_sender_name',
         // Sendgrid
         'sendgrid_key',
         'sendgrid_sender',
@@ -34,8 +38,16 @@ final class EmailController extends BaseController
         'aws_secret_access_key',
         'aws_region',
         'aws_ses_sender',
+        // Postal
+        'postal_host',
+        'postal_key',
+        'postal_sender',
+        'postal_name',
     ];
 
+    /**
+     * @throws Exception
+     */
     public function email($request, $response, $args)
     {
         $settings = [];
@@ -65,15 +77,15 @@ final class EmailController extends BaseController
             $setting = Setting::where('item', '=', $item)->first();
 
             if ($setting->type === 'array') {
-                $setting->value = \json_encode($request->getParam("${item}"));
+                $setting->value = json_encode($request->getParam($item));
             } else {
-                $setting->value = $request->getParam("${item}");
+                $setting->value = $request->getParam($item);
             }
 
             if (! $setting->save()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "خطا در ذخیره ${item}",
+                    'msg' => "خطا در ذخیره {$item}",
                 ]);
             }
         }
@@ -92,11 +104,9 @@ final class EmailController extends BaseController
             Mail::send(
                 $to,
                 'پست آزمایشی',
-                'auth/test.tpl',
-                [],
-                []
+                'auth/test.tpl'
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'ایمیل آزمایشی ارسال نشد',

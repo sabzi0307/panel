@@ -43,6 +43,9 @@
                             <a href="#mailgun" class="nav-link" data-bs-toggle="tab">Mailgun</a>
                         </li>
                         <li class="nav-item">
+                            <a href="#postal" class="nav-link" data-bs-toggle="tab">Postal</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#ses" class="nav-link" data-bs-toggle="tab">AWS SES</a>
                         </li>
                     </ul>
@@ -59,6 +62,7 @@
                                             <option value="smtp" {if $settings['mail_driver'] == "smtp"}selected{/if}>smtp</option>
                                             <option value="sendgrid" {if $settings['mail_driver'] == "sendgrid"}selected{/if}>sendgrid</option>
                                             <option value="mailgun" {if $settings['mail_driver'] == "mailgun"}selected{/if}>mailgun</option>
+                                            <option value="postal" {if $settings['mail_driver'] == "postal"}selected{/if}>postal</option>
                                             <option value="ses" {if $settings['mail_driver'] == "ses"}selected{/if}>ses</option>
                                         </select>
                                     </div>
@@ -89,21 +93,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">نام کاربری SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_username" type="text" class="form-control" value="{$settings['smtp_username']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">رمز عبور SMTP</label>
                                     <div class="col">
                                         <input id="smtp_password" type="text" class="form-control" value="{$settings['smtp_password']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">نام کاربری SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_username" type="text" class="form-control" value="{$settings['smtp_username']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
@@ -189,6 +181,40 @@
                                         <input id="mailgun_sender" type="text" class="form-control" value="{$settings['mailgun_sender']}">
                                     </div>
                                 </div>
+                                 <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Mailgun نام ارسال کننده</label>
+                                    <div class="col">
+                                        <input id="mailgun_sender_name" type="text" class="form-control" value="{$settings['mailgun_sender_name']}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="postal">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Postal API آدرس</label>
+                                    <div class="col">
+                                        <input id="postal_host" type="text" class="form-control" value="{$settings['postal_host']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Postal API کلید</label>
+                                    <div class="col">
+                                        <input id="postal_key" type="text" class="form-control" value="{$settings['postal_key']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Postal ارسال ایمیل</label>
+                                    <div class="col">
+                                        <input id="postal_sender" type="text" class="form-control" value="{$settings['postal_sender']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Postal نام ارسال کننده</label>
+                                    <div class="col">
+                                        <input id="postal_name" type="text" class="form-control" value="{$settings['postal_name']}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="ses">
@@ -229,7 +255,7 @@
 <script>
     $("#save-setting").click(function() {
         $.ajax({
-            url: '/admin/setting/captcha',
+            url: '/admin/setting/email',
             type: 'POST',
             dataType: "json",
             data: {

@@ -119,7 +119,7 @@
                     }
                 })
             });
-        };
+        }
 
         function copyProduct(product_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرویس را کپی کنید؟');
@@ -141,7 +141,7 @@
                     }
                 })
             });
-        };
+        }
 
         function reloadTableAjax() {
             table.ajax.reload(null, false);

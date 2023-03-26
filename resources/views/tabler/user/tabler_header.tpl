@@ -98,7 +98,7 @@
                                                 <i class="ti ti-edit"></i>&nbsp;
                                                 اصلاح اطلاعات
                                             </a>
-                                            {if $config['enable_ticket'] == true}
+                                            {if $public_setting['enable_ticket']}
                                             <a class="dropdown-item" href="/user/ticket">
                                                 <i class="ti ti-ticket"></i>&nbsp;
                                                 پشتیبانی
@@ -191,6 +191,26 @@
                                         فروشگاه
                                     </span>
                                 </a>
+                                {if $user->use_new_shop}
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="/user/product">
+                                                <i class="ti ti-building-store"></i>&nbsp;
+                                                لیست محصولات
+                                            </a>
+                                            <a class="dropdown-item" href="/user/order">
+                                                <i class="ti ti-file-invoice"></i>&nbsp;
+                                                مدیریت سفارش
+                                            </a>
+                                            <a class="dropdown-item" href="/user/invoice">
+                                                <i class="ti ti-coin"></i>&nbsp;
+                                                مدیریت صورت حساب
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {else}
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
@@ -205,6 +225,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                {/if}
                             </li>
                             {if $user->is_admin}
                             <li class="nav-item">

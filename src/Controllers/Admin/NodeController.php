@@ -7,17 +7,19 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\Node;
 use App\Models\Setting;
-use App\Utils\CloudflareDriver;
+use App\Services\CloudflareDriver;
 use App\Utils\Telegram;
 use App\Utils\Tools;
+use Cloudflare\API\Endpoints\EndpointException;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function trim;
 
 final class NodeController extends BaseController
 {
-    public static $details = [
+    public static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه سرور',
@@ -34,7 +36,7 @@ final class NodeController extends BaseController
         ],
     ];
 
-    public static $update_field = [
+    public static array $update_field = [
         'name',
         'server',
         'mu_only',
@@ -52,7 +54,7 @@ final class NodeController extends BaseController
     /**
      * 后台节点页面
      *
-     * @param array     $args
+     * @throws Exception
      */
     public function index(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -66,7 +68,7 @@ final class NodeController extends BaseController
     /**
      * 后台创建节点页面
      *
-     * @param array     $args
+     * @throws Exception
      */
     public function create(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -80,58 +82,76 @@ final class NodeController extends BaseController
     /**
      * 后台添加节点
      *
-     * @param array     $args
+     * @throws EndpointException
      */
     public function add(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $node = new Node();
-        $node->name = $request->getParam('name');
-        $node->server = trim($request->getParam('server'));
-        $node->traffic_rate = $request->getParam('traffic_rate');
-        $node->info = $request->getParam('info');
-        $node->type = $request->getParam('type') === 'true' ? 1 : 0;
-        $node->node_group = $request->getParam('node_group');
-        $node->node_speedlimit = $request->getParam('node_speedlimit');
-        $node->status = '';
-        $node->sort = $request->getParam('sort');
+        $name = $request->getParam('name') ?? '';
+        $server = trim($request->getParam('server'));
+        $traffic_rate = $request->getParam('traffic_rate') ?? 1;
+        $custom_config = $request->getParam('custom_config') ?? '{}';
+        $info = $request->getParam('info') ?? '';
+        $type = $request->getParam('type') === 'true' ? 1 : 0;
+        $node_group = $request->getParam('node_group') ?? 0;
+        $node_speedlimit = $request->getParam('node_speedlimit') ?? 0;
+        $sort = $request->getParam('sort') ?? 0;
+        $req_node_ip = trim($request->getParam('node_ip'));
+        $node_class = $request->getParam('node_class') ?? 0;
+        $node_bandwidth_limit = $request->getParam('node_bandwidth_limit') ?? 0;
+        $bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday') ?? 0;
 
-        if ($request->getParam('custom_config') !== null) {
-            $node->custom_config = $request->getParam('custom_config');
+        if ($name === '' ||
+            $server === '' ||
+            $traffic_rate === '' ||
+            $node_group === '' ||
+            $node_speedlimit === '' ||
+            $sort === '' ||
+            $node_class === '' ||
+            $node_bandwidth_limit === '' ||
+            $bandwidthlimit_resetday === '') {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'لطفاً مطمئن شوید که هیچ کدام از موارد خالی نباشند',
+            ]);
+        }
+
+        $node = new Node();
+        $node->name = $name;
+        $node->server = $server;
+        $node->traffic_rate = $traffic_rate;
+
+        if ($custom_config !== '') {
+            $node->custom_config = $custom_config;
         } else {
             $node->custom_config = '{}';
         }
 
-        $req_node_ip = trim($request->getParam('node_ip'));
-        $success = true;
-        $server_list = explode(';', $node->server);
+        $node->info = $info;
+        $node->type = $type;
+        $node->node_group = $node_group;
+        $node->node_speedlimit = $node_speedlimit;
+        $node->status = '';
+        $node->sort = $sort;
+        $node->node_class = $node_class;
+        $node->node_bandwidth_limit = $node_bandwidth_limit * 1024 * 1024 * 1024;
+        $node->bandwidthlimit_resetday = $bandwidthlimit_resetday;
 
-        if (Tools::isIPv4($req_node_ip)) {
-            $success = $node->changeNodeIp($req_node_ip);
+        if (Tools::isIPv4($req_node_ip) || Tools::isIPv6($req_node_ip)) {
+            $node->changeNodeIp($req_node_ip);
         } else {
-            $success = $node->changeNodeIp($server_list[0]);
+            $node->changeNodeIp($server);
         }
 
-        if (! $success) {
+        $node->password = Tools::genRandomChar(32);
+
+        if (! $node->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'دریافت IP سرور ناموفق بود، لطفاً بررسی کنید که آیا آدرس سرور وارد شده صحیح است یا خیر！',
+                'msg' => 'گره اضافه نشد',
             ]);
         }
 
-        $node->node_class = $request->getParam('node_class');
-
-        if ($request->getParam('node_bandwidth_limit') === null || $request->getParam('node_bandwidth_limit') === '') {
-            $node->node_bandwidth_limit = 0;
-        } else {
-            $node->node_bandwidth_limit = $request->getParam('node_bandwidth_limit') * 1024 * 1024 * 1024;
-        }
-
-        $node->bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday');
-        $node->password = Tools::genRandomChar(32);
-
-        $node->save();
-
-        if ($_ENV['cloudflare_enable'] === true) {
+        if ($_ENV['cloudflare_enable']) {
             $domain_name = explode('.' . $_ENV['cloudflare_name'], $node->server);
             CloudflareDriver::updateRecord($domain_name[0], $node->node_ip);
         }
@@ -164,12 +184,13 @@ final class NodeController extends BaseController
     /**
      * 后台编辑指定节点页面
      *
-     * @param array     $args
+     * @throws Exception
      */
     public function edit(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $id = $args['id'];
         $node = Node::find($id);
+
         return $response->write(
             $this->view()
                 ->assign('node', $node)
@@ -180,13 +201,14 @@ final class NodeController extends BaseController
 
     /**
      * 后台更新指定节点内容
-     *
-     * @param array     $args
      */
     public function update(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $id = $args['id'];
         $node = Node::find($id);
+
+        $custom_config = $request->getParam('custom_config') ?? '{}';
+
         $node->name = $request->getParam('name');
         $node->node_group = $request->getParam('node_group');
         $node->server = trim($request->getParam('server'));
@@ -196,28 +218,18 @@ final class NodeController extends BaseController
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
         $node->sort = $request->getParam('sort');
 
-        if ($request->getParam('custom_config') !== null) {
-            $node->custom_config = $request->getParam('custom_config');
+        if ($custom_config !== '') {
+            $node->custom_config = $custom_config;
         } else {
             $node->custom_config = '{}';
         }
 
         $req_node_ip = trim($request->getParam('node_ip'));
 
-        $success = true;
-        $server_list = explode(';', $node->server);
-
-        if (Tools::isIPv4($req_node_ip)) {
-            $success = $node->changeNodeIp($req_node_ip);
+        if (Tools::isIPv4($req_node_ip) || Tools::isIPv6($req_node_ip)) {
+            $node->changeNodeIp($req_node_ip);
         } else {
-            $success = $node->changeNodeIp($server_list[0]);
-        }
-
-        if (! $success) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'به روز رسانی IP سرور انجام نشد، لطفاً بررسی کنید که آیا آدرس سرور وارد شده صحیح است یا خیر！',
-            ]);
+            $node->changeNodeIp($node->server);
         }
 
         $node->status = '';
@@ -225,7 +237,12 @@ final class NodeController extends BaseController
         $node->node_bandwidth_limit = $request->getParam('node_bandwidth_limit') * 1024 * 1024 * 1024;
         $node->bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday');
 
-        $node->save();
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'ویرایش موفقیت آمیز نبود',
+            ]);
+        }
 
         if (Setting::obtain('telegram_update_node')) {
             try {
@@ -250,10 +267,7 @@ final class NodeController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function resetNodePassword(ServerRequest $request, Response $response, array $args)
+    public function resetNodePassword(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $id = $args['id'];
         $node = Node::find($id);
@@ -265,14 +279,12 @@ final class NodeController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'کلید ارتباطی با موفقیت بازنشانی شد',
+            'msg' => 'کلید ارتباطی گره با موفقیت بازنشانی شد',
         ]);
     }
 
     /**
      * 后台删除指定节点
-     *
-     * @param array     $args
      */
     public function delete(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -322,7 +334,7 @@ final class NodeController extends BaseController
             $new_node->name .= ' (کپی)';
             $new_node->node_bandwidth = 0;
             $new_node->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => $e->getMessage(),
@@ -337,8 +349,6 @@ final class NodeController extends BaseController
 
     /**
      * 后台节点页面 AJAX
-     *
-     * @param array     $args
      */
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
     {

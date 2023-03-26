@@ -507,7 +507,17 @@
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "mailgun sender"
+        "mark": "mailgun send mail"
+    },
+    {
+        "id": null,
+        "item": "mailgun_sender_name",
+        "value": "",
+        "class": "mailgun",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "mailgun sender name"
     },
     {
         "id": null,
@@ -538,6 +548,46 @@
         "type": "string",
         "default": "",
         "mark": "sendgrid sender name"
+    },
+    {
+        "id": null,
+        "item": "postal_host",
+        "value": "",
+        "class": "postal",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Postal API address"
+    },
+    {
+        "id": null,
+        "item": "postal_key",
+        "value": "",
+        "class": "postal",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Postal API key"
+    },
+    {
+        "id": null,
+        "item": "postal_sender",
+        "value": "",
+        "class": "postal",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Postal sending email"
+    },
+    {
+        "id": null,
+        "item": "postal_name",
+        "value": "",
+        "class": "postal",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Postal sender name"
     },
     {
         "id": null,
@@ -581,49 +631,9 @@
     },
     {
         "id": null,
-        "item": "enable_admin_contact",
-        "value": "0",
-        "class": "contact",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Whether to display the contact information of the webmaster"
-    },
-    {
-        "id": null,
-        "item": "admin_contact1",
-        "value": "qq",
-        "class": "contact",
-        "is_public": 1,
-        "type": "string",
-        "default": "qq",
-        "mark": "Webmaster contact information one"
-    },
-    {
-        "id": null,
-        "item": "admin_contact2",
-        "value": "mail",
-        "class": "contact",
-        "is_public": 1,
-        "type": "string",
-        "default": "mail",
-        "mark": "Webmaster contact information 2"
-    },
-    {
-        "id": null,
-        "item": "admin_contact3",
-        "value": "telegram",
-        "class": "contact",
-        "is_public": 1,
-        "type": "string",
-        "default": "telegram",
-        "mark": "Webmaster contact information three"
-    },
-    {
-        "id": null,
         "item": "tawk_id",
         "value": "",
-        "class": "live_chat",
+        "class": "support",
         "is_public": 1,
         "type": "string",
         "default": "",
@@ -633,7 +643,7 @@
         "id": null,
         "item": "crisp_id",
         "value": "",
-        "class": "live_chat",
+        "class": "support",
         "is_public": 1,
         "type": "string",
         "default": "",
@@ -643,7 +653,7 @@
         "id": null,
         "item": "livechat_id",
         "value": "",
-        "class": "live_chat",
+        "class": "support",
         "is_public": 1,
         "type": "string",
         "default": "",
@@ -653,7 +663,7 @@
         "id": null,
         "item": "mylivechat_id",
         "value": "",
-        "class": "live_chat",
+        "class": "support",
         "is_public": 1,
         "type": "string",
         "default": "",
@@ -663,11 +673,31 @@
         "id": null,
         "item": "live_chat",
         "value": "none",
-        "class": "live_chat",
+        "class": "support",
         "is_public": 1,
         "type": "string",
         "default": "none",
         "mark": "Customer service system switch"
+    },
+    {
+        "id": null,
+        "item": "enable_ticket",
+        "value": "1",
+        "class": "support",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Enable ticket system"
+    },
+    {
+        "id": null,
+        "item": "mail_ticket",
+        "value": "1",
+        "class": "support",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "Enable Ticket Email Alerts"
     },
     {
         "id": null,
@@ -738,6 +768,16 @@
         "type": "bool",
         "default": "0",
         "mark": "Whether the user is required to enter IM contact information when registering"
+    },
+    {
+        "id": null,
+        "item": "enable_reg_new_shop",
+        "value": "1",
+        "class": "register",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "New users use the new store system by default"
     },
     {
         "id": null,
@@ -817,27 +857,27 @@
         "is_public": 0,
         "type": "int",
         "default": "20",
-        "mark": "Registration bonus traffic (unit: GB)"
+        "mark": "Free traffic when you sign up (GB)"
     },
     {
         "id": null,
         "item": "sign_up_for_free_time",
-        "value": "7",
+        "value": "365",
         "class": "register",
         "is_public": 0,
         "type": "int",
-        "default": "7",
-        "mark": "The duration of the free registration (unit: day)"
+        "default": "365",
+        "mark": "The account validity period set at the time of registration (days)"
     },
     {
         "id": null,
-        "item": "connection_device_limit",
+        "item": "connection_ip_limit",
         "value": "0",
         "class": "register",
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "Connection device limit"
+        "mark": "Connection IP restrictions set during registration"
     },
     {
         "id": null,
@@ -847,7 +887,7 @@
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "use rate limit"
+        "mark": "Usage rate limit set at registration"
     },
     {
         "id": null,
@@ -867,16 +907,16 @@
         "is_public": 0,
         "type": "int",
         "default": "7",
-        "mark": "The level expiration time set during registration (unit: day)"
+        "mark": "Level expiration time set at registration (days)"
     },
     {
         "id": null,
         "item": "sign_up_for_method",
-        "value": "chacha20-ietf",
+        "value": "aes-128-gcm",
         "class": "register",
         "is_public": 0,
         "type": "string",
-        "default": "chacha20-ietf",
+        "default": "aes-128-gcm",
         "mark": "Default Encryption"
     },
     {
@@ -907,7 +947,7 @@
         "is_public": 1,
         "type": "int",
         "default": "1",
-        "mark": "Invite registration balance reward (unit: yuan)"
+        "mark": "Invitation registration balance reward (toman)"
     },
     {
         "id": null,
@@ -917,7 +957,7 @@
         "is_public": 1,
         "type": "int",
         "default": "10",
-        "mark": "Invite registration traffic reward (unit: GB)"
+        "mark": "Invitation registration traffic reward (GB)"
     },
     {
         "id": null,
@@ -977,7 +1017,7 @@
         "is_public": 0,
         "type": "int",
         "default": "180",
-        "mark": "Rebate time limit (unit: day)"
+        "mark": "Rebate Time Range Limit (days)"
     },
     {
         "id": null,
@@ -1352,17 +1392,17 @@
     {
         "id": null,
         "item": "display_media",
-        "value": "1",
+        "value": "0",
         "class": "feature",
         "is_public": 1,
         "type": "bool",
-        "default": "1",
+        "default": "0",
         "mark": "Display node streaming unlock status"
     },
     {
         "id": null,
         "item": "display_subscribe_log",
-        "value": "1",
+        "value": "0",
         "class": "feature",
         "is_public": 1,
         "type": "bool",
@@ -1381,12 +1421,62 @@
     },
     {
         "id": null,
+        "item": "enable_traditional_sub",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Traditional Subscription System Switch"
+    },
+    {
+        "id": null,
+        "item": "enable_ss_sub",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Shadowsocks subscription switch"
+    },
+    {
+        "id": null,
+        "item": "enable_v2_sub",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "V2Ray subscription switch"
+    },
+    {
+        "id": null,
+        "item": "enable_trojan_sub",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "Trojan Subscription Switch"
+    },
+    {
+        "id": null,
+        "item": "enable_forced_replacement",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "Whether to forcibly change the subscription address when the user modifies the account login password"
+    },
+    {
+        "id": null,
         "item": "db_version",
-        "value": "20230201",
+        "value": "2023020100",
         "class": "db",
         "is_public": 0,
         "type": "int",
-        "default": "20230201",
+        "default": "2023020100",
         "mark": "current database version"
     }
 ]

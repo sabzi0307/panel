@@ -100,6 +100,24 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">به طور پیش فرض از سیستم فروشگاه جدید استفاده کنید</label>
+                                    <div class="col">
+                                        <select id="enable_reg_new_shop" class="col form-select" value="{$settings['enable_reg_new_shop']}">
+                                            <option value="0" {if $settings['enable_reg_new_shop'] == false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_reg_new_shop'] == true}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">به طور پیش فرض از سیستم فروشگاه جدید استفاده کنید</label>
+                                    <div class="col">
+                                        <select id="enable_reg_new_shop" class="col form-select" value="{$settings['enable_reg_new_shop']}">
+                                            <option value="0" {if $settings['enable_reg_new_shop'] == false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_reg_new_shop'] == true}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="default_value">
@@ -141,7 +159,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">مدت زمان هدیه هنگام ثبت نام (روزها)</label>
+                                    <label class="form-label col-3 col-form-label">مدت اعتبار حساب تعیین شده در زمان ثبت نام (روزها)</label>
                                     <div class="col">
                                         <input id="sign_up_for_free_time" type="text" class="form-control" value="{$settings['sign_up_for_free_time']}">
                                     </div>
@@ -175,9 +193,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">محدودیت های دستگاه متصل</label>
+                                    <label class="form-label col-3 col-form-label">محدودیت IP اتصال</label>
                                     <div class="col">
-                                        <input id="connection_device_limit" type="text" class="form-control" value="{$settings['connection_device_limit']}">
+                                        <input id="connection_ip_limit" type="text" class="form-control" value="{$settings['connection_ip_limit']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">

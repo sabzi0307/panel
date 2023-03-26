@@ -211,10 +211,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">پیوند محدودیت های دستگاه</label>
+                                    <label class="form-label col-12 col-form-label">محدودیت IP اتصال همزمان</label>
                                     <div class="col">
-                                        <input id="node_connector" type="text" class="form-control"
-                                            value="{$edit_user->node_connector}">
+                                        <input id="node_iplimit" type="text" class="form-control"
+                                            value="{$edit_user->node_iplimit}">
                                     </div>
                                 </div>
                         </div>
@@ -282,6 +282,7 @@
                 is_admin: $("#is_admin").is(":checked"),
                 is_banned: $("#enable").is(":checked"),
                 ga_enable: $("#ga_enable").is(":checked"),
+                use_new_shop: $("#use_new_shop").is(":checked"),
             },
             success: function(data) {
                 if (data.ret == 1) {

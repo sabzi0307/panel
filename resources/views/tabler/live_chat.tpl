@@ -44,14 +44,14 @@
 {if $public_setting['live_chat'] == 'livechat'}
 <script>
 window.__lc = window.__lc || { };
-window.__lc.license = "{$public_setting['livechat_id']}";;
+window.__lc.license = "{$public_setting['livechat_id']}";
 window.__lc.params = [
     { name: 'شناسه کاربر', value: '{$user->id}' },
     { name: 'دسته کاربری', value: '{$user->class}' },
     { name: 'ثبت نام ایمیل', value: '{$user->email}' },
     { name: 'آخرین استفاده', value: '{$user->lastSsTime()}' },
     { name: 'تاریخ انقضا', value: '{$user->expire_in}' },
-    { name: 'زمان کلاس', value: '{$user->class_expire}' },
+    { name: 'زمان سطح', value: '{$user->class_expire}' },
     { name: 'ترافیک باقیمانده', value: '{$user->unusedTraffic()}' },
     { name: 'موجودی حساب', value: '{$user->money}' }
 ];

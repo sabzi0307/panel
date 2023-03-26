@@ -7,8 +7,13 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\Product;
 use App\Utils\Tools;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function json_decode;
+use function json_encode;
+use function time;
 
 final class ProductController extends BaseController
 {
@@ -44,7 +49,10 @@ final class ProductController extends BaseController
         'node_group_required',
     ];
 
-    public function index(ServerRequest $request, Response $response, array $args)
+    /**
+     * @throws Exception
+     */
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -53,7 +61,10 @@ final class ProductController extends BaseController
         );
     }
 
-    public function create(ServerRequest $request, Response $response, array $args)
+    /**
+     * @throws Exception
+     */
+    public function create(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -62,7 +73,27 @@ final class ProductController extends BaseController
         );
     }
 
-    public function add(ServerRequest $request, Response $response, array $args)
+    /**
+     * @throws Exception
+     */
+    public function edit(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $id = $args['id'];
+        $product = Product::find($id);
+        $content = json_decode($product->content);
+        $limit = json_decode($product->limit);
+
+        return $response->write(
+            $this->view()
+                ->assign('product', $product)
+                ->assign('content', $content)
+                ->assign('limit', $limit)
+                ->assign('update_field', self::$update_field)
+                ->fetch('admin/product/edit.tpl')
+        );
+    }
+
+    public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         // base product
         $type = $request->getParam('type');
@@ -79,29 +110,34 @@ final class ProductController extends BaseController
         $speed_limit = $request->getParam('speed_limit');
         $ip_limit = $request->getParam('ip_limit');
         // limit
-        $class_required = $request->getParam('class_required');
-        $node_group_required = $request->getParam('node_group_required');
+        $class_required = $request->getParam('class_required') ?? '';
+        $node_group_required = $request->getParam('node_group_required') ?? '';
         $new_user_required = $request->getParam('new_user_required') === 'true' ? 1 : 0;
 
         try {
             $product = new Product();
 
-            if ($name === '') {
-                throw new \Exception('لطفا نام سرویس را وارد کنید');
+            if ($name === '' || $name === null) {
+                throw new Exception('لطفا نام سرویس را وارد کنید');
             }
-            if ($price === '') {
-                throw new \Exception('لطفا قیمت سرویس را وارد نمایید');
+            if ($price === '' || $price === null) {
+                throw new Exception('لطفا قیمت سرویس را وارد نمایید');
             }
-            if ($stock === '') {
-                throw new \Exception('لطفا موجودی سرویس را وارد کنید');
+            if ($stock === '' || $stock === null) {
+                throw new Exception('لطفا موجودی سرویس را وارد کنید');
             }
 
             if ($type === 'tabp') {
-                if ($time === '') {
-                    throw new \Exception('لطفا مدت زمان بسته را پر کنید');
+                if ($time === '' || $time === null) {
+                    throw new Exception('لطفا مدت زمان محصول را پر کنید');
                 }
-                if ($bandwidth === '') {
-                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
+
+                if ($class_time === '' || $class_time === null) {
+                    throw new Exception('لطفا مدت زمان سطح را پر کنید');
+                }
+
+                if ($bandwidth === '' || $bandwidth === null) {
+                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 ($class === '') && $class = '0';
@@ -119,23 +155,27 @@ final class ProductController extends BaseController
                     'ip_limit' => $ip_limit,
                 ];
             } elseif ($type === 'time') {
-                if ($time === '') {
-                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
+                if ($time === '' || $time === null) {
+                    throw new Exception('لطفا مدت زمان محصول را پر کنید');
+                }
+
+                if ($class_time === '' || $class_time === null) {
+                    throw new Exception('لطفا مدت زمان سطح را پر کنید');
                 }
 
                 $content = [
                     'time' => $time,
                 ];
             } elseif ($type === 'bandwidth') {
-                if ($bandwidth === '') {
-                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
+                if ($bandwidth === '' || $bandwidth === null) {
+                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 $content = [
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('نوع سرویس اشتباه وارد شده');
+                throw new Exception('نوع سرویس اشتباه وارد شده');
             }
 
             $limit = [
@@ -147,15 +187,15 @@ final class ProductController extends BaseController
             $product->type = $type;
             $product->name = $name;
             $product->price = $price;
-            $product->content = \json_encode($content);
-            $product->limit = \json_encode($limit);
+            $product->content = json_encode($content);
+            $product->limit = json_encode($limit);
             $product->status = $status;
-            $product->create_time = \time();
-            $product->update_time = \time();
+            $product->create_time = time();
+            $product->update_time = time();
             $product->sale_count = 0;
             $product->stock = $stock;
             $product->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => $e->getMessage(),
@@ -168,23 +208,7 @@ final class ProductController extends BaseController
         ]);
     }
 
-    public function edit(ServerRequest $request, Response $response, array $args)
-    {
-        $id = $args['id'];
-        $product = Product::find($id);
-        $content = \json_decode($product->content, true);
-        $limit = \json_decode($product->limit, true);
-        return $response->write(
-            $this->view()
-                ->assign('product', $product)
-                ->assign('content', $content)
-                ->assign('limit', $limit)
-                ->assign('update_field', self::$update_field)
-                ->fetch('admin/product/edit.tpl')
-        );
-    }
-
-    public function update(ServerRequest $request, Response $response, array $args)
+    public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $product_id = $args['id'];
         // base product
@@ -202,29 +226,29 @@ final class ProductController extends BaseController
         $speed_limit = $request->getParam('speed_limit');
         $ip_limit = $request->getParam('ip_limit');
         // limit
-        $class_required = $request->getParam('class_required');
-        $node_group_required = $request->getParam('node_group_required');
+        $class_required = $request->getParam('class_required') ?? '';
+        $node_group_required = $request->getParam('node_group_required') ?? '';
         $new_user_required = $request->getParam('new_user_required') === 'true' ? 1 : 0;
 
         try {
             $product = Product::find($product_id);
 
             if ($name === '') {
-                throw new \Exception('لطفا نام سرویس را وارد کنید');
+                throw new Exception('لطفا نام سرویس را وارد کنید');
             }
             if ($price === '') {
-                throw new \Exception('لطفا قیمت سرویس را وارد نمایید');
+                throw new Exception('لطفا قیمت سرویس را وارد نمایید');
             }
             if ($stock === '') {
-                throw new \Exception('لطفا موجودی سرویس را وارد کنید');
+                throw new Exception('لطفا موجودی سرویس را وارد کنید');
             }
 
             if ($type === 'tabp') {
                 if ($time === '') {
-                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
+                    throw new Exception('لطفا مدت زمان بسته را وارد کنید');
                 }
                 if ($bandwidth === '') {
-                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
+                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 ($class === '') && $class = '0';
@@ -243,7 +267,7 @@ final class ProductController extends BaseController
                 ];
             } elseif ($type === 'time') {
                 if ($time === '') {
-                    throw new \Exception('لطفا مدت زمان بسته را وارد کنید');
+                    throw new Exception('لطفا مدت زمان بسته را وارد کنید');
                 }
 
                 $content = [
@@ -251,14 +275,14 @@ final class ProductController extends BaseController
                 ];
             } elseif ($type === 'bandwidth') {
                 if ($bandwidth === '') {
-                    throw new \Exception('لطفا ترافیک بسته را وارد کنید');
+                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
                 }
 
                 $content = [
                     'bandwidth' => $bandwidth,
                 ];
             } else {
-                throw new \Exception('نوع سرویس اشتباه وارد شده');
+                throw new Exception('نوع سرویس اشتباه وارد شده');
             }
 
             $limit = [
@@ -270,13 +294,13 @@ final class ProductController extends BaseController
             $product->type = $type;
             $product->name = $name;
             $product->price = $price;
-            $product->content = \json_encode($content);
-            $product->limit = \json_encode($limit);
+            $product->content = json_encode($content);
+            $product->limit = json_encode($limit);
             $product->stock = $stock;
             $product->status = $status;
-            $product->update_time = \time();
+            $product->update_time = time();
             $product->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => $e->getMessage(),
@@ -289,7 +313,7 @@ final class ProductController extends BaseController
         ]);
     }
 
-    public function delete(ServerRequest $request, Response $response, array $args)
+    public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $product_id = $args['id'];
         Product::find($product_id)->delete();
@@ -300,7 +324,7 @@ final class ProductController extends BaseController
         ]);
     }
 
-    public function copy(ServerRequest $request, Response $response, array $args)
+    public function copy(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         try {
             $old_product_id = $args['id'];
@@ -312,11 +336,11 @@ final class ProductController extends BaseController
                 'update_time',
             ]);
             $new_product->name .= ' (کپی)';
-            $new_product->create_time = \time();
-            $new_product->update_time = \time();
+            $new_product->create_time = time();
+            $new_product->update_time = time();
             $new_product->sale_count = 0;
             $new_product->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => $e->getMessage(),
@@ -329,7 +353,7 @@ final class ProductController extends BaseController
         ]);
     }
 
-    public function ajax(ServerRequest $request, Response $response, array $args)
+    public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $products = Product::orderBy('id', 'desc')->get();
 

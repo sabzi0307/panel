@@ -31,7 +31,7 @@
                     <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
                         <li class="nav-item">
-                            <a href="#support" class="nav-link active" data-bs-toggle="tab">سیستم خدمات مشتریان وب</a>
+                            <a href="#support" class="nav-link active" data-bs-toggle="tab">خدمات مشتری وب</a>
                         </li>
                         <li class="nav-item">
                             <a href="#admin_contact" class="nav-link" data-bs-toggle="tab">تماس با مدیر</a>
@@ -80,33 +80,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="admin_contact">
+                        <div class="tab-pane" id="ticket">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آیا اطلاعات تماس مدیر نمایش داده شود یا خیر</label>
+                                    <label class="form-label col-3 col-form-label">فعال کردن سیستم تیکت</label>
                                     <div class="col">
-                                        <select id="enable_admin_contact" class="col form-select" value="{$settings['enable_admin_contact']}">
-                                            <option value="0" {if $settings['enable_admin_contact'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_admin_contact'] == true}selected{/if}>فعال</option>
+                                        <select id="enable_ticket" class="col form-select" value="{$settings['enable_ticket']}">
+                                            <option value="0" {if $settings['enable_ticket'] == false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_ticket'] == true}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تماس 1</label>
+                                    <label class="form-label col-3 col-form-label">هشدارهای ایمیل تیکت را فعال کنید</label>
                                     <div class="col">
-                                        <input id="admin_contact1" type="text" class="form-control" value="{$settings['admin_contact1']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تماس 2</label>
-                                    <div class="col">
-                                        <input id="admin_contact2" type="text" class="form-control" value="{$settings['admin_contact2']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تماس 3</label>
-                                    <div class="col">
-                                        <input id="admin_contact3" type="text" class="form-control" value="{$settings['admin_contact3']}">
+                                        <select id="mail_ticket" class="col form-select" value="{$settings['mail_ticket']}">
+                                            <option value="0" {if $settings['mail_ticket'] == false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['mail_ticket'] == true}selected{/if}>فعال</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

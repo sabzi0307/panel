@@ -3177,21 +3177,21 @@ function showLinuxKernelInfo(){
     # isFlagBbr=$(sysctl net.ipv4.tcp_congestion_control | awk '{print $3}')
 
     # if [[ (${isFlagBbr} == *"bbr"*)  &&  (${isFlagBbr} != *"bbrplus"*) && (${isFlagBbr} != *"bbr2"*) ]]; then
-    #     green " 状态显示--是否开启BBR: 已开启 "
+    #     green " 状态显示--是否فعالBBR: 已فعال "
     # else
-    #     green " 状态显示--是否开启BBR: 未开启 "
+    #     green " 状态显示--是否فعالBBR: 未فعال "
     # fi
 
     # if [[ ${isFlagBbr} == *"bbrplus"* ]]; then
-    #     green " 状态显示--是否开启BBR Plus: 已开启 "
+    #     green " 状态显示--是否فعالBBR Plus: 已فعال "
     # else
-    #     green " 状态显示--是否开启BBR Plus: 未开启 "
+    #     green " 状态显示--是否فعالBBR Plus: 未فعال "
     # fi
     
     # if [[ ${isFlagBbr} == *"bbr2"* ]]; then
-    #     green " 状态显示--是否开启BBR2: 已开启 "
+    #     green " 状态显示--是否فعالBBR2: 已فعال "
     # else
-    #     green " 状态显示--是否开启BBR2: 未开启 "
+    #     green " 状态显示--是否فعالBBR2: 未فعال "
     # fi
 
     green " =================================================="

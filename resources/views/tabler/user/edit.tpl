@@ -63,7 +63,7 @@
                                                         <input id="new-email" type="email" class="form-control"
                                                             placeholder="ایمیل جدید" {if $config['enable_change_email'] == false}disabled=""{/if}>
                                                     </div>
-                                                    {if $config['enable_email_verify'] == true && $config['enable_change_email'] == true}
+                                                    {if $public_setting['reg_email_verify'] == true && $config['enable_change_email'] == true}
                                                     <div class="mb-3">
                                                         <input id="email-code" type="text" class="form-control"
                                                             placeholder="کد تایید">
@@ -72,7 +72,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        {if $config['enable_email_verify'] == true && $config['enable_change_email'] == true}
+                                                        {if $public_setting['reg_email_verify'] == true && $config['enable_change_email'] == true}
                                                         <a id="email-verify" class="btn btn-link">دریافت کد تایید</a>
                                                         <button id="modify-email"
                                                             class="btn btn-primary ms-auto">تجدید نظر کنید</button>
@@ -541,7 +541,7 @@
                 url: "/user/email",
                 dataType: "json",
                 data: {
-                    {if $config['enable_email_verify'] == true}
+                    {if $public_setting['reg_email_verify'] == true}
                         emailcode: $('#email-code').val(),
                     {/if}
                     newemail: $('#new-email').val()

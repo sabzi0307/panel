@@ -9,7 +9,7 @@
                 </a>
             </div>
             <div class="card card-md">
-                {if $config['register_mode'] != 'close'}
+                {if $public_setting['reg_mode'] != 'close'}
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">ثبت حساب</h2>
                         <div class="mb-3">

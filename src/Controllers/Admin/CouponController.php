@@ -7,15 +7,21 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\UserCoupon;
 use App\Utils\Tools;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function in_array;
+use function json_decode;
+use function json_encode;
+use function time;
 
 /*
  *  Coupon Controller
  */
 final class CouponController extends BaseController
 {
-    public static $details = [
+    public static array $details = [
         'field' => [
             'op' => 'اقدام',
             'id' => 'شناسه کد تخفیف',
@@ -25,6 +31,7 @@ final class CouponController extends BaseController
             'product_id' => 'شناسه محصول موجود',
             'use_time' => 'تعداد استفاده به ازای هر کاربر',
             'new_user' => 'فقط برای کاربران جدید',
+            'disabled' => 'غیر فعال',
             'create_time' => 'زمان ایجاد',
             'expire_time' => 'انقضا',
         ],
@@ -52,13 +59,13 @@ final class CouponController extends BaseController
             ],
             [
                 'id' => 'product_id',
-                'info' => 'شناسه محصول موجود',
+                'info' => 'شناسه‌های کالاهای موجود (شناسه‌های متعدد با کاما از هم جدا می‌شوند)',
                 'type' => 'input',
                 'placeholder' => '',
             ],
             [
                 'id' => 'use_time',
-                'info' => 'تعداد استفاده به ازای هر کاربر',
+                'info' => 'تعداد دفعاتی که هر کاربر می تواند از آن استفاده کند (کمتر از 0 نامحدود است)',
                 'type' => 'input',
                 'placeholder' => '',
             ],
@@ -78,7 +85,7 @@ final class CouponController extends BaseController
                 'select' => [
                     'char' => 'کاراکتر مشخص',
                     'random' => 'کاراکترهای تصادفی (عدم توجه به پارامترهای کد تخفیف)',
-                    'char_ramdom' => 'کاراکتر مشخص + کاراکتر تصادفی',
+                    'char_random' => 'کاراکتر مشخص + کاراکتر تصادفی',
                 ],
             ],
         ],
@@ -87,9 +94,9 @@ final class CouponController extends BaseController
     /**
      * 后台优惠码页面
      *
-     * @param array     $args
+     * @throws Exception
      */
-    public function index(ServerRequest $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -100,10 +107,8 @@ final class CouponController extends BaseController
 
     /**
      * 添加优惠码
-     *
-     * @param array     $args
      */
-    public function add(ServerRequest $request, Response $response, array $args)
+    public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $code = $request->getParam('code');
         $type = $request->getParam('type');
@@ -114,7 +119,7 @@ final class CouponController extends BaseController
         $generate_method = $request->getParam('generate_method');
         $expire_time = $request->getParam('expire_time');
 
-        if ($code === '' && \in_array($generate_method, ['char', 'char_ramdom'])) {
+        if ($code === '' && in_array($generate_method, ['char', 'char_ramdom'])) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'کد تخفیف نمی تواند خالی باشد',
@@ -135,26 +140,24 @@ final class CouponController extends BaseController
             ]);
         }
 
-        if ($expire_time < \time()) {
+        if ($expire_time !== '' && $expire_time < time()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'زمان انقضا نمی تواند از زمان حال کمتر باشد',
             ]);
         }
 
-        if ($generate_method === 'char') {
-            if (UserCoupon::where('code', $code)->count() !== 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'کد تخفیف از قبل وجود دارد',
-                ]);
-            }
+        if ($generate_method === 'char' && UserCoupon::where('code', $code)->count() !== 0) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'کد تخفیف از قبل وجود دارد',
+            ]);
         }
 
-        if ($generate_method === 'char_ramdom') {
-            $code .= Tools::genRandomChar(8);
+        if ($generate_method === 'char_random') {
+            $code .= Tools::genRandomChar();
 
-            if (UserCoupon::where('code', $code)->count() === 0) {
+            if (UserCoupon::where('code', $code)->count() !== 0) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'مشکلی رخ داده است. لطفا بعدا دوباره امتحان کنید',
@@ -162,10 +165,10 @@ final class CouponController extends BaseController
             }
         }
 
-        if ($generate_method === 'ramdom') {
-            $code = Tools::genRandomChar(8);
+        if ($generate_method === 'random') {
+            $code = Tools::genRandomChar();
 
-            if (UserCoupon::where('code', $code)->count() === 0) {
+            if (UserCoupon::where('code', $code)->count() !== 0) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'مشکلی رخ داده است. لطفا بعدا دوباره امتحان کنید',
@@ -182,14 +185,19 @@ final class CouponController extends BaseController
             'product_id' => $product_id,
             'use_time' => $use_time,
             'new_user' => $new_user,
+            'disabled' => 0,
         ];
 
         $coupon = new UserCoupon();
         $coupon->code = $code;
-        $coupon->content = \json_encode($content);
-        $coupon->limit = \json_encode($limit);
-        $coupon->create_time = \time();
-        $coupon->expire_time = $expire_time;
+        $coupon->content = json_encode($content);
+        $coupon->limit = json_encode($limit);
+        $coupon->create_time = time();
+        if ($expire_time !== '') {
+            $coupon->expire_time = $expire_time;
+        } else {
+            $coupon->expire_time = 0;
+        }
         $coupon->save();
 
         return $response->withJson([
@@ -198,7 +206,7 @@ final class CouponController extends BaseController
         ]);
     }
 
-    public function delete(ServerRequest $request, Response $response, array $args)
+    public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $coupon_id = $args['id'];
         UserCoupon::find($coupon_id)->delete();
@@ -208,26 +216,76 @@ final class CouponController extends BaseController
         ]);
     }
 
+    public function disable(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $coupon_id = $args['id'];
+        $coupon = UserCoupon::find($coupon_id)->first();
+        $limit = json_decode($coupon->limit);
+        $limit->disabled = 1;
+        $coupon->limit = json_encode($limit);
+        $coupon->save();
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت غیرفعال شد',
+        ]);
+    }
+
+    public function disable(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $coupon_id = $args['id'];
+        $coupon = UserCoupon::find($coupon_id)->first();
+        $limit = json_decode($coupon->limit);
+        $limit->disabled = 1;
+        $coupon->limit = json_encode($limit);
+        $coupon->save();
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت غیرفعال شد',
+        ]);
+    }
+
     /**
      * 后台商品优惠码页面 AJAX
-     *
-     * @param array     $args
      */
-    public function ajax(ServerRequest $request, Response $response, array $args)
+    public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $coupons = UserCoupon::orderBy('id', 'desc')->get();
         foreach ($coupons as $coupon) {
-            $content = \json_decode($coupon->content);
-            $limit = \json_decode($coupon->limit);
-            $coupon->op = '<button type="button" class="btn btn-red" id="delete-coupon-' . $coupon->id . '" 
-        onclick="deleteCoupon(' . $coupon->id . ')">حذف</button>';
+            $content = json_decode($coupon->content);
+            $limit = json_decode($coupon->limit);
+            if ($limit->disabled === 1) {
+                $coupon->op = '<button type="button" class="btn btn-red" id="delete-coupon-' . $coupon->id . '" 
+                onclick="deleteCoupon(' . $coupon->id . ')">حذف</button>';
+            } else {
+                $coupon->op = '<button type="button" class="btn btn-red" id="delete-coupon-' . $coupon->id . '" 
+                onclick="deleteCoupon(' . $coupon->id . ')">حذف</button>
+                <button type="button" class="btn btn-orange" id="disable-coupon-' . $coupon->id . '" 
+                onclick="disableCoupon(' . $coupon->id . ')">غیر فعال</button>';
+            }
             $coupon->type = Tools::getCouponType($content);
             $coupon->value = $content->value;
             $coupon->product_id = $limit->product_id;
-            $coupon->use_time = $limit->use_time;
-            $coupon->new_user = $limit->new_user;
+            if ((int) $limit->use_time < 0) {
+                $coupon->use_time = 'نامحدود';
+            } else {
+                $coupon->use_time = $limit->use_time;
+            }
+            if ($limit->new_user === 1) {
+                $coupon->new_user = 'بله';
+            } else {
+                $coupon->new_user = 'خیر';
+            }
+            if ($limit->disabled === 1) {
+                $coupon->disabled = 'بله';
+            } else {
+                $coupon->disabled = 'خیر';
+            }
             $coupon->create_time = Tools::toDateTime((int) $coupon->create_time);
-            $coupon->expire_time = Tools::toDateTime((int) $coupon->expire_time);
+            if ($coupon->expire_time === 0) {
+                $coupon->expire_time = 'دائمی';
+            } else {
+                $coupon->expire_time = Tools::toDateTime((int) $coupon->expire_time);
+            }
         }
         return $response->withJson([
             'coupons' => $coupons,

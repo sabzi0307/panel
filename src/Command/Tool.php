@@ -11,11 +11,18 @@ use App\Utils\Hash;
 use App\Utils\Tools;
 use Exception;
 use Ramsey\Uuid\Uuid;
+use Telegram\Bot\Api;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use Vectorface\GoogleAuthenticator;
+use function count;
+use function in_array;
+use function json_decode;
+use function json_encode;
+use function time;
 
 final class Tool extends Command
 {
-    public $description = <<<EOL
+    public string $description = <<<EOL
 ├─=: php xcat Tool [options]
 │ ├─ setTelegram             - Set up a Telegram bot
 │ ├─ resetAllSettings        - Override Settings Center settings with default values
@@ -48,11 +55,17 @@ EOL;
         }
     }
 
+    /**
+     * @throws TelegramSDKException
+     */
     public function setTelegram(): void
     {
         $WebhookUrl = $_ENV['baseUrl'] . '/telegram_callback?token=' . $_ENV['telegram_request_token'];
-        $telegram = new \Telegram\Bot\Api($_ENV['telegram_token']);
+
+        $telegram = new Api($_ENV['telegram_token']);
+
         $telegram->removeWebhook();
+
         if ($telegram->setWebhook(['url' => $WebhookUrl])) {
             echo 'Bot @' . $telegram->getMe()->getUsername() . ' successfully set！' . PHP_EOL;
         } else {
@@ -83,7 +96,7 @@ EOL;
             $setting->value = $setting->default;
         }
 
-        $json_settings = \json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $json_settings = json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents('./config/settings.json', $json_settings);
 
         echo 'All database settings have been exported' . PHP_EOL;
@@ -92,7 +105,7 @@ EOL;
     public function importAllSettings(): void
     {
         $json_settings = file_get_contents('./config/settings.json');
-        $settings = \json_decode($json_settings, true);
+        $settings = json_decode($json_settings, true);
         $config = [];
         $add_counter = 0;
         $del_counter = 0;
@@ -115,26 +128,26 @@ EOL;
                 $new_item->mark = $item['mark'];
                 $new_item->save();
 
-                echo "Add new database settings：${item_name}" . PHP_EOL;
+                echo "Add new database settings：{$item_name}" . PHP_EOL;
                 $add_counter += 1;
             }
         }
         // 检查移除
         $db_settings = Setting::all();
         foreach ($db_settings as $db_setting) {
-            if (! \in_array($db_setting->item, $config)) {
+            if (! in_array($db_setting->item, $config)) {
                 $db_setting->delete();
                 $del_counter += 1;
             }
         }
 
         if ($add_counter !== 0) {
-            echo "Total added ${add_counter} item new database settings" . PHP_EOL;
+            echo "Total added {$add_counter} item new database settings" . PHP_EOL;
         } else {
             echo 'No new database settings need to be added' . PHP_EOL;
         }
         if ($del_counter !== 0) {
-            echo "Total removed ${del_counter} item database settings" . PHP_EOL;
+            echo "Total removed {$del_counter} item database settings" . PHP_EOL;
         }
     }
 
@@ -203,7 +216,7 @@ EOL;
     public function generateUUID(): void
     {
         $users = ModelsUser::all();
-        $current_timestamp = \time();
+        $current_timestamp = time();
         foreach ($users as $user) {
             /** @var ModelsUser $user */
             $user->generateUUID($current_timestamp);
@@ -218,8 +231,15 @@ EOL;
     {
         $users = ModelsUser::all();
         foreach ($users as $user) {
+            $secret = '';
             $ga = new GoogleAuthenticator();
-            $secret = $ga->createSecret();
+
+            try {
+                $secret = $ga->createSecret();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
             $user->ga_token = $secret;
             $user->save();
         }
@@ -232,7 +252,7 @@ EOL;
     public function generateApiToken(): void
     {
         $users = ModelsUser::all();
-        $current_timestamp = \time();
+        $current_timestamp = time();
         foreach ($users as $user) {
             /** @var ModelsUser $user */
             $user->generateApiToken($current_timestamp);
@@ -245,23 +265,21 @@ EOL;
      */
     public function createAdmin(): void
     {
+        $y = '';
+        $email = '';
+        $passwd = '';
+
         if (count($this->argv) === 3) {
             // ask for input
-            fwrite(STDOUT, '(1/3) Please enter the administrator email：') . PHP_EOL;
+            echo '(1/3) Please enter the administrator email：' . PHP_EOL;
             // get input
             $email = trim(fgets(STDIN));
-            if ($email === null) {
-                die("Administrator email must be entered.\r\n");
-            }
 
             // write input back
-            fwrite(STDOUT, '(2/3) Please enter the administrator account password：') . PHP_EOL;
+            echo '(2/3) Please enter the administrator account password：' . PHP_EOL;
             $passwd = trim(fgets(STDIN));
-            if ($passwd === null) {
-                die("Administrator password must be entered.\r\n");
-            }
 
-            fwrite(STDOUT, '(3/3) press Y or y Confirm creation：');
+            echo '(3/3) press Y or y Confirm creation：';
             $y = trim(fgets(STDIN));
         } elseif (count($this->argv) === 5) {
             [,,, $email, $passwd] = $this->argv;
@@ -269,7 +287,7 @@ EOL;
         }
 
         if (strtolower($y) === 'y') {
-            $current_timestamp = \time();
+            $current_timestamp = time();
             // create admin user
             $configs = Setting::getClass('register');
             // do reg user
@@ -289,7 +307,7 @@ EOL;
             $user->invite_num = $configs['sign_up_for_invitation_codes'];
             $user->ref_by = 0;
             $user->is_admin = 1;
-            $user->expire_in = date('Y-m-d H:i:s', \time() + $configs['sign_up_for_free_time'] * 86400);
+            $user->expire_in = date('Y-m-d H:i:s', time() + $configs['sign_up_for_free_time'] * 86400);
             $user->reg_date = date('Y-m-d H:i:s');
             $user->money = 0;
             $user->im_type = 1;
@@ -299,7 +317,14 @@ EOL;
             $user->theme = $_ENV['theme'];
 
             $ga = new GoogleAuthenticator();
-            $secret = $ga->createSecret();
+            $secret = '';
+
+            try {
+                $secret = $ga->createSecret();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
             $user->ga_token = $secret;
             $user->ga_enable = 0;
 
@@ -320,7 +345,7 @@ EOL;
     {
         if (count($this->argv) === 4) {
             $user = ModelsUser::find($this->argv[3]);
-            $expire_in = 86400 + \time();
+            $expire_in = 86400 + time();
             echo Hash::cookieHash($user->pass, $expire_in) . ' ' . $expire_in;
         }
     }

@@ -6,20 +6,21 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\AuthController;
 use App\Controllers\BaseController;
-use App\Models\Bought;
-use App\Models\Shop;
 use App\Models\User;
+use App\Models\UserMoneyLog;
 use App\Services\Auth;
-use App\Utils\Check;
 use App\Utils\Cookie;
 use App\Utils\Hash;
 use App\Utils\Tools;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function time;
 
 final class UserController extends BaseController
 {
-    public static $details = [
+    public static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه کاربر',
@@ -62,7 +63,7 @@ final class UserController extends BaseController
         ],
     ];
 
-    public static $update_field = [
+    public static array $update_field = [
         'email',
         'user_name',
         'remark',
@@ -83,7 +84,7 @@ final class UserController extends BaseController
         'auto_reset_day',
         'auto_reset_bandwidth',
         'node_speedlimit',
-        'node_connector',
+        'node_iplimit',
         'port',
         'passwd',
         'method',
@@ -92,69 +93,45 @@ final class UserController extends BaseController
     ];
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function index(ServerRequest $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
-                ->assign('shops', Shop::orderBy('name')->get())
                 ->assign('details', self::$details)
                 ->fetch('admin/user/index.tpl')
         );
     }
 
-    /**
-     * @param array     $args
-     */
-    public function createNewUser(ServerRequest $request, Response $response, array $args)
+    public function createNewUser(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $email = $request->getParam('email');
         $ref_by = $request->getParam('ref_by');
         $password = $request->getParam('password');
         $balance = $request->getParam('balance');
-        $shop_id = $request->getParam('product');
 
         try {
             if ($email === '') {
-                throw new \Exception('لطفا ایمیل خود را وارد کن');
+                throw new Exception('لطفا ایمیل خود را وارد کن');
             }
-            if (! Check::isEmailLegal($email)) {
-                throw new \Exception('قالب ایمیل نادرست است');
+            if (! Tools::isEmailLegal($email)) {
+                throw new Exception('قالب ایمیل نادرست است');
             }
             $exist = User::where('email', $email)->first();
             if ($exist !== null) {
-                throw new \Exception('این ایمیل قبلا ذخیره شده است');
+                throw new Exception('این ایمیل قبلا ذخیره شده است');
             }
             if ($password === '') {
                 $password = Tools::genRandomChar(16);
             }
             AuthController::registerHelper($response, 'user', $email, $password, '', 1, '', 0, $balance, 1);
             $user = User::where('email', $email)->first();
-            if ($shop_id > 0) {
-                $shop = Shop::find($shop_id);
-                if ($shop !== null) {
-                    $bought = new Bought();
-                    $bought->userid = $user->id;
-                    $bought->shopid = $shop->id;
-                    $bought->datetime = \time();
-                    $bought->renew = 0;
-                    $bought->coupon = '';
-                    $bought->price = $shop->price;
-                    $bought->save();
-                    $shop->buy($user);
-                } else {
-                    return $response->withJson([
-                        'ret' => 0,
-                        'msg' => 'افزودن ناموفق بود، بسته وجود ندارد',
-                    ]);
-                }
-            }
             if ($ref_by !== '') {
                 $user->ref_by = (int) $ref_by;
                 $user->save();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => $e->getMessage(),
@@ -168,11 +145,12 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function edit(ServerRequest $request, Response $response, array $args)
+    public function edit(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $user = User::find($args['id']);
+
         return $response->write(
             $this->view()
                 ->assign('update_field', self::$update_field)
@@ -181,12 +159,9 @@ final class UserController extends BaseController
         );
     }
 
-    /**
-     * @param array     $args
-     */
-    public function update(ServerRequest $request, Response $response, array $args)
+    public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $id = $args['id'];
+        $id = (int) $args['id'];
         $user = User::find($id);
 
         if ($request->getParam('pass') !== '' && $request->getParam('pass') !== null) {
@@ -194,12 +169,20 @@ final class UserController extends BaseController
             $user->cleanLink();
         }
 
-        $user->addMoneyLog($request->getParam('money') - $user->money);
+        if ($request->getParam('money') !== '' &&
+            $request->getParam('money') !== null &&
+            (float) $request->getParam('money') !== (float) $user->money
+        ) {
+            $money = (float) $request->getParam('money');
+            $diff = $money - $user->money;
+            $remark = ($diff > 0 ? 'ادمین افزودن ترافیک' : 'ادمین کسر موجودی');
+            (new UserMoneyLog())->addMoneyLog($id, (float) $user->money, $money, $diff, $remark);
+            $user->money = $money;
+        }
 
         $user->email = $request->getParam('email');
         $user->user_name = $request->getParam('user_name');
         $user->remark = $request->getParam('remark');
-        $user->money = $request->getParam('money');
         $user->is_admin = $request->getParam('is_admin') === 'true' ? 1 : 0;
         $user->ga_enable = $request->getParam('ga_enable') === 'true' ? 1 : 0;
         $user->use_new_shop = $request->getParam('use_new_shop') === 'true' ? 1 : 0;
@@ -215,7 +198,7 @@ final class UserController extends BaseController
         $user->auto_reset_day = $request->getParam('auto_reset_day');
         $user->auto_reset_bandwidth = $request->getParam('auto_reset_bandwidth');
         $user->node_speedlimit = $request->getParam('node_speedlimit');
-        $user->node_connector = $request->getParam('node_connector');
+        $user->node_iplimit = $request->getParam('node_iplimit');
         $user->port = $request->getParam('port');
         $user->passwd = $request->getParam('passwd');
         $user->method = $request->getParam('method');
@@ -233,10 +216,8 @@ final class UserController extends BaseController
             'msg' => 'با موفقیت اصلاح شد',
         ]);
     }
-    /**
-     * @param array     $args
-     */
-    public function delete(ServerRequest $request, Response $response, array $args)
+
+    public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $id = $args['id'];
         $user = User::find((int) $id);
@@ -254,16 +235,13 @@ final class UserController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function changetouser(ServerRequest $request, Response $response, array $args)
+    public function changetouser(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $userid = $request->getParam('userid');
         $adminid = $request->getParam('adminid');
         $user = User::find($userid);
         $admin = User::find($adminid);
-        $expire_in = \time() + 60 * 60;
+        $expire_in = time() + 60 * 60;
 
         if (! $admin->is_admin || ! $user || ! Auth::getUser()->isLogin) {
             return $response->withJson([
@@ -276,7 +254,7 @@ final class UserController extends BaseController
             'uid' => $user->id,
             'email' => $user->email,
             'key' => Hash::cookieHash($user->pass, $expire_in),
-            'ip' => md5($_SERVER['REMOTE_ADDR'] . $_ENV['key'] . $user->id . $expire_in),
+            'ip' => Hash::ipHash($_SERVER['REMOTE_ADDR'], $user->id, $expire_in),
             'expire_in' => $expire_in,
             'old_uid' => Cookie::get('uid'),
             'old_email' => Cookie::get('email'),
@@ -292,10 +270,7 @@ final class UserController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function ajax(ServerRequest $request, Response $response, array $args)
+    public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $users = User::orderBy('id', 'desc')->get();
 

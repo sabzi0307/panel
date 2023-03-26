@@ -111,7 +111,7 @@
                     }
                 })
             });
-        };
+        }
 
         function cancelOrder(order_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سفارش را لغو کنید؟');
@@ -133,7 +133,7 @@
                     }
                 })
             });
-        };
+        }
 
         function reloadTableAjax() {
             table.ajax.reload(null, false);

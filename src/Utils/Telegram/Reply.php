@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Utils\Telegram;
 
 use App\Models\Bought;
+use App\Models\User;
+use function count;
 
 final class Reply
 {
     /**
      * 用户的流量使用讯息
      */
-    public static function getUserTrafficInfo(\App\Models\User $user): string
+    public static function getUserTrafficInfo(User $user): string
     {
         $text = [
             'وضعیت ترافیک فعلی شما:',
@@ -26,14 +28,14 @@ final class Reply
     /**
      * 用户基本讯息
      */
-    public static function getUserInfo(\App\Models\User $user): string
+    public static function getUserInfo(User $user): string
     {
         $text = [
-            'موجودی فعلی: ' . $user->money,
-            'دستگاه آنلاین：' . ($user->node_connector !== 0 ? $user->onlineIpCount() . ' / ' . $user->node_connector : $user->onlineIpCount() . ' / بدون محدودیت'),
+            'موجودی فعلی：' . $user->money,
+            'تعداد IP های آنلاین：' . ($user->node_iplimit !== 0 ? $user->onlineIpCount() . ' / ' . $user->node_iplimit : $user->onlineIpCount() . ' / بدون محدودیت'),
             'سرعت پورت：' . ($user->node_speedlimit !== 0 ? $user->node_speedlimit . 'Mbps' : 'نامحدود'),
             'آخرین استفاده：' . $user->lastSsTime(),
-            'تاریخ انقضا：' . $user->class_expire,
+            'انقضاء：' . $user->class_expire,
         ];
         return implode(PHP_EOL, $text);
     }
@@ -41,7 +43,7 @@ final class Reply
     /**
      * 获取用户或管理的尊称
      */
-    public static function getUserTitle(\App\Models\User $user): string
+    public static function getUserTitle(User $user): string
     {
         if ($user->class > 0) {
             $text = 'عزیز VIP ' . $user->class . ' سلام：';
@@ -53,10 +55,8 @@ final class Reply
 
     /**
      * [admin]获取用户购买记录
-     *
-     * @return array
      */
-    public static function getUserBoughts(\App\Models\User $user): array
+    public static function getUserBoughts(User $user): array
     {
         $boughts = Bought::where('userid', $user->id)->orderBy('id', 'desc')->get();
         $data = [];
@@ -83,7 +83,7 @@ final class Reply
     /**
      * [admin]获取用户信息
      */
-    public static function getUserInfoFromAdmin(\App\Models\User $user, int $ChatID): string
+    public static function getUserInfoFromAdmin(User $user, int $ChatID): string
     {
         $strArray = [
             '#' . $user->id . ' ' . $user->user_name . ' اطلاعات کاربر',

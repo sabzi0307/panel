@@ -10,6 +10,7 @@ use App\Utils\Telegram\TelegramTools;
 use App\Utils\TelegramSessionManager;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
+use function strlen;
 
 /**
  * Class StratCommand.
@@ -26,10 +27,7 @@ final class StartCommand extends Command
      */
     protected $description = '[چت گروهی/خصوصی] دستور اولیه ربات.';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle()
+    public function handle(): void
     {
         $Update = $this->getUpdate();
         $Message = $Update->getMessage();
@@ -58,7 +56,7 @@ final class StartCommand extends Command
                 && strlen($MessageKey) === 16
             ) {
                 // 新用户绑定
-                return $this->bindingAccount($SendUser, $MessageKey);
+                $this->bindingAccount($SendUser, $MessageKey);
             }
             // 回送信息
             $this->replyWithMessage(
@@ -68,20 +66,18 @@ final class StartCommand extends Command
                 ]
             );
         } else {
-            if (Setting::obtain('telegram_group_quiet') === true) {
-                // 群组中不回应
-                return;
+            if (! Setting::obtain('telegram_group_quiet')) {
+                // 发送 '输入中' 会话状态
+                $this->replyWithChatAction(['action' => Actions::TYPING]);
+                // 回送信息
+                $this->replyWithMessage(
+                    [
+                        'text' => 'میو میو میو.',
+                        'parse_mode' => 'Markdown',
+                        'reply_to_message_id' => $Message->getMessageId(),
+                    ]
+                );
             }
-            // 发送 '输入中' 会话状态
-            $this->replyWithChatAction(['action' => Actions::TYPING]);
-            // 回送信息
-            $this->replyWithMessage(
-                [
-                    'text' => 'میو میو میو.',
-                    'parse_mode' => 'Markdown',
-                    'reply_to_message_id' => $Message->getMessageId(),
-                ]
-            );
         }
     }
 

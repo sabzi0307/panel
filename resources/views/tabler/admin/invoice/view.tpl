@@ -12,9 +12,9 @@
                         <span class="home-subtitle">جزئیات صورت حساب</span>
                     </div>
                 </div>
+                {if $invoice->status === 'unpaid'}
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        {if $invoice->status !== 'paid_gateway' && $invoice->status !== 'paid_balance' && $invoice->status !== 'paid_admin'}
                         <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#mark_paid_confirm_dialog">
                             <i class="icon ti ti-checklist"></i>
@@ -24,9 +24,9 @@
                             data-bs-target="#mark_paid_confirm_dialog">
                             <i class="icon ti ti-checklist"></i>
                         </button>
-                        {/if}
                     </div>
                 </div>
+                {/if}
             </div>
         </div>
     </div>
@@ -43,16 +43,16 @@
                             <div class="datagrid-content">{$invoice->user_id}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">شماره سفارش</div>
+                            <div class="datagrid-title">شناسه سفارش مرتبط</div>
                             <div class="datagrid-content">{$invoice->order_id}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">مبلغ</div>
+                            <div class="datagrid-title">مبلغ صورتحساب</div>
                             <div class="datagrid-content">{$invoice->price}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">وضعیت سفارش</div>
-                            <div class="datagrid-content">{$invoice->status}</div>
+                            <div class="datagrid-title">وضعیت صورتحساب</div>
+                            <div class="datagrid-content">{$invoice->status_text}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">زمان ایجاد</div>
@@ -66,6 +66,12 @@
                             <div class="datagrid-title">زمان پرداخت</div>
                             <div class="datagrid-content">{$invoice->pay_time}</div>
                         </div>
+                        {if $invoice->status === 'paid_gateway'}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">شماره پیگیری درگاه پرداخت</div>
+                            <div class="datagrid-content">{$paylist->tradeno}</div>
+                        </div>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -85,8 +91,8 @@
                             <tbody>
                                 {foreach $invoice_content as $invoice_content_detail}
                                 <tr>
-                                    <td>{$invoice_content_detail['name']}</td>
-                                    <td>{$invoice_content_detail['price']}</td>
+                                    <td>{$invoice_content_detail->name}</td>
+                                    <td>{$invoice_content_detail->price}</td>
                                 </tr>
                                 {/foreach}
                             </tbody>

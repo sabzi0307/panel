@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Ann;
-use App\Models\Bought;
-use App\Models\Code;
 use App\Models\Docs;
 use App\Models\EmailVerify;
 use App\Models\InviteCode;
@@ -21,17 +19,21 @@ use App\Services\Captcha;
 use App\Services\Config;
 use App\Services\DB;
 use App\Services\MFA;
-use App\Services\Payment;
-use App\Utils\Check;
 use App\Utils\Cookie;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
 use App\Utils\TelegramSessionManager;
 use App\Utils\Tools;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use voku\helper\AntiXSS;
+use function in_array;
+use function json_decode;
+use function strlen;
+use function time;
 
 /**
  *  HomeController
@@ -39,9 +41,9 @@ use voku\helper\AntiXSS;
 final class UserController extends BaseController
 {
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function index(ServerRequest $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $captcha = [];
 
@@ -58,126 +60,15 @@ final class UserController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
-                ->assign('getUniversalSub', SubController::getUniversalSub($this->user))
-                ->assign('getTraditionalSub', LinkController::getTraditionalSub($this->user))
+                ->assign('UniversalSub', SubController::getUniversalSub($this->user))
+                ->assign('TraditionalSub', LinkController::getTraditionalSub($this->user))
                 ->assign('data', $data)
                 ->assign('captcha', $captcha)
                 ->fetch('user/index.tpl')
         );
     }
 
-    /**
-     * @param array     $args
-     */
-    public function code(ServerRequest $request, Response $response, array $args)
-    {
-        $pageNum = $request->getQueryParams()['page'] ?? 1;
-        $codes = Code::where('type', '<>', '-2')
-            ->where('userid', '=', $this->user->id)
-            ->orderBy('id', 'desc')
-            ->paginate(15, ['*'], 'page', $pageNum);
-
-        $render = Tools::paginateRender($codes);
-
-        return $response->write(
-            $this->view()
-                ->assign('codes', $codes)
-                ->assign('payments', Payment::getPaymentsEnabled())
-                ->assign('render', $render)
-                ->fetch('user/code.tpl')
-        );
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function codeCheck(ServerRequest $request, Response $response, array $args)
-    {
-        $time = $request->getQueryParams()['time'];
-        $codes = Code::where('userid', '=', $this->user->id)
-            ->where('usedatetime', '>', date('Y-m-d H:i:s', $time))
-            ->first();
-
-        if ($codes !== null && strpos($codes->code, 'شارژ مجدد') !== false) {
-            return $response->withJson([
-                'ret' => 1,
-            ]);
-        }
-        return $response->withJson([
-            'ret' => 0,
-        ]);
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function codePost(ServerRequest $request, Response $response, array $args)
-    {
-        $code = trim($request->getParam('code'));
-        if ($code === '') {
-            return ResponseHelper::error($response, 'لطفا کد شارژ را وارد کنید');
-        }
-
-        $codeq = Code::where('code', $code)->where('isused', 0)->first();
-        if ($codeq === null) {
-            return ResponseHelper::error($response, 'بدون کد شارژ');
-        }
-
-        $user = $this->user;
-        $codeq->isused = 1;
-        $codeq->usedatetime = date('Y-m-d H:i:s');
-        $codeq->userid = $user->id;
-        $codeq->save();
-
-        if ($codeq->type === -1) {
-            $user->money += $codeq->number;
-            $user->save();
-
-            // 返利
-            if ($user->ref_by > 0 && Setting::obtain('invitation_mode') === 'after_recharge') {
-                Payback::rebate($user->id, $codeq->number);
-            }
-
-            return $response->withJson([
-                'ret' => 1,
-                'msg' => 'مبادله موفقیت آمیز بود، مقدار آن برابر با ' . $codeq->number . ' تومان',
-            ]);
-        }
-
-        if ($codeq->type === 10001) {
-            $user->transfer_enable += $codeq->number * 1024 * 1024 * 1024;
-            $user->save();
-        }
-
-        if ($codeq->type === 10002) {
-            if (\time() > strtotime($user->expire_in)) {
-                $user->expire_in = date('Y-m-d H:i:s', \time() + (int) $codeq->number * 86400);
-            } else {
-                $user->expire_in = date('Y-m-d H:i:s', strtotime($user->expire_in) + (int) $codeq->number * 86400);
-            }
-            $user->save();
-        }
-
-        if ($codeq->type >= 1 && $codeq->type <= 10000) {
-            if ($user->class === 0 || $user->class !== $codeq->type) {
-                $user->class_expire = date('Y-m-d H:i:s', \time());
-                $user->save();
-            }
-            $user->class_expire = date('Y-m-d H:i:s', strtotime($user->class_expire) + (int) $codeq->number * 86400);
-            $user->class = $codeq->type;
-            $user->save();
-        }
-
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => '',
-        ]);
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function resetPort(ServerRequest $request, Response $response, array $args)
+    public function resetPort(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $temp = $this->user->resetPort();
         return $response->withJson([
@@ -186,10 +77,7 @@ final class UserController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function specifyPort(ServerRequest $request, Response $response, array $args)
+    public function specifyPort(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $temp = $this->user->specifyPort((int) $request->getParam('port'));
         return $response->withJson([
@@ -199,9 +87,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function profile(ServerRequest $request, Response $response, array $args)
+    public function profile(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         // 登录IP
         $loginips = LoginIp::where('userid', '=', $this->user->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
@@ -215,9 +103,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function announcement(ServerRequest $request, Response $response, array $args)
+    public function announcement(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $Anns = Ann::orderBy('date', 'desc')->get();
 
@@ -236,9 +124,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function docs(ServerRequest $request, Response $response, array $args)
+    public function docs(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $docs = Docs::orderBy('id', 'desc')->get();
 
@@ -257,9 +145,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function media(ServerRequest $request, Response $response, array $args)
+    public function media(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $results = [];
         $pdo = DB::getPdo();
@@ -270,13 +158,14 @@ final class UserController extends BaseController
 
             $unlock = StreamMedia::where('node_id', $node_id)
                 ->orderBy('id', 'desc')
-                ->where('created_at', '>', \time() - 86460) // 只获取最近一天零一分钟内上报的数据
+                ->where('created_at', '>', time() - 86460) // 只获取最近一天零一分钟内上报的数据
                 ->first();
 
             if ($unlock !== null && $node !== null) {
-                $details = \json_decode($unlock->result, true);
+                $details = json_decode($unlock->result, true);
                 $details = str_replace('Originals Only', 'فقط خانگی', $details);
                 $details = str_replace('Oversea Only', 'فقط در خارج از کشور', $details);
+                $info = [];
 
                 foreach ($details as $key => $value) {
                     $info = [
@@ -286,7 +175,7 @@ final class UserController extends BaseController
                     ];
                 }
 
-                array_push($results, $info);
+                $results[] = $info;
             }
         }
 
@@ -295,11 +184,11 @@ final class UserController extends BaseController
                 $key_node = Node::where('id', $key)->first();
                 $value_node = StreamMedia::where('node_id', $value)
                     ->orderBy('id', 'desc')
-                    ->where('created_at', '>', \time() - 86460) // Only get the data reported within the last day and one minute
+                    ->where('created_at', '>', time() - 86460) // Only get the data reported within the last day and one minute
                     ->first();
 
                 if ($value_node !== null) {
-                    $details = \json_decode($value_node->result, true);
+                    $details = json_decode($value_node->result, true);
                     $details = str_replace('Originals Only', 'فقط خانگی', $details);
                     $details = str_replace('Oversea Only', 'فقط در خارج از کشور', $details);
 
@@ -309,7 +198,7 @@ final class UserController extends BaseController
                         'unlock_item' => $details,
                     ];
 
-                    array_push($results, $info);
+                    $results[] = $info;
                 }
             }
         }
@@ -323,9 +212,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function edit(ServerRequest $request, Response $response, array $args)
+    public function edit(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $themes = Tools::getDir(BASE_PATH . '/resources/views');
         $bind_token = TelegramSessionManager::addBindSession($this->user);
@@ -344,9 +233,9 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function invite(ServerRequest $request, Response $response, array $args)
+    public function invite(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $code = InviteCode::where('user_id', $this->user->id)->first();
         if ($code === null) {
@@ -354,34 +243,30 @@ final class UserController extends BaseController
             $code = InviteCode::where('user_id', $this->user->id)->first();
         }
 
-        $pageNum = $request->getQueryParams()['page'] ?? 1;
-
         $paybacks = Payback::where('ref_by', $this->user->id)
             ->orderBy('id', 'desc')
-            ->paginate(15, ['*'], 'page', $pageNum);
+            ->get();
+
+        foreach ($paybacks as $payback) {
+            $payback->datetime = Tools::toDateTime($payback->datetime);
+        }
 
         $paybacks_sum = Payback::where('ref_by', $this->user->id)->sum('ref_get');
         if (! $paybacks_sum) {
             $paybacks_sum = 0;
         }
 
-        $render = Tools::paginateRender($paybacks);
-
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
 
         return $response->write($this->view()
             ->assign('code', $code)
-            ->assign('render', $render)
             ->assign('paybacks', $paybacks)
             ->assign('invite_url', $invite_url)
             ->assign('paybacks_sum', $paybacks_sum)
             ->fetch('user/invite.tpl'));
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updatePassword(ServerRequest $request, Response $response, array $args)
+    public function updatePassword(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $oldpwd = $request->getParam('oldpwd');
         $pwd = $request->getParam('pwd');
@@ -401,17 +286,14 @@ final class UserController extends BaseController
         $user->pass = $hashPwd;
         $user->save();
 
-        if ($_ENV['enable_forced_replacement'] === true) {
+        if (Setting::obtain('enable_forced_replacement')) {
             $user->cleanLink();
         }
 
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updateEmail(ServerRequest $request, Response $response, array $args)
+    public function updateEmail(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $antiXss = new AntiXSS();
 
@@ -426,7 +308,7 @@ final class UserController extends BaseController
 
         if (Setting::obtain('reg_email_verify')) {
             $emailcode = $request->getParam('emailcode');
-            $mailcount = EmailVerify::where('email', '=', $newemail)->where('code', '=', $emailcode)->where('expire_in', '>', \time())->first();
+            $mailcount = EmailVerify::where('email', '=', $newemail)->where('code', '=', $emailcode)->where('expire_in', '>', time())->first();
             if ($mailcount === null) {
                 return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
             }
@@ -436,7 +318,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
         }
 
-        $check_res = Check::isEmailLegal($newemail);
+        $check_res = Tools::isEmailLegal($newemail);
         if ($check_res['ret'] === 0) {
             return $response->withJson($check_res);
         }
@@ -452,13 +334,10 @@ final class UserController extends BaseController
         $user->email = $newemail;
         $user->save();
 
-        return ResponseHelper::successfully($response, '修改成功');
+        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updateUsername(ServerRequest $request, Response $response, array $args)
+    public function updateUsername(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $antiXss = new AntiXSS();
 
@@ -471,57 +350,7 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function bought(ServerRequest $request, Response $response, array $args)
-    {
-        $pageNum = $request->getQueryParams()['page'] ?? 1;
-        $shops = Bought::where('userid', $this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-        if ($request->getParam('json') === 1) {
-            foreach ($shops as $shop) {
-                $shop->datetime = $shop->datetime();
-                $shop->name = $shop->shop()->name;
-                $shop->content = $shop->shop()->content();
-            }
-            return $response->withJson([
-                'ret' => 1,
-                'shops' => $shops,
-            ]);
-        }
-        $render = Tools::paginateRender($shops);
-        return $response->write($this->view()
-            ->assign('shops', $shops)
-            ->assign('render', $render)
-            ->fetch('user/bought.tpl'));
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function deleteBoughtGet(ServerRequest $request, Response $response, array $args)
-    {
-        $id = $request->getParam('id');
-        $shop = Bought::where('id', $id)->where('userid', $this->user->id)->first();
-
-        if ($shop === null) {
-            return ResponseHelper::error($response, 'تمدید خودکار خاموش نشد، سفارش وجود ندارد.');
-        }
-
-        if ($this->user->id === $shop->userid) {
-            $shop->renew = 0;
-        }
-
-        if (! $shop->save()) {
-            return ResponseHelper::error($response, 'تمدید خودکار خاموش نشد');
-        }
-        return ResponseHelper::successfully($response, 'تمدید خودکار را با موفقیت خاموش شد');
-    }
-
-    /**
-     * @param array     $args
-     */
-    public function updateContact(ServerRequest $request, Response $response, array $args)
+    public function updateContact(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $antiXss = new AntiXSS();
 
@@ -562,10 +391,7 @@ final class UserController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updateTheme(ServerRequest $request, Response $response, array $args)
+    public function updateTheme(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $antiXss = new AntiXSS();
         $theme = $antiXss->xss_clean($request->getParam('theme'));
@@ -588,13 +414,10 @@ final class UserController extends BaseController
         ]);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updateMail(ServerRequest $request, Response $response, array $args)
+    public function updateMail(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $value = (int) $request->getParam('mail');
-        if (\in_array($value, [0, 1, 2])) {
+        if (in_array($value, [0, 1, 2])) {
             $user = $this->user;
             if ($value === 2 && $_ENV['enable_telegram'] === false) {
                 return ResponseHelper::error(
@@ -609,14 +432,11 @@ final class UserController extends BaseController
         return ResponseHelper::error($response, 'ورودی غیرمجاز');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function resetPasswd(ServerRequest $request, Response $response, array $args)
+    public function resetPasswd(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
         $pwd = Tools::genRandomChar(16);
-        $current_timestamp = \time();
+        $current_timestamp = time();
         $new_uuid = Uuid::uuid3(Uuid::NAMESPACE_DNS, $user->email . '|' . $current_timestamp);
         $existing_uuid = User::where('uuid', $new_uuid)->first();
 
@@ -631,10 +451,7 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function updateMethod(ServerRequest $request, Response $response, array $args)
+    public function updateMethod(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $antiXss = new AntiXSS();
 
@@ -655,19 +472,13 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function logout(ServerRequest $request, Response $response, array $args)
+    public function logout(ServerRequest $request, Response $response, array $args): Response
     {
         Auth::logout();
         return $response->withStatus(302)->withHeader('Location', '/');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function doCheckIn(ServerRequest $request, Response $response, array $args)
+    public function doCheckIn(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         if ($_ENV['enable_checkin'] === false) {
             return ResponseHelper::error($response, 'هنوز قادر به ورود به سیستم نیست');
@@ -680,12 +491,13 @@ final class UserController extends BaseController
             }
         }
 
-        if (strtotime($this->user->expire_in) < \time()) {
+        if (strtotime($this->user->expire_in) < time()) {
             return ResponseHelper::error($response, 'فقط حساب‌هایی که منقضی نشده‌اند می‌توانند وارد شوند');
         }
 
         $checkin = $this->user->checkin();
-        if ($checkin['ok'] === false) {
+
+        if (! $checkin['ok']) {
             return ResponseHelper::error($response, $checkin['msg']);
         }
 
@@ -703,17 +515,14 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function kill(ServerRequest $request, Response $response, array $args)
+    public function kill(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write($this->view()->fetch('user/kill.tpl'));
     }
 
-    /**
-     * @param array     $args
-     */
-    public function handleKill(ServerRequest $request, Response $response, array $args)
+    public function handleKill(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
 
@@ -732,20 +541,18 @@ final class UserController extends BaseController
     }
 
     /**
-     * @param array     $args
+     * @throws Exception
      */
-    public function banned(ServerRequest $request, Response $response, array $args)
+    public function banned(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $user = $this->user;
+
         return $response->write($this->view()
             ->assign('banned_reason', $user->banned_reason)
             ->fetch('user/banned.tpl'));
     }
 
-    /**
-     * @param array     $args
-     */
-    public function resetTelegram(ServerRequest $request, Response $response, array $args)
+    public function resetTelegram(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
         $user->telegramReset();
@@ -753,10 +560,7 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function resetURL(ServerRequest $request, Response $response, array $args)
+    public function resetURL(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
         $user->cleanLink();
@@ -764,10 +568,7 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function resetInviteURL(ServerRequest $request, Response $response, array $args)
+    public function resetInviteURL(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
         $user->clearInviteCodes();
@@ -775,10 +576,7 @@ final class UserController extends BaseController
         return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }
 
-    /**
-     * @param array     $args
-     */
-    public function backtoadmin(ServerRequest $request, Response $response, array $args)
+    public function backtoadmin(ServerRequest $request, Response $response, array $args): Response
     {
         $userid = Cookie::get('uid');
         $adminid = Cookie::get('old_uid');
@@ -798,7 +596,7 @@ final class UserController extends BaseController
                 'old_ip' => null,
                 'old_expire_in' => null,
                 'old_local' => null,
-            ], \time() - 1000);
+            ], time() - 1000);
         }
         $expire_in = Cookie::get('old_expire_in');
         $local = Cookie::get('old_local');
@@ -818,10 +616,7 @@ final class UserController extends BaseController
         return $response->withStatus(302)->withHeader('Location', $local);
     }
 
-    /**
-     * @param array     $args
-     */
-    public function switchThemeMode(ServerRequest $request, Response $response, array $args)
+    public function switchThemeMode(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $user = $this->user;
         if ($user->is_dark_mode === 1) {

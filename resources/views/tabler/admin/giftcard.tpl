@@ -175,7 +175,7 @@
                     }
                 }
             })
-        };
+        }
 
         function deleteGiftCard(giftcard_id) {
             $('#notice-message').text('از حذف این کارت هدیه اطمینان دارید？');
@@ -197,7 +197,7 @@
                     }
                 })
             });
-        };
+        }
 
         function reloadTableAjax() {
             table.ajax.reload(null, false);

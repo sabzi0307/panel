@@ -102,7 +102,7 @@
                                             </div>
                                             <div class="text-muted">
                                                 {if $user->node_speedlimit !== 0.0}
-                                                    {$user->node_speedlimit}</code> Mbps
+                                                    <code>{$user->node_speedlimit}</code> Mbps
                                                 {else}
                                                     بدون محدودیت
                                                 {/if}
@@ -125,12 +125,14 @@
                                             &nbsp;Universal Subscription
                                         </a>
                                     </li>
+                                    {if $public_setting['enable_traditional_sub']}
                                     <li class="nav-item">
                                         <a href="#traditional-sub" class="nav-link" data-bs-toggle="tab">
                                             <i class="ti ti-rss icon"></i>
                                             &nbsp;traditional subscription
                                         </a>
                                     </li>
+                                    {/if}
                                     <li class="nav-item">
                                         <a href="#windows" class="nav-link" data-bs-toggle="tab">
                                             <i class="ti ti-brand-windows icon"></i>
@@ -173,54 +175,78 @@
                                         <div class="tab-pane active show" id="sub">
                                             <div>
                                                 <p>
-                                                    Universal Subscription（json）：<code>{$getUniversalSub}/json</code>
+                                                    Universal Subscription（json）：<code>{$UniversalSub}/json</code>
                                                 </p>
                                                 <p>
-                                                    Universal Subscription（clash）：<code>{$getUniversalSub}/clash</code>
+                                                    Universal Subscription（clash）：<code>{$UniversalSub}/clash</code>
                                                 </p>
+                                                {if $public_setting['enable_ss_sub']}
+                                                <p>
+                                                    اشتراک هوشمند（sip008）：<code>{$UniversalSub}/sip008</code>
+                                                </p>
+                                                {/if}
                                                 <div class="btn-list justify-content-start">
-                                                    <a data-clipboard-text="{$getUniversalSub}/json"
+                                                    <a data-clipboard-text="{$UniversalSub}/json"
                                                         class="copy btn btn-primary">
                                                         Copy Universal Subscription（json）
                                                     </a>
-                                                    <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                    <a data-clipboard-text="{$UniversalSub}/clash"
                                                         class="copy btn btn-primary">
                                                         Copy Universal Subscription（clash）
                                                     </a>
+                                                    {if $public_setting['enable_ss_sub']}
+                                                    <a data-clipboard-text="{$UniversalSub}/sip008"
+                                                       class="copy btn btn-primary">
+                                                        اشتراک هوشمند را کپی کنید（sip008）
+                                                    </a>
+                                                    {/if}
                                                 </div>
                                             </div>
                                         </div>
+                                        {if $public_setting['enable_traditional_sub']}
                                         <div class="tab-pane show" id="traditional-sub">
                                             <div>
+                                                {if $public_setting['enable_ss_sub']}
                                                 <p>
-                                                    اشتراک سنتی（Shadowsocks）：<code>{$getTraditionalSub}?ss=1</code>
+                                                    اشتراک قدیمی（Shadowsocks）：<code>{$TraditionalSub}?ss=1</code>
                                                 </p>
                                                 <p>
-                                                    اشتراک سنتی（Shadowsocks SIP002）：<code>{$getTraditionalSub}?sip002=1</code>
+                                                    اشتراک قدیمی（Shadowsocks SIP002）：<code>{$TraditionalSub}?sip002=1</code>
                                                 </p>
+                                                {/if}
+                                                {if $public_setting['enable_v2_sub']}
                                                 <p>
-                                                    اشتراک سنتی（V2Ray）：<code>{$getTraditionalSub}?v2ray=1</code>
+                                                    اشتراک قدیمی（V2Ray）：<code>{$TraditionalSub}?v2ray=1</code>
                                                 </p>
+                                                {/if}
+                                                {if $public_setting['enable_trojan_sub']}
                                                 <p>
-                                                    اشتراک سنتی（Trojan）：<code>{$getTraditionalSub}?trojan=1</code>
+                                                    اشتراک قدیمی（Trojan）：<code>{$TraditionalSub}?trojan=1</code>
                                                 </p>
+                                                {/if}
                                                 <div class="btn-list justify-content-start">
-                                                    <a data-clipboard-text="{$getTraditionalSub}?ss=1"
+                                                    {if $public_setting['enable_ss_sub']}
+                                                    <a data-clipboard-text="{$TraditionalSub}?ss=1"
                                                         class="copy btn btn-primary">
                                                         کپی اشتراک سنتی（Shadowsocks）
                                                     </a>
-                                                    <a data-clipboard-text="{$getTraditionalSub}?sip002=1"
+                                                    <a data-clipboard-text="{$TraditionalSub}?sip002=1"
                                                         class="copy btn btn-primary">
                                                         کپی اشتراک سنتی（Shadowsocks SIP002）
                                                     </a>
-                                                    <a data-clipboard-text="{$getTraditionalSub}?v2ray=1"
+                                                    {/if}
+                                                    {if $public_setting['enable_v2_sub']}
+                                                    <a data-clipboard-text="{$TraditionalSub}?v2ray=1"
                                                         class="copy btn btn-primary">
                                                         کپی اشتراک سنتی（V2Ray）
                                                     </a>
-                                                    <a data-clipboard-text="{$getTraditionalSub}?trojan=1"
+                                                    {/if}
+                                                    {if $public_setting['enable_trojan_sub']}
+                                                    <a data-clipboard-text="{$TraditionalSub}?trojan=1"
                                                         class="copy btn btn-primary">
                                                         کپی اشتراک سنتی（Trojan）
                                                     </a>
+                                                    {/if}
                                                     <a href="/clients/v2rayN-Core.zip"
                                                         class="btn btn-primary">
                                                         Download v2rayN（Windows）
@@ -232,21 +258,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {/if}
                                         <div class="tab-pane" id="windows">
                                             <div>
                                                 <p>
-                                                    اشتراک برای کلش：<code>{$getUniversalSub}/clash</code>
+                                                    اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                                 </p>
                                                 <div class="btn-list justify-content-start">
-                                                    <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                    <a data-clipboard-text="{$UniversalSub}/clash"
                                                         class="copy btn btn-primary">
-                                                        Copy  Clash
+                                                        Copy  Clash لینک اشتراک
                                                     </a>
                                                     <a href="/clients/Clash-Windows.exe"
                                                         class="btn btn-primary">
                                                         Download Clash for Windows
                                                     </a>
-                                                    <a href="clash://install-config?url={$getUniversalSub}/clash&name={$config['appName']}"
+                                                    <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                         class="btn btn-primary">
                                                         وارد کردن به کلش
                                                     </a>
@@ -255,18 +282,18 @@
                                         </div>
                                         <div class="tab-pane" id="macos">
                                             <p>
-                                                اشتراک برای کلش：<code>{$getUniversalSub}/clash</code>
+                                                اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                             </p>
                                             <div class="btn-list justify-content-start">
-                                                <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                <a data-clipboard-text="{$UniversalSub}/clash"
                                                     class="copy btn btn-primary">
-                                                    Copy  Clash
+                                                    Copy  Clash لینک اشتراک
                                                 </a>
                                                 <a href="/clients/Clash-Windows.dmg"
                                                     class="btn btn-primary">
                                                     Download Clash for Windows
                                                 </a>
-                                                <a href="clash://install-config?url={$getUniversalSub}/clash&name={$config['appName']}"
+                                                <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                     class="btn btn-primary">
                                                     وارد کردن به کلش
                                                 </a>
@@ -274,18 +301,18 @@
                                         </div>
                                         <div class="tab-pane" id="android">
                                             <p>
-                                                اشتراک برای کلش：<code>{$getUniversalSub}/clash</code>
+                                                اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                             </p>
                                             <div class="btn-list justify-content-start">
-                                                <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                <a data-clipboard-text="{$UniversalSub}/clash"
                                                     class="copy btn btn-primary">
-                                                    Copy  Clash
+                                                    Copy  Clash لینک اشتراک
                                                 </a>
                                                 <a href="/clients/Clash-Android.apk"
                                                     class="btn btn-primary">
                                                     Download Clash for Android
                                                 </a>
-                                                <a href="clash://install-config?url={$getUniversalSub}/clash&name={$config['appName']}"
+                                                <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                     class="btn btn-primary">
                                                     وارد کردن به کلش
                                                 </a>
@@ -293,32 +320,40 @@
                                         </div>
                                         <div class="tab-pane" id="ios">
                                             <p>
-                                                اشتراک برای نرم افزارهای سازگار با کلش：<code>{$getUniversalSub}/clash</code>
+                                                اشتراک برای نرم افزارهای سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                             </p>
                                             <p>
-                                                پس از خرید و نصب کلاینت سازگار با کلش، روی دکمه کپی کلش کلیک کنید، سپس کلاینت سازگار با کلش را برای وارد کردن باز کنید.。
+                                                پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>لینک اشتراک کلش را کپی کنید</code>را فشار دهید، سپس کلاینت سازگار با کلش را برای وارد کردن باز کنید.
                                             </p>
                                             <div class="btn-list justify-content-start">
-                                                <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
+                                                    class="btn btn-primary">
+                                                    Stash را بخرید
+                                                </a>
+                                                <a data-clipboard-text="{$UniversalSub}/clash"
                                                     class="copy btn btn-primary">
-                                                    کپی کلش
+                                                    لینک اشتراک کلش را کپی کنید
+                                                </a>
+                                                <a href="stash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                    class="btn btn-primary">
+                                                    وارد کردن به Stash
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="linux">
                                             <p>
-                                                اشتراک برای کلش：<code>{$getUniversalSub}/clash</code>
+                                                اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                             </p>
                                             <div class="btn-list justify-content-start">
-                                                <a data-clipboard-text="{$getUniversalSub}/clash"
+                                                <a data-clipboard-text="{$UniversalSub}/clash"
                                                     class="copy btn btn-primary">
-                                                    Copy  Clash
+                                                    Copy  Clash لینک اشتراک
                                                 </a>
                                                 <a href="/clients/Clash-Windows.tar.gz"
                                                     class="btn btn-primary">
                                                     Download Clash for Windows
                                                 </a>
-                                                <a href="clash://install-config?url={$getUniversalSub}/clash&name={$config['appName']}"
+                                                <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                     class="btn btn-primary">
                                                     وارد کردن به کلش
                                                 </a>
@@ -452,7 +487,7 @@
                                     <button id="check-in" class="btn btn-primary ms-auto" disabled>وارد شدن</button>
                                     {else}
                                     {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
-                                    <div class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
+                                    <div id="cf-turnstile" class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
                                     {/if}
                                     {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
                                     <div id="geetest"></div>
@@ -476,6 +511,14 @@
             $('#success-dialog').modal('show');
         });
 
+        const checkin_button = document.querySelector('#check-in');
+        {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
+        const turnstile_recaptcha = document.querySelector('#cf-turnstile');
+        {/if}
+        {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
+        const geetest_recaptcha = document.querySelector('#geetest');
+        {/if}
+
         $("#check-in").click(function() {
             $.ajax({
                 type: "POST",
@@ -491,6 +534,13 @@
                 },
                 success: function(data) {
                     if (data.ret == 1) {
+                        checkin_button.disabled = true;
+                        {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'turnstile'}
+                        turnstile_recaptcha.remove();
+                        {/if}
+                        {if $public_setting['enable_checkin_captcha'] === true && $public_setting['captcha_provider'] === 'geetest'}
+                        geetest_recaptcha.remove();
+                        {/if}
                         $('#success-message').text(data.msg);
                         $('#success-dialog').modal('show');
                     } else {

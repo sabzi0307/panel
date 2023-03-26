@@ -36,13 +36,13 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">نام</label>
+                                <label class="form-label col-3 col-form-label required">نام</label>
                                 <div class="col">
                                     <input id="name" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">آدرس اتصال</label>
+                                <label class="form-label col-3 col-form-label required">آدرس اتصال</label>
                                 <div class="col">
                                     <input id="server" type="text" class="form-control" value=""></input>
                                 </div>
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سرعت ترافیک</label>
+                                <label class="form-label col-3 col-form-label required">سرعت ترافیک</label>
                                 <div class="col">
                                     <input id="traffic_rate" type="text" class="form-control"
                                         value="">
@@ -64,8 +64,8 @@
                                 <label class="form-label col-3 col-form-label">نوع دسترسی</label>
                                 <div class="col">
                                     <select id="sort" class="col form-select">
-                                        <option value="11">V2Ray</option>
                                         <option value="14">Trojan</option>
+                                        <option value="11">V2Ray</option>
                                         <option value="0">Shadowsocks</option>
                                     </select>
                                 </div>
@@ -110,13 +110,13 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سطح</label>
+                                <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">
                                     <input id="node_class" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">گروه</label>
+                                <label class="form-label col-3 col-form-label required">گروه</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" value="">
                                 </div>
@@ -125,21 +125,21 @@
                                 <span>تنظیمات ترافیک</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
+                                <label class="form-label col-3 col-form-label required">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="node_bandwidth_limit" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">تاریخ تنظیم مجدد ترافیک</label>
+                                <label class="form-label col-3 col-form-label required">تاریخ تنظیم مجدد ترافیک</label>
                                 <div class="col">
                                     <input id="bandwidthlimit_resetday" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت نرخ سرعت داده (Mbps)</label>
+                                <label class="form-label col-3 col-form-label required">محدودیت نرخ سرعت داده (Mbps)</label>
                                 <div class="col">
                                     <input id="node_speedlimit" type="text" class="form-control"
                                         value="">

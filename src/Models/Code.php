@@ -48,14 +48,11 @@ final class Code extends Model
      */
     public function type(): string
     {
-        switch ($this->type) {
-            case -1:
-                return 'مقدار شارژ مجدد';
-            case -2:
-                return 'هزینه های مالی';
-            default:
-                return 'منسوخ شده';
-        }
+        return match ($this->type) {
+            -1 => 'مقدار شارژ مجدد',
+            -2 => 'هزینه های مالی',
+            default => 'منسوخ شده',
+        };
     }
 
     /**
@@ -63,14 +60,11 @@ final class Code extends Model
      */
     public function number(): string
     {
-        switch ($this->type) {
-            case -1:
-                return 'شارژ مجدد ' . $this->number . ' تومان';
-            case -2:
-                return 'هزینه های مالی ' . $this->number . ' تومان';
-            default:
-                return 'منسوخ شده';
-        }
+        return match ($this->type) {
+            -1 => 'شارژ مجدد ' . $this->number . ' تومان',
+            -2 => 'هزینه های مالی ' . $this->number . ' تومان',
+            default => 'منسوخ شده',
+        };
     }
 
     /**

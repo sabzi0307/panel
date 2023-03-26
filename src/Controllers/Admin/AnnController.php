@@ -8,13 +8,16 @@ use App\Controllers\BaseController;
 use App\Models\Ann;
 use App\Models\User;
 use App\Utils\Telegram;
+use Exception;
 use League\HTMLToMarkdown\HtmlConverter;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 
 final class AnnController extends BaseController
 {
-    public static $details =
+    public static array $details =
     [
         'field' => [
             'op' => 'operate',
@@ -24,16 +27,16 @@ final class AnnController extends BaseController
         ],
     ];
 
-    public static $update_field = [
+    public static array $update_field = [
         'email_notify_class',
     ];
 
     /**
      * 后台公告页面
      *
-     * @param array     $args
+     * @throws Exception
      */
-    public function index(ServerRequest $request, Response $response, array $args)
+    public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -45,9 +48,9 @@ final class AnnController extends BaseController
     /**
      * 后台公告创建页面
      *
-     * @param array     $args
+     * @throws Exception
      */
-    public function create(ServerRequest $request, Response $response, array $args)
+    public function create(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
@@ -59,12 +62,13 @@ final class AnnController extends BaseController
     /**
      * 后台添加公告
      *
-     * @param array     $args
+     * @throws TelegramSDKException
      */
-    public function add(ServerRequest $request, Response $response, array $args)
+    public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $email_notify_class = (int) $request->getParam('email_notify_class');
-        $email_notify = (int) $request->getParam('email_notify');
+        $email_notify = $request->getParam('email_notify') === 'true' ? 1 : 0;
+
         $content = (string) $request->getParam('content');
         $subject = $_ENV['appName'] . ' - اطلاعیه';
 
@@ -80,6 +84,7 @@ final class AnnController extends BaseController
                 ]);
             }
         }
+
         if ($email_notify === 1) {
             $users = User::where('class', '>=', $email_notify_class)
                 ->get();
@@ -113,9 +118,9 @@ final class AnnController extends BaseController
     /**
      * 后台编辑公告页面
      *
-     * @param array     $args
+     * @throws Exception
      */
-    public function edit(ServerRequest $request, Response $response, array $args)
+    public function edit(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $ann = Ann::find($args['id']);
         return $response->write(
@@ -128,9 +133,9 @@ final class AnnController extends BaseController
     /**
      * 后台编辑公告提交
      *
-     * @param array     $args
+     * @throws TelegramSDKException
      */
-    public function update(ServerRequest $request, Response $response, array $args)
+    public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $ann = Ann::find($args['id']);
         $ann->content = $request->getParam('content');
@@ -150,10 +155,8 @@ final class AnnController extends BaseController
 
     /**
      * 后台删除公告
-     *
-     * @param array     $args
      */
-    public function delete(ServerRequest $request, Response $response, array $args)
+    public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $ann = Ann::find($args['id']);
         if (! $ann->delete()) {
@@ -170,10 +173,8 @@ final class AnnController extends BaseController
 
     /**
      * 后台公告页面 AJAX
-     *
-     * @param array     $args
      */
-    public function ajax(ServerRequest $request, Response $response, array $args)
+    public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $anns = Ann::orderBy('id', 'asc')->get();
 

@@ -60,23 +60,23 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>شناسه کاربری کاربر دعوت شده</th>
                                             <th>نام مستعار کاربر دعوت شده</th>
-                                            <th>مبلغ تخفیف</th>
-                                            <th>وضعیت تسویه حساب</th>
-                                            <th>زمان اعطای تخفیف</th>
+                                            <th>مقدار تخفیف</th>
+                                            <th>زمان تخفیف</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {foreach $paybacks as $payback}
                                             <tr>
                                                 <td>{$payback->id}</td>
+                                                <td>{$payback->userid}</td>
                                                 {if $payback->user()!=null}
                                                     <td>{$payback->user()->user_name}</td>
                                                 {else}
                                                     <td>از سیستم خارج شده است</td>
                                                 {/if}
                                                 <td>{$payback->ref_get} تومان</td>
-                                                <td>{$payback->fraud_detect}</td>
                                                 <td>{$payback->datetime}</td>
                                             </tr>
                                         {/foreach}

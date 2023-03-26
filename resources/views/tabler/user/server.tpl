@@ -37,9 +37,9 @@
                                         <div class="col-lg-4 col-md-6 col-sm-12">
                                             <div class="card">
                                                 {if $server["class"] == 0}
-                                                <div class="ribbon bg-red">رایگان</div>
+                                                <div class="ribbon bg-blue">رایگان</div>
                                                 {else}
-                                                <div class="ribbon bg-red">LV. {$server["class"]}</div>
+                                                <div class="ribbon bg-blue">LV. {$server["class"]}</div>
                                                 {/if}
                                                 <div class="card-body">
                                                     <div class="row g-3 align-items-center" style="direction: ltr;">
@@ -107,9 +107,15 @@
                                             <div class="card bg-primary-lt">
                                                 <div class="card-body">
                                                     <p class="text-muted">
+                                                        {if $user->use_new_shop}
+                                                        <i class="ti ti-info-circle icon text-blue"></i>
+                                                        سطح حساب فعلی شما کمتر از سطح گره است، بنابراین نمی توان از آن استفاده کرد. می تواند به <a
+                                                            href="/user/product">صفحه محصول</a> پکیج ترافیک زمانی را سفارش دهید
+                                                        {else}
                                                         <i class="ti ti-info-circle icon text-blue"></i>
                                                         سطح حساب فعلی شما کمتر از سطح سرور است، بنابراین نمی توان از آن استفاده کرد. می تواند به <a
                                                             href="/user/shop">فروشگاه</a> بسته سطح مربوطه را سفارش دهید
+                                                        {/if}
                                                     </p>
                                                 </div>
                                             </div>
