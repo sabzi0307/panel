@@ -19,6 +19,7 @@ final class GeoIP2
     {
         $this->city_reader = new Reader(BASE_PATH . '/storage/GeoLite2-City/GeoLite2-City.mmdb');
         $this->country_reader = new Reader(BASE_PATH . '/storage/GeoLite2-Country/GeoLite2-Country.mmdb');
+        $this->asn_reader = new Reader(BASE_PATH . '/storage/GeoLite2-ASN/GeoLite2-ASN.mmdb');
     }
 
     /**
@@ -39,5 +40,15 @@ final class GeoIP2
     {
         $record = $this->country_reader->country($ip);
         return $record->country->name;
+    }
+
+    /**
+     * @throws AddressNotFoundException
+     * @throws InvalidDatabaseException
+     */
+    public function getAsn(string $ip): ?string
+    {
+        $record = $this->asn_reader->asn($ip);
+        return $record;
     }
 }
