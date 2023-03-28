@@ -98,10 +98,10 @@
                                                 <i class="ti ti-edit"></i>&nbsp;
                                                 اصلاح اطلاعات
                                             </a>
-                                            {if $public_setting['enable_ticket']}
-                                            <a class="dropdown-item" href="/user/ticket">
-                                                <i class="ti ti-ticket"></i>&nbsp;
-                                                پشتیبانی
+                                            {if $public_setting['display_subscribe_log'] === true}
+                                            <a class="dropdown-item" href="/user/subscribe/log">
+                                                <i class="ti ti-rss"></i></i>&nbsp;
+                                                در مجله مشترک شوید
                                             </a>
                                             {/if}
                                             <a class="dropdown-item" href="/user/invite">
@@ -142,7 +142,7 @@
                                         <i class="ti ti-dots-circle-horizontal icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        اطلاعات
+                                        حمایت کنید
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -150,10 +150,10 @@
                                         <i class="ti ti-speakerphone"></i>&nbsp;
                                         اطلاعیه سایت
                                     </a>
-                                    {if $public_setting['display_subscribe_log'] === true}
-                                    <a class="dropdown-item" href="/user/subscribe/log">
-                                        <i class="ti ti-rss"></i></i>&nbsp;
-                                        در خبرنامه مشترک شوید
+                                    {if $public_setting['enable_ticket']}
+                                    <a class="dropdown-item" href="/user/ticket">
+                                        <i class="ti ti-ticket"></i>&nbsp;
+                                        سامانه پشتیبانی
                                     </a>
                                     {/if}
                                 </div>
@@ -234,7 +234,7 @@
                                         <i class="ti ti-settings icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        مدیریت
+                                        مدیریت سایت
                                     </span>
                                 </a>
                             </li>

@@ -12,6 +12,7 @@ use App\Services\Password;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
 use Exception;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
@@ -55,15 +56,14 @@ final class PasswordController extends BaseController
 
         $email = strtolower($request->getParam('email'));
         $user = User::where('email', $email)->first();
+        $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
 
-        if ($user === null) {
-            $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
-        }
-
-        if (Password::sendResetEmail($email)) {
-            $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
-        } else {
-            $msg = 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.';
+        if ($user !== null) {
+            try {
+                Password::sendResetEmail($email);
+            } catch (ClientExceptionInterface $e) {
+                $msg = 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.';
+            }
         }
 
         return ResponseHelper::successfully($response, $msg);
@@ -74,7 +74,8 @@ final class PasswordController extends BaseController
      */
     public function token(ServerRequest $request, Response $response, array $args)
     {
-        $token = PasswordReset::where('token', $args['token'])->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
+        $token = PasswordReset::where('token', $args['token'])
+            ->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
         if ($token === null) {
             return $response->withStatus(302)->withHeader('Location', '/password/reset');
         }
@@ -99,12 +100,13 @@ final class PasswordController extends BaseController
         }
 
         /** @var PasswordReset $token */
-        $token = PasswordReset::where('token', $tokenStr)->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
+        $token = PasswordReset::where('token', $tokenStr)
+            ->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
         if ($token === null) {
             return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
         }
 
-        $user = $token->getUser();
+        $user = $token->user();
         if ($user === null) {
             return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
         }
@@ -112,7 +114,6 @@ final class PasswordController extends BaseController
         // reset password
         $hashPassword = Hash::passwordHash($password);
         $user->pass = $hashPassword;
-        $user->ga_enable = 0;
 
         if (! $user->save()) {
             return ResponseHelper::error($response, 'بازنشانی انجام نشد، لطفاً دوباره امتحان کنید');

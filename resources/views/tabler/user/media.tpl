@@ -29,7 +29,7 @@
                                             {if $key != 'BilibiliChinaMainland'}
                                                 {if $key == 'BilibiliHKMCTW'}
                                                     <th>Bilibili（هنگ کنگ، ماکائو و تایوان）</th>
-                                                {else if $key == 'BilibiliTW'}
+                                                {elseif $key == 'BilibiliTW'}
                                                     <th>Bilibili（تایوان）</th>
                                                 {else}
                                                     <th>{$key}</th>

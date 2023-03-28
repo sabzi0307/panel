@@ -1,7 +1,7 @@
 <div class="card-inner">
     <h4>
         شارژ آنلاین EPay 
-    <h4>
+    </h4>
     <p class="card-heading"></p>
     <form class="epay" name="epay" action="/user/payment/purchase/epay" method="post">
         {if $user->use_new_shop}

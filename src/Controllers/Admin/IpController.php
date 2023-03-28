@@ -8,6 +8,7 @@ use App\Controllers\BaseController;
 use App\Models\LoginIp;
 use App\Services\DB;
 use App\Utils\Tools;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
@@ -34,19 +35,21 @@ final class IpController extends BaseController
     [
         'field' => [
             'id' => 'شناسه رویداد',
-            'userid' => 'شناسه کاربر',
+            'user_id' => 'شناسه کاربر',
             'user_name' => 'نام کاربری',
-            'nodeid' => 'شناسه سرور',
+            'node_id' => 'شناسه سرور',
             'node_name' => 'نام سرور',
             'ip' => 'IP',
-            'location' => 'منتسب IP',
-            'first_time' => 'اولین اتصال',
-            'first_time' => 'آخرین اتصال',
+            'location' => 'انتساب IP',
+            'first_time' => 'اتصال برای اولین بار',
+            'last_time' => 'آخرین اتصال',
         ],
     ];
 
     /**
      * 后台登录记录页面
+     *
+     * @throws Exception
      */
     public function login(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
@@ -86,20 +89,22 @@ final class IpController extends BaseController
 
     /**
      * 后台在线 IP 页面
+     *
+     * @throws Exception
      */
-    public function alive(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    public function online(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         return $response->write(
             $this->view()
                 ->assign('details', self::$ip_details)
-                ->fetch('admin/log/alive.tpl')
+                ->fetch('admin/log/online.tpl')
         );
     }
 
     /**
      * 后台在线 IP 页面 AJAX
      */
-    public function ajaxAlive(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    public function ajaxOnline(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $data = $request->getParsedBody();
         $length = (int) ($data['length'] ?? 0);
@@ -108,23 +113,31 @@ final class IpController extends BaseController
 
         $logs = DB::select('
             SELECT
+                online_log.id,
+                online_log.user_id,
                 user.user_name,
-                online_log.ip,
+                online_log.node_id,
                 node.name AS node_name,
+                online_log.ip,
                 online_log.first_time,
                 online_log.last_time
             FROM
                 online_log
                 LEFT JOIN user ON user.id = online_log.user_id
                 LEFT JOIN node ON node.id = online_log.node_id
+            WHERE
+                last_time > UNIX_TIMESTAMP() - 90
         ');
 
         $count = count($logs);
         $data = array_map(static function ($val) {
             return [
+                'id' => $val->id,
+                'user_id' => $val->user_id,
                 'user_name' => $val->user_name,
-                'ip' => $val->ip,
+                'node_id' => $val->node_id,
                 'node_name' => $val->node_name,
+                'ip' => str_replace('::ffff:', '', $val->ip),
                 'location' => Tools::getIpLocation($val->ip),
                 'first_time' => Tools::toDateTime($val->first_time),
                 'last_time' => Tools::toDateTime($val->last_time),
@@ -135,7 +148,7 @@ final class IpController extends BaseController
             'draw' => $draw,
             'recordsTotal' => $count,
             'recordsFiltered' => $count,
-            'alives' => $data,
+            'onlines' => $data,
         ]);
     }
 }

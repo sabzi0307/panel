@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Utils\Telegram;
 
 use App\Models\Setting;
-use App\Utils\TelegramSessionManager;
+use App\Utils\Telegram;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use function count;
@@ -61,7 +61,7 @@ final class Message
             $MessageData = trim($this->Message->getText());
             if ($this->ChatID > 0 && strlen($MessageData) === 16) {
                 // 私聊
-                $Uid = TelegramSessionManager::verifyBindSession($MessageData);
+                $Uid = Telegram::verifyBindSession($MessageData);
                 if ($Uid === 0) {
                     $text = 'اتصال ناموفق بود، پس از بررسی، مشخص شد که：【' . $MessageData . '】به مدت 10 دقیقه معتبر است، می توانید پس از بازخوانی صفحه **ویرایش نمایه** در وب سایت ما دوباره امتحان کنید.';
                 } else {

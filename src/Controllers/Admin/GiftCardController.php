@@ -68,22 +68,29 @@ final class GiftCardController extends BaseController
 
     public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $card_number = $request->getParam('card_number');
-        $card_value = $request->getParam('card_value');
-        $card_length = $request->getParam('card_length');
+        $card_number = $request->getParam('card_number') ?? 0;
+        $card_value = $request->getParam('card_value') ?? 0;
+        $card_length = $request->getParam('card_length') ?? 0;
         $card_added = '';
 
-        if ($card_number === null || $card_number < 0) {
+        if ($card_number === '' || $card_number <= 0) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'مقدار تولید شده نمی تواند خالی یا کمتر از 0 باشد',
             ]);
         }
 
-        if ($card_value === null || $card_value < 0) {
+        if ($card_length === '' || $card_length <= 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'ارزش اسمی کارت هدیه نباید خالی یا کمتر از 0 باشد',
+                'msg' => 'طول کارت هدیه نباید خالی یا کمتر از 0 باشد',
+            ]);
+        }
+
+        if ($card_value === '' || $card_value <= 0) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'طول کارت هدیه نباید خالی یا کمتر از 0 باشد',
             ]);
         }
 
@@ -111,6 +118,7 @@ final class GiftCardController extends BaseController
     {
         $card_id = $args['id'];
         GiftCard::find($card_id)->delete();
+
         return $response->withJson([
             'ret' => 1,
             'msg' => 'با موفقیت حذف شد',
@@ -120,13 +128,15 @@ final class GiftCardController extends BaseController
     public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $giftcards = GiftCard::orderBy('id', 'desc')->get();
+
         foreach ($giftcards as $giftcard) {
             $giftcard->op = '<button type="button" class="btn btn-red" id="delete-gift-card-' . $giftcard->id . '" 
         onclick="deleteGiftCard(' . $giftcard->id . ')">حذف</button>';
-            $giftcard->status = Tools::getGiftCardStatus($giftcard);
+            $giftcard->status = $giftcard->status();
             $giftcard->create_time = Tools::toDateTime((int) $giftcard->create_time);
             $giftcard->use_time = Tools::toDateTime((int) $giftcard->use_time);
         }
+
         return $response->withJson([
             'giftcards' => $giftcards,
         ]);

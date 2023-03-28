@@ -96,111 +96,136 @@ final class ProductController extends BaseController
     public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         // base product
-        $type = $request->getParam('type');
-        $name = $request->getParam('name');
-        $price = $request->getParam('price');
-        $status = $request->getParam('status');
-        $stock = $request->getParam('stock');
+        $type = $request->getParam('type') ?? '';
+        $name = $request->getParam('name') ?? '';
+        $price = $request->getParam('price') ?? 0;
+        $status = $request->getParam('status') ?? 1;
+        $stock = $request->getParam('stock') ?? -1;
         // content
-        $time = $request->getParam('time');
-        $bandwidth = $request->getParam('bandwidth');
-        $class = $request->getParam('class');
-        $class_time = $request->getParam('class_time');
-        $node_group = $request->getParam('node_group');
-        $speed_limit = $request->getParam('speed_limit');
-        $ip_limit = $request->getParam('ip_limit');
+        $time = $request->getParam('time') ?? 0;
+        $bandwidth = $request->getParam('bandwidth') ?? 0;
+        $class = $request->getParam('class') ?? 0;
+        $class_time = $request->getParam('class_time') ?? 0;
+        $node_group = $request->getParam('node_group') ?? 0;
+        $speed_limit = $request->getParam('speed_limit') ?? 0;
+        $ip_limit = $request->getParam('ip_limit') ?? 0;
         // limit
         $class_required = $request->getParam('class_required') ?? '';
         $node_group_required = $request->getParam('node_group_required') ?? '';
         $new_user_required = $request->getParam('new_user_required') === 'true' ? 1 : 0;
 
-        try {
-            $product = new Product();
+        $product = new Product();
 
-            if ($name === '' || $name === null) {
-                throw new Exception('لطفا نام سرویس را وارد کنید');
-            }
-            if ($price === '' || $price === null) {
-                throw new Exception('لطفا قیمت سرویس را وارد نمایید');
-            }
-            if ($stock === '' || $stock === null) {
-                throw new Exception('لطفا موجودی سرویس را وارد کنید');
-            }
-
-            if ($type === 'tabp') {
-                if ($time === '' || $time === null) {
-                    throw new Exception('لطفا مدت زمان محصول را پر کنید');
-                }
-
-                if ($class_time === '' || $class_time === null) {
-                    throw new Exception('لطفا مدت زمان سطح را پر کنید');
-                }
-
-                if ($bandwidth === '' || $bandwidth === null) {
-                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
-                }
-
-                ($class === '') && $class = '0';
-                ($class_time === '') && $class_time = $time;
-                ($speed_limit === '') && $speed_limit = '0';
-                ($ip_limit === '') && $ip_limit = '0';
-
-                $content = [
-                    'time' => $time,
-                    'bandwidth' => $bandwidth,
-                    'class' => $class,
-                    'class_time' => $class_time,
-                    'node_group' => $node_group,
-                    'speed_limit' => $speed_limit,
-                    'ip_limit' => $ip_limit,
-                ];
-            } elseif ($type === 'time') {
-                if ($time === '' || $time === null) {
-                    throw new Exception('لطفا مدت زمان محصول را پر کنید');
-                }
-
-                if ($class_time === '' || $class_time === null) {
-                    throw new Exception('لطفا مدت زمان سطح را پر کنید');
-                }
-
-                $content = [
-                    'time' => $time,
-                ];
-            } elseif ($type === 'bandwidth') {
-                if ($bandwidth === '' || $bandwidth === null) {
-                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
-                }
-
-                $content = [
-                    'bandwidth' => $bandwidth,
-                ];
-            } else {
-                throw new Exception('نوع سرویس اشتباه وارد شده');
-            }
-
-            $limit = [
-                'class_required' => $class_required,
-                'node_group_required' => $node_group_required,
-                'new_user_required' => $new_user_required,
-            ];
-
-            $product->type = $type;
-            $product->name = $name;
-            $product->price = $price;
-            $product->content = json_encode($content);
-            $product->limit = json_encode($limit);
-            $product->status = $status;
-            $product->create_time = time();
-            $product->update_time = time();
-            $product->sale_count = 0;
-            $product->stock = $stock;
-            $product->save();
-        } catch (Exception $e) {
+        if ($name === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => $e->getMessage(),
+                'msg' => 'نام محصول نمی تواند خالی باشد',
             ]);
         }
+
+        if ($price === '' || $price < 0) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'قیمت محصول نامعتبر است',
+            ]);
+        }
+
+        if ($stock === '') {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'موجودی محصول نمی تواند خالی باشد',
+            ]);
+        }
+
+        if ($type === 'tabp') {
+            if ($time === '' || $time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان محصول نامعتبر است',
+                ]);
+            }
+
+            if ($class_time === '' || $class_time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان سطح نامعتبر است',
+                ]);
+            }
+
+            if ($bandwidth === '' || $bandwidth <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'ترافیک بسته نامعتبر است',
+                ]);
+            }
+
+            ($class === '') && $class = '0';
+            ($class_time === '') && $class_time = $time;
+            ($speed_limit === '') && $speed_limit = '0';
+            ($ip_limit === '') && $ip_limit = '0';
+
+            $content = [
+                'time' => $time,
+                'bandwidth' => $bandwidth,
+                'class' => $class,
+                'class_time' => $class_time,
+                'node_group' => $node_group,
+                'speed_limit' => $speed_limit,
+                'ip_limit' => $ip_limit,
+            ];
+        } elseif ($type === 'time') {
+            if ($time === '' || $time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان محصول نامعتبر است',
+                ]);
+            }
+
+            if ($class_time === '' || $class_time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان سطح نامعتبر است',
+                ]);
+            }
+
+            $content = [
+                'time' => $time,
+            ];
+        } elseif ($type === 'bandwidth') {
+            if ($bandwidth === '' || $bandwidth <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'ترافیک بسته نامعتبر است',
+                ]);
+            }
+
+            $content = [
+                'bandwidth' => $bandwidth,
+            ];
+        } else {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'نوع سرویس اشتباه وارد شده',
+            ]);
+        }
+
+        $limit = [
+            'class_required' => $class_required,
+            'node_group_required' => $node_group_required,
+            'new_user_required' => $new_user_required,
+        ];
+
+        $product->type = $type;
+        $product->name = $name;
+        $product->price = $price;
+        $product->content = json_encode($content);
+        $product->limit = json_encode($limit);
+        $product->status = $status;
+        $product->create_time = time();
+        $product->update_time = time();
+        $product->sale_count = 0;
+        $product->stock = $stock;
+        $product->save();
 
         return $response->withJson([
             'ret' => 1,
@@ -212,100 +237,134 @@ final class ProductController extends BaseController
     {
         $product_id = $args['id'];
         // base product
-        $type = $request->getParam('type');
-        $name = $request->getParam('name');
-        $price = $request->getParam('price');
-        $status = $request->getParam('status');
-        $stock = $request->getParam('stock');
+        $type = $request->getParam('type') ?? '';
+        $name = $request->getParam('name') ?? '';
+        $price = $request->getParam('price') ?? 0;
+        $status = $request->getParam('status') ?? 1;
+        $stock = $request->getParam('stock') ?? -1;
         // content
-        $time = $request->getParam('time');
-        $bandwidth = $request->getParam('bandwidth');
-        $class = $request->getParam('class');
-        $class_time = $request->getParam('class_time');
-        $node_group = $request->getParam('node_group');
-        $speed_limit = $request->getParam('speed_limit');
-        $ip_limit = $request->getParam('ip_limit');
+        $time = $request->getParam('time') ?? 0;
+        $bandwidth = $request->getParam('bandwidth') ?? 0;
+        $class = $request->getParam('class') ?? 0;
+        $class_time = $request->getParam('class_time') ?? 0;
+        $node_group = $request->getParam('node_group') ?? 0;
+        $speed_limit = $request->getParam('speed_limit') ?? 0;
+        $ip_limit = $request->getParam('ip_limit') ?? 0;
         // limit
         $class_required = $request->getParam('class_required') ?? '';
         $node_group_required = $request->getParam('node_group_required') ?? '';
         $new_user_required = $request->getParam('new_user_required') === 'true' ? 1 : 0;
 
-        try {
-            $product = Product::find($product_id);
+        $product = Product::find($product_id);
 
-            if ($name === '') {
-                throw new Exception('لطفا نام سرویس را وارد کنید');
-            }
-            if ($price === '') {
-                throw new Exception('لطفا قیمت سرویس را وارد نمایید');
-            }
-            if ($stock === '') {
-                throw new Exception('لطفا موجودی سرویس را وارد کنید');
-            }
-
-            if ($type === 'tabp') {
-                if ($time === '') {
-                    throw new Exception('لطفا مدت زمان بسته را وارد کنید');
-                }
-                if ($bandwidth === '') {
-                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
-                }
-
-                ($class === '') && $class = '0';
-                ($class_time === '') && $class_time = $time;
-                ($speed_limit === '') && $speed_limit = '0';
-                ($ip_limit === '') && $ip_limit = '0';
-
-                $content = [
-                    'time' => $time,
-                    'bandwidth' => $bandwidth,
-                    'class' => $class,
-                    'class_time' => $class_time,
-                    'node_group' => $node_group,
-                    'speed_limit' => $speed_limit,
-                    'ip_limit' => $ip_limit,
-                ];
-            } elseif ($type === 'time') {
-                if ($time === '') {
-                    throw new Exception('لطفا مدت زمان بسته را وارد کنید');
-                }
-
-                $content = [
-                    'time' => $time,
-                ];
-            } elseif ($type === 'bandwidth') {
-                if ($bandwidth === '') {
-                    throw new Exception('لطفا ترافیک بسته را وارد کنید');
-                }
-
-                $content = [
-                    'bandwidth' => $bandwidth,
-                ];
-            } else {
-                throw new Exception('نوع سرویس اشتباه وارد شده');
-            }
-
-            $limit = [
-                'class_required' => $class_required,
-                'node_group_required' => $node_group_required,
-                'new_user_required' => $new_user_required,
-            ];
-
-            $product->type = $type;
-            $product->name = $name;
-            $product->price = $price;
-            $product->content = json_encode($content);
-            $product->limit = json_encode($limit);
-            $product->stock = $stock;
-            $product->status = $status;
-            $product->update_time = time();
-            $product->save();
-        } catch (Exception $e) {
+        if ($name === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => $e->getMessage(),
+                'msg' => 'نام محصول نمی تواند خالی باشد',
             ]);
         }
+
+        if ($price === '' || $price < 0) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'قیمت محصول نامعتبر است',
+            ]);
+        }
+
+        if ($stock === '') {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'موجودی محصول نمی تواند خالی باشد',
+            ]);
+        }
+
+        if ($type === 'tabp') {
+            if ($time === '' || $time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان محصول نامعتبر است',
+                ]);
+            }
+
+            if ($class_time === '' || $class_time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان سطح نامعتبر است',
+                ]);
+            }
+
+            if ($bandwidth === '' || $bandwidth <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'ترافیک بسته نامعتبر است',
+                ]);
+            }
+
+            ($class === '') && $class = '0';
+            ($class_time === '') && $class_time = $time;
+            ($speed_limit === '') && $speed_limit = '0';
+            ($ip_limit === '') && $ip_limit = '0';
+
+            $content = [
+                'time' => $time,
+                'bandwidth' => $bandwidth,
+                'class' => $class,
+                'class_time' => $class_time,
+                'node_group' => $node_group,
+                'speed_limit' => $speed_limit,
+                'ip_limit' => $ip_limit,
+            ];
+        } elseif ($type === 'time') {
+            if ($time === '' || $time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان محصول نامعتبر است',
+                ]);
+            }
+
+            if ($class_time === '' || $class_time <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مدت زمان سطح نامعتبر است',
+                ]);
+            }
+
+            $content = [
+                'time' => $time,
+            ];
+        } elseif ($type === 'bandwidth') {
+            if ($bandwidth === '' || $bandwidth <= 0) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'ترافیک بسته نامعتبر است',
+                ]);
+            }
+
+            $content = [
+                'bandwidth' => $bandwidth,
+            ];
+        } else {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'نوع سرویس اشتباه وارد شده',
+            ]);
+        }
+
+        $limit = [
+            'class_required' => $class_required,
+            'node_group_required' => $node_group_required,
+            'new_user_required' => $new_user_required,
+        ];
+
+        $product->type = $type;
+        $product->name = $name;
+        $product->price = $price;
+        $product->content = json_encode($content);
+        $product->limit = json_encode($limit);
+        $product->stock = $stock;
+        $product->status = $status;
+        $product->update_time = time();
+        $product->save();
 
         return $response->withJson([
             'ret' => 1,
@@ -326,26 +385,18 @@ final class ProductController extends BaseController
 
     public function copy(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        try {
-            $old_product_id = $args['id'];
-            $old_product = Product::find($old_product_id);
-            $new_product = new Product();
-            // https://laravel.com/docs/9.x/eloquent#replicating-models
-            $new_product = $old_product->replicate([
-                'create_time',
-                'update_time',
-            ]);
-            $new_product->name .= ' (کپی)';
-            $new_product->create_time = time();
-            $new_product->update_time = time();
-            $new_product->sale_count = 0;
-            $new_product->save();
-        } catch (Exception $e) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => $e->getMessage(),
-            ]);
-        }
+        $old_product_id = $args['id'];
+        $old_product = Product::find($old_product_id);
+
+        $new_product = $old_product->replicate([
+            'create_time',
+            'update_time',
+        ]);
+        $new_product->name .= ' (کپی)';
+        $new_product->create_time = time();
+        $new_product->update_time = time();
+        $new_product->sale_count = 0;
+        $new_product->save();
 
         return $response->withJson([
             'ret' => 1,
@@ -358,16 +409,16 @@ final class ProductController extends BaseController
         $products = Product::orderBy('id', 'desc')->get();
 
         foreach ($products as $product) {
-            $product->op = '<button type="button" class="btn btn-red" id="delete-product-' . $product->id . '" 
-            onclick="deleteProduct(' . $product->id . ')">حذف</button>
-            <button type="button" class="btn btn-orange" id="copy-product-' . $product->id . '" 
-            onclick="copyProduct(' . $product->id . ')">کپی</button>
+            $product->op = '<button type="button" class="btn btn-red" id="delete-product-' . $product->id . '"
+             onclick="deleteProduct(' . $product->id . ')">حذف</button>
+            <button type="button" class="btn btn-orange" id="copy-product-' . $product->id . '"
+             onclick="copyProduct(' . $product->id . ')">کپی</button>
             <a class="btn btn-blue" href="/admin/product/' . $product->id . '/edit">ویرایش</a>';
-            $product->type = Tools::getProductType($product);
-            $product->status = Tools::getProductStatus($product);
+            $product->type = $product->type();
+            $product->status = $product->status();
             $product->create_time = Tools::toDateTime($product->create_time);
             $product->update_time = Tools::toDateTime($product->update_time);
-            $product->stock = Tools::getProductStock($product);
+            $product->stock = $product->stock();
         }
 
         return $response->withJson([

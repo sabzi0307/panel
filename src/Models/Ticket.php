@@ -10,25 +10,31 @@ namespace App\Models;
 final class Ticket extends Model
 {
     protected $connection = 'default';
-
     protected $table = 'ticket';
 
     /**
-     * [静态方法] 删除不存在的用户的记录
+     * 工单类型
      */
-    public static function userIsNull(Ticket $Ticket): void
+    public function type(): string
     {
-        $tickets = Ticket::where('userid', $Ticket->userid)->get();
-        foreach ($tickets as $ticket) {
-            $ticket->delete();
-        }
+        return match ($this->type) {
+            'howto' => 'نحوه استفاده',
+            'billing' => 'امور مالی',
+            'account' => 'حساب کاربری',
+            default => 'سایر',
+        };
     }
 
     /**
-     * 时间
+     * 工单状态
      */
-    public function datetime(): string
+    public function status(): string
     {
-        return date('Y-m-d H:i:s', $this->datetime);
+        return match ($this->status) {
+            'closed' => 'بسته شده',
+            'open_wait_user' => 'منتظر پاسخ کاربر',
+            'open_wait_admin' => 'در حال انجام',
+            default => 'ناشناخته',
+        };
     }
 }

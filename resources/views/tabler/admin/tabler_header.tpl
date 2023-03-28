@@ -198,7 +198,7 @@
                                         <i class="ti ti-torii"></i>&nbsp;
                                         درگاه پرداخت
                                     </a>
-                                    <a class="dropdown-item" href="/admin/alive">
+                                    <a class="dropdown-item" href="/admin/online">
                                         <i class="ti ti-router"></i>&nbsp;
                                         IP آنلاین
                                     </a>
@@ -276,7 +276,7 @@
                                         <i class="ti ti-arrow-back-up icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        برگشت
+                                        بازگشت به مرکز کاربر
                                     </span>
                                 </a>
                             </li>

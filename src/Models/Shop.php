@@ -19,60 +19,11 @@ use function time;
 final class Shop extends Model
 {
     protected $connection = 'default';
-
     protected $table = 'shop';
 
     protected $casts = [
         'content' => 'array',
     ];
-
-    public function content(): string
-    {
-        $content_text = '';
-        foreach ($this->content as $key => $value) {
-            switch ($key) {
-                case 'bandwidth':
-                    $content_text .= 'ترافیک را اضافه کنید ' . $value . ' G ';
-                    break;
-                case 'expire':
-                    $content_text .= ', به مدت اعتبار حساب اضافه کنید ' . $value . ' روز ';
-                    break;
-                case 'class':
-                    $content_text .= ', یک حساب کاربری را به یک سطح ارتقا دهید ' . $value . ' , مدت اعتبار ' . $this->content['class_expire'] . ' روز ';
-                    break;
-                case 'reset':
-                    $content_text .= ', وجود دارد ' . $this->content['reset_exp'] . ' در عرض چند روز، هر ' . $value . ' روز ریست ترافیک به ' . $this->content['reset_value'] . ' G ';
-                    break;
-                case 'speedlimit':
-                    if ($value === 0) {
-                        $content_text .= ', سرعت پورت کاربر نامحدود ';
-                    } else {
-                        $content_text .= ', سرعت پورت کاربر محدودیت دارد' . $value . ' Mbps ';
-                    }
-                    break;
-                case 'connector':
-                    if ($value === 0) {
-                        $content_text .= ', IP کاربر محدود نیست';
-                    } else {
-                        $content_text .= ', IP کاربر دارای محدودیت می باشد. ' . $value . ' 个';
-                    }
-                    break;
-                default:
-            }
-        }
-
-        return rtrim($content_text, ',');
-    }
-
-    public function bandwidth()
-    {
-        return $this->content['bandwidth'] ?? 0;
-    }
-
-    public function expire()
-    {
-        return $this->content['expire'] ?? 0;
-    }
 
     public function reset()
     {
@@ -87,49 +38,6 @@ final class Shop extends Model
     public function resetExp()
     {
         return $this->content['reset_exp'] ?? 0;
-    }
-
-    public function trafficPackage(): bool
-    {
-        return isset($this->content['traffic_package']);
-    }
-
-    public function contentExtra(): array|int
-    {
-        if (isset($this->content['content_extra'])) {
-            $content_extra = explode(';', $this->content['content_extra']);
-            $content_extra_new = [];
-            foreach ($content_extra as $innerContent) {
-                if (! str_contains($innerContent, '-')) {
-                    $innerContent = 'check-' . $innerContent;
-                }
-                $innerContent = explode('-', $innerContent);
-                $content_extra_new[] = $innerContent;
-            }
-            return $content_extra_new;
-        }
-
-        return 0;
-    }
-
-    public function userClass()
-    {
-        return $this->content['class'] ?? 0;
-    }
-
-    public function classExpire()
-    {
-        return $this->content['class_expire'] ?? 0;
-    }
-
-    public function speedlimit()
-    {
-        return $this->content['speedlimit'] ?? 0;
-    }
-
-    public function connector()
-    {
-        return $this->content['connector'] ?? 0;
     }
 
     public function buy($user, $is_renew = 0): void
@@ -201,21 +109,5 @@ final class Shop extends Model
     public function useLoop(): bool
     {
         return $this->reset() !== 0 && $this->resetValue() !== 0 && $this->resetExp() !== 0;
-    }
-
-    /*
-     * 流量是否自动重置
-     */
-    public function autoResetBandwidthString(): string
-    {
-        return $this->auto_reset_bandwidth === 0 ? 'بدون تنظیم مجدد خودکار' : 'تنظیم مجدد خودکار';
-    }
-
-    /*
-     * 商品状态
-     */
-    public function status(): string
-    {
-        return $this->status === 1 ? 'در قفسه ها قرار دهید' : 'قفسه ها را بردارید';
     }
 }

@@ -248,25 +248,30 @@ final class CouponController extends BaseController
                 <button type="button" class="btn btn-orange" id="disable-coupon-' . $coupon->id . '" 
                 onclick="disableCoupon(' . $coupon->id . ')">غیر فعال</button>';
             }
-            $coupon->type = Tools::getCouponType($content);
+            $coupon->type = $coupon->type();
             $coupon->value = $content->value;
             $coupon->product_id = $limit->product_id;
+
             if ((int) $limit->use_time < 0) {
                 $coupon->use_time = 'نامحدود';
             } else {
                 $coupon->use_time = $limit->use_time;
             }
+
             if ($limit->new_user === 1) {
                 $coupon->new_user = 'بله';
             } else {
                 $coupon->new_user = 'خیر';
             }
+
             if ($limit->disabled === 1) {
                 $coupon->disabled = 'بله';
             } else {
                 $coupon->disabled = 'خیر';
             }
+
             $coupon->create_time = Tools::toDateTime((int) $coupon->create_time);
+
             if ($coupon->expire_time === 0) {
                 $coupon->expire_time = 'دائمی';
             } else {

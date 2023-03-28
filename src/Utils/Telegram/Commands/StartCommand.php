@@ -6,8 +6,8 @@ namespace App\Utils\Telegram\Commands;
 
 use App\Models\Setting;
 use App\Models\User;
+use App\Utils\Telegram;
 use App\Utils\Telegram\TelegramTools;
-use App\Utils\TelegramSessionManager;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use function strlen;
@@ -83,7 +83,7 @@ final class StartCommand extends Command
 
     public function bindingAccount($SendUser, $MessageText): void
     {
-        $Uid = TelegramSessionManager::verifyBindSession($MessageText);
+        $Uid = Telegram::verifyBindSession($MessageText);
         if ($Uid === 0) {
             $text = 'اتصال شکست خورد، پس از بازرسی، مشخص شد که：【' . $MessageText . '】به مدت 10 دقیقه معتبر است، می توانید پس از تازه کردن صفحه **ویرایش نمایه** در وب سایت ما دوباره امتحان کنید.';
         } else {
