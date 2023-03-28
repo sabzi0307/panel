@@ -26,8 +26,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
-      with:
-        token: ${{ secrets.PAT }}
 
     - name: Set Variables
       run: |
@@ -44,38 +42,7 @@ jobs:
         wget -nv -O "storage/GeoLite2-Country/GeoLite2-Country.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
         wget -nv -O "storage/GeoLite2-City/GeoLite2-City.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb"
 
-    # - name: Push to "dev" branch
-    #   run: |
-    #     git config user.name "${{ github.actor }}"
-    #     git config user.email "${{ github.actor }}@users.noreply.github.com"
-    #     git add .
-    #     git commit -m "${{ env.TAG_NAME }}"
-    #     git remote set-url origin "https://${{ github.actor }}:${{ secrets.PAT }}@github.com/${{ github.repository }}"
-    #     git push origin dev
-
     - name: Auto Update GeoLite mmdb
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "Github Action: Auto Update GeoLite mmdb - ${{ env.TAG_NAME }}"
-
-    # - name: Commit files
-    #   run: |
-    #     git config user.name "${{ github.actor }}"
-    #     git config user.email "${{ github.actor }}@users.noreply.github.com"
-    #     git add .
-    #     git commit -m "Update GeoLite mmdb - ${{ env.TAG_NAME }}"
-
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ secrets.PAT }}
-    #     branch: ${{ github.ref }}
-
-    # - name: Upload to Releases
-    #   uses: softprops/action-gh-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ env.TAG_NAME }}
-    #     body: ${{ env.TAG_NAME }}
-    #     files: upload/*.mmdb
