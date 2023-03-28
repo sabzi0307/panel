@@ -53,7 +53,7 @@ jobs:
     #     git remote set-url origin "https://${{ github.actor }}:${{ secrets.PAT }}@github.com/${{ github.repository }}"
     #     git push origin dev
 
-    - name: Auto committing minified files
+    - name: Auto Update GeoLite mmdb
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "Github Action: Auto Update GeoLite mmdb - ${{ env.TAG_NAME }}"
