@@ -26,6 +26,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
+      with:
+        token: ${{ secrets.PAT }}
 
     - name: Set Variables
       run: |
@@ -51,18 +53,23 @@ jobs:
     #     git remote set-url origin "https://${{ github.actor }}:${{ secrets.PAT }}@github.com/${{ github.repository }}"
     #     git push origin dev
 
-    - name: Commit files
-      run: |
-        git config user.name "${{ github.actor }}"
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
-        git add .
-        git commit -m "Update GeoLite mmdb - ${{ env.TAG_NAME }}"
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+    - name: Auto committing minified files
+      uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        github_token: ${{ secrets.PAT }}
-        branch: ${{ github.ref }}
+        commit_message: "Github Action: Auto Update GeoLite mmdb - ${{ env.TAG_NAME }}"
+
+    # - name: Commit files
+    #   run: |
+    #     git config user.name "${{ github.actor }}"
+    #     git config user.email "${{ github.actor }}@users.noreply.github.com"
+    #     git add .
+    #     git commit -m "Update GeoLite mmdb - ${{ env.TAG_NAME }}"
+
+    # - name: Push changes
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     github_token: ${{ secrets.PAT }}
+    #     branch: ${{ github.ref }}
 
     # - name: Upload to Releases
     #   uses: softprops/action-gh-release@v1
