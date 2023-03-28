@@ -70,20 +70,6 @@ if [ -z "$DEBUG" ];then
     DEBUG=false
 fi
 
-if [ "$ENABLE_TELEGRAM" = true ];then 
-    if [ -z "$TELEGRAM_CHAT_ID" ];then
-        echo >&2 "TELEGRAM_CHAT_ID not set!"
-        exit
-    fi
-    if [ -z "$TELEGRAM_BOT" ];then
-        echo >&2 "TELEGRAM_BOT not set!"
-        exit
-    fi
-    if [ -z "$TELEGRAM_TOKEN" ];then
-        echo >&2 "TELEGRAM_TOKEN not set!"
-        exit
-    fi
-fi
 
 # if [ "$B2_BACKUP" = true ];then
 #     echo >&2 "B2_BACKUP set!"
@@ -342,15 +328,6 @@ if [ "$INIT" = true ];then
         config/.config.php
     fi
 
-    if [ "$ENABLE_TELEGRAM" = true ];then
-        echo "Writting Telegram configuration..."
-        sed -i -e "s/\$_ENV\['enable_telegram'].*=.*false;/\$_ENV['enable_telegram']        = '$ENABLE_TELEGRAM';/g" \
-        -e "s/\$_ENV\['telegram_token'].*=.*'';/\$_ENV['telegram_token']        = '$TELEGRAM_TOKEN';/g" \
-        -e "s/\$_ENV\['telegram_chatid'].*=.*-111;/\$_ENV['telegram_chatid']        = '$TELEGRAM_CHAT_ID';/g" \
-        -e "s/\$_ENV\['telegram_bot'].*=.*'_bot';/\$_ENV['telegram_bot']        = '$TELEGRAM_BOT';/g" \
-        -e "s/\$_ENV\['enable_telegram_login'].*=.*false;/\$_ENV['enable_telegram_login']        = $TELEGRAM_LOGIN;/g" \
-        config/.config.php
-    fi
 
 
 #     WEBSITE_DIR=$(pwd)
@@ -395,8 +372,9 @@ if [ "$INIT" = true ];then
             temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
-                php vendor/bin/phinx migrate
+                php xcat Update
                 php xcat Tool importAllSettings
+                php xcat Migration latest
             fi
             # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
             echo >&2 "Done"
@@ -411,8 +389,9 @@ if [ "$INIT" = true ];then
             temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
-                php vendor/bin/phinx migrate
+                php xcat Update
                 php xcat Tool importAllSettings
+                php xcat Migration latest
             fi
             # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         
