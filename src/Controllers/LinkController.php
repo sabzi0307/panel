@@ -8,6 +8,7 @@ use App\Models\Link;
 use App\Models\Node;
 use App\Models\Setting;
 use App\Models\UserSubscribeLog;
+use App\Utils\Tools;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use function array_key_exists;
@@ -35,6 +36,7 @@ final class LinkController extends BaseController
         }
 
         $token = $args['token'];
+        $ip = $args['ip'];
         $params = $request->getQueryParams();
 
         $link = Link::where('token', $token)->first();
@@ -52,42 +54,42 @@ final class LinkController extends BaseController
 
         if (isset($params['clash']) && $params['clash'] === '1') {
             $sub_type = 'clash';
-            $sub_info = SubController::getClash($user);
+            $sub_info = SubController::getClash($user, $ip);
         }
 
         if (isset($params['sip002']) && $params['sip002'] === '1') {
             $sub_type = 'sip002';
-            $sub_info = self::getSIP002($user);
+            $sub_info = self::getSIP002($user, $ip);
         }
 
         if (isset($params['ss']) && $params['ss'] === '1') {
             $sub_type = 'ss';
-            $sub_info = self::getSS($user);
+            $sub_info = self::getSS($user, $ip);
         }
 
         if (isset($params['v2ray']) && $params['v2ray'] === '1') {
             $sub_type = 'v2ray';
-            $sub_info = self::getV2Ray($user);
+            $sub_info = self::getV2Ray($user, $ip);
         }
 
         if (isset($params['trojan']) && $params['trojan'] === '1') {
             $sub_type = 'trojan';
-            $sub_info = self::getTrojan($user);
+            $sub_info = self::getTrojan($user, $ip);
         }
 
         if (isset($params['sub'])) {
             switch ($params['sub']) {
                 case '3':
                     $sub_type = 'v2ray';
-                    $sub_info = self::getV2Ray($user);
+                    $sub_info = self::getV2Ray($user, $ip);
                     break;
                 case '4':
                     $sub_type = 'trojan';
-                    $sub_info = self::getTrojan($user);
+                    $sub_info = self::getTrojan($user, $ip);
                     break;
                 default:
                     $sub_type = 'ss';
-                    $sub_info = self::getSS($user);
+                    $sub_info = self::getSS($user, $ip);
                     break;
             }
         }
@@ -108,7 +110,7 @@ final class LinkController extends BaseController
     }
 
     // 传统 SS 订阅
-    public static function getSS($user): string
+    public static function getSS($user, $ip = null): string
     {
         $links = '';
         //判断是否فعالSS订阅
@@ -132,6 +134,14 @@ final class LinkController extends BaseController
             } else {
                 $server = $node_custom_config['server_user'];
             }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
+            }
+            
             if ((int) $node_raw->sort === 0) {
                 $links .= base64_encode($user->method . ':' . $user->passwd . '@' . $server . ':' . $user->port) . '#' .
                     $node_raw->name . PHP_EOL;
@@ -142,7 +152,7 @@ final class LinkController extends BaseController
     }
 
     // SIP002 SS 订阅
-    public static function getSIP002($user): string
+    public static function getSIP002($user, $ip = null): string
     {
         $links = '';
         //判断是否فعالSS订阅
@@ -166,6 +176,13 @@ final class LinkController extends BaseController
             } else {
                 $server = $node_custom_config['server_user'];
             }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
+            }
             if ((int) $node_raw->sort === 0) {
                 $plugin = $node_custom_config['plugin'] ?? '';
                 $plugin_option = $node_custom_config['plugin_option'] ?? '';
@@ -179,7 +196,7 @@ final class LinkController extends BaseController
         return $links;
     }
 
-    public static function getV2Ray($user): string
+    public static function getV2Ray($user, $ip = null): string
     {
         $links = '';
         //判断是否فعالV2Ray订阅
@@ -202,6 +219,13 @@ final class LinkController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
+            }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
             }
             if ((int) $node_raw->sort === 11) {
                 $v2_port = $node_custom_config['v2_port'] ?? ($node_custom_config['offset_port_user']
@@ -236,7 +260,7 @@ final class LinkController extends BaseController
         return $links;
     }
 
-    public static function getTrojan($user): string
+    public static function getTrojan($user, $ip = null): string
     {
         $links = '';
         //判断是否فعالTrojan订阅
@@ -259,6 +283,13 @@ final class LinkController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
+            }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
             }
             if ((int) $node_raw->sort === 14) {
                 $trojan_port = $node_custom_config['trojan_port'] ?? ($node_custom_config['offset_port_user']

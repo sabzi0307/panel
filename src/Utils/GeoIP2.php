@@ -46,7 +46,7 @@ final class GeoIP2
      * @throws AddressNotFoundException
      * @throws InvalidDatabaseException
      */
-    public function getAsn(string $ip): ?string
+    public function getAsn(string $ip): ?object
     {
         $record = $this->asn_reader->asn($ip);
         return $record;

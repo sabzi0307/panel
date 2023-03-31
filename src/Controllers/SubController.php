@@ -31,6 +31,7 @@ final class SubController extends BaseController
 
         $token = $args['token'];
         $subtype = $args['subtype'];
+        $ip = $args['ip'];
 
         $subtype_list = ['json', 'clash', 'sip008'];
 
@@ -51,9 +52,9 @@ final class SubController extends BaseController
         $user = $link->user();
 
         match ($subtype) {
-            'json' => $sub_info = self::getJson($user),
-            'clash' => $sub_info = self::getClash($user),
-            'sip008' => $sub_info = self::getSIP008($user),
+            'json' => $sub_info = self::getJson($user, $ip),
+            'clash' => $sub_info = self::getClash($user, $ip),
+            'sip008' => $sub_info = self::getSIP008($user, $ip),
         };
 
         if ($_ENV['subscribeLog'] === true) {
@@ -74,7 +75,7 @@ final class SubController extends BaseController
         );
     }
 
-    public static function getJson($user): array
+    public static function getJson($user, $ip = null): array
     {
         $nodes = [];
         //篩選出用戶能連接的節點
@@ -93,6 +94,13 @@ final class SubController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
+            }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
             }
 
             switch ((int) $node_raw->sort) {
@@ -211,17 +219,12 @@ final class SubController extends BaseController
         ];
     }
 
-    public static function getClash($user): string
+    public static function getClash($user, $ip = null): string
     {
         $nodes = [];
         $clash_config = $_ENV['Clash_Config'];
         $clash_group_indexes = $_ENV['Clash_Group_Indexes'];
         $clash_group_config = $_ENV['Clash_Group_Config'];
-        $rule_providers = $clash_config['rule-providers'];
-        foreach ($rule_providers as $key => $value) {
-            $rule_providers[$key] = str_replace(['http://proxyproviderip', 'https://proxyproviderip'], [$_ENV['subUrl'], $_ENV['subUrl']], $value);
-        }
-        $clash_config['rule-providers'] = $rule_providers;
 
         //Filter out the nodes that users can connect to
         $nodes_raw = Node::where('type', 1)
@@ -239,6 +242,14 @@ final class SubController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
+            };
+
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
             }
 
             switch ((int) $node_raw->sort) {
@@ -350,7 +361,7 @@ final class SubController extends BaseController
     }
 
     // SIP008 SS 订阅
-    public static function getSIP008($user): array
+    public static function getSIP008($user, $ip = null): array
     {
         $nodes = [];
         //判断是否فعالSS订阅
@@ -373,6 +384,13 @@ final class SubController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
+            }
+            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
+                    $server = $ip;
+                } elseif ($ip === "auto") {
+                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
+                };
             }
 
             switch ((int) $node_raw->sort) {

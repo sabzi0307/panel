@@ -12,9 +12,9 @@ use Cloudflare\API\Endpoints\Zones;
 
 final class CloudflareDriver
 {
-    public static function modifyRecord(DNS $dns, $zoneID, $recordID, $name, $content, $proxied = false): int
+    public static function modifyRecord(DNS $dns, $zoneID, $type, $recordID, $name, $content, $proxied = false): int
     {
-        $details = ['type' => 'A', 'name' => $name, 'content' => $content, 'proxied' => $proxied];
+        $details = ['type' => $type, 'name' => $name, 'content' => $content, 'proxied' => $proxied];
         if ($dns->updateRecordDetails($zoneID, $recordID, $details)->success === true) {
             return 1;
         }
@@ -32,14 +32,14 @@ final class CloudflareDriver
     /**
      * @throws EndpointException
      */
-    public static function updateRecord($name, $content, $proxied = false): void
+    public static function updateRecord($name, $content, $proxied = false, $type = 'A', $cf_mail = $_ENV['cloudflare_email'],$cf_key = $_ENV['cloudflare_key'], $cf_name = $_ENV['cloudflare_name']): void
     {
-        $key = new APIKey($_ENV['cloudflare_email'], $_ENV['cloudflare_key']);
+        $key = new APIKey($cf_mail, $cf_key);
         $adapter = new Guzzle($key);
         $zones = new Zones($adapter);
         $zoneID = null;
 
-        $zoneID = $zones->getZoneID($_ENV['cloudflare_name']);
+        $zoneID = $zones->getZoneID($cf_name);
 
         $dns = new DNS($adapter);
 
@@ -48,11 +48,11 @@ final class CloudflareDriver
         $records = $r->result;
 
         if ($recordCount === 0) {
-            self::addRecord($dns, $zoneID, 'A', $name, $content);
+            self::addRecord($dns, $zoneID, $type, $name, $content);
         } elseif ($recordCount >= 1) {
             foreach ($records as $record) {
                 $recordID = $record->id;
-                self::modifyRecord($dns, $zoneID, $recordID, $name, $content, $proxied);
+                self::modifyRecord($dns, $zoneID, $type, $recordID, $name, $content, $proxied);
             }
         }
     }
