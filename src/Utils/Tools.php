@@ -35,9 +35,10 @@ final class Tools
         $providers = $_ENV['Internet_Service_Providers'];
         $server = $providers[0]['AsName'];
         foreach ($providers as $provider) {
-            if (in_array($asn->autonomousSystemNumber, $provider['AsNum']))
+            if (in_array($asn->autonomousSystemNumber, $provider['AsNum'])) {
                 $server = $provider['AsName'];
-                break;
+            }
+            break;
         }
 
         return strtolower($server . "." . $_ENV['cleanIP_name']);

@@ -48,7 +48,6 @@ final class GeoIP2
      */
     public function getAsn(string $ip): ?object
     {
-        $record = $this->asn_reader->asn($ip);
-        return $record;
+        return $this->asn_reader->asn($ip);
     }
 }

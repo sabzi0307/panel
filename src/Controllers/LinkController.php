@@ -139,9 +139,9 @@ final class LinkController extends BaseController
                     $server = $ip;
                 } elseif ($ip === "auto") {
                     $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                };
+                }
             }
-            
+
             if ((int) $node_raw->sort === 0) {
                 $links .= base64_encode($user->method . ':' . $user->passwd . '@' . $server . ':' . $user->port) . '#' .
                     $node_raw->name . PHP_EOL;
