@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 #Cloudflare
 $_ENV['cleanIP_enable'] = false;         //Whether to enable Cloudflare cleanIp
 $_ENV['cleanIP_email'] = '';            //Cloudflare email address
@@ -8,150 +9,150 @@ $_ENV['cleanIP_key'] = '';            //Cloudflare API Key
 $_ENV['cleanIP_name'] = '';            //domain name
 
 $_ENV['Internet_Service_Providers'] = array(
-    array(
+    [
         'AsName' => "default",
-        'AsNum' => array("0000"),
+        'AsNum' => ["0000"],
         "Name" => "پیشفرض",
         "DomainPer" => "DEF",
-        "CnRecords" => array(""),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => [],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Mobin Net Communication Company",
-        'AsNum' => array("47330", "50810"),
+        'AsNum' => ["47330", "50810"],
         "Name" => "مبین‌نت",
         "DomainPer" => "MBN",
-        "CnRecords" => array("mbn.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["mbn.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Andishe SABZ Khazar Co P.j.s",
-        'AsNum' => array("39308"),
+        'AsNum' => ["39308"],
         "Name" => "اندیشه‌سبز",
         "DomainPer" => "ASK",
-        "CnRecords" => array("ask.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["ask.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Mobile Communication Company of Iran PLC",
-        'AsNum' => array("197207"),
+        'AsNum' => ["197207"],
         "Name" => "همراه‌اول",
         "DomainPer" => "MCI",
-        "CnRecords" => array("mci.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["mci.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Iran Cell Service and Communication Company",
-        'AsNum' => array("44244"),
+        'AsNum' => ["44244"],
         "Name" => "ایرانسل",
         "DomainPer" => "MTN",
-        "CnRecords" => array("mtn.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["mtn.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Iran Telecommunication Company PJS",
-        'AsNum' => array("58224"),
+        'AsNum' => ["58224"],
         "Name" => "مخابرات",
         "DomainPer" => "MKH",
-        "CnRecords" => array("mkh.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["mkh.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Rightel Communication Service Company PJS",
-        'AsNum' => array("197206", "57218"),
+        'AsNum' => ["197206", "57218"],
         "Name" => "رایتل",
         "DomainPer" => "RTL",
-        "CnRecords" => array("rtl.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["rtl.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Aria Shatel Company Ltd",
-        'AsNum' => array("31549"),
+        'AsNum' => ["31549"],
         "Name" => "شاتل",
         "DomainPer" => "SHT",
-        "CnRecords" => array("sht.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["sht.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Pars Online PJS",
-        'AsNum' => array("16322", "60976"),
-        "AsName" => "پارس‌آنلاین",
+        'AsNum' => ["16322", "60976"],
+        "Name" => "پارس‌آنلاین",
         "DomainPer" => "PRS",
-        "CnRecords" => array("prs.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["prs.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Asiatech Data Transmission company",
-        'AsNum' => array("43754", "51433", "211421"),
+        'AsNum' => ["43754", "51433", "211421"],
         "Name" => "آسیاتک",
         "DomainPer" => "AST",
-        "CnRecords" => array("ast.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["ast.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Afranet",
-        'AsNum' => array("25184"),
+        'AsNum' => ["25184"],
         "Name" => "افرانت",
         "DomainPer" => "AFT",
-        "CnRecords" => array("aft.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["aft.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Respina Networks & Beyond PJSC",
-        'AsNum' => array("42337", "205207"),
+        'AsNum' => ["42337", "205207"],
         "Name" => "رسپینا",
         "DomainPer" => "RSP",
-        "CnRecords" => array("rsp.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["rsp.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Rayaneh Danesh Golestan Complex P.J.S. Co.",
-        'AsNum' => array("42440"),
+        'AsNum' => ["42440"],
         "Name" => "های‌وب",
         "DomainPer" => "HWB",
-        "CnRecords" => array("hwb.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["hwb.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Pishgaman Toseeh Ertebatat Company",
-        'AsNum' => array("3263", "34918", "49100", "56660", "57755", "57831", "58216", "59481", "208828"),
-        "AsName" => "پیشگامان",
+        'AsNum' => ["3263", "34918", "49100", "56660", "57755", "57831", "58216", "59481", "208828"],
+        "Name" => "پیشگامان",
         "DomainPer" => "PSM",
-        "CnRecords" => array("psm.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["psm.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Farabord Dadeh Haye Iranian Co.",
-        'AsNum' => array("206065"),
+        'AsNum' => ["206065"],
         "Name" => "زیتل",
         "DomainPer" => "ZTL",
-        "CnRecords" => array("ztl.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["ztl.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Tose'h Fanavari Ertebabat Pasargad Arian Co. PJS",
-        'AsNum' => array("24631", "43343", "203558"),
+        'AsNum' => ["24631", "43343", "203558"],
         "Name" => "آراکس",
         "DomainPer" => "ARX",
-        "CnRecords" => array("arx.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["arx.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Kish Cell Pars Co. (PJS)",
-        'AsNum' => array("209596"),
+        'AsNum' => ["209596"],
         "Name" => "سامانتل",
         "DomainPer" => "SMT",
-        "CnRecords" => array("smt.ircf.space"),
-        "ARecords" => array(""),
-    ),
-    array(
+        "CnRecords" => ["smt.ircf.space"],
+        "ARecords" => [],
+    ],
+    [
         'AsName' => "Fanava Group",
-        'AsNum' => array("41881", "60637"),
+        'AsNum' => ["41881", "60637"],
         "Name" => "فن‌آوا",
         "DomainPer" => "FNV",
-        "CnRecords" => array("fnv.ircf.space"),
-        "ARecords" => array(""),
-    )
+        "CnRecords" => ["fnv.ircf.space"],
+        "ARecords" => [],
+    ],
 );
 
 $_ENV['Clash_Config'] = [
