@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-
-
 $_ENV['Clash_Config'] = [
     'port' => 7890,
     'socks-port' => 7891,
