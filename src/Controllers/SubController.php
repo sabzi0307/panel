@@ -242,7 +242,7 @@ final class SubController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
-            };
+            }
 
             if ($_ENV['cleanIP_enable'] && isset($ip)) {
                 if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
