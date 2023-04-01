@@ -153,7 +153,7 @@ final class NodeController extends BaseController
 
         if ($_ENV['cloudflare_enable']) {
             $domain_name = explode('.' . $_ENV['cloudflare_name'], $node->server);
-            CloudflareDriver::updateRecord($domain_name[0], $node->node_ip);
+            CloudflareDriver::updateRecord($domain_name[0], $node->node_ip, $_ENV['cloudflare_email'], $_ENV['cloudflare_key'], $_ENV['cloudflare_name']);
         }
 
         if (Setting::obtain('telegram_add_node')) {

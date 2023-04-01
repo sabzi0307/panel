@@ -32,7 +32,7 @@ final class CloudflareDriver
     /**
      * @throws EndpointException
      */
-    public static function updateRecord($name, $content, $proxied = false, $type = 'A', $cf_mail = $_ENV['cloudflare_email'], $cf_key = $_ENV['cloudflare_key'], $cf_name = $_ENV['cloudflare_name']): void
+    public static function updateRecord($name, $content, $cf_mail, $cf_key, $proxied = false, $type = 'A', ): void
     {
         $key = new APIKey($cf_mail, $cf_key);
         $adapter = new Guzzle($key);
