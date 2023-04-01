@@ -174,8 +174,9 @@ foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
 // https://sentry.io for production debugging
 $_ENV['sentry_dsn'] = '';
 
-// MaxMind License Key
+// Maxmind GeoIP2 database
 $_ENV['maxmind_license_key'] = '';
+$_ENV['geoip_locale'] = 'en';
 
 // The ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 $_ENV['github_access_token'] = '';

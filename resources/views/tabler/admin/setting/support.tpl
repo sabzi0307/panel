@@ -34,7 +34,7 @@
                             <a href="#support" class="nav-link active" data-bs-toggle="tab">خدمات مشتری وب</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#admin_contact" class="nav-link" data-bs-toggle="tab">تماس با مدیر</a>
+                            <a href="#ticket" class="nav-link" data-bs-toggle="tab">تیکت</a>
                         </li>
                     </ul>
                 </div>
