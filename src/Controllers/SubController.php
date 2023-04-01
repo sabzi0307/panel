@@ -100,7 +100,7 @@ final class SubController extends BaseController
                     $server = $ip;
                 } elseif ($ip === "auto") {
                     $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                };
+                }
             }
 
             switch ((int) $node_raw->sort) {
@@ -249,7 +249,7 @@ final class SubController extends BaseController
                     $server = $ip;
                 } elseif ($ip === "auto") {
                     $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                };
+                }
             }
 
             switch ((int) $node_raw->sort) {
@@ -390,7 +390,7 @@ final class SubController extends BaseController
                     $server = $ip;
                 } elseif ($ip === "auto") {
                     $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                };
+                }
             }
 
             switch ((int) $node_raw->sort) {
