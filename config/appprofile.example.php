@@ -8,7 +8,8 @@ $_ENV['cleanIP_email'] = '';            //Cloudflare email address
 $_ENV['cleanIP_key'] = '';            //Cloudflare API Key
 $_ENV['cleanIP_name'] = '';            //domain name
 
-$_ENV['Internet_Service_Providers'] = array(
+$_ENV['Internet_Service_Providers'] = 
+[
     [
         'AsName' => "default",
         'AsNum' => ["0000"],
@@ -153,7 +154,7 @@ $_ENV['Internet_Service_Providers'] = array(
         "CnRecords" => ["fnv.ircf.space"],
         "ARecords" => [],
     ],
-);
+];
 
 $_ENV['Clash_Config'] = [
     'port' => 7890,
