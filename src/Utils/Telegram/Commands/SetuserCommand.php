@@ -22,12 +22,12 @@ final class SetuserCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'setuser';
+    protected string $name = 'setuser';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[چت گروهی/خصوصی] تغییر داده های کاربر، دستور مدیر.';
+    protected string $description = '[چت گروهی/خصوصی] تغییر داده های کاربر، دستور مدیر.';
 
     public function handle(): void
     {

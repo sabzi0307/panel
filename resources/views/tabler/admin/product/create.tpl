@@ -103,20 +103,20 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">گروه کاربران</label>
+                                <label class="form-label col-3 col-form-label required">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت سرعت (Mbps)</label>
+                                <label class="form-label col-3 col-form-label required">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت IP اتصال همزمان</label>
+                                <label class="form-label col-3 col-form-label required">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="">

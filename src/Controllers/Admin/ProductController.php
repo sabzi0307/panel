@@ -116,10 +116,10 @@ final class ProductController extends BaseController
 
         $product = new Product();
 
-        if ($name === '') {
+        if ($name === '' || $stock === '' || $node_group === '' || $speed_limit === '' || $ip_limit === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'نام محصول نمی تواند خالی باشد',
+                'msg' => 'لطفا تمام فیلدهای الزامی را تکمیل نمایید',
             ]);
         }
 
@@ -127,13 +127,6 @@ final class ProductController extends BaseController
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'قیمت محصول نامعتبر است',
-            ]);
-        }
-
-        if ($stock === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'موجودی محصول نمی تواند خالی باشد',
             ]);
         }
 
@@ -257,10 +250,10 @@ final class ProductController extends BaseController
 
         $product = Product::find($product_id);
 
-        if ($name === '') {
+        if ($name === '' || $stock === '' || $node_group === '' || $speed_limit === '' || $ip_limit === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'نام محصول نمی تواند خالی باشد',
+                'msg' => 'لطفا تمام فیلدهای الزامی را تکمیل نمایید',
             ]);
         }
 
@@ -268,13 +261,6 @@ final class ProductController extends BaseController
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'قیمت محصول نامعتبر است',
-            ]);
-        }
-
-        if ($stock === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'موجودی محصول نمی تواند خالی باشد',
             ]);
         }
 

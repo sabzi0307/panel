@@ -18,12 +18,12 @@ final class MenuCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'menu';
+    protected string $name = 'menu';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[گپ خصوصی]     منوی اصلی کاربر، مرکز شخصی.';
+    protected string $description = '[گپ خصوصی]     منوی اصلی کاربر، مرکز شخصی.';
 
     /**
      * {@inheritdoc}

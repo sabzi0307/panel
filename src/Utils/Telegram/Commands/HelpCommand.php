@@ -16,12 +16,12 @@ final class HelpCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'help';
+    protected string $name = 'help';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[چت گروهی/خصوصی] تمامی دستورات موجود در سیستم.';
+    protected string $description = '[چت گروهی/خصوصی] تمامی دستورات موجود در سیستم.';
 
     public function handle(): void
     {
@@ -35,7 +35,7 @@ final class HelpCommand extends Command
         }
         $this->replyWithChatAction(['action' => Actions::TYPING]);
         $commands = $this->telegram->getCommands();
-        $text = '系统中可用的所有命令.';
+        $text = 'تمامی دستورات موجود در سیستم';
         $text .= PHP_EOL . PHP_EOL;
         foreach ($commands as $name => $handler) {
             $text .= '/' . $name . PHP_EOL . '`    - ' . $handler->getDescription() . '`' . PHP_EOL;

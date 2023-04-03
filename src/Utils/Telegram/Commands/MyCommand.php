@@ -19,12 +19,12 @@ final class MyCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'my';
+    protected string $name = 'my';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[چت گروهی/خصوصی] اطلاعات شخصی من.';
+    protected string $description = '[چت گروهی/خصوصی] اطلاعات شخصی من.';
 
     /**
      * {@inheritdoc}

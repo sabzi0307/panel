@@ -426,7 +426,7 @@
                             <p class="my-3">
                                 {if time() > strtotime($user->class_expire)}
                                     بسته شما منقضی شده است، لطفا جهت خرید بسته به  
-                                    <a href="/user/shop">فروشگاه</a>
+                                    <a href="/user/product">فروشگاه</a>
                                     مراجعه نمایید.
                                 {else}
                                     {$diff = round((strtotime($user->class_expire) - time()) / 86400)}

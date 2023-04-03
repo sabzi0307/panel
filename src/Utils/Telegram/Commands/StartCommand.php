@@ -20,12 +20,12 @@ final class StartCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'start';
+    protected string $name = 'start';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[چت گروهی/خصوصی] دستور اولیه ربات.';
+    protected string $description = '[چت گروهی/خصوصی] دستور اولیه ربات.';
 
     public function handle(): void
     {

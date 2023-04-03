@@ -16,12 +16,12 @@ final class PingCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'ping';
+    protected string $name = 'ping';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[چت گروهی/خصوصی] یک شناسه منحصر به فرد برای من یا یک گروه دریافت کنید.';
+    protected string $description = '[چت گروهی/خصوصی] یک شناسه منحصر به فرد برای من یا یک گروه دریافت کنید.';
 
     public function handle(): void
     {

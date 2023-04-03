@@ -21,12 +21,12 @@ final class InfoCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = 'info';
+    protected string $name = 'info';
 
     /**
      * @var string Command Description
      */
-    protected $description = '[گروه]     دریافت اطلاعات کاربر پاسخ دهنده دستور مدیریتی.';
+    protected string $description = '[گروه]     دریافت اطلاعات کاربر پاسخ دهنده دستور مدیریتی.';
 
     public function handle(): void
     {
