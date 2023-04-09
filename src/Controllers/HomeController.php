@@ -52,36 +52,14 @@ final class HomeController extends BaseController
     public function telegram(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $token = $request->getQueryParam('token');
-        if ($token === $_ENV['telegram_request_token']) {
-            Process::index();
+
+        if ($_ENV['enable_telegram'] && $token === $_ENV['telegram_request_token']) {
+            Process::index($request);
             $result = '1';
         } else {
             $result = '0';
         }
+
         return $response->write($result);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function page404(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        return $response->write($this->view()->fetch('404.tpl'));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function page405(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        return $response->write($this->view()->fetch('405.tpl'));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function page500(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        return $response->write($this->view()->fetch('500.tpl'));
     }
 }

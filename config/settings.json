@@ -1471,6 +1471,26 @@
     },
     {
         "id": null,
+        "item": "last_user_job_time",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "0",
+        "mark": "The last time the user task was executed"
+    },
+    {
+        "id": null,
+        "item": "last_daily_job_time",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "0",
+        "mark": "The last time the Dailies were executed"
+    },
+    {
+        "id": null,
         "item": "db_version",
         "value": "2023020100",
         "class": "db",

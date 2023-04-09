@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Telegram;
 
-use App\Models\Bought;
 use App\Models\User;
-use function count;
 
 final class Reply
 {
@@ -31,11 +29,11 @@ final class Reply
     public static function getUserInfo(User $user): string
     {
         $text = [
-            'موجودی فعلی：' . $user->money,
+            'موجودی فعلی: ' . $user->money,
             'تعداد IP های آنلاین：' . ($user->node_iplimit !== 0 ? $user->onlineIpCount() . ' / ' . $user->node_iplimit : $user->onlineIpCount() . ' / بدون محدودیت'),
-            'سرعت پورت：' . ($user->node_speedlimit !== 0 ? $user->node_speedlimit . 'Mbps' : 'نامحدود'),
-            'آخرین استفاده：' . $user->lastSsTime(),
-            'انقضاء：' . $user->class_expire,
+            'سرعت درگاه: ' . ($user->node_speedlimit > 0 ? $user->node_speedlimit . 'Mbps' : 'بدون محدودیت'),
+            'آخرین استفاده: ' . $user->lastSsTime(),
+            'انقضا: ' . $user->class_expire,
         ];
         return implode(PHP_EOL, $text);
     }
@@ -54,33 +52,6 @@ final class Reply
     }
 
     /**
-     * [admin]获取用户购买记录
-     */
-    public static function getUserBoughts(User $user): array
-    {
-        $boughts = Bought::where('userid', $user->id)->orderBy('id', 'desc')->get();
-        $data = [];
-        foreach ($boughts as $bought) {
-            $shop = $bought->shop();
-            if ($shop === null) {
-                $bought->delete();
-                continue;
-            }
-            if ($bought->valid()) {
-                $strArray = [];
-                $strArray[] = ' - نام بسته کالا：' . $shop->name;
-                $strArray[] = ' - زمان خرید بسته：' . $bought->datetime();
-                $strArray[] = ' - تمدید خودکار بسته：' . $bought->renew();
-                $strArray[] = ' - تنظیم مجدد ترافیک بعدی：' . $bought->resetTime();
-                $strArray[] = ' - زمان انقضای بسته：' . $bought->expTime();
-                $strArray[] = '';
-                $data[] = implode(PHP_EOL, $strArray);
-            }
-        }
-        return $data;
-    }
-
-    /**
      * [admin]获取用户信息
      */
     public static function getUserInfoFromAdmin(User $user, int $ChatID): string
@@ -90,19 +61,12 @@ final class Reply
             '',
             'ایمیل کاربر：' . TelegramTools::getUserEmail($user->email, $ChatID),
             'موجودی حساب：' . $user->money,
-            'وضعیت حساب：' . ((int) $user->is_banned === 1 ? 'ممنوع شده' : 'نرمال'),
-            'سطح کاربر：' . $user->class,
+            'وضعیت حساب：' . ((int) $user->is_banned === 1 ? 'ممنوع شده' : 'عادی'),
+            'سطح کاربری：' . $user->class,
             'ترافیک باقیمانده：' . $user->unusedTraffic(),
-            'انقضای سطح：' . $user->class_expire,
-            'انقصای حساب：' . $user->expire_in,
-            'جزئیات بسته：',
+            'انقضای سطح کاربری：' . $user->class_expire,
+            'انقضای حساب کاربری：' . $user->expire_in,
         ];
-        $boughts = self::getUserBoughts($user);
-        if (count($boughts) !== 0) {
-            $strArray = array_merge($strArray, $boughts);
-        } else {
-            $strArray[] = ' - کاربر بسته معتبری ندارد.';
-        }
         return implode(PHP_EOL, $strArray);
     }
 }

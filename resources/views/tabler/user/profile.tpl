@@ -63,7 +63,7 @@
                 <div class="col-md-6 com-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">سابقه ورود اخیر</h3>
+                            <h3 class="card-title">آخرین 10 رکورد ورود موفق</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap card-table">
@@ -71,7 +71,7 @@
                                     <tr>
                                         <th>IP</th>
                                         <th>زمان</th>
-                                        <th>مشخصات</th>
+                                        <th>منتسب IP</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +82,35 @@
                                         <td>{$login->location}</td>
                                     </tr>
                                     {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 com-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">IP آنلاین فعلی</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-vcenter text-nowrap card-table">
+                                <thead>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>منتسب IP</th>
+                                    <th>نام نود</th>
+                                    <th>آخرین زمان آنلاین</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach $ips as $ip}
+                                    <tr>
+                                        <td>{$ip->ip}</td>
+                                        <td>{$ip->location}</td>
+                                        <td>{$ip->node_name}</td>
+                                        <td>{$ip->last_time}</td>
+                                    </tr>
+                                {/foreach}
                                 </tbody>
                             </table>
                         </div>

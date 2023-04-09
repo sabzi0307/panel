@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Utils\Telegram\Callbacks;
+namespace App\Utils\Telegram;
 
 use App\Controllers\LinkController;
 use App\Controllers\SubController;
@@ -13,8 +13,6 @@ use App\Models\Payback;
 use App\Models\Setting;
 use App\Models\UserSubscribeLog;
 use App\Services\Config;
-use App\Utils\Telegram\Reply;
-use App\Utils\Telegram\TelegramTools;
 use App\Utils\Tools;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
@@ -259,8 +257,6 @@ final class Callback
         $text = Reply::getUserTitle($user);
         $text .= PHP_EOL . PHP_EOL;
         $text .= Reply::getUserInfo($user);
-        $text .= PHP_EOL;
-        $text .= 'زمان تنظیم مجدد ترافیک：' . $user->validUseLoop();
         if (Setting::obtain('telegram_show_group_link')) {
             $Keyboard[] = [
                 [
@@ -352,7 +348,7 @@ final class Callback
                     'callback_data' => 'user.center.login_log',
                 ],
                 [
-                    'text' => 'سابقه استفاده',
+                    'text' => 'ip آنلاین',
                     'callback_data' => 'user.center.usage_log',
                 ],
             ],
@@ -429,8 +425,9 @@ final class Callback
                 break;
             case 'usage_log':
                 // 使用记录
-                $logs = OnlineLog::where('user_id', '=', $this->User->id)->orderByDesc('last_time')->get('ip');
-                $text = '<strong>IP های استفاده شده و مکان های جغرافیایی شما در 30 روز گذشته:</strong>' . PHP_EOL;
+                $logs = OnlineLog::where('user_id', '=', $this->User->id)
+                    ->where('last_time', '>', time() - 90)->orderByDesc('last_time')->get('ip');
+                $text = '<strong>آدرس زیر IP آنلاین و موقعیت جغرافیایی شما است：</strong>' . PHP_EOL;
                 $text .= PHP_EOL;
 
                 foreach ($logs as $log) {
@@ -460,7 +457,7 @@ final class Callback
                 foreach ($paybacks as $payback) {
                     $temp[] = '<code>#' . $payback->id . '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شده است') . '：' . $payback->ref_get . ' 元</code>';
                 }
-                $text = '<strong>موارد زیر آخرین 10 سابقه تخفیف شما هستند：</strong>';
+                $text = '<strong>موارد زیر آخرین 10 رکورد تخفیف شما هستند：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode(PHP_EOL, $temp);
                 $sendMessage = [
@@ -483,7 +480,7 @@ final class Callback
                     $location = Tools::getIpLocation($log->request_ip);
                     $temp[] = '<code>' . $log->request_time . ' وجود دارد [' . $log->request_ip . '] ' . $location . ' بازدید کرده است ' . $log->subscribe_type . ' اشتراک، ابونمان</code>';
                 }
-                $text = '<strong>در اینجا 10 سابقه آخرین اشتراک شما آمده است：</strong>';
+                $text = '<strong>موارد زیر 10 آخرین سابقه اشتراک شما هستند：</strong>';
                 $text .= PHP_EOL . PHP_EOL;
                 $text .= implode(PHP_EOL . PHP_EOL, $temp);
                 $sendMessage = [
@@ -930,13 +927,13 @@ final class Callback
         if (! is_null($paybacks_sum)) {
             $paybacks_sum = 0;
         }
-        $invitation = Setting::getClass('invite');
+        $invite = Setting::getClass('invite');
         $text = [
             '<strong>طرح اشتراک گذاری، به ازای هر 1 کاربری که برای ثبت نام دعوت می کنید：</strong>',
             '',
-            '- دریافت خواهید کرد <strong>' . $invitation['invitation_to_register_traffic_reward'] . 'G</strong> پاداش ترافیک.',
-            '- طرف مقابل خواهد گرفت <strong>' . $invitation['invitation_to_register_balance_reward'] . ' تومان</strong> پاداش به عنوان بودجه اولیه.',
-            '- هنگامی که طرف مقابل شارژ می شود، مبلغ شارژ طرف مقابل را نیز دریافت خواهید کرد <strong>' . $invitation['rebate_ratio'] . '%</strong> تخفیف.',
+            '- دریافت خواهید کرد <strong>' . $invite['invitation_to_register_traffic_reward'] . 'G</strong> پاداش ترافیک',
+            '- طرف مقابل خواهد گرفت <strong>' . $invite['invitation_to_register_balance_reward'] . ' تومان</strong> جوایز به عنوان سرمایه اولیه عمل می کنند.',
+            '- هنگامی که طرف مقابل شارژ می شود، مبلغ شارژ طرف مقابل را نیز دریافت خواهید کرد <strong>' . $invite['rebate_ratio'] * 100 . '%</strong> تخفیف ها',
             '',
             'تخفیف دریافت کرد：' . $paybacks_sum . ' تومان.',
         ];
@@ -1032,8 +1029,6 @@ final class Callback
             $temp['text'] = Reply::getUserTitle($this->User);
             $temp['text'] .= PHP_EOL . PHP_EOL;
             $temp['text'] .= Reply::getUserTrafficInfo($this->User);
-            $temp['text'] .= PHP_EOL;
-            $temp['text'] .= 'زمان تنظیم مجدد ترافیک：' . $this->User->validUseLoop();
             $temp['keyboard'] = [
                 [
                     [

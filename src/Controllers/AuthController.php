@@ -37,7 +37,7 @@ final class AuthController extends BaseController
     {
         $captcha = [];
 
-        if (Setting::obtain('enable_login_captcha') === true) {
+        if (Setting::obtain('enable_login_captcha')) {
             $captcha = Captcha::generate();
         }
 
@@ -49,7 +49,7 @@ final class AuthController extends BaseController
 
     public function loginHandle(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (Setting::obtain('enable_login_captcha') === true) {
+        if (Setting::obtain('enable_login_captcha')) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
                 return $response->withJson([
@@ -65,10 +65,11 @@ final class AuthController extends BaseController
         $email = strtolower(trim($request->getParam('email')));
 
         $user = User::where('email', $email)->first();
+
         if ($user === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'ایمیل وجود ندارد',
+                'msg' => 'خطا در ایمیل یا رمز عبور',
             ]);
         }
 
@@ -82,12 +83,20 @@ final class AuthController extends BaseController
         }
 
         if ($user->ga_enable === 1) {
+            if (strlen($code) !== 6) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'خطای کد تایید دو مرحله ای',
+                ]);
+            }
+
             $ga = new GoogleAuthenticator();
             $rcode = $ga->verifyCode($user->ga_token, $code);
+
             if (! $rcode) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'کد تأیید دو مرحله ای اشتباه است. اگر ژنراتور را گم کردید یا این گزینه را به اشتباه تنظیم کردید، می توانید برای لغو این گزینه رمز عبور را بازنشانی کنید.',
+                    'msg' => 'خطای کد تایید دو مرحله ای',
                 ]);
             }
         }
@@ -114,7 +123,7 @@ final class AuthController extends BaseController
     {
         $captcha = [];
 
-        if (Setting::obtain('enable_reg_captcha') === true) {
+        if (Setting::obtain('enable_reg_captcha')) {
             $captcha = Captcha::generate();
         }
 
@@ -308,7 +317,7 @@ final class AuthController extends BaseController
             $user->node_group = $random_group[array_rand(explode(',', $random_group))];
         }
 
-        if (Setting::obtain('enable_reg_new_shop') === true) {
+        if (Setting::obtain('enable_reg_new_shop')) {
             $user->use_new_shop = 1;
         } else {
             $user->use_new_shop = 0;
@@ -338,7 +347,7 @@ final class AuthController extends BaseController
             return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوت نامه را پر کنید');
         }
 
-        if (Setting::obtain('enable_reg_captcha') === true) {
+        if (Setting::obtain('enable_reg_captcha')) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
                 return ResponseHelper::error($response, 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
@@ -358,7 +367,7 @@ final class AuthController extends BaseController
             return ResponseHelper::error($response, 'لطفاً با شرایط سرویس موافقت کنید');
         }
 
-        if (Setting::obtain('enable_reg_im') === true) {
+        if (Setting::obtain('enable_reg_im')) {
             $imtype = $antiXss->xss_clean($request->getParam('im_type'));
             $imvalue = $antiXss->xss_clean($request->getParam('im_value'));
             if ($imtype === '' || $imvalue === '') {

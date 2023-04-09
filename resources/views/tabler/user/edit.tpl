@@ -321,20 +321,6 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">پورت اتصال را تغییر دهید</h3>
-                                                    <p>به طور تصادفی یک پورت اتصال اختصاص دهید، این پورت برای کلاینت های SS/SSR استفاده خواهد شد</p>
-                                                    <p>پورت فعلی است：<code>{$user->port}</code></p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="d-flex">
-                                                        <a id="reset-client-port" class="btn btn-red ms-auto">جایگزین کردن</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="card">
-                                                <div class="card-body">
                                                     <h3 class="card-title">بازنشانی رمز عبور اتصال</h3>
                                                     <p>رمز عبور اتصال و UUID را بازنشانی کنید. پس از بازنشانی، برای ادامه استفاده باید اشتراک را به‌روزرسانی کنید</p>
                                                     <p>رمز عبور اتصال فعلی：<code>{$user->passwd}</code></p>
@@ -664,23 +650,6 @@
                 data: {
                     mail: $('#daily-report').val()
                 },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
-        });
-
-        $("#reset-client-port").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "/user/port",
-                dataType: "json",
                 success: function(data) {
                     if (data.ret === 1) {
                         $('#success-message').text(data.msg);

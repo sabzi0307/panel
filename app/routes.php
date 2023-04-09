@@ -11,9 +11,6 @@ use Slim\Routing\RouteCollectorProxy;
 return static function (Slim\App $app): void {
     // Home
     $app->get('/', App\Controllers\HomeController::class . ':index');
-    $app->get('/404', App\Controllers\HomeController::class . ':page404');
-    $app->get('/405', App\Controllers\HomeController::class . ':page405');
-    $app->get('/500', App\Controllers\HomeController::class . ':page500');
     $app->get('/tos', App\Controllers\HomeController::class . ':tos');
     $app->get('/staff', App\Controllers\HomeController::class . ':staff');
     // Telegram
@@ -215,20 +212,18 @@ return static function (Slim\App $app): void {
         $group->post('/setting/captcha', App\Controllers\Admin\Setting\CaptchaController::class . ':saveCaptcha');
         $group->get('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':email');
         $group->post('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':saveEmail');
+        $group->get('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':feature');
+        $group->post('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':saveFeature');
         $group->get('/setting/im', App\Controllers\Admin\Setting\ImController::class . ':im');
         $group->post('/setting/im', App\Controllers\Admin\Setting\ImController::class . ':saveIm');
-        $group->get('/setting/other', App\Controllers\Admin\Setting\OtherController::class . ':other');
-        $group->post('/setting/other', App\Controllers\Admin\Setting\OtherController::class . ':saveOther');
         $group->get('/setting/ref', App\Controllers\Admin\Setting\RefController::class . ':ref');
         $group->post('/setting/ref', App\Controllers\Admin\Setting\RefController::class . ':saveRef');
         $group->get('/setting/reg', App\Controllers\Admin\Setting\RegController::class . ':reg');
         $group->post('/setting/reg', App\Controllers\Admin\Setting\RegController::class . ':saveReg');
-        $group->get('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':support');
-        $group->post('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':saveSupport');
-        $group->get('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':feature');
-        $group->post('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':saveFeature');
         $group->get('/setting/sub', App\Controllers\Admin\Setting\SubscribeController::class . ':sub');
         $group->post('/setting/sub', App\Controllers\Admin\Setting\SubscribeController::class . ':saveSub');
+        $group->get('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':support');
+        $group->post('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':saveSupport');
         $group->post('/setting/test_email', App\Controllers\Admin\Setting\EmailController::class . ':testEmail');
         // 礼品卡
         $group->get('/giftcard', App\Controllers\Admin\GiftCardController::class . ':index');

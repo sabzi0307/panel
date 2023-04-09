@@ -115,10 +115,6 @@ $_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group
 $_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
 $_ENV['telegram_request_token']             = '';           //Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
-# ServerSauce https://sct.ftqq.com/
-$_ENV['useScFtqq']            = false;        //Whether to enable Server sauce to remind work orders/nodes to go online and offline
-$_ENV['ScFtqq_SCKEY']         = '';           //Please fill in the SCKEY you got in Server sauce, please check carefully and do not paste it wrong
-
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
 $_ENV['detect_gfw_interval']             = 3600;                                                               //Detection interval, unit: second, if it is lower than the recommended value, it will explode

@@ -37,7 +37,7 @@ final class SubController extends BaseController
 
         $link = Link::where('token', $token)->first();
 
-        if (! $link->isValid()) {
+        if ($link === null || ! $link->isValid()) {
             return ResponseHelper::error($response, $err_msg);
         }
 
@@ -250,6 +250,8 @@ final class SubController extends BaseController
                     $plugin_option = $node_custom_config['plugin_option'] ?? null;
                     // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
+                    // Clash.Meta
+                    $client_fingerprint = $node_custom_config['client_fingerprint'] ?? '';
 
                     $node = [
                         'name' => $node_raw->name,
@@ -259,6 +261,7 @@ final class SubController extends BaseController
                         'password' => $user->passwd,
                         'cipher' => $user->method,
                         'udp' => $udp,
+                        'client-fingerprint' => $client_fingerprint,
                         'plugin' => $plugin,
                         'plugin-opts' => $plugin_option,
                     ];
@@ -280,10 +283,16 @@ final class SubController extends BaseController
                     $h2_opts = $node_custom_config['h2-opts'] ?? $node_custom_config['h2_opts'] ?? null;
                     $http_opts = $node_custom_config['http-opts'] ?? $node_custom_config['http_opts'] ?? null;
                     $grpc_opts = $node_custom_config['grpc-opts'] ?? $node_custom_config['grpc_opts'] ?? null;
+                    // Clash.Meta
+                    $type = ($node_custom_config['enable_vless'] ?? '0') === '1' ? 'vless' : 'vmess';
+                    $client_fingerprint = $node_custom_config['client_fingerprint'] ?? '';
+                    $fingerprint = $node_custom_config['fingerprint'] ?? '';
+                    $flow = $node_custom_config['flow'] ?? '';
+                    $reality_opts = $node_custom_config['reality-opts'] ?? $node_custom_config['reality_opts'] ?? null;
 
                     $node = [
                         'name' => $node_raw->name,
-                        'type' => 'vmess',
+                        'type' => $type,
                         'server' => $server,
                         'port' => (int) $v2_port,
                         'uuid' => $user->uuid,
@@ -291,6 +300,9 @@ final class SubController extends BaseController
                         'cipher' => $encryption,
                         'udp' => $udp,
                         'tls' => $tls,
+                        'client-fingerprint' => $client_fingerprint,
+                        'fingerprint' => $fingerprint,
+                        'flow' => $flow,
                         'skip-cert-verify' => $allow_insecure,
                         'servername' => $host,
                         'network' => $network,
@@ -298,6 +310,7 @@ final class SubController extends BaseController
                         'h2-opts' => $h2_opts,
                         'http-opts' => $http_opts,
                         'grpc-opts' => $grpc_opts,
+                        'reality-opts' => $reality_opts,
                     ];
 
                     break;
@@ -305,14 +318,19 @@ final class SubController extends BaseController
                     $trojan_port = $node_custom_config['trojan_port'] ?? ($node_custom_config['offset_port_user']
                         ?? ($node_custom_config['offset_port_node'] ?? 443));
                     $network = $node_custom_config['network']
-                        ?? array_key_exists('grpc', $node_custom_config)
-                        && $node_custom_config['grpc'] === '1' ? 'grpc' : 'tcp';
+                        ?? (array_key_exists('grpc', $node_custom_config)
+                            && $node_custom_config['grpc'] === '1' ? 'grpc' : 'tcp');
                     $host = $node_custom_config['host'] ?? '';
                     $allow_insecure = $node_custom_config['allow_insecure'] ?? false;
                     // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
                     $ws_opts = $node_custom_config['ws-opts'] ?? $node_custom_config['ws_opts'] ?? null;
                     $grpc_opts = $node_custom_config['grpc-opts'] ?? $node_custom_config['grpc_opts'] ?? null;
+                    // Clash.Meta
+                    $client_fingerprint = $node_custom_config['client_fingerprint'] ?? '';
+                    $fingerprint = $node_custom_config['fingerprint'] ?? '';
+                    $flow = $node_custom_config['flow'] ?? '';
+                    $flow_show = $node_custom_config['flow_show'] ?? false;
 
                     $node = [
                         'name' => $node_raw->name,
@@ -323,6 +341,10 @@ final class SubController extends BaseController
                         'password' => $user->uuid,
                         'network' => $network,
                         'udp' => $udp,
+                        'client-fingerprint' => $client_fingerprint,
+                        'fingerprint' => $fingerprint,
+                        'flow' => $flow,
+                        'flow-show' => $flow_show,
                         'skip-cert-verify' => $allow_insecure,
                         'ws-opts' => $ws_opts,
                         'grpc-opts' => $grpc_opts,

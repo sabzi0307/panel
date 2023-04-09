@@ -55,9 +55,10 @@ final class Node extends Model
     public function getNodeOnlineStatus(): int
     {
         // Type 9 or heartbeat 0
-        if ($this->node_heartbeat === 0 || $this->sort === 9) {
+        if ($this->node_heartbeat === 0) {
             return 0;
         }
+
         return $this->node_heartbeat + 300 > time() ? 1 : -1;
     }
 
@@ -72,18 +73,8 @@ final class Node extends Model
         if ($this->node_speedlimit >= 1024.00) {
             return round($this->node_speedlimit / 1024.00, 1) . 'Gbps';
         }
-        return $this->node_speedlimit . 'Mbps';
-    }
 
-    /**
-     * 节点是在线的
-     */
-    public function isNodeOnline(): ?bool
-    {
-        if ($this->node_heartbeat === 0) {
-            return false;
-        }
-        return $this->node_heartbeat > time() - 300;
+        return $this->node_speedlimit . 'Mbps';
     }
 
     /**
@@ -101,9 +92,11 @@ final class Node extends Model
     {
         $result = dns_get_record($server_name, DNS_A + DNS_AAAA);
         $dns = [];
-        if (count($result) > 0) {
+
+        if ($result !== false && count($result) > 0) {
             $dns = $result[0];
         }
+
         if (array_key_exists('ip', $dns)) {
             $ip = $dns['ip'];
         } elseif (array_key_exists('ipv6', $dns)) {
@@ -111,6 +104,7 @@ final class Node extends Model
         } else {
             $ip = $server_name;
         }
+
         $this->node_ip = $ip;
     }
 }

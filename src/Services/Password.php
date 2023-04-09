@@ -21,6 +21,8 @@ final class Password
         $pwdRst->init_time = time();
         $pwdRst->expire_time = time() + 3600 * 24;
         $pwdRst->token = Tools::genRandomChar(64);
+        $pwdRst->save();
+
         $subject = $_ENV['appName'] . 'بازنشانی رمز عبور';
         $resetUrl = $_ENV['baseUrl'] . '/password/token/' . $pwdRst->token;
 

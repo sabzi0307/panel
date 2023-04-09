@@ -64,7 +64,8 @@ final class Message
                 // 私聊
                 $Uid = Telegram::verifyBindSession($MessageData);
                 if ($Uid === 0) {
-                    $text = 'اتصال ناموفق بود، پس از بررسی، مشخص شد که：【' . $MessageData . '】به مدت 10 دقیقه معتبر است، می توانید پس از بازخوانی صفحه **ویرایش نمایه** در وب سایت ما دوباره امتحان کنید.';
+                    $text = 'اتصال ناموفق بود، پس از بررسی، مشخص شد که：【' .
+                        $MessageData . '】به مدت 10 دقیقه معتبر است، می توانید پس از بازخوانی صفحه **ویرایش نمایه** در وب سایت ما دوباره امتحان کنید.';
                 } else {
                     $BinsUser = TelegramTools::getUser($Uid, 'id');
                     $BinsUser->telegram_id = $this->triggerUser['id'];
@@ -75,7 +76,8 @@ final class Message
                         $text = '**مدیر محترم** سلام، اتثال موفق را تبریک می گویم.' . PHP_EOL . 'آدرس ایمیل فعلی محدود شده است：' . $BinsUser->email;
                     } else {
                         if ($BinsUser->class >= 1) {
-                            $text = '**VIP عزیز' . $BinsUser->class . '** سلام کاربر.' . PHP_EOL . 'اتصال موفقیت آمیز شما را تبریک می گویم، آدرس ایمیل محدود فعلی است：' . $BinsUser->email;
+                            $text = '**VIP عزیز' . $BinsUser->class .
+                                '** سلام کاربر.' . PHP_EOL . 'اتصال موفقیت آمیز شما را تبریک می گویم، آدرس ایمیل محدود فعلی است：' . $BinsUser->email;
                         } else {
                             $text = 'اتصال موفقیت آمیز است، ایمیل شما درست است：' . $BinsUser->email;
                         }
@@ -121,21 +123,21 @@ final class Message
      * 入群检测
      *
      * @throws TelegramSDKException
-     * @throws TelegramSDKException
-     * @throws TelegramSDKException
-     * @throws TelegramSDKException
-     * @throws TelegramSDKException
      */
     public function newChatParticipant(): void
     {
         $NewChatMember = $this->Message->getNewChatParticipant();
+
         $Member = [
             'id' => $NewChatMember->getId(),
             'name' => $NewChatMember->getFirstName() . ' ' . $NewChatMember->getLastName(),
         ];
+
         if ($NewChatMember->getUsername() === $_ENV['telegram_bot']) {
             // 机器人加入新群组
-            if (Setting::obtain('allow_to_join_new_groups') !== true && ! in_array($this->ChatID, json_decode(Setting::obtain('group_id_allowed_to_join')))) {
+            if (! Setting::obtain('allow_to_join_new_groups')
+                &&
+                ! in_array($this->ChatID, json_decode(Setting::obtain('group_id_allowed_to_join')))) {
                 // 退群
 
                 $this->replyWithMessage(
@@ -151,11 +153,13 @@ final class Message
                         'user_id' => $Member['id'],
                     ]
                 );
+
                 if (count(json_decode(Setting::obtain('telegram_admins'))) >= 1) {
                     foreach (json_decode(Setting::obtain('telegram_admins')) as $id) {
                         $this->bot->sendMessage(
                             [
-                                'text' => 'ربات یک گروه را بر اساس تنظیمات شما ترک کرد.' . PHP_EOL . PHP_EOL . 'اسم گروه：' . $this->Message->getChat()->getTitle(),
+                                'text' => 'ربات یک گروه را بر اساس تنظیمات شما ترک کرد.' . PHP_EOL .
+                                    'اسم گروه：' . $this->Message->getChat()->getTitle(),
                                 'chat_id' => $id,
                             ]
                         );
@@ -171,15 +175,15 @@ final class Message
         } else {
             // 新成员加入群组
             $NewUser = TelegramTools::getUser($Member['id']);
-            $deNewChatMember = json_decode($NewChatMember, true);
+
             if (
-                Setting::obtain('telegram_group_bound_user') === true
+                Setting::obtain('telegram_group_bound_user')
                 &&
                 $this->ChatID === $_ENV['telegram_chatid']
                 &&
                 $NewUser === null
                 &&
-                $deNewChatMember['is_bot'] === false
+                ! $NewChatMember->isBot()
             ) {
                 $this->replyWithMessage(
                     [
@@ -196,8 +200,10 @@ final class Message
                 );
                 return;
             }
-            if (Setting::obtain('enable_welcome_message') === true) {
-                $text = ($NewUser->class >= 1 ? 'به VIP ها خوش آمدید' . $NewUser->class . ' کاربر ' . $Member['name'] . 'به گروه ملحق بشید.' : 'خوش آمدی ' . $Member['name']);
+
+            if (Setting::obtain('enable_welcome_message')) {
+                $text = ($NewUser->class > 0 ? 'به VIP ها خوش آمدید' . $NewUser->class .
+                    ' کاربر ' . $Member['name'] . 'به گروه ملحق بشید.' : 'خوش آمدی ' . $Member['name']);
 
                 $this->replyWithMessage(
                     [

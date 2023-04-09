@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Models\Invoice;
+use App\Models\Node;
 use App\Models\Order;
+use App\Models\Setting;
 use App\Models\User;
+use App\Services\DB;
+use App\Services\Mail;
+use App\Utils\Telegram;
 use App\Utils\Tools;
 use DateTime;
+use Exception;
+use Psr\Http\Client\ClientExceptionInterface;
 use function count;
 use function in_array;
 use function json_decode;
@@ -97,6 +104,116 @@ EOL;
                     $activated_order->save();
                     echo "Order #{$activated_order->id} expired.\n";
                 }
+            }
+        }
+        //记录当前时间戳
+        $timestamp = time();
+        //邮件队列处理
+        while (true) {
+            if (time() - $timestamp > 299) {
+                echo 'زمان پردازش صف پیام به پایان رسیده است، نادیده گرفته شد' . PHP_EOL;
+                break;
+            }
+            DB::beginTransaction();
+            $email_queues_raw = DB::select('SELECT * FROM email_queue LIMIT 1 FOR UPDATE SKIP LOCKED');
+            if (count($email_queues_raw) === 0) {
+                DB::commit();
+                break;
+            }
+            $email_queues = array_map(static function ($value) {
+                return (array) $value;
+            }, $email_queues_raw);
+            $email_queue = $email_queues[0];
+            echo '发送邮件至 ' . $email_queue['to_email'] . PHP_EOL;
+            DB::delete('DELETE FROM email_queue WHERE id = ?', [$email_queue['id']]);
+            if (Tools::isEmail($email_queue['to_email'])) {
+                try {
+                    Mail::send($email_queue['to_email'], $email_queue['subject'], $email_queue['template'], json_decode($email_queue['array']));
+                } catch (Exception|ClientExceptionInterface $e) {
+                    echo $e->getMessage();
+                }
+            } else {
+                echo $email_queue['to_email'] . ' خطای قالب ایمیل، نادیده گرفته شد' . PHP_EOL;
+            }
+            DB::commit();
+        }
+        //取出所有节点
+        $nodes = Node::all();
+        //节点掉线检测
+        if ($_ENV['enable_detect_offline']) {
+            echo 'شناسایی گره پایین شروع می شود' . PHP_EOL;
+            $adminUser = User::where('is_admin', '=', '1')->get();
+
+            foreach ($nodes as $node) {
+                $notice_text = '';
+                if ($node->getNodeOnlineStatus() === 0 && $node->online) {
+                    foreach ($adminUser as $user) {
+                        echo 'Send Email to admin user: ' . $user->id . PHP_EOL;
+                        $user->sendMail(
+                            $_ENV['appName'] . '-هشدار سیستم',
+                            'news/warn.tpl',
+                            [
+                                'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' خط قطع شده است، لطفا به موقع با آن برخورد کنید.',
+                            ],
+                            [],
+                            false
+                        );
+                        $notice_text = str_replace(
+                            '%node_name%',
+                            $node->name,
+                            Setting::obtain('telegram_node_offline_text')
+                        );
+                    }
+
+                    if (Setting::obtain('telegram_node_offline')) {
+                        try {
+                            Telegram::send($notice_text);
+                        } catch (Exception $e) {
+                            echo $e->getMessage() . PHP_EOL;
+                        }
+                    }
+
+                    $node->online = false;
+                    $node->save();
+                } elseif ($node->getNodeOnlineStatus() === 1 && ! $node->online) {
+                    foreach ($adminUser as $user) {
+                        echo 'Send Email to admin user: ' . $user->id . PHP_EOL;
+                        $user->sendMail(
+                            $_ENV['appName'] . '-راهنمایی سیستم',
+                            'news/warn.tpl',
+                            [
+                                'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' بازگشت آنلاین',
+                            ],
+                            [],
+                            false
+                        );
+                        $notice_text = str_replace(
+                            '%node_name%',
+                            $node->name,
+                            Setting::obtain('telegram_node_online_text')
+                        );
+                    }
+
+                    if (Setting::obtain('telegram_node_online')) {
+                        try {
+                            Telegram::send($notice_text);
+                        } catch (Exception $e) {
+                            echo $e->getMessage() . PHP_EOL;
+                        }
+                    }
+
+                    $node->online = true;
+                    $node->save();
+                }
+            }
+            echo 'تشخیص قطع اتصال گره پایان می یابد' . PHP_EOL;
+        }
+        //更新节点 IP
+        foreach ($nodes as $node) {
+            $server = $node->server;
+            if (! Tools::isIPv4($server) && ! Tools::isIPv6($server)) {
+                $node->changeNodeIp($server);
+                $node->save();
             }
         }
     }
