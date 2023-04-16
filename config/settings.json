@@ -61,93 +61,13 @@
     },
     {
         "id": null,
-        "item": "vmq_gateway",
-        "value": "",
-        "class": "vmq",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "V visa-free gateway"
-    },
-    {
-        "id": null,
-        "item": "vmq_key",
-        "value": "",
-        "class": "vmq",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "V Signature Free Key"
-    },
-    {
-        "id": null,
-        "item": "payjs_url",
-        "value": "",
-        "class": "payjs",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "payjs_url"
-    },
-    {
-        "id": null,
-        "item": "payjs_mchid",
-        "value": "",
-        "class": "payjs",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "payjs_mchid"
-    },
-    {
-        "id": null,
-        "item": "payjs_key",
-        "value": "",
-        "class": "payjs",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "payjs_key"
-    },
-    {
-        "id": null,
-        "item": "theadpay_url",
-        "value": "",
-        "class": "theadpay",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "theadpay_url"
-    },
-    {
-        "id": null,
-        "item": "theadpay_mchid",
-        "value": "",
-        "class": "theadpay",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "theadpay_mchid"
-    },
-    {
-        "id": null,
-        "item": "theadpay_key",
-        "value": "",
-        "class": "theadpay",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "theadpay_key"
-    },
-    {
-        "id": null,
         "item": "stripe_currency",
-        "value": "HKD",
+        "value": "USD",
         "class": "stripe",
         "is_public": 0,
         "type": "string",
-        "default": "HKD",
-        "mark": "Currency Code"
+        "default": "USD",
+        "mark": "currency code"
     },
     {
         "id": null,
@@ -298,6 +218,56 @@
         "type": "bool",
         "default": "0",
         "mark": "Enable USDT"
+    },
+    {
+        "id": null,
+        "item": "paypal_mode",
+        "value": "live",
+        "class": "paypal",
+        "is_public": 0,
+        "type": "string",
+        "default": "live",
+        "mark": "PayPal mode"
+    },
+    {
+        "id": null,
+        "item": "paypal_client_id",
+        "value": "",
+        "class": "paypal",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "PayPal customer ID"
+    },
+    {
+        "id": null,
+        "item": "paypal_client_secret",
+        "value": "",
+        "class": "paypal",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "PayPal Customer Key"
+    },
+    {
+        "id": null,
+        "item": "paypal_currency",
+        "value": "USD",
+        "class": "paypal",
+        "is_public": 1,
+        "type": "string",
+        "default": "USD",
+        "mark": "PayPal currency"
+    },
+    {
+        "id": null,
+        "item": "paypal_locale",
+        "value": "en_US",
+        "class": "paypal",
+        "is_public": 0,
+        "type": "string",
+        "default": "en_US",
+        "mark": "Language of PayPal"
     },
     {
         "id": null,

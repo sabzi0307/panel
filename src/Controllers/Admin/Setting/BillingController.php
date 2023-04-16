@@ -20,17 +20,6 @@ final class BillingController extends BaseController
         'f2f_pay_public_key',
         'f2f_pay_private_key',
         'f2f_pay_notify_url',
-        // V免签
-        'vmq_gateway',
-        'vmq_key',
-        // PayJS
-        'payjs_url',
-        'payjs_mchid',
-        'payjs_key',
-        // TheadPay
-        'theadpay_url',
-        'theadpay_mchid',
-        'theadpay_key',
         // Stripe
         'stripe_card',
         'stripe_alipay',
@@ -49,6 +38,12 @@ final class BillingController extends BaseController
         'epay_wechat',
         'epay_qq',
         'epay_usdt',
+        // PayPal
+        'paypal_mode',
+        'paypal_client_id',
+        'paypal_client_secret',
+        'paypal_currency',
+        'paypal_locale',
     ];
 
     /**

@@ -31,13 +31,10 @@
                     <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
                         <li class="nav-item">
-                            <a href="#gateway" class="nav-link active" data-bs-toggle="tab">انتخاب درگاه</a>
+                            <a href="#gateway" class="nav-link active" data-bs-toggle="tab">انتخاب درگاه پرداخت</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#payjs" class="nav-link" data-bs-toggle="tab">PayJS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#theadpay" class="nav-link" data-bs-toggle="tab">TheadPay</a>
+                            <a href="#f2f" class="nav-link" data-bs-toggle="tab">پرداخت حضوری Alipay</a>
                         </li>
                         <li class="nav-item">
                             <a href="#stripe" class="nav-link" data-bs-toggle="tab">Stripe</a>
@@ -46,10 +43,7 @@
                             <a href="#epay" class="nav-link" data-bs-toggle="tab">EPay</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#f2f" class="nav-link" data-bs-toggle="tab">Alipay face-to-face payment</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#vmq" class="nav-link" data-bs-toggle="tab">V visa free</a>
+                            <a href="#paypal" class="nav-link" data-bs-toggle="tab">PayPal</a>
                         </li>
                     </ul>
                 </div>
@@ -83,13 +77,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">public key</label>
+                                    <label class="form-label col-3 col-form-label">کلید عمومی Alipay</label>
                                     <div class="col">
                                         <input id="f2f_pay_public_key" type="text" class="form-control" value="{$settings['f2f_pay_public_key']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">private key</label>
+                                    <label class="form-label col-3 col-form-label">کلید خصوصی اپلیکیشن</label>
                                     <div class="col">
                                         <input id="f2f_pay_private_key" type="text" class="form-control" value="{$settings['f2f_pay_private_key']}">
                                     </div>
@@ -98,66 +92,6 @@
                                     <label class="form-label col-3 col-form-label">Custom callback address (optional)</label>
                                     <div class="col">
                                         <input id="f2f_pay_notify_url" type="text" class="form-control" value="{$settings['f2f_pay_notify_url']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="vmq">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس درگاه</label>
-                                    <div class="col">
-                                        <input id="vmq_gateway" type="text" class="form-control" value="{$settings['vmq_gateway']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کلید</label>
-                                    <div class="col">
-                                        <input id="vmq_key" type="text" class="form-control" value="{$settings['vmq_key']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="payjs">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس درگاه</label>
-                                    <div class="col">
-                                        <input id="payjs_url" type="text" class="form-control" value="{$settings['payjs_url']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Merchant ID</label>
-                                    <div class="col">
-                                        <input id="payjs_mchid" type="text" class="form-control" value="{$settings['payjs_mchid']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کلید</label>
-                                    <div class="col">
-                                        <input id="payjs_key" type="text" class="form-control" value="{$settings['payjs_key']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="theadpay">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس درگاه</label>
-                                    <div class="col">
-                                        <input id="theadpay_url" type="text" class="form-control" value="{$settings['theadpay_url']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Merchant ID</label>
-                                    <div class="col">
-                                        <input id="theadpay_mchid" type="text" class="form-control" value="{$settings['theadpay_mchid']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کلید</label>
-                                    <div class="col">
-                                        <input id="theadpay_key" type="text" class="form-control" value="{$settings['theadpay_key']}">
                                     </div>
                                 </div>
                             </div>
@@ -287,6 +221,43 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane" id="paypal">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">شیوه</label>
+                                    <div class="col">
+                                        <select id="paypal_mode" class="col form-select" value="{$settings['paypal_mode']}">
+                                            <option value="sandbox">Sandbox</option>
+                                            <option value="live" {if $settings['paypal_mode'] === 'live'}selected{/if}>Live</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">شناسه مشتری پی پال</label>
+                                    <div class="col">
+                                        <input id="paypal_client_id" type="text" class="form-control" value="{$settings['paypal_client_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">کلید مشتری پی پال</label>
+                                    <div class="col">
+                                        <input id="paypal_client_secret" type="text" class="form-control" value="{$settings['paypal_client_secret']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">ارز پی پال</label>
+                                    <div class="col">
+                                        <input id="paypal_currency" type="text" class="form-control" value="{$settings['paypal_currency']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">زبان پی پال</label>
+                                    <div class="col">
+                                        <input id="paypal_locale" type="text" class="form-control" value="{$settings['paypal_locale']}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -309,7 +280,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {
