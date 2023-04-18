@@ -18,7 +18,7 @@ END;
         // 迁移配置
         global $_ENV;
         $copy_result = copy(BASE_PATH . '/config/.config.php', BASE_PATH . '/config/.config.php.bak');
-        if ($copy_result === true) {
+        if ($copy_result) {
             echo ".config.php File backup successful。\n";
         } else {
             echo ".config.php File backup failed, migration terminated。\n";

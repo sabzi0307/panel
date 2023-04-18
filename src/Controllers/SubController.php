@@ -49,7 +49,7 @@ final class SubController extends BaseController
             'sip008' => $sub_info = self::getSIP008($user, $ip),
         };
 
-        if ($_ENV['subscribeLog'] === true) {
+        if ($_ENV['subscribeLog']) {
             UserSubscribeLog::addSubscribeLog($user, $subtype, $request->getHeaderLine('User-Agent'));
         }
 

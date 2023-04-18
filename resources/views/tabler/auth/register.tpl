@@ -9,7 +9,7 @@
                 </a>
             </div>
             <div class="card card-md">
-                {if $public_setting['reg_mode'] != 'close'}
+                {if $public_setting['reg_mode'] !== 'close'}
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">ثبت حساب</h2>
                         <div class="mb-3">
@@ -28,7 +28,7 @@
                                 <input id="repasswd" type="password" class="form-control" placeholder="تکرار رمز ورود به سیستم">
                             </div>
                         </div>
-                        {if $public_setting['enable_reg_im'] == true}
+                        {if $public_setting['enable_reg_im']}
                             <div class="mb-3">
                                 <select id="im_type" class="col form-select">
                                     <option value="0">لطفا نرم افزار فضای مجازی مورد نظر را انتخاب کنید</option>
@@ -44,14 +44,14 @@
                                 </div>
                             </div>
                         {/if}
-                        {if $public_setting['reg_mode'] != 'close' }
+                        {if $public_setting['reg_mode'] !== 'close' }
                             <div class="mb-3">
                                 <div class="input-group input-group-flat">
-                                    <input id="code" type="text" class="form-control" placeholder="کد دعوت نامه ثبت نام{if $public_setting['reg_mode'] == 'open'}（اختیاری）{else}（ضروری）{/if}" value="{$code}">
+                                    <input id="code" type="text" class="form-control" placeholder="کد دعوت نامه ثبت نام{if $public_setting['reg_mode'] === 'open'}（اختیاری）{else}（ضروری）{/if}" value="{$code}">
                                 </div>
                             </div>
                         {/if}
-                        {if $public_setting['reg_email_verify'] == true}
+                        {if $public_setting['reg_email_verify']}
                             <div class="mb-3">
                                 <div class="input-group mb-2">
                                     <input id="emailcode" type="text" class="form-control" placeholder="کد تایید ایمیل">
@@ -101,7 +101,7 @@
     </div>
 
     <script>
-        {if $public_setting['reg_email_verify'] === true}
+        {if $public_setting['reg_email_verify']}
             $("#email-verify").click(function() {
                 $.ajax({
                     type: 'POST',
@@ -111,7 +111,7 @@
                         email: $('#email').val(),
                     },
                     success: function(data) {
-                        if (data.ret == 1) {
+                        if (data.ret === 1) {
                             $('#success-message').text(data.msg);
                             $('#success-dialog').modal('show');
                         } else {
@@ -129,11 +129,11 @@
                 url: '/auth/register',
                 dataType: "json",
                 data: {
-                    {if $public_setting['enable_reg_im'] === true}
+                    {if $public_setting['enable_reg_im']}
                         im_value: $('#im_value').val(),
                         im_type: $('#im_type').val(),
                     {/if}
-                    {if $public_setting['reg_email_verify'] === true}
+                    {if $public_setting['reg_email_verify']}
                         emailcode: $('#emailcode').val(),
                     {/if}
                     tos: $('#tos').prop('checked'), // true / false (string)
@@ -152,7 +152,7 @@
                     {/if}
                 },
                 success: function(data) {
-                    if (data.ret == 1) {
+                    if (data.ret === 1) {
                         $('#success-message').text(data.msg);
                         $('#success-dialog').modal('show');
                         window.setTimeout("location.href='/user'", {$config['jump_delay']});

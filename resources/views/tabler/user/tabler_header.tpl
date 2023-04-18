@@ -15,8 +15,8 @@
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/clipboard@latest/dist/clipboard.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <style>
         .home-subtitle {
@@ -98,7 +98,7 @@
                                                 <i class="ti ti-edit"></i>&nbsp;
                                                 اصلاح اطلاعات
                                             </a>
-                                            {if $public_setting['display_subscribe_log'] === true}
+                                            {if $public_setting['display_subscribe_log']}
                                             <a class="dropdown-item" href="/user/subscribe/log">
                                                 <i class="ti ti-rss"></i></i>&nbsp;
                                                 در مجله مشترک شوید
@@ -127,7 +127,7 @@
                                         <i class="ti ti-server"></i>&nbsp;
                                         لیست سرور ها
                                     </a>
-                                    {if $public_setting['display_media'] === true}
+                                    {if $public_setting['display_media']}
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
                                         استریم های مسدود شده
@@ -173,7 +173,7 @@
                                         <i class="ti ti-barrier-block"></i>&nbsp;
                                         قوانین فیلترینگ
                                     </a>
-                                    {if $public_setting['display_detect_log'] === true}
+                                    {if $public_setting['display_detect_log']}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
                                         گزارش فیلترینگ

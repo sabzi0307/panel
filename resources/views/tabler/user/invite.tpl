@@ -54,7 +54,7 @@
                         <div class="card-header">
                             <h3 class="card-title">سابقه تخفیف</h3>
                         </div>
-                        {if $paybacks->count() != '0'}
+                        {if $paybacks->count() !== '0'}
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
@@ -95,13 +95,10 @@
     </div>
 
     <script>
-        $("td:contains('تایید شده')").css("color", "green");
-        $("td:contains('کلاهبرداری')").css("color", "red");
-
         var clipboard = new ClipboardJS('.copy');
         clipboard.on('success', function(e) {
-            $('#success-message').text('در کلیپ بورد کپی شد');
-            $('#success-dialog').modal('show');
+            $('#copy-message').text('در کلیپ بورد کپی شد');
+            $('#copy-dialog').modal('show');
         });
 
         $("#reset-url").click(function() {
@@ -110,7 +107,7 @@
                 url: "/user/invite",
                 dataType: "json",
                 success: function(data) {
-                    if (data.ret == 1) {
+                    if (data.ret === 1) {
                         $('#success-message').text(data.msg);
                         $('#success-dialog').modal('show');
                     } else {

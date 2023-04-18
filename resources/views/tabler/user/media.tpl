@@ -26,10 +26,10 @@
                                     <tr>
                                         <th>سرور</th>
                                         {foreach $results['0']['unlock_item'] as $key => $value}
-                                            {if $key != 'BilibiliChinaMainland'}
-                                                {if $key == 'BilibiliHKMCTW'}
+                                            {if $key !== 'BilibiliChinaMainland'}
+                                                {if $key === 'BilibiliHKMCTW'}
                                                     <th>Bilibili（هنگ کنگ، ماکائو و تایوان）</th>
-                                                {elseif $key == 'BilibiliTW'}
+                                                {elseif $key === 'BilibiliTW'}
                                                     <th>Bilibili（تایوان）</th>
                                                 {else}
                                                     <th>{$key}</th>

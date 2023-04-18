@@ -43,8 +43,8 @@
                                     <label class="form-label col-3 col-form-label">نمایش وضعیت باز کردن قفل جریان سرور</label>
                                     <div class="col">
                                         <select id="display_media" class="col form-select" value="{$settings['display_media']}">
-                                            <option value="0" {if $settings['display_media'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['display_media'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['display_media'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_media']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -52,8 +52,8 @@
                                     <label class="form-label col-3 col-form-label">نمایش سوابق اشتراک کاربر</label>
                                     <div class="col">
                                         <select id="display_subscribe_log" class="col form-select" value="{$settings['display_subscribe_log']}">
-                                            <option value="0" {if $settings['display_subscribe_log'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['display_subscribe_log'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['display_subscribe_log'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_subscribe_log']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -61,8 +61,8 @@
                                     <label class="form-label col-3 col-form-label">نمایش سوابق ممیزی کاربران</label>
                                     <div class="col">
                                         <select id="display_detect_log" class="col form-select" value="{$settings['display_detect_log']}">
-                                            <option value="0" {if $settings['display_detect_log'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['display_detect_log'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['display_detect_log'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_detect_log']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {

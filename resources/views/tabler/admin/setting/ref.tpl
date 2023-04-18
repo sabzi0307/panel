@@ -62,11 +62,11 @@
                                     <label class="form-label col-3 col-form-label">حالت دعوت کردن</label>
                                     <div class="col">
                                         <select id="invitation_mode" class="col form-select" value="{$settings['invitation_mode']}">
-                                            <option value="registration_only" {if $settings['invitation_mode'] == 'registration_only'}selected{/if}>
+                                            <option value="registration_only" {if $settings['invitation_mode'] === 'registration_only'}selected{/if}>
                                             بدون تخفیف</option>
-                                            <option value="after_recharge" {if $settings['invitation_mode'] == 'after_recharge'}selected{/if}>
+                                            <option value="after_recharge" {if $settings['invitation_mode'] === 'after_recharge'}selected{/if}>
                                             تخفیف در هنگام شارژ مجدد کاربران دعوت شده</option>
-                                            <option value="after_purchase" {if $settings['invitation_mode'] == 'after_purchase'}selected{/if}>
+                                            <option value="after_purchase" {if $settings['invitation_mode'] === 'after_purchase'}selected{/if}>
                                             تخفیف در هنگام خرید کاربران دعوت شده</option>
                                         </select>
                                     </div>
@@ -75,13 +75,13 @@
                                     <label class="form-label col-3 col-form-label">حالت دعوت</label>
                                     <div class="col">
                                         <select id="invite_rebate_mode" class="col form-select" value="{$settings['invite_rebate_mode']}">
-                                            <option value="continued" {if $settings['invite_rebate_mode'] == 'continued'}selected{/if}>
+                                            <option value="continued" {if $settings['invite_rebate_mode'] === 'continued'}selected{/if}>
                                             تخفیف مستمر</option>
-                                            <option value="limit_frequency" {if $settings['invite_rebate_mode'] == 'limit_frequency'}selected{/if}>
+                                            <option value="limit_frequency" {if $settings['invite_rebate_mode'] === 'limit_frequency'}selected{/if}>
                                             تعداد تخفیف هایی را که دعوت کننده می تواند از دعوت شونده دریافت کند محدود کنید</option>
-                                            <option value="limit_amount" {if $settings['invite_rebate_mode'] == 'limit_amount'}selected{/if}>
+                                            <option value="limit_amount" {if $settings['invite_rebate_mode'] === 'limit_amount'}selected{/if}>
                                             مقدار تخفیف هایی را که دعوت کننده می تواند از دعوت شونده دریافت کند محدود کنید</option>
-                                            <option value="limit_time_range" {if $settings['invite_rebate_mode'] == 'limit_time_range'}selected{/if}>
+                                            <option value="limit_time_range" {if $settings['invite_rebate_mode'] === 'limit_time_range'}selected{/if}>
                                             محدوده زمانی را که دعوت کننده می تواند از دعوت شونده تخفیف دریافت کند، محدود کنید</option>
                                         </select>
                                     </div>
@@ -131,7 +131,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {

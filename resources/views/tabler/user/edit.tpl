@@ -61,9 +61,9 @@
                                                     <p>ایمیل فعلی：<code>{$user->email}</code></p>
                                                     <div class="mb-3">
                                                         <input id="new-email" type="email" class="form-control"
-                                                            placeholder="ایمیل جدید" {if $config['enable_change_email'] == false}disabled=""{/if}>
+                                                            placeholder="ایمیل جدید" {if $config['enable_change_email'] === false}disabled=""{/if}>
                                                     </div>
-                                                    {if $public_setting['reg_email_verify'] == true && $config['enable_change_email'] == true}
+                                                    {if $public_setting['reg_email_verify'] && $config['enable_change_email']}
                                                     <div class="mb-3">
                                                         <input id="email-code" type="text" class="form-control"
                                                             placeholder="کد تایید">
@@ -72,11 +72,11 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        {if $public_setting['reg_email_verify'] == true && $config['enable_change_email'] == true}
+                                                        {if $public_setting['reg_email_verify'] && $config['enable_change_email']}
                                                         <a id="email-verify" class="btn btn-link">دریافت کد تایید</a>
                                                         <button id="modify-email"
                                                             class="btn btn-primary ms-auto">تجدید نظر کنید</button>
-                                                        {elseif $config['enable_change_email'] == true}
+                                                        {elseif $config['enable_change_email']}
                                                         <button id="modify-email"
                                                             class="btn btn-primary ms-auto">تجدید نظر کنید</button>
                                                         {else}
@@ -93,21 +93,22 @@
                                                     <h3 class="card-title">اطلاعات تماس</h3>
                                                     <div class="mb-3">
                                                         <select id="imtype" class="form-select">
-                                                            <option value="1" {if $user->im_type == '1'}selected{/if}>
+                                                            <option value="1" {if $user->im_type === 1}selected{/if}>
                                                                 WeChat</option>
-                                                            <option value="2" {if $user->im_type == '2'}selected{/if}>
+                                                            <option value="2" {if $user->im_type === 2}selected{/if}>
                                                                 QQ</option>
-                                                            <option value="3" {if $user->im_type == '3'}selected{/if}>
+                                                            <option value="3" {if $user->im_type === 3}selected{/if}>
                                                                 Facebook</option>
-                                                            <option value="4" {if $user->im_type == '4'}selected{/if}>
+                                                            <option value="4" {if $user->im_type === 4}selected{/if}>
                                                                 Telegram</option>
-                                                            <option value="5" {if $user->im_type == '5'}selected{/if}>
+                                                            <option value="5" {if $user->im_type === 5}selected{/if}>
                                                                 Discord</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <input id="wechat" type="text" class="form-control"
-                                                            value="{$user->im_value}" placeholder="حساب کاربری اجتماعی">
+                                                        <input id="imvalue" type="text" class="form-control" 
+                                                            {if $user->im_type === 4} disabled="" {/if}
+                                                            value="{$user->im_value}" placeholder="حساب اجتماعی">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
@@ -134,9 +135,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {if $config['enable_telegram'] == true}
+                                        {if $config['enable_telegram']}
                                         <div class="col-sm-12 col-md-6">
-                                            {if $user->telegram_id != 0}
+                                            {if $user->telegram_id !== 0}
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h3 class="card-title">باز کردن Telegram</h3>
@@ -220,7 +221,7 @@
                                                                 <select id="ga-enable" class="form-select">
                                                                     <option value="0">استفاده نشود</option>
                                                                     <option value="1"
-                                                                        {if $user->ga_enable == '1'}selected{/if}>
+                                                                        {if $user->ga_enable === '1'}selected{/if}>
                                                                         با احراز هویت دو مرحله ای وارد شوید
                                                                     </option>
                                                                 </select>
@@ -290,7 +291,7 @@
                                                         <select id="user-method" class="form-select">
                                                             {foreach $methods as $method}
                                                             <option value="{$method}"
-                                                                {if $user->method == $method}selected{/if}
+                                                                {if $user->method === $method}selected{/if}
                                                             >{$method}
                                                             </option>
                                                             {/foreach}
@@ -345,13 +346,13 @@
                                                     <div class="mb-3">
                                                         <select id="daily-report" class="form-select">
                                                             <option value="0"
-                                                                {if $user->sendDailyMail == '0'}selected{/if}>نفرست
+                                                                {if $user->sendDailyMail === '0'}selected{/if}>نفرست
                                                             </option>
                                                             <option value="1"
-                                                                {if $user->sendDailyMail == '1'}selected{/if}>دریافت پستی
+                                                                {if $user->sendDailyMail === '1'}selected{/if}>دریافت پستی
                                                             </option>
                                                             <option value="2"
-                                                                {if $user->sendDailyMail == '2'}selected{/if}>Telegram
+                                                                {if $user->sendDailyMail === '2'}selected{/if}>Telegram
                                                                 Bot به عهده گرفتن
                                                             </option>
                                                         </select>
@@ -373,7 +374,7 @@
                                                         <select id="user-theme" class="form-select">
                                                             {foreach $themes as $theme}
                                                                 <option value="{$theme}"
-                                                                    {if $user->theme == $theme}selected{/if}>{$theme}
+                                                                    {if $user->theme === $theme}selected{/if}>{$theme}
                                                                 </option>
                                                             {/foreach}
                                                         </select>
@@ -386,7 +387,7 @@
                                                 </div>
                                             </div>   
                                         </div>
-                                        {if $config['enable_kill'] == true}
+                                        {if $config['enable_kill']}
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-stamp">
@@ -417,7 +418,7 @@
         </div>
     </div>
 
-    {if $config['enable_kill'] == true}
+    {if $config['enable_kill']}
     <div class="modal modal-blur fade" id="destroy-account" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -517,8 +518,8 @@
 
         var clipboard = new ClipboardJS('.copy');
         clipboard.on('success', function(e) {
-            $('#success-message').text('در کلیپ بورد کپی شد');
-            $('#success-dialog').modal('show');
+            $('#copy-message').text('در کلیپ بورد کپی شد');
+            $('#copy-dialog').modal('show');
         });
 
         $("#modify-email").click(function() {
@@ -527,7 +528,7 @@
                 url: "/user/email",
                 dataType: "json",
                 data: {
-                    {if $public_setting['reg_email_verify'] == true}
+                    {if $public_setting['reg_email_verify']}
                         emailcode: $('#email-code').val(),
                     {/if}
                     newemail: $('#new-email').val()
@@ -779,7 +780,7 @@
             })
         });
         
-        {if $config['enable_kill'] == true}
+        {if $config['enable_kill']}
         $("#confirm-destroy").click(function() {
             $.ajax({
                 type: "POST",

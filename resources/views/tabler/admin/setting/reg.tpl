@@ -49,9 +49,9 @@
                                     <label class="form-label col-3 col-form-label">حالت ثبت نام</label>
                                     <div class="col">
                                         <select id="reg_mode" class="col form-select" value="{$settings['reg_mode']}">
-                                            <option value="close" {if $settings['reg_mode'] == 'close'}selected{/if}>ثبت نام غیر فعال</option>
-                                            <option value="open" {if $settings['reg_mode'] == 'open'}selected{/if}>فعال بودن گزینه ثبت نام</option>
-                                            <option value="invite" {if $settings['reg_mode'] == 'invite'}selected{/if}>ثبت نام فقط با دعوت کاربران</option>
+                                            <option value="close" {if $settings['reg_mode'] === 'close'}selected{/if}>ثبت نام غیر فعال</option>
+                                            <option value="open" {if $settings['reg_mode'] === 'open'}selected{/if}>فعال بودن گزینه ثبت نام</option>
+                                            <option value="invite" {if $settings['reg_mode'] === 'invite'}selected{/if}>ثبت نام فقط با دعوت کاربران</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,8 +59,8 @@
                                     <label class="form-label col-3 col-form-label">تایید ایمیل</label>
                                     <div class="col">
                                         <select id="reg_email_verify" class="col form-select" value="{$settings['reg_email_verify']}">
-                                            <option value="0" {if $settings['reg_email_verify'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['reg_email_verify'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['reg_email_verify'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['reg_email_verify']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -86,8 +86,8 @@
                                     <label class="form-label col-3 col-form-label">به طور پیش‌ فرض، ایمیل مصرف روزانه را دریافت کنید</label>
                                     <div class="col">
                                         <select id="sign_up_for_daily_report" class="col form-select" value="{$settings['sign_up_for_daily_report']}">
-                                            <option value="0" {if $settings['sign_up_for_daily_report'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['sign_up_for_daily_report'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['sign_up_for_daily_report'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['sign_up_for_daily_report']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -95,8 +95,8 @@
                                     <label class="form-label col-3 col-form-label">این که آیا کاربر باید یک مخاطب IM را وارد کند یا خیر</label>
                                     <div class="col">
                                         <select id="enable_reg_im" class="col form-select" value="{$settings['enable_reg_im']}">
-                                            <option value="0" {if $settings['enable_reg_im'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_reg_im'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_reg_im'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_reg_im']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -113,8 +113,8 @@
                                     <label class="form-label col-3 col-form-label">به طور پیش فرض از سیستم فروشگاه جدید استفاده کنید</label>
                                     <div class="col">
                                         <select id="enable_reg_new_shop" class="col form-select" value="{$settings['enable_reg_new_shop']}">
-                                            <option value="0" {if $settings['enable_reg_new_shop'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_reg_new_shop'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_reg_new_shop'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_reg_new_shop']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {

@@ -85,7 +85,7 @@
                                             <span class="col-auto">
                                                 <label class="form-check form-check-single form-switch">
                                                     <input id="type" class="form-check-input" type="checkbox"
-                                                        {if $node->type == 1}checked="" {/if}>
+                                                        {if $node->type === 1}checked="" {/if}>
                                                 </label>
                                             </span>
                                         </label>
@@ -159,7 +159,7 @@
                                 <div class="row my-3">
                                     <div class="col">
                                         <button id="reset-node-password" class="btn btn-red">تنظیم مجدد</button>
-                                        <button id="copy-password" class="btn btn-primary copy-text" data-clipboard-text="{$node->password}">
+                                        <button id="copy-password" class="copy btn btn-primary" data-clipboard-text="{$node->password}">
                                             کپی
                                         </button>
                                     </div>
@@ -177,12 +177,10 @@
 </div>
 
 <script>
-    $(function () {
-        new ClipboardJS('.copy-text');
-    });
-    $(".copy-text").click(function () {
-        $('#success-message').text('در کلیپ بورد شما کپی شد.');
-        $('#success-dialog').modal('show');
+    var clipboard = new ClipboardJS('.copy');
+    clipboard.on('success', function(e) {
+        $('#copy-message').text('در کلیپ بورد کپی شد');
+        $('#copy-dialog').modal('show');
     });
 
     const container = document.getElementById('custom_config');
@@ -198,7 +196,7 @@
             type: 'POST',
             dataType: "json",
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {
@@ -222,7 +220,7 @@
                 custom_config: JSON.stringify(editor.get()),
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                     window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});

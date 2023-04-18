@@ -48,10 +48,10 @@
                                         <td>{$rule->name}</td>
                                         <td>{$rule->text}</td>
                                         <td>{$rule->regex}</td>
-                                        {if $rule->type == 1}
+                                        {if $rule->type === 1}
                                             <td>مطابقت متن ساده بسته</td>
                                         {/if}
-                                        {if $rule->type == 2}
+                                        {if $rule->type === 2}
                                             <td>بسته داده hex همخوانی داشتن</td>
                                         {/if}
                                     </tr>

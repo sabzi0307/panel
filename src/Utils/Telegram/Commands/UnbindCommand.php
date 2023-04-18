@@ -92,7 +92,7 @@ final class UnbindCommand extends Command
     public function sendtext(): string
     {
         $text = 'توسط `/unbind example@qq.com` ارسال شده در قالب.';
-        if (Setting::obtain('telegram_unbind_kick_member') === true) {
+        if (Setting::obtain('telegram_unbind_kick_member')) {
             $text .= PHP_EOL . PHP_EOL . 'طبق تنظیمات مدیر، حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف می شود.';
         }
         return $text;

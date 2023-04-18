@@ -43,8 +43,8 @@
                                     <label class="form-label col-3 col-form-label">فعال کردن سیستم اشتراک قدیمی</label>
                                     <div class="col">
                                         <select id="enable_traditional_sub" class="col form-select" value="{$settings['enable_traditional_sub']}">
-                                            <option value="0" {if $settings['enable_traditional_sub'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_traditional_sub'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_traditional_sub'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_traditional_sub']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -52,8 +52,8 @@
                                     <label class="form-label col-3 col-form-label">اشتراک‌های Shadowsocks را فعال کنید (فقط روی صفحه نمایش جلویی و اشتراک‌های قدیمی/sip002/sip008 تأثیر می‌گذارد)</label>
                                     <div class="col">
                                         <select id="enable_ss_sub" class="col form-select" value="{$settings['enable_ss_sub']}">
-                                            <option value="0" {if $settings['enable_ss_sub'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_ss_sub'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_ss_sub'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_ss_sub']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -61,8 +61,8 @@
                                     <label class="form-label col-3 col-form-label">اشتراک V2Ray را فعال کنید (فقط روی صفحه نمایش جلویی و اشتراک‌های قدیمی تأثیر می گذارد)</label>
                                     <div class="col">
                                         <select id="enable_v2_sub" class="col form-select" value="{$settings['enable_v2_sub']}">
-                                            <option value="0" {if $settings['enable_v2_sub'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_v2_sub'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_v2_sub'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_v2_sub']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -70,8 +70,8 @@
                                     <label class="form-label col-3 col-form-label">اشتراک‌های تروجان را فعال کنید (فقط بر روی صفحه نمایش و اشتراک‌های قدیمی تأثیر می‌گذارد)</label>
                                     <div class="col">
                                         <select id="enable_trojan_sub" class="col form-select" value="{$settings['enable_trojan_sub']}">
-                                            <option value="0" {if $settings['enable_trojan_sub'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_trojan_sub'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_trojan_sub'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_trojan_sub']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -79,8 +79,8 @@
                                     <label class="form-label col-3 col-form-label">آیا هنگام تغییر گذرواژه ورود به حساب کاربری توسط کاربر، آدرس اشتراک به اجبار تغییر می‌کند یا خیر</label>
                                     <div class="col">
                                         <select id="enable_forced_replacement" class="col form-select" value="{$settings['enable_forced_replacement']}">
-                                            <option value="0" {if $settings['enable_forced_replacement'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_forced_replacement'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_forced_replacement'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_forced_replacement']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {

@@ -58,12 +58,12 @@
                                     <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>
                                     <div class="col">
                                         <select id="mail_driver" class="col form-select" value="{$settings['mail_driver']}">
-                                            <option value="none" {if $settings['mail_driver'] == "none"}selected{/if}>none</option>
-                                            <option value="smtp" {if $settings['mail_driver'] == "smtp"}selected{/if}>smtp</option>
-                                            <option value="sendgrid" {if $settings['mail_driver'] == "sendgrid"}selected{/if}>sendgrid</option>
-                                            <option value="mailgun" {if $settings['mail_driver'] == "mailgun"}selected{/if}>mailgun</option>
-                                            <option value="postal" {if $settings['mail_driver'] == "postal"}selected{/if}>postal</option>
-                                            <option value="ses" {if $settings['mail_driver'] == "ses"}selected{/if}>ses</option>
+                                            <option value="none" {if $settings['mail_driver'] === "none"}selected{/if}>none</option>
+                                            <option value="smtp" {if $settings['mail_driver'] === "smtp"}selected{/if}>smtp</option>
+                                            <option value="sendgrid" {if $settings['mail_driver'] === "sendgrid"}selected{/if}>sendgrid</option>
+                                            <option value="mailgun" {if $settings['mail_driver'] === "mailgun"}selected{/if}>mailgun</option>
+                                            <option value="postal" {if $settings['mail_driver'] === "postal"}selected{/if}>postal</option>
+                                            <option value="ses" {if $settings['mail_driver'] === "ses"}selected{/if}>ses</option>
                                         </select>
                                     </div>
                                 </div>
@@ -102,11 +102,11 @@
                                     <label class="form-label col-3 col-form-label">پورت SMTP</label>
                                     <div class="col">
                                         <select id="smtp_port" class="col form-select" value="{$settings['smtp_port']}">
-                                            <option value="465" {if $settings['smtp_port'] == "465"}selected{/if}>465</option>
-                                            <option value="587" {if $settings['smtp_port'] == "587"}selected{/if}>587</option>
-                                            <option value="443" {if $settings['smtp_port'] == "443"}selected{/if}>2525</option>
-                                            <option value="80" {if $settings['smtp_port'] == "80"}selected{/if}>2525</option>
-                                            <option value="25" {if $settings['smtp_port'] == "25"}selected{/if}>25</option>
+                                            <option value="465" {if $settings['smtp_port'] === "465"}selected{/if}>465</option>
+                                            <option value="587" {if $settings['smtp_port'] === "587"}selected{/if}>587</option>
+                                            <option value="443" {if $settings['smtp_port'] === "443"}selected{/if}>2525</option>
+                                            <option value="80" {if $settings['smtp_port'] === "80"}selected{/if}>2525</option>
+                                            <option value="25" {if $settings['smtp_port'] === "25"}selected{/if}>25</option>
                                         </select>
                                     </div>
                                 </div>
@@ -126,8 +126,8 @@
                                     <label class="form-label col-3 col-form-label">استفاده کنید یا نه TLS/SSL</label>
                                     <div class="col">
                                     <select id="smtp_ssl" class="col form-select" value="{$settings['smtp_ssl']}">
-                                        <option value="1" {if $settings['smtp_ssl'] == true}selected{/if}>استفاده کن</option>
-                                        <option value="0" {if $settings['smtp_ssl'] == false}selected{/if}>غیر فعال</option>
+                                        <option value="1" {if $settings['smtp_ssl']}selected{/if}>استفاده کن</option>
+                                        <option value="0" {if $settings['smtp_ssl'] === false}selected{/if}>غیر فعال</option>
                                     </select>
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {
@@ -284,7 +284,7 @@
                 recipient: $('#recipient').val(),
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {

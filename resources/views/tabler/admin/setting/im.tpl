@@ -46,8 +46,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان افزودن سرور</label>
                                     <div class="col">
                                         <select id="telegram_add_node" class="col form-select" value="{$settings['telegram_add_node']}">
-                                            <option value="0" {if $settings['telegram_add_node'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_add_node'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_add_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_add_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -61,8 +61,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان تغییر در سرور</label>
                                     <div class="col">
                                         <select id="telegram_update_node" class="col form-select" value="{$settings['telegram_update_node']}">
-                                            <option value="0" {if $settings['telegram_update_node'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_update_node'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_update_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_update_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -76,8 +76,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان حذف سرور</label>
                                     <div class="col">
                                         <select id="telegram_delete_node" class="col form-select" value="{$settings['telegram_delete_node']}">
-                                            <option value="0" {if $settings['telegram_delete_node'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_delete_node'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_delete_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_delete_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -91,8 +91,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان شناسایی سرور توسط فایروال</label>
                                     <div class="col">
                                         <select id="telegram_node_gfwed" class="col form-select" value="{$settings['telegram_node_gfwed']}">
-                                            <option value="0" {if $settings['telegram_node_gfwed'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_node_gfwed'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_node_gfwed'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_node_gfwed']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -106,8 +106,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان رفع شناسایی توسط فایروال</label>
                                     <div class="col">
                                         <select id="telegram_node_ungfwed" class="col form-select" value="{$settings['telegram_node_ungfwed']}">
-                                            <option value="0" {if $settings['telegram_node_ungfwed'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_node_ungfwed'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_node_ungfwed'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_node_ungfwed']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -121,8 +121,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان آفلاین سرور</label>
                                     <div class="col">
                                         <select id="telegram_node_offline" class="col form-select" value="{$settings['telegram_node_offline']}">
-                                            <option value="0" {if $settings['telegram_node_offline'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_node_offline'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_node_offline'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_node_offline']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -136,8 +136,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان آنلاین سرور</label>
                                     <div class="col">
                                         <select id="telegram_node_online" class="col form-select" value="{$settings['telegram_node_online']}">
-                                            <option value="0" {if $settings['telegram_node_online'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_node_online'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_node_online'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_node_online']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -151,8 +151,8 @@
                                     <label class="form-label col-3 col-form-label">اطلاع رسانی تلاش روزانه</label>
                                     <div class="col">
                                         <select id="telegram_daily_job" class="col form-select" value="{$settings['telegram_daily_job']}">
-                                            <option value="0" {if $settings['telegram_daily_job'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_daily_job'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_daily_job'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_daily_job']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -166,8 +166,8 @@
                                     <label class="form-label col-3 col-form-label">اعلان‌های سلامت سیستم</label>
                                     <div class="col">
                                         <select id="telegram_diary" class="col form-select" value="{$settings['telegram_diary']}">
-                                            <option value="0" {if $settings['telegram_diary'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_diary'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_diary'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_diary']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -185,8 +185,8 @@
                                     <label class="form-label col-3 col-form-label">پس از لغو لینک اکانت تلگرام، گروه را به صورت خودکار بیرون کنید</label>
                                     <div class="col">
                                         <select id="telegram_unbind_kick_member" class="col form-select" value="{$settings['telegram_unbind_kick_member']}">
-                                            <option value="0" {if $settings['telegram_unbind_kick_member'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_unbind_kick_member'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_unbind_kick_member'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_unbind_kick_member']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -194,8 +194,8 @@
                                     <label class="form-label col-3 col-form-label">فقط به کاربرانی که اکانت های تلگرام لینک شده دارند اجازه دهید به گروه بپیوندند</label>
                                     <div class="col">
                                         <select id="telegram_group_bound_user" class="col form-select" value="{$settings['telegram_group_bound_user']}">
-                                            <option value="0" {if $settings['telegram_group_bound_user'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_group_bound_user'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_group_bound_user'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_group_bound_user']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -203,8 +203,8 @@
                                     <label class="form-label col-3 col-form-label">فعال کردن ربات تلگرام برای نمایش لینک های گروه کاربری</label>
                                     <div class="col">
                                         <select id="telegram_show_group_link" class="col form-select" value="{$settings['telegram_show_group_link']}">
-                                            <option value="0" {if $settings['telegram_show_group_link'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_show_group_link'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_show_group_link'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_show_group_link']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -218,8 +218,8 @@
                                     <label class="form-label col-3 col-form-label">ربات تلگرام پیام خوشامدگویی ارسال کند</label>
                                     <div class="col">
                                         <select id="enable_welcome_message" class="col form-select" value="{$settings['enable_welcome_message']}">
-                                            <option value="0" {if $settings['enable_welcome_message'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_welcome_message'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_welcome_message'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_welcome_message']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -227,8 +227,8 @@
                                     <label class="form-label col-3 col-form-label">پاسخ ندادن ربات تلگرام در گروه</label>
                                     <div class="col">
                                         <select id="telegram_group_quiet" class="col form-select" value="{$settings['telegram_group_quiet']}">
-                                            <option value="0" {if $settings['telegram_group_quiet'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_group_quiet'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['telegram_group_quiet'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['telegram_group_quiet']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -236,8 +236,8 @@
                                     <label class="form-label col-3 col-form-label">به ربات‌ها اجازه دهید به گروه‌هایی غیر از آنهایی که در زیر پیکربندی شده‌اند بپیوندند</label>
                                     <div class="col">
                                         <select id="allow_to_join_new_groups" class="col form-select" value="{$settings['allow_to_join_new_groups']}">
-                                            <option value="0" {if $settings['allow_to_join_new_groups'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['allow_to_join_new_groups'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['allow_to_join_new_groups'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['allow_to_join_new_groups']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -257,8 +257,8 @@
                                     <label class="form-label col-3 col-form-label">Not admin replay</label>
                                     <div class="col">
                                         <select id="enable_not_admin_reply" class="col form-select" value="{$settings['enable_not_admin_reply']}">
-                                            <option value="0" {if $settings['enable_not_admin_reply'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_not_admin_reply'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_not_admin_reply'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_not_admin_reply']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -284,8 +284,8 @@
                                     <label class="form-label col-3 col-form-label">به هر دستور ناشناخته ای اجازه دهید تا یک پاسخ /help را راه اندازی کند</label>
                                     <div class="col">
                                         <select id="help_any_command" class="col form-select" value="{$settings['help_any_command']}">
-                                            <option value="0" {if $settings['help_any_command'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['help_any_command'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['help_any_command'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['help_any_command']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -293,8 +293,8 @@
                                     <label class="form-label col-3 col-form-label">فعال هنگام جستجوی اطلاعات کاربر در گروه، آدرس ایمیل کامل کاربر را نمایش دهید，غیرفعال محتوای موجود در وسط صندوق پستی کدگذاری خواهد شد</label>
                                     <div class="col">
                                         <select id="enable_user_email_group_show" class="col form-select" value="{$settings['enable_user_email_group_show']}">
-                                            <option value="0" {if $settings['enable_user_email_group_show'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_user_email_group_show'] == true}selected{/if}>فعال</option>
+                                            <option value="0" {if $settings['enable_user_email_group_show'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_user_email_group_show']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -337,7 +337,7 @@
                 {/foreach}
             },
             success: function(data) {
-                if (data.ret == 1) {
+                if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
                 } else {
