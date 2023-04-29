@@ -12,9 +12,9 @@
                         <span class="home-subtitle">برای پشتیبانی از اینجا می توانید با ادمین تماس بگیرید</span>
                     </div>
                 </div>
-                <div class="col-auto ms-auto d-print-none">
+                <div class="col-auto">
                     <div class="btn-list">
-                        <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="#" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#create-ticket">
                             <i class="icon ti ti-plus"></i>
                             دستور کار جدید

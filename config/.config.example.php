@@ -1,8 +1,8 @@
 <?php
 
 //basic settings--------------------------------------------------------------------------------------------
-$_ENV['key']        = 'ChangeMe';                     //Be sure to modify this key to a random string
-$_ENV['pwdMethod']  = 'bcrypt';                       //Password Encryption Optional md5, sha256, bcrypt, argon2i, argon2id（argon2i need at least php7.2）
+$_ENV['key']        = 'ChangeMe';                     //Cookie encryption key, please be sure to modify this key to a random string
+$_ENV['pwdMethod']  = 'bcrypt';                       //Password encryption optional md5, sha256, bcrypt, argon2i, argon2id
 $_ENV['salt']       = '';                             //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
 
 $_ENV['debug']      = false;                          //debug mode switch，The production environment should be kept as false
@@ -26,12 +26,6 @@ $_ENV['db_charset']   = 'utf8mb4';
 $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
 $_ENV['db_prefix']    = '';
 
-//Streaming media unlocking The following settings will enable nodes 397 and 297 to reuse the detection results of node 4 and remove the comment when using it //
-$_ENV['streaming_media_unlock_multiplexing'] = [
-    //'397' => '4',
-    //'297' => '4',
-];
-
 //E-Mail settings--------------------------------------------------------------------------------------------
 $_ENV['mail_filter']        = 0;            //0: off; 1: whitelist mode; 2; blacklist mode;
 $_ENV['mail_filter_list']   = array("qq.com", "vip.qq.com", "foxmail.com");
@@ -46,9 +40,6 @@ $_ENV['auto_clean_uncheck_days']    = -1;           //Automatically clean up lev
 $_ENV['auto_clean_unused_days']     = -1;           //How many days of unused level 0 users will be automatically cleared, and it will be turned off when it is less than or equal to 0
 $_ENV['auto_clean_min_money']       = 1;            //Level 0 users whose balance is lower than a certain amount can be cleared
 
-$_ENV['enable_bought_reset']        = true;         //Whether to reset traffic when purchasing
-$_ENV['enable_bought_extend']       = true;         //Whether to extend the level period when purchasing (same level package)
-
 #advanced
 $_ENV['class_expire_reset_traffic'] = 0;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
 $_ENV['account_expire_delete_days'] = -1;           //The account will be deleted a few days after the account expires, and it will not be deleted when it is less than 0
@@ -62,7 +53,7 @@ $_ENV['notify_limit_value']         = 20;           //When the previous item is 
 
 //log settings---------------------------------------------------------------------------------------
 $_ENV['trafficLog']               = false;                          //Whether to record the traffic used by users every hour
-$_ENV['trafficLog_keep_days']     = 14;                             //Number of days to keep usage traffic records per hour
+$_ENV['trafficLog_keep_days']     = 7;                             //Number of days to keep usage traffic records per hour
 
 $_ENV['subscribeLog']               = false;                        //Whether to record user subscription logs
 $_ENV['subscribeLog_keep_days']     = 7;                            //Number of days to keep subscription records
@@ -113,13 +104,13 @@ $_ENV['enable_telegram']                    = false;        //whether to enable 
 $_ENV['telegram_token']                     = '';           //Telegram bot,bot of token ，with father bot Application
 $_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
 $_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
-$_ENV['telegram_request_token']             = '';           //Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
+$_ENV['telegram_request_token']             = '';           //Webhook key, after updating this parameter please php xcat Tool setTelegram, Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
 $_ENV['detect_gfw_interval']             = 3600;                                                               //Detection interval, unit: second, if it is lower than the recommended value, it will explode
-$_ENV['detect_gfw_port']                 = 22;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
-$_ENV['detect_gfw_url']                  = 'http://cn-sh-tcping.sspanel.org:8080/tcping?ip={ip}&port={port}'; //The URL of the API that detects whether the node is blocked by gfw
+$_ENV['detect_gfw_port']                 = 443;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
+$_ENV['detect_gfw_url']                  = 'http://example.com:8080/tcping?ip={ip}&port={port}'; //The URL of the API that detects whether the node is blocked by gfw
 $_ENV['detect_gfw_count']                = '3';                                                                //number of attempts
 
 #offline detection
@@ -133,7 +124,7 @@ $_ENV['enable_detect_offline']           = true;
 $_ENV['WebAPI']     = true;
 
 #Misc
-$_ENV['authDriver']             = 'cookie';            //This item cannot be changed
+$_ENV['authDriver']             = 'cookie';            //optional: cookies
 $_ENV['sessionDriver']          = 'cookie';            //optional: cookie
 $_ENV['cacheDriver']            = 'cookie';            //optional: cookie
 $_ENV['tokenDriver']            = 'db';                //optional: db
@@ -141,7 +132,7 @@ $_ENV['tokenDriver']            = 'db';                //optional: db
 $_ENV['enable_login_bind_ip']   = false;        //Whether to bind the login thread to the IP
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 
-$_ENV['timeZone']               = 'PRC';                 //PRC Chinese time UTC Green time
+$_ENV['timeZone']               = 'Asia/Tehran';         //Requires a PHP-compatible timezone format
 $_ENV['theme']                  = 'tabler';              //Default Theme
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
 
@@ -173,10 +164,6 @@ $_ENV['sentry_dsn'] = '';
 // Maxmind GeoIP2 database
 $_ENV['maxmind_license_key'] = '';
 $_ENV['geoip_locale'] = 'en';
-
-// OpenAI API Key for GPT powered ticket reply and more
-$_ENV['openai_api_key'] = '';
-$_ENV['ai_model'] = 'gpt-3.5-turbo';
 
 // OpenAI API Key for GPT powered ticket reply and more
 $_ENV['openai_api_key'] = '';

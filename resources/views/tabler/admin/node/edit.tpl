@@ -179,8 +179,8 @@
 <script>
     var clipboard = new ClipboardJS('.copy');
     clipboard.on('success', function(e) {
-        $('#copy-message').text('در کلیپ بورد کپی شد');
-        $('#copy-dialog').modal('show');
+        $('#success-noreload-message').text('در کلیپ بورد کپی شد');
+        $('#success-noreload-dialog').modal('show');
     });
 
     const container = document.getElementById('custom_config');

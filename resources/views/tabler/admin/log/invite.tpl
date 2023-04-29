@@ -12,14 +12,14 @@
                         <span class="home-subtitle">مشاهده سابقه تخفیف کاربر</span>
                     </div>
                 </div>
-                <div class="col-auto ms-auto d-print-none">
+                <div class="col-auto">
                     <div class="btn-list">
-                        <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="#" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#update-invite-dialog">
                             <i class="icon ti ti-user-edit"></i>
                             ویرایش دعوت کننده
                         </button>
-                        <button href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <button href="#" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#add-invite-dialog">
                             <i class="icon ti ti-plus"></i>
                             افزودن تعداد دعوت ها

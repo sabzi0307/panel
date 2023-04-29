@@ -10,7 +10,7 @@
     <title>{$config['appName']}</title>
     <!-- CSS files -->
     <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
@@ -58,7 +58,7 @@
                             {if $user->is_dark_mode}
                             <a id="switch_theme_mode" class="dropdown-item">حالت روشن</a>
                             {else}
-                            <a id="switch_theme_mode" class="dropdown-item">حالت تاریک</a>
+                            <a id="switch_theme_mode" class="dropdown-item">به حالت تاریک تغییر دهید</a>
                             {/if}
                             <a href="/user/logout" class="dropdown-item">خروج از سیستم</a>
                         </div>
@@ -106,7 +106,7 @@
                                             {/if}
                                             <a class="dropdown-item" href="/user/invite">
                                                 <i class="ti ti-friends"></i>&nbsp;
-                                                دعوتنامه برای ثبت نام
+                                                دعوت و تخفیف
                                             </a>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        لیست سرور ها
+                                        نود
                                     </a>
                                     {if $public_setting['display_media']}
                                     <a class="dropdown-item" href="/user/media">
@@ -148,12 +148,12 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/announcement">
                                         <i class="ti ti-speakerphone"></i>&nbsp;
-                                        اطلاعیه سایت
+                                        اطلاعیه
                                     </a>
                                     {if $public_setting['enable_ticket']}
                                     <a class="dropdown-item" href="/user/ticket">
                                         <i class="ti ti-ticket"></i>&nbsp;
-                                        سامانه پشتیبانی
+                                        دستور کار
                                     </a>
                                     {/if}
                                 </div>
@@ -171,12 +171,12 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/detect">
                                         <i class="ti ti-barrier-block"></i>&nbsp;
-                                        قوانین فیلترینگ
+                                        قوانین
                                     </a>
                                     {if $public_setting['display_detect_log']}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        گزارش فیلترینگ
+                                        ورود به سیستم
                                     </a>
                                     {/if}
                                 </div>
@@ -195,16 +195,20 @@
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/product">
-                                                <i class="ti ti-building-store"></i>&nbsp;
-                                                لیست محصولات
+                                                <i class="ti ti-list"></i>&nbsp;
+                                                سرویس ها
                                             </a>
                                             <a class="dropdown-item" href="/user/order">
                                                 <i class="ti ti-file-invoice"></i>&nbsp;
-                                                مدیریت سفارش
+                                                سفارشات
                                             </a>
                                             <a class="dropdown-item" href="/user/invoice">
-                                                <i class="ti ti-coin"></i>&nbsp;
-                                                مدیریت صورت حساب
+                                                <i class="ti ti-file-dollar"></i>&nbsp;
+                                                صورت حساب
+                                            </a>
+                                            <a class="dropdown-item" href="/user/money">
+                                                <i class="ti ti-home-dollar"></i>&nbsp;
+                                                موجودی حساب
                                             </a>
                                         </div>
                                     </div>

@@ -10,7 +10,7 @@
     <title>{$config['appName']}</title>
     <!-- CSS files -->
     <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
     <link href="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
@@ -57,11 +57,11 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             {if $user->is_dark_mode}
-                            <a id="switch_theme_mode" class="dropdown-item">تغییر به حالت روشن</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت روشن</a>
                             {else}
-                            <a id="switch_theme_mode" class="dropdown-item">رفتن به حالت تاریک</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت تیره</a>
                             {/if}
-                            <a href="/user/logout" class="dropdown-item">登出</a>
+                            <a href="/user/logout" class="dropdown-item">خروج از سیستم</a>
                         </div>
                     </div>
                 </div>

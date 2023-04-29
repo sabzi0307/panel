@@ -399,7 +399,7 @@
                                                     <h3 class="card-title">حذف اطلاعات حساب</h3>
                                                 </div>    
                                                 <div class="card-footer">
-                                                    <a href="#" class="btn btn-red d-none d-sm-inline-block" data-bs-toggle="modal"
+                                                    <a href="#" class="btn btn-red" data-bs-toggle="modal"
                                                         data-bs-target="#destroy-account">
                                                         <i class="ti ti-trash icon"></i>
                                                         تایید حذف
@@ -518,8 +518,8 @@
 
         var clipboard = new ClipboardJS('.copy');
         clipboard.on('success', function(e) {
-            $('#copy-message').text('در کلیپ بورد کپی شد');
-            $('#copy-dialog').modal('show');
+            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
+            $('#success-noreload-dialog').modal('show');
         });
 
         $("#modify-email").click(function() {

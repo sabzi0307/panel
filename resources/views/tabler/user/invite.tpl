@@ -17,44 +17,48 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-deck">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">قوانین دعوت</h3>
-                            <ul>
-                                <li>پس از تایید صورت حساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض را دریافت کنید <code>{$public_setting['rebate_ratio'] * 100} %</code>
-                                    به عنوان تخفیف</li>
-                                <li>لطفاً اطلاعیه را برای قوانین خاص تخفیف دعوت بررسی کنید یا از طریق سیستم دستور کار از مدیر سؤال کنید</li>
-                                <li>نسبت تخفیف برخی از سرویس ها ممکن است از نسبت فوق پیروی نکند</li>
-                            </ul>
-                            <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید، می باشد <code>{$paybacks_sum}</code> تومان</p>
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="row row-deck row-cards">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">قوانین دعوت</h3>
+                                    <ul>
+                                        <li>پس از تایید صورت حساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض را دریافت کنید <code>{$public_setting['rebate_ratio'] * 100} %</code>
+                                            به عنوان تخفیف</li>
+                                        <li>لطفاً اطلاعیه را برای قوانین خاص تخفیف دعوت بررسی کنید یا از طریق سیستم دستور کار از مدیر سؤال کنید</li>
+                                        <li>نسبت تخفیف برخی از سرویس ها ممکن است از نسبت فوق پیروی نکند</li>
+                                    </ul>
+                                    <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید، می باشد <code>{$paybacks_sum}</code> تومان</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">لینک دعوت</h3>
-                            {if $user->invite_num >= 0}
-                                <p>زمان‌ باقی مانده لینک دعوت：<code>{$user->invite_num}</code></p>
-                            {/if}
-                            <input class="form-control" value="{$invite_url}" disabled />
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex">
-                                <a id="reset-url" class="btn text-red btn-link">تنظیم مجدد</a>
-                                <a data-clipboard-text="{$invite_url}" class="copy btn btn-primary ms-auto">کپی</a>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">لینک دعوت</h3>
+                                    {if $user->invite_num >= 0}
+                                        <p>زمان‌ باقی مانده لینک دعوت：<code>{$user->invite_num}</code></p>
+                                    {/if}
+                                    <input class="form-control" value="{$invite_url}" disabled />
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex">
+                                        <a id="reset-url" class="btn text-red btn-link">تنظیم مجدد</a>
+                                        <a data-clipboard-text="{$invite_url}" class="copy btn btn-primary ms-auto">کپی</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="card my-3">
+                <div class="col-12 my-3">
+                    <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">سابقه تخفیف</h3>
                         </div>
-                        {if $paybacks->count() !== '0'}
+                        {if $paybacks->count() !== 0}
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
@@ -97,8 +101,8 @@
     <script>
         var clipboard = new ClipboardJS('.copy');
         clipboard.on('success', function(e) {
-            $('#copy-message').text('در کلیپ بورد کپی شد');
-            $('#copy-dialog').modal('show');
+            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
+            $('#success-noreload-dialog').modal('show');
         });
 
         $("#reset-url").click(function() {
