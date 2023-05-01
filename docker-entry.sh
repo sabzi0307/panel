@@ -57,10 +57,6 @@ if [ -z "$TIME_ZONE" ];then
     echo >&2 "DB_DATABASE not set!"
     exit
 fi
-if [ -z "$STREAMING_UNLOCK" ];then
-    echo >&2 "STREAMING_UNLOCK not set!"
-    STREAMING_UNLOCK=false
-fi
 if [ -z "$GITHUB_ACCESS_TOKEN" ];then
     echo >&2 "GITHUB_ACCESS_TOKEN not set!"
     GITHUB_ACCESS_TOKEN=false
@@ -309,12 +305,6 @@ if [ "$INIT" = true ];then
     -e "s|\$_ENV\['php_user_group'].*=.*'www:www';|\$_ENV['php_user_group']        = 'www-data:www-data';|g" \
     config/.config.php
 
-    if [ "$STREAMING_UNLOCK" = true ];then
-        sed -i -e "s/\/\/'397' => '4',/'397' => '4',/g" \
-        -e "s/\/\/'297' => '4',/'297' => '4',/g" \
-        config/.config.php
-    fi
-
     if [ "$GITHUB_ACCESS_TOKEN" != false ];then
         sed -i -e "s/\$_ENV\['github_access_token'].*=.*false;/\$_ENV['github_access_token']        = '$GITHUB_ACCESS_TOKEN';/g" \
         config/.config.php
@@ -372,9 +362,15 @@ if [ "$INIT" = true ];then
             temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
-                php xcat Update
+                php xcat Migration new
                 php xcat Tool importAllSettings
-                php xcat Migration latest
+                if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
+                    echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
+                    exit
+                else
+                echo -n >&2 "\n" 
+                    printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
+                fi
             fi
             # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
             echo >&2 "Done"
@@ -383,15 +379,20 @@ if [ "$INIT" = true ];then
             exit
         fi
     else
-
         if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
             echo -n >&2 "\nInitialize database..."
             temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
-                php xcat Update
+                php xcat Migration new
                 php xcat Tool importAllSettings
-                php xcat Migration latest
+                if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
+                    echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
+                    exit
+                else
+                echo -n >&2 "\n" 
+                    printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
+                fi
             fi
             # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         
@@ -409,24 +410,6 @@ if [ "$INIT" = true ];then
 
     echo >&2 "Done"
 
-    echo -n >&2 "\nChecking if admin account exists..."
-
-    if [ -z "$DB_HOST" ]; then
-        temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-    else
-        temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
-    fi
-
-    if [ -z "$temp_sql_result" ]; then
-        echo >&2 "Not found"
-        echo -n >&2 "\nAttemping to create admin account..."
-        if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
-            echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
-        else
-        echo -n >&2 "\n" 
-            printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
-        fi
-    fi
 fi
 echo -n >&2 "\nChecking if client binaries exist..."
 

@@ -15,10 +15,6 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     curl -SL https://getcomposer.org/installer -o composer.phar && \
     php composer.phar && \
     php composer.phar install && \
-    php xcat Migration new && \
-    php xcat Tool importAllSettings && \
-    php xcat Tool createAdmin && \
-    php xcat ClientDownload && \
     crontab -l | { cat; echo "*/5 * * * * php /var/www/xcat Cron"; } | crontab - && \
     crontab -l | { cat; echo "0 0 * * * php /var/www/xcat Job DailyJob"; } | crontab - && \
     crontab -l | { cat; echo "*/1 * * * * php /var/www/xcat Job CheckJob"; } | crontab - && \
