@@ -87,9 +87,9 @@ final class TicketController extends BaseController
             foreach ($adminUser as $user) {
                 $user->sendMail(
                     $_ENV['appName'] . '-یک تیکت جدید باز شده است',
-                    'news/warn.tpl',
+                    'warn.tpl',
                     [
-                        'text' => 'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع باهاش ​​رسیدگی کنید.',
+                        'text' => 'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع بهش ​​رسیدگی کنید.',
                     ],
                     []
                 );
@@ -144,11 +144,11 @@ final class TicketController extends BaseController
             foreach ($adminUser as $user) {
                 $user->sendMail(
                     $_ENV['appName'] . '-تیکت پاسخ داده شده است',
-                    'news/warn.tpl',
+                    'warn.tpl',
                     [
                         'text' => 'ادمین یکی جواب داد <a href="' .
                             $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">#' . $ticket->id .
-                            '</a> دستور کار，لطفا به موقع به آن رسیدگی کنید.',
+                            '</a> دستور کار، لطفا به موقع به آن رسیدگی کنید.',
                     ],
                     []
                 );

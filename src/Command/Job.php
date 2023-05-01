@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Models\Ann;
-use App\Models\DetectBanLog;
 use App\Models\DetectLog;
 use App\Models\EmailQueue;
 use App\Models\EmailVerify;
@@ -74,34 +73,35 @@ EOL;
 
         // ------- 用户每日流量报告
         $users = User::all();
-        $ann_latest_raw = Ann::orderBy('date', 'desc')->first();
 
         // 判断是否有公告
+        $ann_latest_raw = Ann::orderBy('date', 'desc')->first();
+
         if ($ann_latest_raw === null) {
             $ann_latest = '<br><br>';
         } else {
             $ann_latest = $ann_latest_raw->content . '<br><br>';
         }
 
-        $lastday_total = 0;
+        if (Setting::obtain('telegram_diary')) {
+            $lastday_total = 0;
+        }
 
         foreach ($users as $user) {
-            // 将用户日流量加到统计中
-            $lastday_total += $user->u + $user->d - $user->last_day_t;
+            // ------- 用户每日流量报告
+            if (Setting::obtain('telegram_diary')) {
+                // 将用户日流量加到统计中
+                $lastday_total += $user->u + $user->d - $user->last_day_t;
+            }
+
             $user->sendDailyNotification($ann_latest);
             // 覆盖用户 last_day_t 值，为下一个周期的流量重置做准备
             $user->last_day_t = $user->u + $user->d;
             $user->save();
-        }
-        // ------- 用户每日流量报告
+            // ------- 用户每日流量报告
 
-        // ------- 免费用户流量重置
-        foreach ($users as $user) {
-            if ($user->class > 0) {
-                continue;
-            }
-
-            if (date('d') === $user->auto_reset_day) {
+            // ------- 免费用户流量重置
+            if ($user->class === 0 && date('d') === $user->auto_reset_day) {
                 $user->u = 0;
                 $user->d = 0;
                 $user->last_day_t = 0;
@@ -110,10 +110,10 @@ EOL;
 
                 try {
                     $user->sendMail(
-                        $_ENV['appName'] . '-ترافیک رایگان شما دوباره تنظیم شد',
-                        'news/warn.tpl',
+                        $_ENV['appName'] . '-ترافیک رایگان شما ریست شده است',
+                        'warn.tpl',
                         [
-                            'text' => 'سلام، ترافیک رایگان شما به حجم اولیه ریست شد' . $user->auto_reset_bandwidth . 'GB',
+                            'text' => 'سلام، ترافیک رایگان شما به حالت اولیه ریست شد' . $user->auto_reset_bandwidth . 'GB',
                         ],
                         [],
                         true
@@ -122,12 +122,12 @@ EOL;
                     echo $e->getMessage();
                 }
             }
+            // ------- 免费用户流量重置
         }
-        // ------- 免费用户流量重置
 
         // ------- 发送系统运行状况通知
-        $sts = new Analytics();
         if (Setting::obtain('telegram_diary')) {
+            $sts = new Analytics();
             try {
                 Telegram::send(
                     str_replace(
@@ -160,7 +160,7 @@ EOL;
     }
 
     /**
-     * 用户账户相关任务，每小时
+     * 账户相关任务，每小时
      */
     public function UserJob(): void
     {
@@ -192,10 +192,10 @@ EOL;
                 $user->last_day_t = 0;
 
                 $user->sendMail(
-                    $_ENV['appName'] . '-حساب کاربری شما منقضی شده است',
-                    'news/warn.tpl',
+                    $_ENV['appName'] . '-حساب شما منقضی شده است',
+                    'warn.tpl',
                     [
-                        'text' => 'سلام، متاسفانه جساب کاربری شما منقضی شده است.',
+                        'text' => 'سلام، سیستم متوجه شد که اکانت شما منقضی شده است.',
                     ],
                     [],
                     true
@@ -232,9 +232,9 @@ EOL;
                 if ($under_limit && ! $user->traffic_notified) {
                     $result = $user->sendMail(
                         $_ENV['appName'] . '-ترافیک باقیمانده شما بسیار کم است',
-                        'news/warn.tpl',
+                        'warn.tpl',
                         [
-                            'text' => 'ترافیک باقیمانده شما کمتر از حد مجاز می باشد ' . $_ENV['notify_limit_value'] . $unit_text . ' 。',
+                            'text' => 'سلام، سیستم متوجه شد که ترافیک باقیمانده شما کمتر از ' . $_ENV['notify_limit_value'] . $unit_text . ' 。',
                         ],
                         [],
                         true
@@ -255,8 +255,8 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
-                    'news/warn.tpl',
+                    $_ENV['appName'] . '-حساب کاربری شما به دلیل انقضا حذف شده است',
+                    'warn.tpl',
                     [
                         'text' => 'سلام، سیستم متوجه شد که اکانت شما منقضی شده است ' . $_ENV['account_expire_delete_days'] . ' اوه، حساب حذف شده است.',
                     ],
@@ -277,10 +277,10 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
-                    'news/warn.tpl',
+                    $_ENV['appName'] . '-حساب شما به دلیل عدم ورود به سیستم حذف شده است',
+                    'warn.tpl',
                     [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما ' . $_ENV['auto_clean_uncheck_days'] . ' چند روزی است که وارد سیستم نشده اید و حساب کاربری حذف شده است.',
+                        'text' => 'سلام، سیستم متوجه شد که اکانت شما بوده است ' . $_ENV['auto_clean_uncheck_days'] . ' چند روزی است که وارد سیستم نشده ام و اکانت حذف شده است.',
                     ],
                     [],
                     true
@@ -296,10 +296,10 @@ EOL;
                 $user->money <= $_ENV['auto_clean_min_money']
             ) {
                 $user->sendMail(
-                    $_ENV['appName'] . '-حساب کاربری شما حذف شده است',
-                    'news/warn.tpl',
+                    $_ENV['appName'] . '-حساب شما به دلیل عدم فعالیت حذف شده است',
+                    'warn.tpl',
                     [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما ' . $_ENV['auto_clean_unused_days'] . ' چند روزی است که استفاده نشده و اکانت حذف شده است.',
+                        'text' => 'سلام، سیستم دریافت که حساب شما بوده است ' . $_ENV['auto_clean_unused_days'] . ' چند روزی است که استفاده نشده و اکانت حذف شده است.',
                     ],
                     [],
                     true
@@ -310,8 +310,7 @@ EOL;
 
             if (
                 $user->class !== 0 &&
-                strtotime($user->class_expire) < time() &&
-                strtotime($user->class_expire) > 1420041600
+                strtotime($user->class_expire) < time()
             ) {
                 $text = 'سلام، سیستم متوجه شد که سطح حساب شما منقضی شده است.';
                 $reset_traffic = $_ENV['class_expire_reset_traffic'];
@@ -324,7 +323,7 @@ EOL;
                 }
                 $user->sendMail(
                     $_ENV['appName'] . '-سطح حساب شما منقضی شده است',
-                    'news/warn.tpl',
+                    'warn.tpl',
                     [
                         'text' => $text,
                     ],
@@ -332,13 +331,6 @@ EOL;
                     true
                 );
                 $user->class = 0;
-            }
-            // 审计封禁解封
-            if ($user->is_banned === 1) {
-                $logs = DetectBanLog::where('user_id', $user->id)->orderBy('id', 'desc')->first();
-                if ($logs !== null && ($logs->end_time + $logs->ban_time * 60) <= time()) {
-                    $user->is_banned = 0;
-                }
             }
 
             $user->save();

@@ -54,7 +54,7 @@ final class AuthController extends BaseController
             if (! $ret) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
+                    'msg' => 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
                 ]);
             }
         }
@@ -189,7 +189,7 @@ final class AuthController extends BaseController
                 Mail::send(
                     $email,
                     $_ENV['appName'] . '- ایمیل تایید',
-                    'auth/verify.tpl',
+                    'verify_code.tpl',
                     [
                         'code' => $code,
                         'expire' => date('Y-m-d H:i:s', time() + Setting::obtain('email_verify_ttl')),
@@ -360,7 +360,7 @@ final class AuthController extends BaseController
         if (Setting::obtain('enable_reg_captcha')) {
             $ret = Captcha::verify($request->getParams());
             if (! $ret) {
-                return ResponseHelper::error($response, 'سیستم نتوانست نتیجه تأیید شما را بپذیرد. لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
+                return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
             }
         }
 

@@ -85,7 +85,7 @@ final class TicketController extends BaseController
         $user = User::find($ticket->userid);
         $user->sendMail(
             $_ENV['appName'] . '-تیکت پاسخ داده شد',
-            'news/warn.tpl',
+            'warn.tpl',
             [
                 'text' => 'سلام یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.',
             ],
@@ -136,7 +136,7 @@ final class TicketController extends BaseController
         $user = User::find($ticket->userid);
         $user->sendMail(
             $_ENV['appName'] . '- تیکت پاسخ داده شده است',
-            'news/warn.tpl',
+            'warn.tpl',
             [
                 'text' => 'سلام، ChatGPT پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.',
             ],
@@ -206,9 +206,9 @@ final class TicketController extends BaseController
         $user = User::find($ticket->userid);
         $user->sendMail(
             $_ENV['appName'] . '-تیکت بسته است',
-            'news/warn.tpl',
+            'warn.tpl',
             [
-                'text' => 'سلام تیکت شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، خوشحال می شویم یک تیکت جدید ارسال کنید.',
+                'text' => 'سلام دستور کار شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، لطفا تیکت جدید ارسال کنید.',
             ],
             []
         );

@@ -70,9 +70,9 @@ final class DetectGFW extends Command
                             echo 'Send gfw mail to user: ' . $user->id . '-';
                             $user->sendMail(
                                 $_ENV['appName'] . '-system warning',
-                                'news/warn.tpl',
+                                'warn.tpl',
                                 [
-                                    'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' I was blocked, please deal with it in time.',
+                                    'text' => 'سلام مدیر، سیستم گره را کشف می کند' . $node->name . ' به دیوار خوردم لطفا به موقع با آن برخورد کنید.',
                                 ],
                                 []
                             );
@@ -97,9 +97,9 @@ final class DetectGFW extends Command
                             echo 'Send gfw mail to user: ' . $user->id . '-';
                             $user->sendMail(
                                 $_ENV['appName'] . '-system hint',
-                                'news/warn.tpl',
+                                'warn.tpl',
                                 [
-                                    'text' => 'Hello administrator, the system discovers the node ' . $node->name . ' Sneaked out of the wall.',
+                                    'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' از دیوار لیز خورد',
                                 ],
                                 []
                             );

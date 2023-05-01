@@ -282,7 +282,7 @@ final class Callback
             if ($this->ChatID < 0) {
                 // 群组内提示
                 $this->answerCallbackQuery([
-                    'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید。',
+                    'text' => 'سلام، شما حسابی را متصل نکرده اید و نمی توانید عملیات انجام دهید.',
                     'show_alert' => true,
                 ]);
             }
@@ -401,7 +401,7 @@ final class Callback
             case 'login_log':
                 // سابقه ثبت نام
                 $total = LoginIp::where('userid', '=', $this->User->id)->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
-                $text = '<strong>موارد زیر 10 آخرین IP ورود به سیستم و مکان های جغرافیایی شما هستند：</strong>' . PHP_EOL;
+                $text = '<strong>موارد زیر 10 آخرین IP ورود و موقعیت جغرافیایی شما هستند：</strong>' . PHP_EOL;
                 $text .= PHP_EOL;
 
                 foreach ($total as $single) {
@@ -644,7 +644,7 @@ final class Callback
                     if (in_array($CallbackDataExplode[1], Config::getSupportParam('method'))) {
                         $temp = $this->User->setMethod($CallbackDataExplode[1]);
                         if ($temp['ok']) {
-                            $text = 'روش رمزگذاری فعلی شما این است：' . $this->User->method . PHP_EOL . PHP_EOL . $temp['msg'];
+                            $text = 'روش رمزگذاری فعلی شما است：' . $this->User->method . PHP_EOL . PHP_EOL . $temp['msg'];
                         } else {
                             $text = 'خطایی روی داد، لطفاً دوباره امتحان کنید.' . PHP_EOL . PHP_EOL . $temp['msg'];
                         }
@@ -665,7 +665,7 @@ final class Callback
                         $keyboard[] = $Encrypt;
                     }
                     $keyboard[] = $back[0];
-                    $text = 'روش رمزگذاری فعلی شما این است：' . $this->User->method;
+                    $text = 'روش رمزگذاری فعلی شما است：' . $this->User->method;
                 }
                 $sendMessage = [
                     'text' => $text,
@@ -725,7 +725,7 @@ final class Callback
                 $this->AllowEditMessage = false;
                 $text = 'ارسال **/unbind ایمیل** برای لغو پیوند.';
                 if (Setting::obtain('telegram_unbind_kick_member')) {
-                    $text .= PHP_EOL . PHP_EOL . 'طبق تنظیمات مدیر，حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف خواهد شد.';
+                    $text .= PHP_EOL . PHP_EOL . 'با توجه به تنظیمات مدیر، حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف می شود.';
                 }
                 $sendMessage = [
                     'text' => $text,
@@ -738,7 +738,7 @@ final class Callback
             case 'unban':
                 // 群组解封
                 $sendMessage = [
-                    'text' => 'اگر قبلاً در گروه کاربری هستید، لطفاً به دلخواه برای رفع انسداد کلیک نکنید، در غیر این صورت از گروه حذف خواهید شد..',
+                    'text' => 'اگر قبلاً در گروه کاربری هستید، لطفاً برای رفع انسداد به میل خود کلیک نکنید، در غیر این صورت از گروه حذف خواهید شد.',
                     'disable_web_page_preview' => false,
                     'reply_to_message_id' => null,
                     'reply_markup' => json_encode(
@@ -766,7 +766,7 @@ final class Callback
                     ]
                 );
                 $this->answerCallbackQuery([
-                    'text' => 'برای رفع انسداد ارسال شد، اگر هنوز نمی توانید به گروه بپیوندید، لطفاً با سرپرست تماس بگیرید.',
+                    'text' => 'برای رفع انسداد ارسال شده است، اگر هنوز نمی توانید به گروه بپیوندید، لطفاً با سرپرست تماس بگیرید.',
                     'show_alert' => true,
                 ]);
                 break;
@@ -929,7 +929,7 @@ final class Callback
         }
         $invite = Setting::getClass('invite');
         $text = [
-            '<strong>طرح اشتراک گذاری، به ازای هر 1 کاربری که برای ثبت نام دعوت می کنید：</strong>',
+            '<strong>طرح اشتراک گذاری، به ازای هر 1 کاربری که برای ثبت نام دعوت می کنید: </strong>',
             '',
             '- دریافت خواهید کرد <strong>' . $invite['invitation_to_register_traffic_reward'] . 'G</strong> پاداش ترافیک',
             '- طرف مقابل خواهد گرفت <strong>' . $invite['invitation_to_register_balance_reward'] . ' تومان</strong> جوایز به عنوان سرمایه اولیه عمل می کنند.',

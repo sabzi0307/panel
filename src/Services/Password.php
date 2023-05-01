@@ -23,13 +23,13 @@ final class Password
         $pwdRst->token = Tools::genRandomChar(64);
         $pwdRst->save();
 
-        $subject = $_ENV['appName'] . 'بازنشانی رمز عبور';
+        $subject = $_ENV['appName'] . '-بازنشانی رمز عبور';
         $resetUrl = $_ENV['baseUrl'] . '/password/token/' . $pwdRst->token;
 
         Mail::send(
             $email,
             $subject,
-            'password/reset.tpl',
+            'password_reset.tpl',
             [
                 'resetUrl' => $resetUrl,
             ]

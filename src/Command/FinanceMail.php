@@ -55,7 +55,7 @@ EOL;
             echo 'Sending email to admin user: ' . $user->id . PHP_EOL;
             $user->sendMail(
                 $_ENV['appName'] . '-مالی روزانه',
-                'news/finance.tpl',
+                'finance.tpl',
                 [
                     'title' => 'مالی روزانه',
                     'text' => $text_html,
@@ -77,7 +77,7 @@ EOL;
             echo 'Sending email to admin user: ' . $user->id . PHP_EOL;
             $user->sendMail(
                 $_ENV['appName'] . '-گزارش مالی هفتگی',
-                'news/finance.tpl',
+                'finance.tpl',
                 [
                     'title' => 'هفته نامه مالی',
                     'text' => $text_html,
@@ -99,7 +99,7 @@ EOL;
             echo 'Sending email to admin user: ' . $user->id . PHP_EOL;
             $user->sendMail(
                 $_ENV['appName'] . '-گزارش مالی ماهانه',
-                'news/finance.tpl',
+                'finance.tpl',
                 [
                     'title' => 'گزارش مالی ماهانه',
                     'text' => $text_html,

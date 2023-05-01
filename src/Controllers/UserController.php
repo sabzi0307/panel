@@ -512,7 +512,7 @@ final class UserController extends BaseController
         if ($_ENV['enable_kill']) {
             Auth::logout();
             $user->killUser();
-            return ResponseHelper::successfully($response, 'حساب شما از سیستم ما حذف شده است.');
+            return ResponseHelper::successfully($response, 'حساب شما از سیستم ما حذف شده است. مجدد خوش آمدید');
         }
 
         return ResponseHelper::error($response, 'سرویس حذف حساب فعال نیست. اگر نیاز به حذف حساب دارید، لطفاً با سرپرست تماس بگیرید.');

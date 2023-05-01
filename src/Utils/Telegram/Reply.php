@@ -46,7 +46,7 @@ final class Reply
         if ($user->class > 0) {
             $text = 'عزیز VIP ' . $user->class . ' سلام：';
         } else {
-            $text = 'کاربران گرامی سلام：';
+            $text = 'سلام کاربر عزیز：';
         }
         return $text;
     }

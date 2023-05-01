@@ -39,7 +39,7 @@ final class PingCommand extends Command
 
             $text = [
                 'Pong！',
-                'شناسنامه شما هست ' . $ChatID . '.',
+                'شناسه شما است ' . $ChatID . '.',
             ];
 
             // 回送信息
@@ -60,8 +60,8 @@ final class PingCommand extends Command
 
             $text = [
                 'Pong！',
-                'شناسنامه شما هست ' . $Message->getFrom()->getId() . '.',
-                'شناسه این گروه است ' . $ChatID . '.',
+                'شناسه شما است ' . $Message->getFrom()->getId() . '.',
+                'شناسه این گروه می باشد ' . $ChatID . '.',
             ];
 
             // 回送信息

@@ -118,9 +118,9 @@ $_ENV['enable_detect_offline']           = true;
 
 //All of the following are advanced settings (generally not used, do not need to change---------------------------------------------------------------------
 
-// Whether the main site provides WebAPI
-// - For security, it is recommended to use the WebAPI mode to connect to the node and close the public network database connection。
-// - Can be set to false if all your nodes use database connections or if you have a separate WebAPI site or gRPC API。
+// Does the master site provide WebAPI
+// - For security, it is recommended to use the WebAPI mode to connect to the node and close the public network database connection.
+// - Can be set to false if all your nodes use database connections or if you have a separate WebAPI site or gRPC API.
 $_ENV['WebAPI']     = true;
 
 #Misc
@@ -148,8 +148,8 @@ $_ENV['cloudflare_name']        = '';            //domain name
 #Whether to include statistical codes, create an analytics.tpl under resources/views/{theme name}, and use literal delimiters if necessary
 $_ENV['enable_analytics_code']  = false;
 
-#Obtain the user's real ip after installing the CDN, if you don't know what it is, please don't mess around
-$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ARVAN_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
+#Obtain the user's real ip after setting up the CDN. If you don't know what this is, please don't mess around
+$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
 foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
     if (isset($_SERVER[$cdn_forwarded_ip])) {
         $list = explode(',', $_SERVER[$cdn_forwarded_ip]);

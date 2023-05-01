@@ -24,9 +24,9 @@
                             <div class="empty-img">
                                 <i class="ti ti-circle-x icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
                             </div>
-                            {if $banned_reason === null}
-                            <p class="empty-title">حساب کاربری توسط سیستم مسدود شده است</p>
-                            <p class="empty-subtitle text-muted">حساب شما به طور خودکار توسط سیستم مسدود می شود، لطفا با مدیر تماس بگیرید</p>
+                            {if $banned_reason === 'DetectBan'}
+                            <p class="empty-title">ممنوعیت فیلترینگ</p>
+                            <p class="empty-subtitle text-muted">حساب شما به‌طور خودکار توسط سیستم مسدود می‌شود، زیرا شامل قوانین فیلترینگ شده اید.</p>
                             {else}
                             <p class="empty-title">این دلیل ممنوعیت شماست</p>
                             <p class="empty-subtitle text-muted">{$banned_reason}</p>

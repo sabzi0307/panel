@@ -147,7 +147,7 @@ final class Epay extends AbstractPayment
 
         if ($user->use_new_shop) {
             $html = <<<HTML
-            شما با موفقیت شارژ شدید {$money} تومان，پرش..
+            شما با موفقیت شارژ کردید {$money} تومان，پرش..
             <script>
                 setTimeout(function() {
                     location.href="/user/invoice";
@@ -156,7 +156,7 @@ final class Epay extends AbstractPayment
             HTML;
         } else {
             $html = <<<HTML
-            شما با موفقیت شارژ شدید {$money} تومان，پرش..
+            شما با موفقیت شارژ کردید {$money} تومان，پرش..
             <script>
                 setTimeout(function() {
                     location.href="/user/code";

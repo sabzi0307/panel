@@ -73,13 +73,13 @@ final class Message
                     $BinsUser->im_value = $this->triggerUser['username'];
                     $BinsUser->save();
                     if ($BinsUser->is_admin >= 1) {
-                        $text = '**مدیر محترم** سلام، اتثال موفق را تبریک می گویم.' . PHP_EOL . 'آدرس ایمیل فعلی محدود شده است：' . $BinsUser->email;
+                        $text = '**مدیر محترم** سلام، اتصال موفقیت آمیز را تبریک عرض می کنم.' . PHP_EOL . 'آدرس ایمیل فعلی محدود شده است：' . $BinsUser->email;
                     } else {
                         if ($BinsUser->class >= 1) {
-                            $text = '**VIP عزیز' . $BinsUser->class .
-                                '** سلام کاربر.' . PHP_EOL . 'اتصال موفقیت آمیز شما را تبریک می گویم، آدرس ایمیل محدود فعلی است：' . $BinsUser->email;
+                            $text = 'عزیز **VIP ' . $BinsUser->class .
+                                '** سلام کاربر.' . PHP_EOL . 'بابت اتصال موفقیت آمیز شما تبریک می گویم، آدرس ایمیل اتصال کنونی این است:' . $BinsUser->email;
                         } else {
-                            $text = 'اتصال موفقیت آمیز است، ایمیل شما درست است：' . $BinsUser->email;
+                            $text = 'اتصال با موفقیت انجام شد، ایمیل شما این است:' . $BinsUser->email;
                         }
                     }
                 }
@@ -158,8 +158,8 @@ final class Message
                     foreach (json_decode(Setting::obtain('telegram_admins')) as $id) {
                         $this->bot->sendMessage(
                             [
-                                'text' => 'ربات یک گروه را بر اساس تنظیمات شما ترک کرد.' . PHP_EOL .
-                                    'اسم گروه：' . $this->Message->getChat()->getTitle(),
+                                'text' => 'ربات یک گروه را با توجه به تنظیمات شما ترک کرد.' . PHP_EOL .
+                                    'نام گروه:' . $this->Message->getChat()->getTitle(),
                                 'chat_id' => $id,
                             ]
                         );

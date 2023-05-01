@@ -151,9 +151,9 @@ EOL;
                         echo 'Send Email to admin user: ' . $user->id . PHP_EOL;
                         $user->sendMail(
                             $_ENV['appName'] . '-هشدار سیستم',
-                            'news/warn.tpl',
+                            'warn.tpl',
                             [
-                                'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' خط قطع شده است، لطفا به موقع با آن برخورد کنید.',
+                                'text' => 'سلام مدیر، سیستم گره را کشف می کند' . $node->name . ' خط قطع شده است، لطفا به موقع با آن برخورد کنید.',
                             ],
                             [],
                             false
@@ -180,7 +180,7 @@ EOL;
                         echo 'Send Email to admin user: ' . $user->id . PHP_EOL;
                         $user->sendMail(
                             $_ENV['appName'] . '-راهنمایی سیستم',
-                            'news/warn.tpl',
+                            'warn.tpl',
                             [
                                 'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' بازگشت آنلاین',
                             ],
