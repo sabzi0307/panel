@@ -17,15 +17,15 @@ END;
     {
         // 迁移配置
         global $_ENV;
-        $copy_result = copy(BASE_PATH . '/config/.config.php', BASE_PATH . '/config/.config.php.bak');
+        $copy_result = copy(BASE_PATH . '/conf/.config.php', BASE_PATH . '/conf/.config.php.bak');
         if ($copy_result) {
             echo ".config.php File backup successful。\n";
         } else {
             echo ".config.php File backup failed, migration terminated。\n";
         }
 
-        $config_old = file_get_contents(BASE_PATH . '/config/.config.php');
-        $config_new = file_get_contents(BASE_PATH . '/config/.config.example.php');
+        $config_old = file_get_contents(BASE_PATH . '/conf/.config.php');
+        $config_new = file_get_contents(BASE_PATH . '/conf/.config.example.php');
         //将旧config迁移到新config上
         $migrated = [];
         foreach ($_ENV as $key => $value_reserve) {
@@ -73,7 +73,7 @@ END;
             echo "New .config.php configuration item：" . $difference . ":" . $comment . " \n";
         }
         echo "No new .config.php configuration items need to be added。\n";
-        file_put_contents(BASE_PATH . '/config/.config.php', $config_new);
+        file_put_contents(BASE_PATH . '/conf/.config.php', $config_new);
         echo "migration complete.\n";
         // 更新 GeoLite2 数据库
         if ($_ENV['maxmind_license_key'] !== '') {

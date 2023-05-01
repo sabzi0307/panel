@@ -20,9 +20,9 @@ composer.phar
 404.html
 index.html
 
-config/.config.php
-config/.config.php.bak
-config/appprofile.php
+conf/.config.php
+conf/.config.php.bak
+conf/appprofile.php
 
 public/clients/
 

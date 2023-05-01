@@ -74,7 +74,7 @@ function makeDirIfNotExist() {
 
 function makePanelDir() {
     makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}"
-    makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}/config"
+    makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}/conf"
     makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}/logs"
     makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}/logs/nginx"
     makeDirIfNotExist "${PROJ_ROOT}/${PANEL_CONTAINER_NAME}/db"
@@ -1424,7 +1424,7 @@ services:
       - ${PROJ_ROOT}/etc/${PANEL_CONTAINER_NAME}/logs:/var/www/log
       - ${PROJ_ROOT}/etc/${PANEL_CONTAINER_NAME}/logs/nginx:/var/log/nginx
       - ${PROJ_ROOT}/etc/nginx/ssl/${PANEL_DOMAIN}:/etc/nginx/ssl/${PANEL_DOMAIN}:ro
-    #   - ${PROJ_ROOT}/etc/${PANEL_CONTAINER_NAME}/config/:/var/www/config
+    #   - ${PROJ_ROOT}/etc/${PANEL_CONTAINER_NAME}/conf/:/var/www/conf
     depends_on:
       ${DB_HOST}:
         condition: service_healthy

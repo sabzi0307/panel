@@ -283,9 +283,9 @@ echo >&2 "Done"
 #     # openssl req -x509 -newkey rsa:2048 -keyout /etc/nginx/ssl/selfsigned.key -out /etc/nginx/ssl/selfsigned.crt -days 3650 -nodes -subj "/C=GB/ST=London/L=London/O=Google Trust Services LLC/CN=www.google.com"
 # fi
 
-if [ ! -f config/.config.php ];then
-    cp /var/www/config/.config.example.php /var/www/config/.config.php
-    cp /var/www/config/appprofile.example.php /var/www/config/appprofile.php
+if [ ! -f conf/.config.php ];then
+    cp /var/www/conf/.config.example.php /var/www/conf/.config.php
+    cp /var/www/conf/appprofile.example.php /var/www/conf/appprofile.php
     INIT=true
     echo >&2 "Start Init"
 fi
@@ -303,19 +303,19 @@ if [ "$INIT" = true ];then
     -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     -e "s|\$_ENV\['timeZone'].*=.*'PRC';|\$_ENV['timeZone']        = '$TIME_ZONE';|g" \
     -e "s|\$_ENV\['php_user_group'].*=.*'www:www';|\$_ENV['php_user_group']        = 'www-data:www-data';|g" \
-    config/.config.php
+    conf/.config.php
 
     if [ "$GITHUB_ACCESS_TOKEN" != false ];then
         sed -i -e "s/\$_ENV\['github_access_token'].*=.*false;/\$_ENV['github_access_token']        = '$GITHUB_ACCESS_TOKEN';/g" \
-        config/.config.php
+        conf/.config.php
     fi
 
     if [ "$DEBUG" = true ];then
         sed -i -e "s/\$_ENV\['debug'].*=.*false;/\$_ENV['debug']        = true;/g" \
-        config/.config.php
+        conf/.config.php
     else
         sed -i -e "s/\$_ENV\['debug'].*=.*false;/\$_ENV['debug']        = false;/g" \
-        config/.config.php
+        conf/.config.php
     fi
 
 

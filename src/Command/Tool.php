@@ -97,14 +97,14 @@ EOL;
         }
 
         $json_settings = json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        file_put_contents('./config/settings.json', $json_settings);
+        file_put_contents('./conf/settings.json', $json_settings);
 
         echo 'All database settings have been exported' . PHP_EOL;
     }
 
     public function importAllSettings(): void
     {
-        $json_settings = file_get_contents('./config/settings.json');
+        $json_settings = file_get_contents('./conf/settings.json');
         $settings = json_decode($json_settings, true);
         $config = [];
         $add_counter = 0;

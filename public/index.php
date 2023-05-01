@@ -10,8 +10,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../config/.config.php';
-require_once __DIR__ . '/../config/appprofile.php';
+require_once __DIR__ . '/../conf/.config.php';
+require_once __DIR__ . '/../conf/appprofile.php';
 require_once __DIR__ . '/../app/predefine.php';
 
 use App\Middleware\ErrorHandler;

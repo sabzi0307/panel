@@ -35,7 +35,7 @@ final class ClientDownload extends Command
     {
         $this->client = new Client();
         $this->version = $this->getLocalVersions();
-        $clientsPath = BASE_PATH . '/config/clients.json';
+        $clientsPath = BASE_PATH . '/conf/clients.json';
         if (! is_file($clientsPath)) {
             echo 'clients.json does not exist, the script aborts.' . PHP_EOL;
             exit(0);

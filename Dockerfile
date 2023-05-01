@@ -9,7 +9,7 @@ RUN apt-get update -y && apt-get -y install wget mariadb-server gzip zip tar net
     cp docker-entry.sh /usr/local/bin/ && \
     # rm -rf /etc/nginx/conf.d/site.conf && \
     chmod +x /usr/local/bin/docker-entry.sh && \
-    cp -r config/rules public/rules/ && \
+    cp -r conf/rules public/rules/ && \
     chmod -R 755 storage && \
     chmod -R 777 /var/www/storage/framework/smarty/compile/ && \
     curl -SL https://getcomposer.org/installer -o composer.phar && \

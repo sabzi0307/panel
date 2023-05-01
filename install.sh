@@ -14,8 +14,8 @@ do_install_sspanel() {
     read -p "Please input muKey(SSPanel): " mu_key
 
     echo "Generating config files..."
-    cp config/.config.example.php config/.config.php
-    cp config/appprofile.example.php config/appprofile.php
+    cp conf/.config.example.php conf/.config.php
+    cp conf/appprofile.example.php conf/appprofile.php
     echo "Installing Composer..."
     wget https://getcomposer.org/installer -O composer.phar
     php composer.phar
@@ -29,7 +29,7 @@ do_install_sspanel() {
     -e "s/$_ENV['db_database']  = 'sspanel';/$_ENV['db_database']  = '$db_database';/g" \
     -e "s/$_ENV['db_username']  = 'root';/$_ENV['db_username']  = '$db_username';/g" \
     -e "s/$_ENV['db_password']  = 'sspanel';/$_ENV['db_password']  = '$db_password';/g" \
-    config/.config.php
+    conf/.config.php
     echo "Creating database and user..."
     mysql -uroot -p $db_root_password \
     -e "CREATE DATABASE $db_database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
