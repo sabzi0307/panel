@@ -93,7 +93,7 @@
             <div class="col-lg-auto ms-lg-auto">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
-                        <a href="/staff" class="link-secondary">Powered by GostShadow</a>
+                        Powered by <a href="/staff" class="link-secondary">GostShadow</a>
                         <!-- حذف کارکنان یک عمل بی احترامی برای هر توسعه دهنده است -->
                     </li>
                 </ul>

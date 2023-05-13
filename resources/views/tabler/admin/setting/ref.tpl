@@ -62,17 +62,15 @@
                                     <label class="form-label col-3 col-form-label">حالت دعوت کردن</label>
                                     <div class="col">
                                         <select id="invitation_mode" class="col form-select" value="{$settings['invitation_mode']}">
-                                            <option value="registration_only" {if $settings['invitation_mode'] === 'registration_only'}selected{/if}>
+                                            <option value="reg_only" {if $settings['invitation_mode'] === 'reg_only'}selected{/if}>
                                             بدون تخفیف</option>
-                                            <option value="after_recharge" {if $settings['invitation_mode'] === 'after_recharge'}selected{/if}>
-                                            تخفیف در هنگام شارژ مجدد کاربران دعوت شده</option>
-                                            <option value="after_purchase" {if $settings['invitation_mode'] === 'after_purchase'}selected{/if}>
-                                            تخفیف در هنگام خرید کاربران دعوت شده</option>
+                                            <option value="after_paid" {if $settings['invitation_mode'] === 'after_paid'}selected{/if}>
+                                            زمانی که کاربران دعوت شده قبض های خود را پرداخت می کنند تخفیف بدهید</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">حالت دعوت</label>
+                                    <label class="form-label col-3 col-form-label">مدل تخفیف</label>
                                     <div class="col">
                                         <select id="invite_rebate_mode" class="col form-select" value="{$settings['invite_rebate_mode']}">
                                             <option value="continued" {if $settings['invite_rebate_mode'] === 'continued'}selected{/if}>

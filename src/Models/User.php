@@ -175,11 +175,19 @@ final class User extends Model
     }
 
     /*
-     * 已用流量[自动单位]
+     * 当期用量[自动单位]
      */
     public function usedTraffic(): string
     {
         return Tools::flowAutoShow($this->u + $this->d);
+    }
+
+    /*
+     * 累计用量[自动单位]
+     */
+    public function totalTraffic(): string
+    {
+        return Tools::flowAutoShow($this->transfer_total);
     }
 
     /*
@@ -222,7 +230,7 @@ final class User extends Model
      */
     public function todayUsedTraffic(): string
     {
-        return Tools::flowAutoShow($this->u + $this->d - $this->last_day_t);
+        return Tools::flowAutoShow($this->transfer_today);
     }
 
     /*
@@ -233,8 +241,7 @@ final class User extends Model
         if ($this->transfer_enable === 0 || $this->transfer_enable === null) {
             return 0;
         }
-        $Todayused = $this->u + $this->d - $this->last_day_t;
-        $percent = $Todayused / $this->transfer_enable;
+        $percent = $this->transfer_today / $this->transfer_enable;
         $percent = round($percent, 4);
         return $percent * 100;
     }
@@ -244,7 +251,7 @@ final class User extends Model
      */
     public function lastUsedTraffic(): string
     {
-        return Tools::flowAutoShow($this->last_day_t);
+        return Tools::flowAutoShow($this->u + $this->d - $this->transfer_today);
     }
 
     /*
@@ -255,8 +262,7 @@ final class User extends Model
         if ($this->transfer_enable === 0 || $this->transfer_enable === null) {
             return 0;
         }
-        $Lastused = $this->last_day_t;
-        $percent = $Lastused / $this->transfer_enable;
+        $percent = ($this->u + $this->d - $this->transfer_today) / $this->transfer_enable;
         $percent = round($percent, 4);
         return $percent * 100;
     }
@@ -367,19 +373,6 @@ final class User extends Model
         $this->delete();
 
         return true;
-    }
-
-    /**
-     * 获取用户被封禁的理由
-     */
-    public function disableReason(): string
-    {
-        $reason_id = DetectLog::where('user_id', $this->id)->orderBy('id', 'DESC')->first();
-        $reason = DetectRule::find($reason_id->list_id);
-        if (is_null($reason)) {
-            return 'به دلایل خاص غیرفعال شده است، لطفاً برای جزئیات با مدیر تماس بگیرید';
-        }
-        return $reason->text;
     }
 
     /**

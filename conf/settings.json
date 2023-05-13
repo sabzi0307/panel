@@ -741,16 +741,6 @@
     },
     {
         "id": null,
-        "item": "enable_reg_new_shop",
-        "value": "1",
-        "class": "register",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "New users use the new store system by default"
-    },
-    {
-        "id": null,
         "item": "reg_forbidden_ip",
         "value": "127.0.0.0/8,::1/128",
         "class": "register",
@@ -897,7 +887,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "Whether to receive daily usage email push by default after registration"
+        "mark": "receive daily usage email push by default after registration"
     },
     {
         "id": null,
@@ -932,12 +922,12 @@
     {
         "id": null,
         "item": "invitation_mode",
-        "value": "after_purchase",
+        "value": "after_paid",
         "class": "invite",
         "is_public": 0,
         "type": "string",
-        "default": "after_purchase",
-        "mark": "Invitation Mode"
+        "default": "after_paid",
+        "mark": "invite mode"
     },
     {
         "id": null,
@@ -997,7 +987,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "Whether to enable Telegram bot"
+        "mark": "enable Telegram bot"
     },
     {
         "id": null,
@@ -1007,7 +997,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot to add node notification"
+        "mark": "enable Telegram robot to add node notification"
     },
     {
         "id": null,
@@ -1027,7 +1017,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot modification node notification"
+        "mark": "enable Telegram robot modification node notification"
     },
     {
         "id": null,
@@ -1047,7 +1037,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot delete node notification"
+        "mark": "enable Telegram robot delete node notification"
     },
     {
         "id": null,
@@ -1067,7 +1057,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable the Telegram robot node to be notified by the wall"
+        "mark": "enable the Telegram robot node to be notified by the wall"
     },
     {
         "id": null,
@@ -1087,7 +1077,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable the notification that the Telegram robot node is restored by the wall"
+        "mark": "enable the notification that the Telegram robot node is restored by the wall"
     },
     {
         "id": null,
@@ -1107,7 +1097,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable the Telegram robot node recovery online notification"
+        "mark": "enable the Telegram robot node recovery online notification"
     },
     {
         "id": null,
@@ -1127,7 +1117,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot node offline notification"
+        "mark": "enable Telegram robot node offline notification"
     },
     {
         "id": null,
@@ -1147,7 +1137,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot daily task notification"
+        "mark": "enable Telegram robot daily task notification"
     },
     {
         "id": null,
@@ -1167,7 +1157,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to enable Telegram robot system health notification"
+        "mark": "enable Telegram robot system health notification"
     },
     {
         "id": null,
@@ -1207,7 +1197,7 @@
         "is_public": 0,
         "type": "bool",
         "default": "0",
-        "mark": "Whether to enable Telegram bots to display user group links"
+        "mark": "enable Telegram bots to display user group links"
     },
     {
         "id": null,
@@ -1437,17 +1427,77 @@
         "is_public": 0,
         "type": "bool",
         "default": "1",
-        "mark": "Whether to forcibly change the subscription address when the user modifies the account login password"
+        "mark": "forcibly change the subscription address when the user modifies the account login password"
     },
     {
         "id": null,
-        "item": "last_user_job_time",
+        "item": "enable_daily_finance_mail",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable daily financial reports"
+    },
+    {
+        "id": null,
+        "item": "enable_weekly_finance_mail",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable weekly financial reporting"
+    },
+    {
+        "id": null,
+        "item": "enable_monthly_finance_mail",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable monthly financial reporting"
+    },
+    {
+        "id": null,
+        "item": "enable_detect_gfw",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable node is gfw detection"
+    },
+    {
+        "id": null,
+        "item": "enable_detect_ban",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable audit ban"
+    },
+    {
+        "id": null,
+        "item": "daily_job_hour",
         "value": "0",
         "class": "cron",
         "is_public": 0,
         "type": "int",
         "default": "0",
-        "mark": "The last time the user task was executed"
+        "mark": "Daily task execution time (hours)"
+    },
+    {
+        "id": null,
+        "item": "daily_job_minute",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "0",
+        "mark": "Daily task execution time (minutes)"
     },
     {
         "id": null,

@@ -36,6 +36,7 @@ final class UserController extends BaseController
     {
         $node_id = $request->getQueryParam('node_id');
         $node = Node::find($node_id);
+
         if ($node === null) {
             return $response->withJson([
                 'ret' => 0,
@@ -79,6 +80,7 @@ final class UserController extends BaseController
             WHERE
                 user.is_banned = 0
                 AND user.expire_in > CURRENT_TIMESTAMP()
+                AND user.class_expire > CURRENT_TIMESTAMP()
                 AND (
                     (
                         user.class >= ?
@@ -93,6 +95,7 @@ final class UserController extends BaseController
         };
 
         $users = [];
+
         foreach ($users_raw as $user_raw) {
             if ($user_raw->transfer_enable <= $user_raw->u + $user_raw->d) {
                 if ($_ENV['keep_connect']) {
@@ -127,13 +130,14 @@ final class UserController extends BaseController
     public function addTraffic(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $data = json_decode($request->getBody()->__toString());
+
         if (! $data || ! is_array($data->data)) {
             return $response->withJson([
                 'ret' => 0,
             ]);
         }
-        $data = $data->data;
 
+        $data = $data->data;
         $node_id = $request->getQueryParam('node_id');
         $node = Node::find($node_id);
 
@@ -144,7 +148,11 @@ final class UserController extends BaseController
         }
 
         $pdo = DB::getPdo();
-        $stat = $pdo->prepare('UPDATE user SET t = UNIX_TIMESTAMP(), u = u + ?, d = d + ?, transfer_total = transfer_total + ? WHERE id = ?');
+        $stat = $pdo->prepare('UPDATE user SET t = UNIX_TIMESTAMP(),
+                u = u + ?,
+                d = d + ?,
+                transfer_total = transfer_total + ?,
+                transfer_today = transfer_today + ? WHERE id = ?');
 
         $rate = (float) $node->traffic_rate;
         $sum = 0;
@@ -153,7 +161,7 @@ final class UserController extends BaseController
             $d = $log?->d;
             $user_id = $log?->user_id;
             if ($user_id) {
-                $stat->execute([(int) ($u * $rate), (int) ($d * $rate), (int) ($u + $d), $user_id]);
+                $stat->execute([(int) ($u * $rate), (int) ($d * $rate), (int) ($u + $d), (int) ($u + $d), $user_id]);
             }
             $sum += $u + $d;
         }
@@ -181,13 +189,14 @@ final class UserController extends BaseController
     public function addAliveIp(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $data = json_decode($request->getBody()->__toString());
+
         if (! $data || ! is_array($data->data)) {
             return $response->withJson([
                 'ret' => 0,
             ]);
         }
-        $data = $data->data;
 
+        $data = $data->data;
         $node_id = $request->getQueryParam('node_id');
 
         if ($node_id === null || ! Node::where('id', $node_id)->exists()) {

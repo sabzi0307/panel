@@ -109,15 +109,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">به طور پیش فرض از سیستم فروشگاه جدید استفاده کنید</label>
-                                    <div class="col">
-                                        <select id="enable_reg_new_shop" class="col form-select" value="{$settings['enable_reg_new_shop']}">
-                                            <option value="0" {if $settings['enable_reg_new_shop'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_reg_new_shop']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="default_value">

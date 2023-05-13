@@ -102,7 +102,7 @@
         function deleteProduct(product_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرویس را حذف کنید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/product/" + product_id,
                     type: 'DELETE',
@@ -124,7 +124,7 @@
         function copyProduct(product_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرویس را کپی کنید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/product/" + product_id + "/copy",
                     type: 'POST',

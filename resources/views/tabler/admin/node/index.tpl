@@ -104,7 +104,7 @@
         function deleteNode(node_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرور را حذف کنید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/node/" + node_id,
                     type: 'DELETE',
@@ -126,7 +126,7 @@
         function copyNode(node_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این سرور را کپی کنید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/node/" + node_id + "/copy",
                     type: 'POST',

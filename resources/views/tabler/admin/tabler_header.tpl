@@ -124,6 +124,9 @@
                                                     <a href="/admin/setting/feature" class="dropdown-item">
                                                       ویژگی ها
                                                     </a>
+                                                    <a href="/admin/setting/cron" class="dropdown-item">
+                                                      وظیفه زمان بندی شده
+                                                    </a>
                                                 </div>
                                             </div>
                                             <a class="dropdown-item" href="/admin/user">

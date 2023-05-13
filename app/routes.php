@@ -204,6 +204,8 @@ return static function (Slim\App $app): void {
         $group->post('/setting/billing', App\Controllers\Admin\Setting\BillingController::class . ':saveBilling');
         $group->get('/setting/captcha', App\Controllers\Admin\Setting\CaptchaController::class . ':captcha');
         $group->post('/setting/captcha', App\Controllers\Admin\Setting\CaptchaController::class . ':saveCaptcha');
+        $group->get('/setting/cron', App\Controllers\Admin\Setting\CronController::class . ':cron');
+        $group->post('/setting/cron', App\Controllers\Admin\Setting\CronController::class . ':saveCron');
         $group->get('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':email');
         $group->post('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':saveEmail');
         $group->get('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':feature');
@@ -268,12 +270,6 @@ return static function (Slim\App $app): void {
         // 审计 & 杂七杂八的功能
         $group->get('/func/detect_rules', App\Controllers\WebAPI\FuncController::class . ':getDetectLogs');
         $group->get('/func/ping', App\Controllers\WebAPI\FuncController::class . ':ping');
-        // Dummy API for old version
-        $group->get('/nodes', App\Controllers\WebAPI\NodeController::class . ':getAllInfo');
-        $group->post('/func/block_ip', App\Controllers\WebAPI\FuncController::class . ':addBlockIp');
-        $group->get('/func/block_ip', App\Controllers\WebAPI\FuncController::class . ':getBlockip');
-        $group->get('/func/unblock_ip', App\Controllers\WebAPI\FuncController::class . ':getUnblockip');
-        $group->post('/nodes/{id}/info', App\Controllers\WebAPI\NodeController::class . ':info');
     })->add(new NodeToken());
 
     // 传统订阅（SS/V2Ray/Trojan etc.）

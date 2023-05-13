@@ -162,10 +162,17 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">ترافیک استفاده شده (GB)</label>
+                                <label class="form-label col-4 col-form-label">مصرف کنونی</label>
                                 <div class="col">
                                     <input id="usedTraffic" type="text" class="form-control"
                                         value="{$edit_user->usedTraffic()}" disabled />
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-4 col-form-label">استفاده کل</label>
+                                <div class="col">
+                                    <input id="usedTraffic" type="text" class="form-control"
+                                           value="{$edit_user->totalTraffic()}" disabled />
                                 </div>
                             </div>
                             <div class="hr-text">

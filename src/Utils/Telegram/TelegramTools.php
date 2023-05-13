@@ -6,6 +6,7 @@ namespace App\Utils\Telegram;
 
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\UserMoneyLog;
 use App\Utils\Tools;
 use function count;
 use function in_array;
@@ -294,7 +295,9 @@ final class TelegramTools
         }
         if ($User->save()) {
             if ($useOptionMethod === 'money') {
-                $User->addMoneyLog($new - $old);
+                $diff = $new - $old;
+                $remark = ($diff > 0 ? 'Admin اضافه کردن مالی' : 'مدیر موجودی را کم می کند');
+                (new UserMoneyLog())->addMoneyLog($User->id, (float) $old, (float) $new, (float) $diff, $remark);
             }
             $strArray = [
                 'کاربران را هدف قرار دهید：' . $Email,

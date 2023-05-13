@@ -454,8 +454,8 @@
                                 <p class="text-muted">
                                     جهت دریافت حجم هدیه بین 
                                     {if $config['checkinMin'] !== $config['checkinMax']}
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
-                                        دکمه بررسی را بفشارید.
+                                        &nbsp;<code>{$config['checkinMin']} MB</code> 至 <code>{$config['checkinMax']} MB</code>
+                                        ترافیک در محدوده
                                     {else}
                                         <code>{$config['checkinMin']} MB</code>
                                     {/if}
@@ -472,7 +472,13 @@
                                     {else}
                                     {if $public_setting['enable_checkin_captcha']}
                                         {if $public_setting['captcha_provider'] === 'turnstile'}
-                                            <div id="cf-turnstile" class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
+                                            <div id="cf-turnstile" class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}"
+                                            {if $user->is_dark_mode}
+                                                 data-theme="dark"
+                                            {else}
+                                                 data-theme="light"
+                                            {/if}
+                                            ></div>
                                         {/if}
                                         {if $public_setting['captcha_provider'] === 'geetest'}
                                             <div id="geetest"></div>

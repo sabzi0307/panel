@@ -36,13 +36,15 @@
         <br>
         <h1><a href="https://wiki.sspanel.org/#/contributors">لیست مشارکت کنندگان</a></h1>
         <br>
-        <h1><a href="https://github.com/Anankke/SSPanel-Uim">GitHub</h1>
+        <h1><a href="https://github.com/Anankke/SSPanel-Uim">GitHub Repo</h1>
+        <br>
+        <h1><a href="https://github.com/sspanel-uim">صفحه تیم پروژه</h1>
         <br>
         <br>
         <h1> پروژه های منبع باز مورد استفاده</h1>
         <p><a href="https://github.com/smarty-php/smarty">Smarty template engine</a></p>
         <p><a href="https://github.com/slimphp/Slim">Slim Framework</a></p>
-        <p><a href="https://github.com/tabler/tabler">tabler</a></p>
+        <p><a href="https://github.com/tabler/tabler">Tabler</a></p>
         <br>
         <p>This product includes GeoLite2 data created by MaxMind, available from
         <a href="https://www.maxmind.com">https://www.maxmind.com</a>.</p>

@@ -176,7 +176,7 @@
         function deleteGiftCard(giftcard_id) {
             $('#notice-message').text('از حذف این کارت هدیه اطمینان دارید？');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/giftcard/" + giftcard_id,
                     type: 'DELETE',

@@ -94,7 +94,7 @@
         function closeTicket(ticket_id) {
             $('#notice-message').text('باشه برای بستن این تیکت？');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function () {
+            $('#notice-confirm').off('click').on('click', function () {
                 $.ajax({
                     url: "/admin/ticket/" + ticket_id + '/close',
                     type: 'PUT',
@@ -116,7 +116,7 @@
         function deleteTicket(ticket_id) {
             $('#notice-message').text('آیا مطمئن هستید که می خواهید این تیکت را حذف کنید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/ticket/" + ticket_id,
                     type: 'DELETE',

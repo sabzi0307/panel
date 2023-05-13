@@ -169,7 +169,7 @@
         function deleteRule(rule_id) {
             $('#notice-message').text('آیا از حذف این قانون ممیزی اطمینان دارید؟');
             $('#notice-dialog').modal('show');
-            $('#notice-confirm').on('click', function() {
+            $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
                     url: "/admin/detect/" + rule_id,
                     type: 'DELETE',

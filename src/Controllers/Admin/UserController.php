@@ -29,6 +29,7 @@ final class UserController extends BaseController
             'money' => 'اعتبار',
             'ref_by' => 'دعوت شده',
             'transfer_enable' => 'محدودیت های ترافیکی',
+            'transfer_used' => 'مصرف کنونی',
             'last_day_t' => 'استفاده تجمعی',
             'class' => 'درجه',
             'reg_date' => 'زمان ثبت نام',
@@ -278,8 +279,8 @@ final class UserController extends BaseController
             $user->op = '<button type="button" class="btn btn-red" id="delete-user-' . $user->id . '" 
             onclick="deleteUser(' . $user->id . ')">حذف</button>
             <a class="btn btn-blue" href="/admin/user/' . $user->id . '/edit">ویرایش کنید</a>';
-            $user->transfer_enable = round($user->transfer_enable / 1073741824, 2);
-            $user->last_day_t = round($user->last_day_t / 1073741824, 2);
+            $user->transfer_enable = $user->enableTraffic();
+            $user->transfer_used = $user->usedTraffic();
         }
 
         return $response->withJson([
