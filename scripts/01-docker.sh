@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 echo >&2 " _____ _____ _____             _ "
 echo >&2 "|   __|   __|  _  |___ ___ ___| |"
@@ -65,19 +66,19 @@ if [ "$INIT" = true ];then
         echo >&2 "db_port not set! using 3306"
         db_port=3306
     fi
-    if [ -z "$db_database" ];then
-        echo >&2 "db_database not set! using default"
-        db_database="sspanel"
+    if [ -z "$MYSQL_DATABASE" ];then
+        echo >&2 "MYSQL_DATABASE not set! using default"
+        MYSQL_DATABASE="sspanel"
     fi
 
-    if [ -z "$db_username" ];then
-        echo >&2 "db_username not set! using root"
-        db_username="root"
+    if [ -z "$MYSQL_USER" ];then
+        echo >&2 "MYSQL_USER not set! using root"
+        MYSQL_USER="sspanel"
     fi
 
-    if [ -z "$db_password" ];then
-        echo >&2 "db_password not set! using default"
-        db_password="sspanel"
+    if [ -z "$MYSQL_PASSWORD" ];then
+        echo >&2 "MYSQL_PASSWORD not set! using default"
+        MYSQL_PASSWORD="sspanel"
     fi
 
     if [ -z "$db_charset" ];then
@@ -349,8 +350,8 @@ if [ "$INIT" = true ];then
         github_access_token=""
     fi
     if [ -z "$php_user_group" ];then
-        echo >&2 "php_user_group not set! using www:www "
-        php_user_group="www:www"
+        echo >&2 "php_user_group not set! using nginx:nginx "
+        php_user_group="nginx:nginx"
     fi
 
 
@@ -402,9 +403,9 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['db_driver']    = '$db_driver';
 \$_ENV['db_host']      = '$db_host';
 \$_ENV['db_socket']    = '$db_socket';
-\$_ENV['db_database']  = '$db_database';           //Database name
-\$_ENV['db_username']  = '$db_username';           //database username
-\$_ENV['db_password']  = '$db_password';           //The password corresponding to the username
+\$_ENV['db_database']  = '$MYSQL_DATABASE';           //Database name
+\$_ENV['db_username']  = '$MYSQL_USER';           //database username
+\$_ENV['db_password']  = '$MYSQL_PASSWORD';           //The password corresponding to the username
 \$_ENV['db_port']      = '$db_port';               //database poprt
 #advanced
 \$_ENV['db_charset']   = '$db_charset';
@@ -566,7 +567,7 @@ fi
 
 
 
-    WEBSITE_DIR="/var/www/html/"
+    WEBSITE_DIR="$WEBROOT"
     B2_CONF=b2_backup_config
     if [ "$B2_BACKUP" = true ] && [ ! -f "$B2_CONF" ];then
     tee -a $B2_CONF > /dev/null <<EOT
@@ -574,9 +575,9 @@ fi
     b2_app_key_id="$B2_APP_KEY_ID"
     b2_app_key="$B2_APP_KEY"
     b2_bucket_name="$B2_BUCKET_NAME"
-    db_name="$DB_DATABASE"
-    db_password='$DB_PASSWORD'
-    db_user="$DB_USERNAME"
+    db_name="$MYSQL_DATABASE"
+    db_password='$MYSQL_PASSWORD'
+    db_user="$MYSQL_USER"
     db_host="$DB_HOST"
     compress_method="$B2_COMPRESS_METHOD"
     website_dir="$WEBSITE_DIR"
@@ -588,11 +589,11 @@ EOT
 echo -n >&2 "\nChecking connection to database..."
 
 if [ -z "$DB_HOST" ]; then
-    if ! mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT VERSION()" > /dev/null; then
+    if ! mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
         echo >&2 "Cannot connect to database!"
     fi
 else
-    if ! mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT VERSION()" > /dev/null; then
+    if ! mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
         echo >&2 "Cannot connect to database!"
         exit
     fi
@@ -603,13 +604,13 @@ if [ "$INIT" = true ];then
     echo -n >&2 "\nChecking if database exists..."
 
     if [ -z "$DB_HOST" ]; then
-        if mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+        if mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
             echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+            temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
-                php xcat Migration new
-                php xcat Tool importAllSettings
+                    php xcat Migration new
+                    php xcat Tool importAllSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit
@@ -618,16 +619,16 @@ if [ "$INIT" = true ];then
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
             fi
-            # mysql -S $DB_SOCKET -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            # mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
             echo >&2 "Done"
         else
             echo >&2 "\nCould not connect to database with Database Socket..."
             exit
         fi
     else
-        if mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "USE $DB_DATABASE" > /dev/null; then
+        if mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
             echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "SELECT user_name FROM $DB_DATABASE.user WHERE user_name = 'admin';")
+            temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
@@ -640,7 +641,7 @@ if [ "$INIT" = true ];then
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
             fi
-            # mysql -h $DB_HOST -P $DB_PORT -u $DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DB_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            # mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         
             echo >&2 "Done"
         else
@@ -649,10 +650,19 @@ if [ "$INIT" = true ];then
     fi
 
 
+
+    current_dir=$(pwd)
+    crontab -l > cron.tmp
+    echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
+    crontab cron.tmp
+    rm cron.tmp
+
     echo -n >&2 "\nApplying permissions..."
-    chmod 755 -R *
+    chown $php_user_group -R "$WEBROOT"/*
+    chmod 755 -R $WEBROOT/*
+    chmod 777 -R $WEBROOT/storage/framework/smarty/compile/
     # chown www-data:www-data -R *
-    chmod -R 777 storage
+    # chmod -R 777 storage
 
     echo >&2 "Done"
 
@@ -669,4 +679,3 @@ fi
 
 echo >&2  "\nAll set, please enjoy!\n\n"
 
-/usr/bin/supervisord -c /etc/supervisord.conf -n

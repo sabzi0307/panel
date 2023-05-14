@@ -2,87 +2,24 @@ version: '2.1'
 
 services:
     sspanel:
-        image: ttracy/panel
+        image: richarvey/nginx-php-fpm:latest
         container_name: sspanel
         restart: always
-        labels:
-          - sh.acme.autoload.domain=${PANEL_DOMAIN}
-        volumes:
-          - ./etc/nginx/logs:/var/log/nginx
-          - ./etc/nginx/ssl:/etc/nginx/ssl
+        env_file:
+          - .env
         depends_on:
           mariadb:
             condition: service_healthy
-        environment:
-          IS_SSL: "true"
-          SSPANEL_KEY: ChangeMe
-          SSPANEL_APP_NAME: SSPanel-UIM
-          SSPANEL_BASEURL: https://example.com
-          SSPANEL_MUKEY: SSPANEL
-          SSPANEL_ADMIN_EMAIL: admin@example.com
-          SSPANEL_ADMIN_PASSWORD: V3ryL0ngP@ssw0rd
-          DEBUG: "false"
-          TIME_ZONE: Asia/Tehran
-          STREAMING_UNLOCK: "false"
-          GITHUB_ACCESS_TOKEN:
-          ENABLE_TELEGRAM: "false"
-          TELEGRAM_TOKEN:
-          TELEGRAM_CHAT_ID:
-          TELEGRAM_BOT: EXAMPLE_bot
-          TELEGRAM_LOGIN: "false"
-          B2_BACKUP_NAME: SSPANEL
-          B2_BACKUP: "false"
-          B2_APP_KEY_ID:
-          B2_APP_KEY:
-          B2_BUCKET_NAME:
-          B2_COMPRESS_METHOD: zip
-          DB_HOST: ss_db
-          DB_PORT: 3306
-          DB_DATABASE: sspanel
-          DB_PASSWORD: sspanel
-          DB_USERNAME: root
-        ports:
-            - 8080:80
+
+
     mariadb:
-        image: mariadb:10.9
-        container_name: ss_db
+        image: mariadb:latest
+        container_name: "${db_host}"
         restart: always
+        env_file:
+          - .env
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-        environment:
-          MYSQL_ROOT_PASSWORD: sspanel
-          MYSQL_DATABASE: sspanel
         healthcheck:
           test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
           timeout: 20s
           retries: 10
-    phpmyadmin:
-        image: phpmyadmin
-        container_name: phpmyadmin
-        restart: always
-        depends_on:
-          mariadb:
-            condition: service_healthy
-        ports:
-          - 8081:80
-        environment:
-          - PMA_ARBITRARY=1
-    acme.sh:
-      image: ttracy/acme.sh
-      container_name: acme.sh    
-      command: daemon
-      depends_on:
-        - sspanel
-      networks:
-        - panel
-      volumes:
-        - /usr/share/zoneinfo/Asia/Tehran:/etc/localtime:ro
-        - ./etc/acme:/acme.sh
-        - ./etc/nginx/ssl:/etc/nginx/ssl
-        - /var/run/docker.sock:/var/run/docker.sock 
-      environment:
-        - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=${PANEL_DOMAIN}
-        - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/ssl/${PANEL_DOMAIN}/key.pem
-        - DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/cert.pem"
-        - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/ca.pem"
-        - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/ssl/${PANEL_DOMAIN}/full.pem"
-        - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"
