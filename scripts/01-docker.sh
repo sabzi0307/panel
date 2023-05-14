@@ -556,7 +556,7 @@ foreach (\$_ENV['cdn_forwarded_ip'] as \$cdn_forwarded_ip) {
 \$_ENV['ai_model'] = '$ai_model';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
-\$_ENV['github_access_token'] = '$github_access_token';
+\$_ENV['github_access_token'] = '$GIT_PERSONAL_TOKEN';
 
 \$_ENV['php_user_group'] = '$php_user_group';
 
