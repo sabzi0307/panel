@@ -19,6 +19,14 @@ if [ "$INIT" = true ];then
 
     echo -n >&2 "\nChecking environment..."
 
+    if [ -z "$ADMIN_EMAIL" ]; then
+        echo >&2 "ADMIN_EMAIL not set!"
+        exit
+    fi
+    if [ -z "$ADMIN_PASSWORD" ]; then
+        echo >&2 "ADMIN_PASSWORD not set!"
+        exit
+    fi
     if [ -z "$key" ]; then
         echo >&2 "key not set!"
         exit
