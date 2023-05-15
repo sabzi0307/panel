@@ -10,7 +10,7 @@ echo -n >&2 "\nChecking if installation exists..."
 # some configurations for let's encrypt
 
 if [ ! -f conf/.config.php ];then
-    cp /var/www/conf/appprofile.example.php /var/www/conf/appprofile.php
+    cp /var/www/html/conf/appprofile.example.php /var/www/html/conf/appprofile.php
     INIT=true
     echo >&2 "Start Init"
 fi
@@ -69,6 +69,10 @@ if [ "$INIT" = true ];then
     if [ -z "$db_host" ] && [ -z "$db_socket" ];then
         echo >&2 "db_host or DB_SOCKET not set!"
         exit
+    fi
+    if [ -z "$db_driver" ];then
+        echo >&2 "db_driver not set! using mysql"
+        db_driver='mysql'
     fi
     if [ -z "$db_port" ];then
         echo >&2 "db_port not set! using 3306"
@@ -221,7 +225,7 @@ if [ "$INIT" = true ];then
         echo >&2 "enable_telegram not set!, using false "
         enable_telegram=false
     fi
-    if [ "$enable_telegram" ];then
+    if [ "$enable_telegram" == true ];then
         if [ -z "$telegram_token" ];then
             echo >&2 "telegram_token not set! "
             exit
@@ -313,7 +317,7 @@ if [ "$INIT" = true ];then
         cloudflare_enable=false
     fi
 
-    if [ "$cloudflare_enable" ];then
+    if [ "$cloudflare_enable" == true ];then
         if [ -z "$cloudflare_email" ];then
             echo >&2 "cloudflare_email not set! exit "
             exit
@@ -454,7 +458,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 
 //subscription settings---------------------------------------------------------------------------------------
 \$_ENV['Subscribe']                  = $Subscribe;                         //Does this site provide a subscription function?
-\$_ENV['subUrl']                     = $subUrl;             //Subscription address, if it needs to be the same as the site name, please do not modify
+\$_ENV['subUrl']                     = '$subUrl';             //Subscription address, if it needs to be the same as the site name, please do not modify
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 \$_ENV['enable_auto_detect_ban']      = $enable_auto_detect_ban;       // Audit Auto-Ban Switch
@@ -496,7 +500,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 # Telegram bot
 \$_ENV['enable_telegram']                    = $enable_telegram;        //whether to enable Telegram bot
 \$_ENV['telegram_token']                     = '$telegram_token';           //Telegram bot,bot of token ，with father bot Application
-\$_ENV['telegram_chatid']                    = $telegram_chatid;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
+\$_ENV['telegram_chatid']                    = '$telegram_chatid';         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
 \$_ENV['telegram_bot']                       = '$telegram_bot';       //Telegram bot account
 \$_ENV['telegram_request_token']             = '$telegram_request_token';           //Webhook key, after updating this parameter please php xcat Tool setTelegram, Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
@@ -564,7 +568,7 @@ foreach (\$_ENV['cdn_forwarded_ip'] as \$cdn_forwarded_ip) {
 \$_ENV['ai_model'] = '$ai_model';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
-\$_ENV['github_access_token'] = '$GIT_PERSONAL_TOKEN';
+\$_ENV['github_access_token'] = '$github_access_token';
 
 \$_ENV['php_user_group'] = '$php_user_group';
 
@@ -586,7 +590,7 @@ fi
     db_name="$MYSQL_DATABASE"
     db_password='$MYSQL_PASSWORD'
     db_user="$MYSQL_USER"
-    db_host="$DB_HOST"
+    db_host="$db_host"
     compress_method="$B2_COMPRESS_METHOD"
     website_dir="$WEBSITE_DIR"
 EOT
@@ -596,12 +600,12 @@ EOT
 
 echo -n >&2 "\nChecking connection to database..."
 
-if [ -z "$DB_HOST" ]; then
-    if ! mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
+if [ -z "$db_host" ]; then
+    if ! mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
         echo >&2 "Cannot connect to database!"
     fi
 else
-    if ! mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
+    if ! mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT VERSION()" > /dev/null; then
         echo >&2 "Cannot connect to database!"
         exit
     fi
@@ -611,10 +615,10 @@ echo >&2 "Good"
 if [ "$INIT" = true ];then
     echo -n >&2 "\nChecking if database exists..."
 
-    if [ -z "$DB_HOST" ]; then
-        if mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
+    if [ -z "$db_host" ]; then
+        if mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
             echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
+            temp_sql_result=$(mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
                     php xcat Migration new
@@ -627,16 +631,16 @@ if [ "$INIT" = true ];then
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
             fi
-            # mysql -S $DB_SOCKET -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            # mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
             echo >&2 "Done"
         else
             echo >&2 "\nCould not connect to database with Database Socket..."
             exit
         fi
     else
-        if mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
+        if mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
             echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
+            temp_sql_result=$(mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
@@ -649,7 +653,7 @@ if [ "$INIT" = true ];then
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
             fi
-            # mysql -h $DB_HOST -P $DB_PORT -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            # mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         
             echo >&2 "Done"
         else
