@@ -621,6 +621,8 @@ if [ "$INIT" = true ];then
             temp_sql_result=$(mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
             if [ -z "$temp_sql_result" ]; then
                 echo >&2 "Importing config to database..."
+                    composer install --no-dev
+                    composer selfupdate
                     php xcat Migration new
                     php xcat Tool importAllSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
