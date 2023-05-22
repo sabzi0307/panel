@@ -46,31 +46,6 @@ final class Tools
 {
     /**
      * 查询IP归属
-     */
-    public static function getServerAddr($ip): string
-    {
-        $geoip = new GeoIP2();
-
-        try {
-            $asn = $geoip->getAsn($ip);
-        } catch (AddressNotFoundException | InvalidDatabaseException $e) {
-            return 'ناشناخته';
-        }
-
-        $providers = $_ENV['Internet_Service_Providers'];
-        $server = $providers[0]['AsName'];
-        foreach ($providers as $provider) {
-            if (in_array($asn->autonomousSystemNumber, $provider['AsNum'])) {
-                $server = $provider['AsName'];
-            }
-            break;
-        }
-
-        return strtolower($server . "." . $_ENV['cleanIP_name']);
-    }
-
-    /**
-     * 查询IP归属
      *
      * @throws AddressNotFoundException
      * @throws InvalidDatabaseException
