@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\Auth;
 use App\Services\Captcha;
 use App\Services\Mail;
+use App\Utils\Cookie;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
@@ -22,8 +23,13 @@ use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Vectorface\GoogleAuthenticator;
 use voku\helper\AntiXSS;
+use function array_rand;
+use function date;
+use function explode;
 use function strlen;
+use function strtolower;
 use function time;
+use function trim;
 
 /**
  *  AuthController
@@ -63,6 +69,7 @@ final class AuthController extends BaseController
         $passwd = $request->getParam('passwd');
         $rememberMe = $request->getParam('remember_me');
         $email = strtolower(trim($request->getParam('email')));
+        $redir = Cookie::get('redir') ?? '/user';
 
         $user = User::where('email', $email)->first();
 
@@ -113,6 +120,7 @@ final class AuthController extends BaseController
         return $response->withJson([
             'ret' => 1,
             'msg' => 'ورود با موفقیت',
+            'redir' => $redir,
         ]);
     }
 
@@ -232,31 +240,13 @@ final class AuthController extends BaseController
         $money,
         $is_admin_reg
     ): ResponseInterface {
-        $user_invite = InviteCode::where('code', $code)->first();
-        $gift_user = null;
-
-        if ($user_invite === null && ! $is_admin_reg) {
-            if (Setting::obtain('reg_mode') === 'invite') {
-                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
-            }
-        } elseif ($user_invite->user_id !== 0 && ! $is_admin_reg) {
-            $gift_user = User::where('id', $user_invite->user_id)->first();
-            if ($gift_user === null) {
-                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
-            }
-
-            if ($gift_user->invite_num === 0) {
-                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
-            }
-        }
-
+        $redir = Cookie::get('redir') ?? '/user';
         $configs = Setting::getClass('register');
         // do reg user
         $user = new User();
-        $antiXss = new AntiXSS();
 
-        $user->user_name = $antiXss->xss_clean($name);
-        $user->email = $antiXss->xss_clean($email);
+        $user->user_name = $name;
+        $user->email = $email;
         $user->remark = '';
         $user->pass = Hash::passwordHash($passwd);
         $user->passwd = Tools::genRandomChar(16);
@@ -269,8 +259,9 @@ final class AuthController extends BaseController
         $user->method = $configs['sign_up_for_method'];
         $user->forbidden_ip = Setting::obtain('reg_forbidden_ip');
         $user->forbidden_port = Setting::obtain('reg_forbidden_port');
-        $user->im_type = $antiXss->xss_clean($imtype);
-        $user->im_value = $antiXss->xss_clean($imvalue);
+        $user->im_type = $imtype;
+        $user->im_value = $imvalue;
+        $user->telegram_id = $telegram_id;
 
         $user->transfer_enable = Tools::toGB($configs['sign_up_for_free_traffic']);
         $user->invite_num = $configs['sign_up_for_invitation_codes'];
@@ -284,25 +275,13 @@ final class AuthController extends BaseController
             $user->money = 0;
         }
 
-        //dumplin：填写邀请人，写入邀请奖励
         $user->ref_by = 0;
 
-        if ($user_invite !== null && $user_invite->user_id !== 0) {
-            $invitation = Setting::getClass('invite');
-            // 设置新用户
-            $user->ref_by = $user_invite->user_id;
-            $user->money = $invitation['invitation_to_register_balance_reward'];
-            // 邀请人添加邀请流量
-            $gift_user->transfer_enable += $invitation['invitation_to_register_traffic_reward'] * 1024 * 1024 * 1024;
-            if ($gift_user->invite_num > 0) {
-                --$gift_user->invite_num;
-                // 避免设置为不限制邀请次数的值 -1 发生变动
-            }
-            $gift_user->save();
-        }
-
-        if ($telegram_id) {
-            $user->telegram_id = $telegram_id;
+        if ($code !== '') {
+            $invite = InviteCode::where('code', $code)->first();
+            $invite->reward();
+            $user->ref_by = $invite->user_id;
+            $user->money = Setting::obtain('invitation_to_register_balance_reward');
         }
 
         $ga = new GoogleAuthenticator();
@@ -332,20 +311,23 @@ final class AuthController extends BaseController
             Auth::login($user->id, 3600);
             $user->collectLoginIP($_SERVER['REMOTE_ADDR']);
 
-            return ResponseHelper::successfully($response, 'ثبت نام با موفقیت انجام شد . در حال هدایت به صفحه ورود');
+            return $response->withJson([
+                'ret' => 1,
+                'msg' => 'ثبت نام با موفقیت انجام شد . در حال هدایت به صفحه ورود',
+                'redir' => $redir,
+            ]);
         }
 
         return ResponseHelper::error($response, 'اشتباه ناشناخته');
     }
 
+    /**
+     * @throws Exception
+     */
     public function registerHandle(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         if (Setting::obtain('reg_mode') === 'close') {
             return ResponseHelper::error($response, 'ثبت نام باز نیست');
-        }
-
-        if (Setting::obtain('reg_mode') === 'invite' && $request->getParam('code') === '') {
-            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوت نامه را پر کنید');
         }
 
         if (Setting::obtain('reg_mode') === 'invite' && $request->getParam('code') === '') {
@@ -371,14 +353,54 @@ final class AuthController extends BaseController
         if (! $tos) {
             return ResponseHelper::error($response, 'لطفاً با شرایط سرویس موافقت کنید');
         }
+        // Check Invite Code
+        if ($code === '' && Setting::obtain('reg_mode') === 'invite') {
+            return ResponseHelper::error($response, 'کد دعوت نمی تواند خالی باشد');
+        }
 
+        if ($code !== '') {
+            $user_invite = InviteCode::where('code', $code)->first();
+
+            if ($user_invite === null) {
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
+            }
+
+            $gift_user = User::where('id', $user_invite->user_id)->first();
+
+            if ($gift_user === null || $gift_user->invite_num === 0) {
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
+            }
+        }
+        // Check Invite Code
+        if ($code === '' && Setting::obtain('reg_mode') === 'invite') {
+            return ResponseHelper::error($response, 'کد دعوت نمی تواند خالی باشد');
+        }
+
+        if ($code !== '') {
+            $user_invite = InviteCode::where('code', $code)->first();
+
+            if ($user_invite === null) {
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
+            }
+
+            $gift_user = User::where('id', $user_invite->user_id)->first();
+
+            if ($gift_user === null || $gift_user->invite_num === 0) {
+                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
+            }
+        }
+
+        // Check IM
         if (Setting::obtain('enable_reg_im')) {
             $imtype = $antiXss->xss_clean($request->getParam('im_type'));
             $imvalue = $antiXss->xss_clean($request->getParam('im_value'));
+
             if ($imtype === '' || $imvalue === '') {
                 return ResponseHelper::error($response, 'لطفا اطلاعات تماس خود را وارد کنید');
             }
+
             $user = User::where('im_value', $imvalue)->where('im_type', $imtype)->first();
+
             if ($user !== null) {
                 return ResponseHelper::error($response, 'این مخاطب قبلاً ذخیره شده است');
             }
@@ -397,37 +419,30 @@ final class AuthController extends BaseController
         if ($user !== null) {
             return ResponseHelper::error($response, 'ایمیل ذخیره شده است');
         }
-
-        if (Setting::obtain('reg_email_verify')) {
-            $email_code = trim($antiXss->xss_clean($request->getParam('emailcode')));
-            $mailcount = EmailVerify::where('email', '=', $email)
-                ->where('code', '=', $email_code)
-                ->where('expire_in', '>', time())
-                ->first();
-            if ($mailcount === null) {
-                return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
-            }
-        }
-
         // check pwd length
         if (strlen($passwd) < 8) {
             return ResponseHelper::error($response, 'رمز عبور لطفا بزرگتر از 8 کاراکتر باشد');
         }
-
         // check pwd re
         if ($passwd !== $repasswd) {
             return ResponseHelper::error($response, 'دو کلمه عبور وارد شده مطابقت ندارند');
         }
 
         if (Setting::obtain('reg_email_verify')) {
+            $email_code = trim($antiXss->xss_clean($request->getParam('emailcode')));
+            $email_verify = EmailVerify::where('email', '=', $email)
+                ->where('code', '=', $email_code)
+                ->where('expire_in', '>', time())
+                ->first();
+
+            if ($email_verify === null) {
+                return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
+            }
+
             EmailVerify::where('email', $email)->delete();
         }
 
-        try {
-            return $this->registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, 0, 0, 0);
-        } catch (Exception $e) {
-            return ResponseHelper::error($response, $e->getMessage());
-        }
+        return $this->registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, 0, 0, 0);
     }
 
     public function logout(ServerRequest $request, Response $response, $next): Response

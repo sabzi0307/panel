@@ -1,4 +1,4 @@
-{include file='user/tabler_header.tpl'}
+{include file='user/header.tpl'}
 
 <div class="page-wrapper">
     <div class="container-xl">
@@ -33,7 +33,7 @@
                                             <div class="font-weight-medium">
                                                 سطح حساب
                                             </div>
-                                            <div class="text-muted">
+                                            <div class="text-secondary">
                                                 {if $user->class === 0}
                                                     رایگان
                                                 {else}
@@ -58,7 +58,7 @@
                                             <div class="font-weight-medium">
                                                 موجودی حساب
                                             </div>
-                                            <div class="text-muted">
+                                            <div class="text-secondary">
                                                 {$user->money}
                                             </div>
                                         </div>
@@ -84,7 +84,7 @@
                                             <div class="font-weight-medium">
                                                 محدودیت IP اتصال همزمان
                                             </div>
-                                            <div class="text-muted">
+                                            <div class="text-secondary">
                                                 {if $user->node_iplimit !== 0}
                                                     {$user->node_iplimit}
                                                 {else}
@@ -109,7 +109,7 @@
                                             <div class="font-weight-medium">
                                                 محدودیت سرعت
                                             </div>
-                                            <div class="text-muted">
+                                            <div class="text-secondary">
                                                 {if $user->node_speedlimit !== 0.0}
                                                     <code>{$user->node_speedlimit}</code> Mbps
                                                 {else}
@@ -255,9 +255,9 @@
                                                class="copy btn btn-primary">
                                                 لینک اشتراک کلش را کپی کنید
                                             </a>
-                                            <a href="/clients/Clash-Windows.exe"
+                                            <a href="/clients/Clash.Verge.msi"
                                                class="btn btn-primary">
-                                                دانلود Clash for Windows
+                                                دانلود Clash Verge
                                             </a>
                                             <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                class="btn btn-primary">
@@ -275,9 +275,13 @@
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
-                                        <a href="/clients/Clash-Windows.dmg"
+                                        <a href="/clients/Clash.Verge_aarch64.dmg"
                                            class="btn btn-primary">
-                                            دانلود Clash for Windows
+                                            دانلود Clash Verge (aarch64)
+                                        </a>
+                                        <a href="/clients/Clash.Verge_x64.dmg"
+                                           class="btn btn-primary">
+                                            دانلود Clash Verge (x86_64)
                                         </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                            class="btn btn-primary">
@@ -335,9 +339,9 @@
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
-                                        <a href="/clients/Clash-Windows.tar.gz"
+                                        <a href="/clients/Clash.Verge.AppImage.tar.gz"
                                            class="btn btn-primary">
-                                            دانلود Clash for Windows
+                                            دانلود Clash Verge
                                         </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                            class="btn btn-primary">
@@ -431,7 +435,7 @@
                             <span class="card-subtitle">{$ann->date}</span>
                             {/if}
                             </h3>
-                            <p class="text-muted">
+                            <p class="text-secondary">
                             {if $ann !== null}
                                 {$ann->content}
                             {else}
@@ -451,7 +455,7 @@
                             </div>
                             <div class="card-body">
                                 <h3 class="card-title">ترافیک هدیه ورود روزانه</h3>
-                                <p class="text-muted">
+                                <p>
                                     جهت دریافت حجم هدیه بین 
                                     {if $config['checkinMin'] !== $config['checkinMax']}
                                         &nbsp;<code>{$config['checkinMin']} MB</code> 至 <code>{$config['checkinMax']} MB</code>
@@ -460,7 +464,7 @@
                                         <code>{$config['checkinMin']} MB</code>
                                     {/if}
                                 </p>
-                                <p class="text-muted">
+                                <p>
                                     آخرین زمان استفاده：
                                     <code style="font-family: Yekan;">{$user->lastCheckInTime()}</code>
                                 </p>
@@ -553,4 +557,4 @@
             </script>
         {/if}
     {/if}
-{include file='user/tabler_footer.tpl'}
+{include file='user/footer.tpl'}

@@ -1,48 +1,17 @@
-<!doctype html>
-<html lang="fa" dir="rtl" >
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{$config['appName']}</title>
-    <!-- CSS files -->
-    <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
-    <link href="/assets/font/Yekan.css" rel="stylesheet">
-    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
-    <!-- JS files -->
-    <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/clipboard@latest/dist/clipboard.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
-    <style>
-        .home-subtitle {
-            font-size: 14px;
-        }
-
-        .home-title {
-            font-size: 36px;
-        }
-    </style>
-</head>
 
 {if $user->is_dark_mode}
-<body class='theme-dark'>
+<body data-bs-theme="dark">
 {else}
 <body>
 {/if}
     <div class="page">
-        <header class="navbar navbar-expand-md navbar-dark navbar-overlap d-print-none">
+        <header class="navbar navbar-expand-md navbar-overlap d-print-none" data-bs-theme="dark">
             <div class="container-xl" style="background-image: none;">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" style="filter: none;">
-                    <img src="/images/uim-logo-round_48x48.png" height="32" alt="Panel" class="navbar-brand-image">
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <img src="/images/uim-logo-round_48x48.png" height="32" alt="SSPanel-UIM Logo" class="navbar-brand-image" style="filter: none;">
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
@@ -52,14 +21,14 @@
                                 style="background-image: url({$user->gravatar})"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{$user->email}</div>
-                                <div class="mt-1 small text-muted">{$user->user_name}</div>
+                                <div class="mt-1 small text-secondary">{$user->user_name}</div>
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             {if $user->is_dark_mode}
                             <a id="switch_theme_mode" class="dropdown-item">حالت روشن</a>
                             {else}
-                            <a id="switch_theme_mode" class="dropdown-item">حالت تیره</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت تاریک</a>
                             {/if}
                             <a href="/user/logout" class="dropdown-item">خروج از سیستم</a>
                         </div>
@@ -85,7 +54,7 @@
                                         <i class="ti ti-settings icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        تنظیمات
+                                        مدیریت کنید
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -94,20 +63,20 @@
                                             <div class="dropend">
                                                 <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                                                     <i class="ti ti-settings"></i>&nbsp;
-                                                    راه اندازی
+                                                    نصب
                                                 </a>
                                                 <div class="dropdown-menu">
                                                     <a href="/admin/setting/billing" class="dropdown-item">
-                                                      امور مالی
+                                                      مالی
                                                     </a>
                                                     <a href="/admin/setting/email" class="dropdown-item">
-                                                      پست الکترونیکی
+                                                      ایمیل
                                                     </a>
                                                     <a href="/admin/setting/support" class="dropdown-item">
                                                       پشتیبانی
                                                     </a>
                                                     <a href="/admin/setting/captcha" class="dropdown-item">
-                                                      تایید
+                                                      چپتا
                                                     </a>
                                                     <a href="/admin/setting/reg" class="dropdown-item">
                                                       ثبت نام
@@ -119,13 +88,13 @@
                                                       IM
                                                     </a>
                                                     <a href="/admin/setting/sub" class="dropdown-item">
-                                                      اشتراک
+                                                      عضویت
                                                     </a>
                                                     <a href="/admin/setting/feature" class="dropdown-item">
                                                       ویژگی ها
                                                     </a>
                                                     <a href="/admin/setting/cron" class="dropdown-item">
-                                                      وظیفه زمان بندی شده
+                                                      وظایف زمان بندی شده
                                                     </a>
                                                 </div>
                                             </div>
@@ -135,7 +104,7 @@
                                             </a>
                                             <a class="dropdown-item" href="/admin/node">
                                                 <i class="ti ti-server-2"></i>&nbsp;
-                                                سرور
+                                                گره
                                             </a>
                                         </div>
                                     </div>
@@ -148,7 +117,7 @@
                                         <i class="ti ti-brand-hipchat icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        پشتیبانی
+                                        اقدام
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -158,7 +127,7 @@
                                     </a>
                                     <a class="dropdown-item" href="/admin/ticket">
                                         <i class="ti ti-messages"></i>&nbsp;
-                                        تیکت
+                                        دستور کار
                                     </a>
                                 </div>
                             </li>
@@ -187,15 +156,7 @@
                                     </a>
                                     <a class="dropdown-item" href="/admin/moneylog">
                                         <i class="ti ti-coin"></i>&nbsp;
-                                        موجودی
-                                    </a>
-                                    <a class="dropdown-item" href="/admin/gateway">
-                                        <i class="ti ti-torii"></i>&nbsp;
-                                        درگاه پرداخت
-                                    </a>
-                                    <a class="dropdown-item" href="/admin/moneylog">
-                                        <i class="ti ti-coin"></i>&nbsp;
-                                        موجودی
+                                        موجودی حساب
                                     </a>
                                     <a class="dropdown-item" href="/admin/gateway">
                                         <i class="ti ti-torii"></i>&nbsp;
@@ -218,13 +179,13 @@
                                         <i class="ti ti-shield-check icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        فیلترینگ
+                                        ممیزی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/admin/detect">
                                         <i class="ti ti-barrier-block"></i>&nbsp;
-                                        قانون
+                                        قوانین
                                     </a>
                                     <a class="dropdown-item" href="/admin/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
@@ -243,7 +204,7 @@
                                         <i class="ti ti-coin icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        امور مالی
+                                        مالی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -251,7 +212,7 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/admin/product">
                                                 <i class="ti ti-list-details"></i>&nbsp;
-                                                سرویس ها
+                                                خدمات
                                             </a>
                                             <a class="dropdown-item" href="/admin/order">
                                                 <i class="ti ti-receipt"></i>&nbsp;
@@ -263,7 +224,7 @@
                                             </a>
                                             <a class="dropdown-item" href="/admin/coupon">
                                                 <i class="ti ti-ticket"></i>&nbsp;
-                                                کد تخفیف
+                                                کد تبلیغاتی
                                             </a>
                                             <a class="dropdown-item" href="/admin/giftcard">
                                                 <i class="ti ti-gift"></i>&nbsp;

@@ -9,42 +9,45 @@ use App\Models\LoginIp;
 use App\Services\DB;
 use App\Utils\Tools;
 use Exception;
+use GeoIp2\Exception\AddressNotFoundException;
+use MaxMind\Db\Reader\InvalidDatabaseException;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use function array_map;
 use function array_slice;
 use function count;
+use function str_replace;
 
 final class IpController extends BaseController
 {
     public static array $login_details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'userid' => 'شناسه کاربر',
-            'user_name' => 'نام کاربری',
-            'ip' => 'IP',
-            'location' => 'انتساب IP',
-            'datetime' => 'زمان',
-            'type' => 'نوع',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'userid' => 'شناسه کاربر',
+                'user_name' => 'نام کاربری',
+                'ip' => 'IP',
+                'location' => 'انتساب IP',
+                'datetime' => 'زمان',
+                'type' => 'نوع',
+            ],
+        ];
 
     public static array $ip_details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'user_id' => 'شناسه کاربر',
-            'user_name' => 'نام کاربری',
-            'node_id' => 'شناسه سرور',
-            'node_name' => 'نام سرور',
-            'ip' => 'IP',
-            'location' => 'انتساب IP',
-            'first_time' => 'اتصال برای اولین بار',
-            'last_time' => 'آخرین اتصال',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'user_id' => 'شناسه کاربر',
+                'user_name' => 'نام کاربری',
+                'node_id' => 'شناسه سرور',
+                'node_name' => 'نام سرور',
+                'ip' => 'IP',
+                'location' => 'انتساب IP',
+                'first_time' => 'اتصال برای اولین بار',
+                'last_time' => 'آخرین اتصال',
+            ],
+        ];
 
     /**
      * 后台登录记录页面
@@ -62,6 +65,9 @@ final class IpController extends BaseController
 
     /**
      * 后台登录记录页面 AJAX
+     *
+     * @throws AddressNotFoundException
+     * @throws InvalidDatabaseException
      */
     public function ajaxLogin(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {

@@ -1,4 +1,4 @@
-{include file='user/tabler_header.tpl'}
+{include file='user/header.tpl'}
 
 <div class="page-wrapper">
     <div class="container-xl">
@@ -347,15 +347,14 @@
                                                     <h3 class="card-title">فشار مصرف روزانه</h3>
                                                     <div class="mb-3">
                                                         <select id="daily-report" class="form-select">
-                                                            <option value="0"
-                                                                {if $user->sendDailyMail === '0'}selected{/if}>نفرست
+                                                            <option value="0" {if $user->sendDailyMail === 0}selected{/if}>
+                                                                نفرست
                                                             </option>
-                                                            <option value="1"
-                                                                {if $user->sendDailyMail === '1'}selected{/if}>دریافت پستی
+                                                            <option value="1" {if $user->sendDailyMail === 1}selected{/if}>
+                                                                دریافت پستی
                                                             </option>
-                                                            <option value="2"
-                                                                {if $user->sendDailyMail === '2'}selected{/if}>Telegram
-                                                                Bot به عهده گرفتن
+                                                            <option value="2" {if $user->sendDailyMail === 2}selected{/if}>
+                                                                Telegram Bot به عهده گرفتن
                                                             </option>
                                                         </select>
                                                     </div>
@@ -429,7 +428,7 @@
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-alert-circle icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
                     <h3>حذف تاییدیه</h3>
-                    <div class="text-muted">لطفاً تأیید کنید که آیا واقعاً می خواهید حساب خود را حذف کنید، این عملیات قابل واگرد نیست و تمام اطلاعات حساب شما به طور کامل از سرور حذف خواهد شد.</div>
+                    <div class="text-secondary">لطفاً تأیید کنید که آیا واقعاً می خواهید حساب خود را حذف کنید، این عملیات قابل واگرد نیست و تمام اطلاعات حساب شما به طور کامل از سرور حذف خواهد شد.</div>
                     <div class="py-3">
                         <form>
                             <input id="confirm-passwd" type="password" class="form-control" placeholder="输入登录密码"
@@ -465,7 +464,7 @@
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-circle-check icon mb-2 text-green icon-lg" style="font-size:3.5rem;"></i>
                     <h3>با موفقیت حذف شد</h3>
-                    <p id="success-message" class="text-muted">با موفقیت حذف شد</p>
+                    <p id="success-message" class="text-secondary">با موفقیت حذف شد</p>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100">
@@ -490,7 +489,7 @@
                 <div class="modal-body text-center py-4">
                     <i class="ti ti-circle-x icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
                     <h3>حذف نشد</h3>
-                    <p id="error-message" class="text-muted">حذف نشد</p>
+                    <p id="error-message" class="text-secondary">حذف نشد</p>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100">
@@ -824,4 +823,4 @@
         {/if}
     </script>
     
-{include file='user/tabler_footer.tpl'}
+{include file='user/footer.tpl'}

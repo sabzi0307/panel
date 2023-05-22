@@ -16,7 +16,9 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function str_replace;
 use function time;
+use const PHP_EOL;
 
 final class UserController extends BaseController
 {
@@ -105,6 +107,9 @@ final class UserController extends BaseController
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function createNewUser(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $email = $request->getParam('email');
@@ -112,31 +117,32 @@ final class UserController extends BaseController
         $password = $request->getParam('password');
         $balance = $request->getParam('balance');
 
-        try {
-            if ($email === '') {
-                throw new Exception('لطفا ایمیل خود را وارد کن');
-            }
-            if (! Tools::isEmailLegal($email)) {
-                throw new Exception('قالب ایمیل نادرست است');
-            }
-            $exist = User::where('email', $email)->first();
-            if ($exist !== null) {
-                throw new Exception('این ایمیل قبلا ذخیره شده است');
-            }
-            if ($password === '') {
-                $password = Tools::genRandomChar(16);
-            }
-            AuthController::registerHelper($response, 'user', $email, $password, '', 1, '', 0, $balance, 1);
-            $user = User::where('email', $email)->first();
-            if ($ref_by !== '') {
-                $user->ref_by = (int) $ref_by;
-                $user->save();
-            }
-        } catch (Exception $e) {
+        if ($email === '' || ! Tools::isEmailLegal($email)) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => $e->getMessage(),
+                'msg' => 'اشکال در قالب ایمیل',
             ]);
+        }
+
+        $exist = User::where('email', $email)->first();
+
+        if ($exist !== null) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'صندوق پستی از قبل وجود دارد',
+            ]);
+        }
+
+        if ($password === '') {
+            $password = Tools::genRandomChar(16);
+        }
+
+        AuthController::registerHelper($response, 'user', $email, $password, '', 1, '', 0, $balance, 1);
+        $user = User::where('email', $email)->first();
+
+        if ($ref_by !== '') {
+            $user->ref_by = (int) $ref_by;
+            $user->save();
         }
 
         return $response->withJson([

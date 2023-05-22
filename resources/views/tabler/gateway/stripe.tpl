@@ -1,9 +1,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler-payments.min.css">
 
 <div class="card-inner">
-    <p class="card-heading">کارت بانکی</p>
-    <p>قابل استفاده با <span class="payment payment-provider-unionpay me-3"></span> / <span class="payment payment-provider-mastercard me-3"></span> / <span class="payment payment-provider-visa me-3"></span> کارت اعتباری یا نقدی با آرم</p>
-    <form action="/user/payment/purchase/stripe_card" method="post">
+    <h4>
+        Stripe کارت بانکی
+    </h4>
+    <p class="card-heading"></p>
+    <p>قابل استفاده با
+        <span class="payment payment-xs payment-provider-unionpay me-auto"></span>
+        <span class="payment payment-xs payment-provider-mastercard me-auto"></span>
+        <span class="payment payment-xs payment-provider-visa me-auto"></span>
+        کارت اعتباری یا نقدی با آرم</p>
+    <form action="/user/payment/purchase/stripe" method="post">
         <div class="form-group form-group-label">    
             <label class="floating-label" for="amount-stripe-card">مبلغ</label>
             <input class="form-control maxwidth-edit" id="price" name="price" min="{$public_setting['stripe_min_recharge']}" max="{$public_setting['stripe_max_recharge']}" step="0.1" type="number" required="required">

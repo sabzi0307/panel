@@ -1,4 +1,4 @@
-{include file='user/tabler_header.tpl'}
+{include file='user/header.tpl'}
 
 <!-- قوانین حسابرسی برای جلوگیری از DMCA و هرزنامه استفاده می شود، نه برای ساختن دیوار برای کاربران. فکر نکنید که اگر "وب سایت های غیرقانونی" را جدا کنید و گرفتار شوید، می توانید حتی یک روز در زندان پس انداز کنید. -->
 <div class="page-wrapper">
@@ -65,4 +65,4 @@
         </div>
     </div>
     
-{include file='user/tabler_footer.tpl'}
+{include file='user/footer.tpl'}

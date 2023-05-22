@@ -63,40 +63,10 @@ $_ENV['Subscribe']                  = true;                         //Does this 
 $_ENV['subUrl']                     = $_ENV['baseUrl'];             //Subscription address, if it needs to be the same as the site name, please do not modify
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
-$_ENV['enable_auto_detect_ban']      = false;       // Audit Auto-Ban Switch
-$_ENV['auto_detect_ban_numProcess']  = 300;         // The number of audit records processed in a single scheduled task
 $_ENV['auto_detect_ban_allow_admin'] = true;        // Administrators are not subject to audit restrictions
 $_ENV['auto_detect_ban_allow_users'] = [];          // Exception User IDs for Audit Bans
-
-// Judgment type of audit ban：
-//   - 1 = Benevolent mode, every touch how many times to ban
-//   - 2 = Crazy mode, the cumulative number of touches will be banned for different lengths of time according to the ladder
-$_ENV['auto_detect_ban_type']        = 1;
 $_ENV['auto_detect_ban_number']      = 30;             // The number of procs needed to enforce a ban in mercy mode
 $_ENV['auto_detect_ban_time']        = 60;             // The duration of each ban in mercy mode (minutes)
-
-// crazy mode ladder
-// key is the number of triggers
-// - type: optional time delete numbers by time or kill
-// - time: time in minutes
-$_ENV['auto_detect_ban'] = [
-    100 => [
-        'type' => 'time',
-        'time' => 120
-    ],
-    300 => [
-        'type' => 'time',
-        'time' => 720
-    ],
-    600 => [
-        'type' => 'time',
-        'time' => 4320
-    ],
-    1000 => [
-        'type' => 'kill',
-        'time' => 0
-    ]
-];
 
 //Bot set up--------------------------------------------------------------------------------------------
 # Telegram bot
@@ -107,11 +77,9 @@ $_ENV['telegram_bot']                       = '_bot';       //Telegram bot accou
 $_ENV['telegram_request_token']             = '';           //Webhook key, after updating this parameter please php xcat Tool setTelegram, Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
 //node detection-----------------------------------------------------------------------------------------------
-#GFW detection, please [enable/disable] through crontab
-$_ENV['detect_gfw_interval']             = 3600;                                                               //Detection interval, unit: second, if it is lower than the recommended value, it will explode
+#GFW detection
 $_ENV['detect_gfw_port']                 = 443;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
 $_ENV['detect_gfw_url']                  = 'http://example.com:8080/tcping?ip={ip}&port={port}'; //The URL of the API that detects whether the node is blocked by gfw
-$_ENV['detect_gfw_count']                = '3';                                                                //number of attempts
 
 #offline detection
 $_ENV['enable_detect_offline']           = true;

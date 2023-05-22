@@ -1,4 +1,4 @@
-{include file='user/tabler_header.tpl'}
+{include file='user/header.tpl'}
 
 <div class="page-wrapper">
     <div class="container-xl">
@@ -26,10 +26,10 @@
                             </div>
                             {if $banned_reason === 'DetectBan'}
                             <p class="empty-title">ممنوعیت فیلترینگ</p>
-                            <p class="empty-subtitle text-muted">حساب شما به‌طور خودکار توسط سیستم مسدود می‌شود، زیرا شامل قوانین فیلترینگ شده اید.</p>
+                            <p class="empty-subtitle text-secondary">حساب شما به‌طور خودکار توسط سیستم مسدود می‌شود، زیرا شامل قوانین فیلترینگ شده اید.</p>
                             {else}
                             <p class="empty-title">این دلیل ممنوعیت شماست</p>
-                            <p class="empty-subtitle text-muted">{$banned_reason}</p>
+                            <p class="empty-subtitle text-secondary">{$banned_reason}</p>
                             {/if}
                         </div>
                     </div>
@@ -38,4 +38,4 @@
         </div>
     </div>
     
-{include file='user/tabler_footer.tpl'}
+{include file='user/footer.tpl'}

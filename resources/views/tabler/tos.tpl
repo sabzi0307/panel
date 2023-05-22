@@ -1,29 +1,22 @@
-<!DOCTYPE HTML>
-<html lang="fa" dir="rtl" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="robots" content="noindex">
-    <title>Terms of Service - {$config['appName']}</title>
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="bookmark" href="/favicon.ico"/>
-    <link rel="stylesheet" href="/assets/css/info-pages.min.css">
-    <link href="/assets/font/Yekan.css" rel="stylesheet">
-    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
-</head>
-<body>
-<div class="container">
-    <div class="copy-container center-xy">
-        <h1>توافقنامه خدمات کاربر（Terms of Service）</h1>
-        <p>{$config['appName']}，از این پس به عنوان این سایت شناخته می شود.</p>
-        <br>
-        <h2>امنیت حریم خصوصی</h2>
-        <p>آدرس ایمیل تنها گواهی برای خدمات این سایت است، لطفا آن را ایمن نگه دارید.</p>
-        <br>
-        <h2>شرایط استفاده</h2>
-        <p>هنگام استفاده از این سرویس، باید قوانین مربوطه کشوری که سایت و سرور ها در آن قرار دارند را رعایت کنید.</p>
-        <p>برای کاربران رایگان، ما حق حذف اکانت ها را بدون اطلاع قبلی محفوظ می داریم.</p>
-        <p>هر کاربری که شرایط استفاده را نقض کند، حساب متخلف را حذف کرده و حق استفاده از خدمات این سایت را پس خواهیم گرفت.</p>
+{include file='header.tpl'}
+
+<body class="border-top-wide border-primary d-flex flex-column">
+<div class="page page-center">
+    <div class="container-tight my-auto">
+        <div class="empty">
+            <p class="empty-title">توافقنامه خدمات کاربر（Terms of Service）</p>
+            <p>{$config['appName']}，از این پس به عنوان این سایت شناخته می شود.</p>
+            <br>
+            <p class="empty-subtitle">امنیت حریم خصوصی</p>
+            <p>آدرس ایمیل تنها گواهی برای خدمات این سایت است، لطفا آن را ایمن نگه دارید.</p>
+            <p>رمزهای عبور کاربر در متن رمزنگاری شده ذخیره می شوند و قابل رمزگشایی نیستند، اما به دلایل امنیتی لطفاً از رمزهای عبور تصادفی استفاده کنید یا از یک مدیر رمز عبور استفاده کنید.</p>
+            <br>
+            <p class="empty-subtitle">شرایط استفاده</p>
+            <p>هنگام استفاده از این سرویس، قوانین کشوری که سایت و نودها در آن قرار دارند باید رعایت شود.</p>
+            <p>برای کاربران رایگان، این سایت حق حذف اکانت ها بدون اطلاع قبلی را برای خود محفوظ می دارد.</p>
+            <p>هر کاربری که شرایط استفاده را نقض کند، حساب متخلف را حذف کرده و حق استفاده از خدمات این سایت را پس خواهیم گرفت.</p>
+        </div>
     </div>
 </div>
-</body>
-</html>
+
+{include file='footer.tpl'}

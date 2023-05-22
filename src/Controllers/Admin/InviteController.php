@@ -12,50 +12,51 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function is_numeric;
 
 final class InviteController extends BaseController
 {
     public static array $details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'total' => 'مقدار اصلی',
-            'userid' => 'شروع شناسه کاربری',
-            'user_name' => 'شروع نام کاربری',
-            'ref_by' => 'شناسه کاربری پاداش',
-            'ref_user_name' => 'نام کاربری پاداش',
-            'ref_get' => 'مقدار پاداش',
-            'datetime' => 'زمان',
-        ],
-        'update_dialog' => [
-            [
-                'id' => 'userid',
-                'info' => 'کاربر تغییر یافته',
-                'type' => 'input',
-                'placeholder' => 'شناسه کاربری یا ایمیل دعوت کننده باید اصلاح شود',
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'total' => 'مقدار اصلی',
+                'userid' => 'شروع شناسه کاربری',
+                'user_name' => 'شروع نام کاربری',
+                'ref_by' => 'شناسه کاربری پاداش',
+                'ref_user_name' => 'نام کاربری پاداش',
+                'ref_get' => 'مقدار پاداش',
+                'datetime' => 'زمان',
             ],
-            [
-                'id' => 'refid',
-                'info' => 'شناسه دعوت کننده',
-                'type' => 'input',
-                'placeholder' => 'شناسه کاربری دعوت کننده مورد نظر',
+            'update_dialog' => [
+                [
+                    'id' => 'userid',
+                    'info' => 'کاربر تغییر یافته',
+                    'type' => 'input',
+                    'placeholder' => 'شناسه کاربری یا ایمیل دعوت کننده باید اصلاح شود',
+                ],
+                [
+                    'id' => 'refid',
+                    'info' => 'شناسه دعوت کننده',
+                    'type' => 'input',
+                    'placeholder' => 'شناسه کاربری دعوت کننده مورد نظر',
+                ],
             ],
-        ],
-        'add_dialog' => [
-            [
-                'id' => 'userid',
-                'info' => 'کاربر تغییر یافته',
-                'type' => 'input',
-                'placeholder' => 'شناسه کاربری یا ایمیل برای تعداد دعوت نامه های مورد نیاز',
+            'add_dialog' => [
+                [
+                    'id' => 'userid',
+                    'info' => 'کاربر تغییر یافته',
+                    'type' => 'input',
+                    'placeholder' => 'شناسه کاربری یا ایمیل برای تعداد دعوت نامه های مورد نیاز',
+                ],
+                [
+                    'id' => 'invite_num',
+                    'info' => 'تعداد دعوت نامه ها',
+                    'type' => 'input',
+                    'placeholder' => 'تعداد دعوت‌نامه‌ها برای اضافه کردن',
+                ],
             ],
-            [
-                'id' => 'invite_num',
-                'info' => 'تعداد دعوت نامه ها',
-                'type' => 'input',
-                'placeholder' => 'تعداد دعوت‌نامه‌ها برای اضافه کردن',
-            ],
-        ],
-    ];
+        ];
 
     /**
      * 后台邀请记录页面
@@ -112,12 +113,12 @@ final class InviteController extends BaseController
      */
     public function add(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $invite_num = $request->getParam('invite_num');
+        $invite_num = (int) $request->getParam('invite_num');
 
-        if (Tools::isInt($invite_num) === false) {
+        if (! is_numeric($invite_num)) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'خطا در پارامتر',
+                'msg' => 'تعداد دعوت نامه ها اشتباه است',
             ]);
         }
 
@@ -134,7 +135,7 @@ final class InviteController extends BaseController
             ]);
         }
 
-        $user->addInviteNum((int) $invite_num);
+        $user->addInviteNum($invite_num);
 
         return $response->withJson([
             'ret' => 1,

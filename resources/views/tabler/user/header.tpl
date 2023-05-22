@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl" >
+<html lang="zh">
 
 <head>
     <meta charset="utf-8" />
@@ -11,8 +11,6 @@
     <!-- CSS files -->
     <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
     <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
-    <link href="/assets/font/Yekan.css" rel="stylesheet">
-    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
@@ -30,18 +28,18 @@
 </head>
 
 {if $user->is_dark_mode}
-<body class='theme-dark'>
+<body data-bs-theme="dark">
 {else}
 <body>
 {/if}
     <div class="page">
-        <header class="navbar navbar-expand-md navbar-dark navbar-overlap d-print-none">
+        <header class="navbar navbar-expand-md navbar-overlap d-print-none" data-bs-theme="dark">
             <div class="container-xl" style="background-image: none;">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" style="filter: none;">
-                    <img src="/images/uim-logo-round_48x48.png" height="32" alt="Panel" class="navbar-brand-image">
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <img src="/images/uim-logo-round_48x48.png" height="32" alt="SSPanel-UIM Logo" class="navbar-brand-image" style="filter: none;">
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
@@ -51,14 +49,14 @@
                                 style="background-image: url({$user->gravatar})"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{$user->email}</div>
-                                <div class="mt-1 small text-muted">{$user->user_name}</div>
+                                <div class="mt-1 small text-secondary">{$user->user_name}</div>
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             {if $user->is_dark_mode}
                             <a id="switch_theme_mode" class="dropdown-item">حالت روشن</a>
                             {else}
-                            <a id="switch_theme_mode" class="dropdown-item">به حالت تاریک تغییر دهید</a>
+                            <a id="switch_theme_mode" class="dropdown-item">حالت تاریک</a>
                             {/if}
                             <a href="/user/logout" class="dropdown-item">خروج از سیستم</a>
                         </div>
@@ -73,7 +71,7 @@
                                         <i class="ti ti-home icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        صفحه نخست
+                                        صفحه اصلی
                                     </span>
                                 </a>
                             </li>
@@ -101,7 +99,7 @@
                                             {if $public_setting['display_subscribe_log']}
                                             <a class="dropdown-item" href="/user/subscribe/log">
                                                 <i class="ti ti-rss"></i></i>&nbsp;
-                                                در مجله مشترک شوید
+                                                مشترک شدن در مجله
                                             </a>
                                             {/if}
                                             <a class="dropdown-item" href="/user/invite">
@@ -119,13 +117,13 @@
                                         <i class="ti ti-brand-telegram icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        نحوه استفاده
+                                        استفاده از
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        نود
+                                        گره
                                     </a>
                                     {if $public_setting['display_media']}
                                     <a class="dropdown-item" href="/user/media">
@@ -142,7 +140,7 @@
                                         <i class="ti ti-dots-circle-horizontal icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        حمایت کنید
+                                        پشتیبانی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -153,7 +151,7 @@
                                     {if $public_setting['enable_ticket']}
                                     <a class="dropdown-item" href="/user/ticket">
                                         <i class="ti ti-ticket"></i>&nbsp;
-                                        دستور کار
+                                        تیکت
                                     </a>
                                     {/if}
                                 </div>
@@ -165,7 +163,7 @@
                                         <i class="ti ti-shield-check icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        فیلترینگ
+                                        ممیزی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -196,11 +194,11 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/product">
                                                 <i class="ti ti-list"></i>&nbsp;
-                                                سرویس ها
+                                                خدمات
                                             </a>
                                             <a class="dropdown-item" href="/user/order">
                                                 <i class="ti ti-file-invoice"></i>&nbsp;
-                                                سفارشات
+                                                سفارش
                                             </a>
                                             <a class="dropdown-item" href="/user/invoice">
                                                 <i class="ti ti-file-dollar"></i>&nbsp;

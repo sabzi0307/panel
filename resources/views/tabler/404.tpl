@@ -1,22 +1,22 @@
-<!DOCTYPE HTML>
-<html lang="fa" dir="rtl" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="robots" content="noindex">
-    <title>Not Found - {$config['appName']}</title>
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="bookmark" href="/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="/assets/css/error-pages.min.css"/>
-    <link href="/assets/font/Yekan.css" rel="stylesheet">
-    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
-</head>
-<body>
-<div class="container">
-    <div class="copy-container center-xy">
-        <p>
-            404, Not Found.
-        </p>
+{include file='header.tpl'}
+
+<body class="border-top-wide border-primary d-flex flex-column">
+<div class="page page-center">
+    <div class="container-tight my-auto">
+        <div class="empty">
+            <div class="empty-header">404</div>
+            <p class="empty-title">صفحه ای که می خواهید به آن دسترسی پیدا کنید وجود ندارد</p>
+            <p class="empty-subtitle text-secondary">
+                Take me home, country roads, to the place, I belong...
+            </p>
+            <div class="empty-action">
+                <a href="/" class="btn btn-primary">
+                    <i class="icon ti ti-chevron-left"></i>
+                    بازگشت به صفحه اصلی
+                </a>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
+
+{include file='footer.tpl'}
