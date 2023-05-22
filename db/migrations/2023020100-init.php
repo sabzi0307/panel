@@ -275,7 +275,7 @@ return new class() implements MigrationInterface {
                 `passwd` varchar(255) DEFAULT NULL COMMENT 'node password',
                 `uuid` char(36) NOT NULL COMMENT 'UUID',
                 `t` bigint(20) unsigned DEFAULT 0 COMMENT 'last used time',
-                `u` bigint(20) unsigned DEFAULT 0 COMMENT 'The account's current upload traffic',
+                `u` bigint(20) unsigned DEFAULT 0 COMMENT 'The account\'s current upload traffic',
                 `d` bigint(20) unsigned DEFAULT 0 COMMENT 'Account current download traffic',
                 `transfer_today` bigint(20) unsigned DEFAULT 0 COMMENT 'Account traffic used today',
                 `transfer_total` bigint(20) unsigned DEFAULT 0 COMMENT 'total traffic usage of the account',
