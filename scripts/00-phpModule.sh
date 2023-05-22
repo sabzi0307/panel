@@ -2,7 +2,7 @@
 # this scripts only works with richarvey/nginx-php-fpm:latest docker image
 
 echo >&2 "start install mysql client"
-apk add mysql-client
+apk add mysql-client libxml2-dev
 echo >&2 "start install php extensions"
 docker-php-ext-install bcmath xml bz2 bcmath
 echo >&2 "complete install php extensions"
