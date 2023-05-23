@@ -259,7 +259,7 @@
                     opacity: 1,
                 },
                 series: [{$sts->getUnusedUser()}, {$sts->getTotalUser()-$sts->getOnlineUser(86400)-$sts->getUnusedUser()}, {$sts->getOnlineUser(86400)}, {$sts->getOnlineUser(3600)}, {$sts->getOnlineUser(60)}],
-                labels: [«هرگز آنلاین نیستم»، «یک روز پیش آنلاین»، «آنلاین امروز»، «آنلاین یک ساعت پیش»، «آنلاین یک دقیقه پیش »],
+                labels: ["هرگز آنلاین نیستم"، "یک روز پیش آنلاین"، "آنلاین امروز"، "آنلاین یک ساعت پیش"، "آنلاین یک دقیقه پیش"],
                 grid: {
                     strokeDashArray: 4,
                 },
