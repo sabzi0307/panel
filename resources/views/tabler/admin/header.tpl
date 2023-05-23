@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh">
+<html lang="fa" dir="rtl">
 
 <head>
     <meta charset="utf-8" />
