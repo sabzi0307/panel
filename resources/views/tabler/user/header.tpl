@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh">
+<html lang="fa" dir="rtl">
 
 <head>
     <meta charset="utf-8" />
@@ -11,6 +11,8 @@
     <!-- CSS files -->
     <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
     <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
