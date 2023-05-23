@@ -2,20 +2,27 @@ version: '2.1'
 
 services:
     sspanel:
-        image: richarvey/nginx-php-fpm:latest
+        image: richarvey/nginx-php-fpm:2.1.2
         container_name: sspanel
         restart: always
+        links:
+          - "${db_host}"
+        ports:
+          - 80:80
+          - 443:443
         env_file:
           - .env
         depends_on:
-          mariadb:
+          ss_db:
             condition: service_healthy
 
 
-    mariadb:
+    ss_db:
         image: mariadb:latest
-        container_name: "${db_host}"
+        container_name: ss_db
         restart: always
+        ports:
+          - 3306:3306
         env_file:
           - .env
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
