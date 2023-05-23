@@ -82,7 +82,8 @@ html, body, h1, h2 {
 .btn .icon {
   margin: 0 calc(var(--tblr-btn-padding-x)/ -4) 0 calc(var(--tblr-btn-padding-x)/ 2);
 }
-.col-auto .btn .btn-primary .btn-icon{
+
+.col-auto .btn .btn-primary .btn-icon .icon{
   margin:unset;
 }
 
