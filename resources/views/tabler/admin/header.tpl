@@ -1,3 +1,34 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{$config['appName']}</title>
+    <!-- CSS files -->
+    <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
+    <link href="/assets/font/Yekan.css" rel="stylesheet">
+    <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
+    <!-- JS files -->
+    <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/clipboard@latest/dist/clipboard.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+    <style>
+        .home-subtitle {
+            font-size: 14px;
+        }
+
+        .home-title {
+            font-size: 36px;
+        }
+    </style>
+</head>
 
 {if $user->is_dark_mode}
 <body data-bs-theme="dark">
