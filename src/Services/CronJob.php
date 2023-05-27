@@ -177,38 +177,39 @@ final class CronJob
                     Telegram::send($notice_text);
                 }
 
-                $node->online = false;
+                $node->online = 0;
                 $node->save();
 
                 continue;
             }
 
-            foreach ($adminUsers as $user) {
-                echo 'Send Node Online Email to admin user: ' . $user->id . PHP_EOL;
-                $user->sendMail(
-                    $_ENV['appName'] . '-راهنمای سیستم',
-                    'warn.tpl',
-                    [
-                        'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' بازگشت آنلاین',
-                    ],
-                    [],
-                    false
-                );
-                $notice_text = str_replace(
-                    '%node_name%',
-                    $node->name,
-                    Setting::obtain('telegram_node_online_text')
-                );
-            }
+            if ($node->getNodeOnlineStatus() === 1 && $node->online === 0) {
+                foreach ($adminUsers as $user) {
+                    echo 'Send Node Online Email to admin user: ' . $user->id . PHP_EOL;
+                    $user->sendMail(
+                        $_ENV['appName'] . '-راهنمای سیستم',
+                        'warn.tpl',
+                        [
+                            'text' => 'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' بازگشت آنلاین',
+                        ],
+                        [],
+                        false
+                    );
+                    $notice_text = str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Setting::obtain('telegram_node_online_text')
+                    );
+                }
 
-            if (Setting::obtain('telegram_node_online')) {
-                Telegram::send($notice_text);
-            }
+                if (Setting::obtain('telegram_node_online')) {
+                    Telegram::send($notice_text);
+                }
 
-            $node->online = true;
-            $node->save();
+                $node->online = 1;
+                $node->save();
+            }
         }
-
         echo date('Y-m-d H:i:s') . ' تشخیص آفلاین گره کامل شد' . PHP_EOL;
     }
 
