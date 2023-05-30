@@ -329,6 +329,7 @@ return new class() implements MigrationInterface {
                 `code` varchar(255) DEFAULT NULL COMMENT 'Coupon Code',
                 `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Coupon code content' CHECK (json_valid(`content`)),
                 `limit` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Coupon Code Restrictions' CHECK (json_valid(`limit`)),
+                `use_count` int(11) NOT NULL DEFAULT 0 COMMENT 'Total use times',
                 `create_time` int(11) DEFAULT NULL COMMENT 'creation time',
                 `expire_time` int(11) DEFAULT NULL COMMENT 'Expiration',
                 PRIMARY KEY (`id`),
@@ -384,20 +385,10 @@ return new class() implements MigrationInterface {
                 `user_name` varchar(255) DEFAULT NULL COMMENT 'username',
                 `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'user id',
                 `email` varchar(255) DEFAULT NULL COMMENT 'user Email',
-                `subscribe_type` varchar(255) DEFAULT NULL COMMENT 'The type of subscription obtained',
+                `subscribe_type` varchar(255) DEFAULT NULL COMMENT 'type of subscription',
                 `request_ip` varchar(255) DEFAULT NULL COMMENT 'Request IP',
                 `request_time` datetime DEFAULT NULL COMMENT 'request time',
                 `request_user_agent` text DEFAULT NULL COMMENT 'Request UA information',
-                PRIMARY KEY (`id`),
-                KEY `user_id` (`user_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-            CREATE TABLE `user_token` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-                `token` varchar(255) DEFAULT NULL,
-                `user_id` bigint(20) unsigned DEFAULT NULL,
-                `create_time` bigint(20) unsigned DEFAULT NULL,
-                `expire_time` bigint(20) DEFAULT NULL,
                 PRIMARY KEY (`id`),
                 KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"

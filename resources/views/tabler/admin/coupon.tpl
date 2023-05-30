@@ -182,8 +182,8 @@
                 },
                 success: function(data) {
                     if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
+                        $('#success-noreload-message').text(data.msg);
+                        $('#success-noreload-dialog').modal('show');
                         reloadTableAjax();
                     } else {
                         $('#fail-message').text(data.msg);
@@ -216,7 +216,7 @@
         }
 
         function disableCoupon(coupon_id) {
-            $('#notice-message').text('确定禁用此优惠码？');
+            $('#notice-message').text('آیا مطمئنید که می‌خواهید این کد تبلیغاتی را غیرفعال کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({
@@ -225,8 +225,8 @@
                     dataType: "json",
                     success: function(data) {
                         if (data.ret === 1) {
-                            $('#success-message').text(data.msg);
-                            $('#success-dialog').modal('show');
+                            $('#success-noreload-dialog').text(data.msg);
+                            $('#success-noreload-message').modal('show');
                             reloadTableAjax();
                         } else {
                             $('#fail-message').text(data.msg);

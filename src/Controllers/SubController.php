@@ -28,7 +28,9 @@ final class SubController extends BaseController
 
         $token = $args['token'];
         $subtype = $args['subtype'];
-        $ip = $args['ip'];
+        if ($_ENV['cleanIP_enable'] && isset($args['ip'])) {
+            $ip = $args['ip'];
+        }
         $subtype_list = ['json', 'clash', 'sip008'];
 
         if (! $_ENV['Subscribe'] || ! in_array($subtype, $subtype_list)) {
@@ -87,7 +89,7 @@ final class SubController extends BaseController
             } else {
                 $server = $node_custom_config['server_user'];
             }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+            if (isset($_ENV['cleanIP_enable']) && isset($ip)) {
                 if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
                     $server = $ip;
                 } elseif ($ip === "auto") {
@@ -236,7 +238,7 @@ final class SubController extends BaseController
                 $server = $node_custom_config['server_user'];
             }
 
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+            if (isset($_ENV['cleanIP_enable']) && isset($ip)) {
                 if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
                     $server = $ip;
                 } elseif ($ip === "auto") {
@@ -399,7 +401,7 @@ final class SubController extends BaseController
             } else {
                 $server = $node_custom_config['server_user'];
             }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
+            if (isset($_ENV['cleanIP_enable']) && isset($ip)) {
                 if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
                     $server = $ip;
                 } elseif ($ip === "auto") {

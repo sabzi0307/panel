@@ -248,12 +248,15 @@
                                 <div class="tab-pane" id="windows">
                                     <div>
                                         <p>
-                                            اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
+                                            لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
+                                        </p>
+                                        <p>
+                                        متاسفانه در حال حاضر 
                                         </p>
                                         <div class="btn-list justify-content-start">
                                             <a data-clipboard-text="{$UniversalSub}/clash"
                                                class="copy btn btn-primary">
-                                                لینک اشتراک کلش را کپی کنید
+                                                کپی لینک اشتراک کلش
                                             </a>
                                             <a href="/clients/Clash.Verge.msi"
                                                class="btn btn-primary">
@@ -268,12 +271,12 @@
                                 </div>
                                 <div class="tab-pane" id="macos">
                                     <p>
-                                        اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
+                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
-                                            لینک اشتراک کلش را کپی کنید
+                                            کپی لینک اشتراک کلش
                                         </a>
                                         <a href="/clients/Clash.Verge_aarch64.dmg"
                                            class="btn btn-primary">
@@ -291,12 +294,12 @@
                                 </div>
                                 <div class="tab-pane" id="android">
                                     <p>
-                                        اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
+                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
-                                            لینک اشتراک کلش را کپی کنید
+                                            کپی لینک اشتراک کلش
                                         </a>
                                         <a href="/clients/Clash-Android.apk"
                                            class="btn btn-primary">
@@ -313,7 +316,7 @@
                                         اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <p>
-                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>لینک اشتراک کلش را کپی کنید</code>را فشار دهید و سپس کلاینت سازگار با کلش را برای افزودن باز کنید.
+                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>کپی لینک اشتراک کلش</code>را فشار دهید و سپس کلاینت سازگار با کلش را برای افزودن باز کنید.
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
@@ -322,7 +325,7 @@
                                         </a>
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
-                                            لینک اشتراک کلش را کپی کنید
+                                            کپی لینک اشتراک کلش
                                         </a>
                                         <a href="stash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                            class="btn btn-primary">
@@ -332,12 +335,12 @@
                                 </div>
                                 <div class="tab-pane" id="linux">
                                     <p>
-                                        اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
+                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
-                                            لینک اشتراک کلش را کپی کنید
+                                            کپی لینک اشتراک کلش
                                         </a>
                                         <a href="/clients/Clash.Verge.AppImage.tar.gz"
                                            class="btn btn-primary">

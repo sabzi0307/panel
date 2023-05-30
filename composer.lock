@@ -1603,16 +1603,16 @@
         },
         {
             "name": "irazasyed/telegram-bot-sdk",
-            "version": "v3.12.0",
+            "version": "v3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/irazasyed/telegram-bot-sdk.git",
-                "reference": "2d0c0e57e7e55b3dd40abdb7624f18f091146465"
+                "reference": "31a71aef80fd328bfe0084738cc3b51cc49867f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/irazasyed/telegram-bot-sdk/zipball/2d0c0e57e7e55b3dd40abdb7624f18f091146465",
-                "reference": "2d0c0e57e7e55b3dd40abdb7624f18f091146465",
+                "url": "https://api.github.com/repos/irazasyed/telegram-bot-sdk/zipball/31a71aef80fd328bfe0084738cc3b51cc49867f4",
+                "reference": "31a71aef80fd328bfe0084738cc3b51cc49867f4",
                 "shasum": ""
             },
             "require": {
@@ -1680,9 +1680,9 @@
             ],
             "support": {
                 "issues": "https://github.com/irazasyed/telegram-bot-sdk/issues",
-                "source": "https://github.com/irazasyed/telegram-bot-sdk/tree/v3.12.0"
+                "source": "https://github.com/irazasyed/telegram-bot-sdk/tree/v3.13.0"
             },
-            "time": "2023-05-20T00:18:31+00:00"
+            "time": "2023-05-28T19:57:36+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -2014,16 +2014,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v3.5.6",
+            "version": "v3.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "897e799e48497c8fecc5d3142b32684a02c8aee5"
+                "reference": "92a5f54573f7594f927aaba2715fa0ecdf8d9f3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/897e799e48497c8fecc5d3142b32684a02c8aee5",
-                "reference": "897e799e48497c8fecc5d3142b32684a02c8aee5",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/92a5f54573f7594f927aaba2715fa0ecdf8d9f3e",
+                "reference": "92a5f54573f7594f927aaba2715fa0ecdf8d9f3e",
                 "shasum": ""
             },
             "require": {
@@ -2068,9 +2068,9 @@
             "description": "The Mailgun SDK provides methods for all API functions.",
             "support": {
                 "issues": "https://github.com/mailgun/mailgun-php/issues",
-                "source": "https://github.com/mailgun/mailgun-php/tree/v3.5.6"
+                "source": "https://github.com/mailgun/mailgun-php/tree/v3.5.7"
             },
-            "time": "2023-04-08T16:43:42+00:00"
+            "time": "2023-05-26T16:51:09+00:00"
         },
         {
             "name": "maxmind-db/reader",
@@ -2340,16 +2340,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.66.0",
+            "version": "2.67.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "496712849902241f04902033b0441b269effe001"
+                "reference": "c1001b3bc75039b07f38a79db5237c4c529e04c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/496712849902241f04902033b0441b269effe001",
-                "reference": "496712849902241f04902033b0441b269effe001",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/c1001b3bc75039b07f38a79db5237c4c529e04c8",
+                "reference": "c1001b3bc75039b07f38a79db5237c4c529e04c8",
                 "shasum": ""
             },
             "require": {
@@ -2438,7 +2438,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-29T18:53:47+00:00"
+            "time": "2023-05-25T22:09:47+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -2584,16 +2584,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.5.1",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "34e732f07eec089eb5791730f9f06e6d1669d968"
+                "reference": "ad6ec1e23dce42431df32a1cee7a6985ac22c853"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/34e732f07eec089eb5791730f9f06e6d1669d968",
-                "reference": "34e732f07eec089eb5791730f9f06e6d1669d968",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/ad6ec1e23dce42431df32a1cee7a6985ac22c853",
+                "reference": "ad6ec1e23dce42431df32a1cee7a6985ac22c853",
                 "shasum": ""
             },
             "require": {
@@ -2603,7 +2603,7 @@
                 "psr/http-client": "^1.0.2",
                 "psr/http-client-implementation": "^1.0.1",
                 "psr/http-factory-implementation": "*",
-                "psr/http-message": "^1.1.0"
+                "psr/http-message": "^1.1.0|^2.0.0"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^7.6.1",
@@ -2655,7 +2655,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.5.1"
+                "source": "https://github.com/openai-php/client/tree/v0.5.2"
             },
             "funding": [
                 {
@@ -2671,20 +2671,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-24T15:57:04+00:00"
+            "time": "2023-05-27T08:25:54+00:00"
         },
         {
             "name": "ozdemir/datatables",
-            "version": "2.3.6",
+            "version": "2.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/n1crack/datatables.git",
-                "reference": "94f050f9e29ed3f9a7b6718c535523209c4fdf20"
+                "reference": "7d8d51dccc1647fc68d3b6f90453e3f8b8b8bf9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/n1crack/datatables/zipball/94f050f9e29ed3f9a7b6718c535523209c4fdf20",
-                "reference": "94f050f9e29ed3f9a7b6718c535523209c4fdf20",
+                "url": "https://api.github.com/repos/n1crack/datatables/zipball/7d8d51dccc1647fc68d3b6f90453e3f8b8b8bf9d",
+                "reference": "7d8d51dccc1647fc68d3b6f90453e3f8b8b8bf9d",
                 "shasum": ""
             },
             "require": {
@@ -2712,9 +2712,9 @@
             "description": "PHP Library to handle server-side processing for Datatables, in a fast and simple way.",
             "support": {
                 "issues": "https://github.com/n1crack/datatables/issues",
-                "source": "https://github.com/n1crack/datatables/tree/2.3.6"
+                "source": "https://github.com/n1crack/datatables/tree/2.3.7"
             },
-            "time": "2022-01-16T12:22:19+00:00"
+            "time": "2023-05-29T10:42:49+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -4827,16 +4827,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v6.2.10",
+            "version": "v6.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "12288d9f4500f84a4d02254d4aa968b15488476f"
+                "reference": "5aa03db8ef0a5457c316ec580e69562d97734c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/12288d9f4500f84a4d02254d4aa968b15488476f",
-                "reference": "12288d9f4500f84a4d02254d4aa968b15488476f",
+                "url": "https://api.github.com/repos/symfony/console/zipball/5aa03db8ef0a5457c316ec580e69562d97734c77",
+                "reference": "5aa03db8ef0a5457c316ec580e69562d97734c77",
                 "shasum": ""
             },
             "require": {
@@ -4903,7 +4903,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.2.10"
+                "source": "https://github.com/symfony/console/tree/v6.2.11"
             },
             "funding": [
                 {
@@ -4919,7 +4919,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-28T13:37:43+00:00"
+            "time": "2023-05-26T08:16:21+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6047,16 +6047,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v6.2.8",
+            "version": "v6.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "817535dbb1721df8b3a8f2489dc7e50bcd6209b5"
+                "reference": "64113df3e8b009f92fad63014f4ec647e65bc927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/817535dbb1721df8b3a8f2489dc7e50bcd6209b5",
-                "reference": "817535dbb1721df8b3a8f2489dc7e50bcd6209b5",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/64113df3e8b009f92fad63014f4ec647e65bc927",
+                "reference": "64113df3e8b009f92fad63014f4ec647e65bc927",
                 "shasum": ""
             },
             "require": {
@@ -6125,7 +6125,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v6.2.8"
+                "source": "https://github.com/symfony/translation/tree/v6.2.11"
             },
             "funding": [
                 {
@@ -6141,7 +6141,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-31T09:14:44+00:00"
+            "time": "2023-05-19T12:37:14+00:00"
         },
         {
             "name": "symfony/translation-contracts",
