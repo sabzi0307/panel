@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
     sspanel:
-        image: richarvey/nginx-php-fpm:2.1.2
+        image: ttracy/panel:latest
         container_name: sspanel
         restart: always
         links:
@@ -18,7 +18,7 @@ services:
 
 
     ss_db:
-        image: mariadb:latest
+        image: mariadb:10.6.14
         container_name: ss_db
         restart: always
         ports:
