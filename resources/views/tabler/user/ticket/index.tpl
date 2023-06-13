@@ -17,7 +17,7 @@
                         <button href="#" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#create-ticket">
                             <i class="icon ti ti-plus"></i>
-                            دستور کار جدید
+                            درخواست جدید
                         </button>
                     </div>
                 </div>
@@ -83,24 +83,24 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">افزودن دستورکار</h5>
+                    <h5 class="modal-title">افزودن درخواست پشتیبانی</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <select id="ticket-type" class="form-select">
-                            <option value="0">لطفا نوع دستورکار را مشخص کنید</option>
-                            <option value="howto">نحوه استفاده</option>
+                            <option value="0">لطفا نوع درخواست را مشخص کنید</option>
+                            <option value="howto">شیوه استفاده</option>
                             <option value="billing">فروش و مالی</option>
                             <option value="account">حساب کاربری</option>
                             <option value="other">سایر موارد</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <input id="ticket-title" type="text" class="form-control" placeholder="لطفا موضوع تیکت را وارد کنید">
+                        <input id="ticket-title" type="text" class="form-control" placeholder="لطفا موضوع درخواست را وارد کنید">
                     </div>
                     <div class="mb-3">
-                        <textarea id="ticket-comment" class="form-control" rows="12" placeholder="لطفا محتوای دستور کار را وارد کنید"></textarea>
+                        <textarea id="ticket-comment" class="form-control" rows="12" placeholder="لطفا محتوای درخواست را وارد کنید"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

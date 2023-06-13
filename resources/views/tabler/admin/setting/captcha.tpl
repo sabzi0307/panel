@@ -59,7 +59,7 @@
                                     <div class="col">
                                         <select id="enable_reg_captcha" class="col form-select" value="{$settings['enable_reg_captcha']}">
                                             <option value="0" {if $settings['enable_reg_captcha'] === false}selected{/if}>غیر فعال</option>
-                                            <option value="1" {if $settings['enable_reg_captcha']}selected{/if}>فعال کردن</option>
+                                            <option value="1" {if $settings['enable_reg_captcha']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
                                     <div class="col">
                                         <select id="enable_login_captcha" class="col form-select" value="{$settings['enable_login_captcha']}">
                                             <option value="0" {if $settings['enable_login_captcha'] === false}selected{/if}>غیر فعال</option>
-                                            <option value="1" {if $settings['enable_login_captcha']}selected{/if}>فعال کردن</option>
+                                            <option value="1" {if $settings['enable_login_captcha']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                     <div class="col">
                                         <select id="enable_checkin_captcha" class="col form-select" value="{$settings['enable_checkin_captcha']}">
                                             <option value="0" {if $settings['enable_checkin_captcha'] === false}selected{/if}>غیر فعال</option>
-                                            <option value="1" {if $settings['enable_checkin_captcha']}selected{/if}>فعال کردن</option>
+                                            <option value="1" {if $settings['enable_checkin_captcha']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                                     <div class="col">
                                         <select id="enable_reset_password_captcha" class="col form-select" value="{$settings['enable_reset_password_captcha']}">
                                             <option value="0" {if $settings['enable_reset_password_captcha'] === false}selected{/if}>غیر فعال</option>
-                                            <option value="1" {if $settings['enable_reset_password_captcha']}selected{/if}>فعال کردن</option>
+                                            <option value="1" {if $settings['enable_reset_password_captcha']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>

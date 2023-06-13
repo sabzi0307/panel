@@ -130,7 +130,7 @@ foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
 $_ENV['sentry_dsn'] = '';
 
 // Maxmind GeoIP2 database
-$_ENV['maxmind_license_key'] = '';
+$_ENV['maxmind_license_key'] = 'local';
 $_ENV['geoip_locale'] = 'en';
 
 // OpenAI API Key for GPT powered ticket reply and more

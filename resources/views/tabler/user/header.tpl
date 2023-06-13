@@ -119,13 +119,13 @@
                                         <i class="ti ti-brand-telegram icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        استفاده از
+                                        مانیتورینگ
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/user/server">
                                         <i class="ti ti-server"></i>&nbsp;
-                                        گره
+                                        وضعیت نودها
                                     </a>
                                     {if $public_setting['display_media']}
                                     <a class="dropdown-item" href="/user/media">
@@ -176,7 +176,7 @@
                                     {if $public_setting['display_detect_log']}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        ورود به سیستم
+                                        سوابق ممیزی
                                     </a>
                                     {/if}
                                 </div>
@@ -221,7 +221,7 @@
                                         <i class="ti ti-settings icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        مدیریت سایت
+                                        پنل مدیریت
                                     </span>
                                 </a>
                             </li>

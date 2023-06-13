@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">ثبت دستور کار</span>
+                        <span class="home-title">ثبت تیکت پشتیبانی</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">می توانید پیام های تیکت را مشاهده و پاسخ ها را در اینجا اضافه کنید</span>

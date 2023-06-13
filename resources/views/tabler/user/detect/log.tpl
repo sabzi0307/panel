@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">سوابق فیلترینگ</span>
+                        <span class="home-title">سوابق ممیزی</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">کلیه سوابق فیلترینگ در سیستم</span>
+                        <span class="home-subtitle">کلیه سوابق ممیزی موجود در سیستم</span>
                     </div>
                 </div>
             </div>

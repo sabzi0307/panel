@@ -148,7 +148,7 @@ final class TicketController extends BaseController
                     [
                         'text' => 'ادمین یکی جواب داد <a href="' .
                             $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">#' . $ticket->id .
-                            '</a> دستور کار، لطفا به موقع به آن رسیدگی کنید.',
+                            '</a> تیکت پشتیبانی، لطفا به موقع به آن رسیدگی کنید.',
                     ],
                     []
                 );

@@ -127,187 +127,371 @@
                     <div class="card">
                         <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                <a href="#sub" class="nav-link active" data-bs-toggle="tab">
-                                    <i class="ti ti-rss icon"></i>
-                                    &nbsp;Universal Subscription
-                                </a>
-                            </li>
-                            {if $public_setting['enable_traditional_sub']}
-                                <li class="nav-item">
-                                    <a href="#traditional-sub" class="nav-link" data-bs-toggle="tab">
-                                        <i class="ti ti-rss icon"></i>
-                                        &nbsp;traditional subscription
-                                    </a>
-                                </li>
-                            {/if}
-                            <li class="nav-item">
-                                <a href="#windows" class="nav-link" data-bs-toggle="tab">
-                                    <i class="ti ti-brand-windows icon"></i>
-                                    &nbsp;Windows
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#macos" class="nav-link" data-bs-toggle="tab">
-                                    <i class="ti ti-brand-finder icon"></i>
-                                    &nbsp;MacOS
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#android" class="nav-link" data-bs-toggle="tab">
+                                <a href="#android" class="nav-link active" data-bs-toggle="tab">
                                     <i class="ti ti-brand-android icon"></i>
-                                    &nbsp;Android
+                                    &nbsp;اندروید
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#ios" class="nav-link" data-bs-toggle="tab">
                                     <i class="ti ti-brand-apple icon"></i>
-                                    &nbsp;iOS
+                                    &nbsp;آی او اس
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#windows" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-brand-windows icon"></i>
+                                    &nbsp;ویندوز
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#macos" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-brand-finder icon"></i>
+                                    &nbsp;مک
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#linux" class="nav-link" data-bs-toggle="tab">
                                     <i class="ti ti-brand-redhat icon"></i>
-                                    &nbsp;Linux
+                                    &nbsp;لینوکس
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#sub" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-rss icon"></i>
+                                    &nbsp;تمامی کانفیگ ها
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#config" class="nav-link" data-bs-toggle="tab">
                                     <i class="ti ti-file-text icon"></i>
-                                    &nbsp;Config
+                                    &nbsp;اطلاعات اتصال
                                 </a>
                             </li>
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane active show" id="sub">
-                                    <div>
-                                        <p>
-                                            Universal Subscription（json）：<code>{$UniversalSub}/json</code>
-                                        </p>
-                                        <p>
-                                            Universal Subscription（clash）：<code>{$UniversalSub}/clash</code>
-                                        </p>
-                                        {if $public_setting['enable_ss_sub']}
-                                            <p>
-                                                اشتراک هوشمند（sip008）：<code>{$UniversalSub}/sip008</code>
-                                            </p>
-                                        {/if}
-                                        <div class="btn-list justify-content-start">
-                                            <a data-clipboard-text="{$UniversalSub}/json"
-                                               class="copy btn btn-primary">
-                                                Copy Universal Subscription（json）
-                                            </a>
-                                            <a data-clipboard-text="{$UniversalSub}/clash"
-                                               class="copy btn btn-primary">
-                                                Copy Universal Subscription（clash）
-                                            </a>
-                                            {if $public_setting['enable_ss_sub']}
-                                                <a data-clipboard-text="{$UniversalSub}/sip008"
-                                                   class="copy btn btn-primary">
-                                                    اشتراک هوشمند را کپی کنید（sip008）
-                                                </a>
-                                            {/if}
-                                        </div>
-                                    </div>
-                                </div>
-                                {if $public_setting['enable_traditional_sub']}
-                                    <div class="tab-pane show" id="traditional-sub">
-                                        <div>
-                                            {if $public_setting['enable_ss_sub']}<p>
-                                                اشتراک قدیمی（Shadowsocks）：<code>{$TraditionalSub}?ss=1</code></p><p>
-                                                اشتراک قدیمی（Shadowsocks SIP002）：<code>{$TraditionalSub}?sip002=1</code>
-                                            </p>
-                                            {/if}
-                                            {if $public_setting['enable_v2_sub']}<p>
-                                                اشتراک قدیمی（V2Ray）：<code>{$TraditionalSub}?v2ray=1</code></p>
-                                            {/if}
-                                            {if $public_setting['enable_trojan_sub']}<p>
-                                                اشتراک قدیمی（Trojan）：<code>{$TraditionalSub}?trojan=1</code></p>
-                                            {/if}
-                                            <div class="btn-list justify-content-start">
-                                                {if $public_setting['enable_ss_sub']}<a data-clipboard-text="{$TraditionalSub}?ss=1"class="copy btn btn-primary">اشتراک سنتی را کپی کنید（Shadowsocks）</a><a data-clipboard-text="{$TraditionalSub}?sip002=1" class="copy btn btn-primary">
-                                                    اشتراک سنتی را کپی کنید（Shadowsocks SIP002）
-                                                </a>
-                                                {/if}
-                                                {if $public_setting['enable_v2_sub']}<a data-clipboard-text="{$TraditionalSub}?v2ray=1"class="copy btn btn-primary">اشتراک سنتی را کپی کنید（V2Ray）</a>
-                                                {/if}
-                                                {if $public_setting['enable_trojan_sub']}<a data-clipboard-text="{$TraditionalSub}?trojan=1"class="copy btn btn-primary">اشتراک سنتی را کپی کنید（Trojan）</a>
-                                                {/if}
-                                                <a href="/clients/v2rayN-Core.zip"
-                                                   class="btn btn-primary">
-                                                    دانلود v2rayN（Windows）
-                                                </a>
-                                                <a href="/clients/v2rayNG.apk"
-                                                   class="btn btn-primary">
-                                                    دانلود v2rayNG（Android）
-                                                </a>
+                                <div class="tab-pane" id="sub">
+                                    <div class="page-body">
+                                        <div class="container-xl">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="accordion" id="config-accordion">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header" id="heading-1">
+                                                                <button class="accordion-button " type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#collapse-1" aria-expanded="true">
+                                                                    CLASH (هوشمند)
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapse-1"
+                                                                class="accordion-collapse collapse show"
+                                                                data-bs-parent="#config-accordion">
+                                                                <div class="accordion-body pt-0">
+                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                        سازگار با کلش متا:</strong>
+
+                                                                    <p>
+                                                                        <br>
+                                                                        <code>{$UniversalSub}/clash</code>
+                                                                    </p>
+                                                                    <a data-clipboard-text="{$UniversalSub}/clash"
+                                                                        class="copy btn btn-primary">
+                                                                        کپی لینک اشتراک
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header" id="heading-2">
+                                                                <button class="accordion-button collapsed" type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#collapse-2" aria-expanded="false">
+                                                                    JSON (هوشمند)
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapse-2" class="accordion-collapse collapse"
+                                                                data-bs-parent="#config-accordion">
+                                                                <div class="accordion-body pt-0">
+                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                        سازگار با JSON: </strong>
+                                                                    <p>
+                                                                        <br>
+                                                                        <code>{$UniversalSub}/json</code>
+                                                                    </p>
+                                                                    <a data-clipboard-text="{$UniversalSub}/json"
+                                                                        class="copy btn btn-primary">
+                                                                        کپی لینک اشتراک
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {if $public_setting['enable_ss_sub']}
+                                                            <div class="accordion-item">
+                                                                <h2 class="accordion-header" id="heading-3">
+                                                                    <button class="accordion-button collapsed" type="button"
+                                                                        data-bs-toggle="collapse"
+                                                                        data-bs-target="#collapse-3" aria-expanded="false">
+                                                                        SIP008 (هوشمند)
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="collapse-3" class="accordion-collapse collapse"
+                                                                    data-bs-parent="#config-accordion">
+                                                                    <div class="accordion-body pt-0">
+                                                                        <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                            سازگار با SIP008:</strong>
+                                                                        <p>
+                                                                            <br>
+                                                                            <code>{$UniversalSub}/sip008</code>
+                                                                        </p>
+
+                                                                        <a data-clipboard-text="{$UniversalSub}/sip008"
+                                                                            class="copy btn btn-primary">
+                                                                            کپی لینک اشتراک
+                                                                        </a>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {/if}
+                                                        {if $public_setting['enable_traditional_sub']}
+                                                            {if $public_setting['enable_v2_sub']}<p>
+                                                                <div class="accordion-item">
+                                                                    <h2 class="accordion-header" id="heading-4">
+                                                                        <button class="accordion-button collapsed" type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            data-bs-target="#collapse-4" aria-expanded="false">
+                                                                            V2Ray (سنتی)
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="collapse-4" class="accordion-collapse collapse"
+                                                                        data-bs-parent="#config-accordion">
+                                                                        <div class="accordion-body pt-0">
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                                سازگار با V2Ray: </strong>
+                                                                            <p>
+                                                                                <br>
+                                                                                <code>{$TraditionalSub}?v2ray=1</code>
+                                                                            </p>
+                                                                            <a data-clipboard-text="{$TraditionalSub}?v2ray=1"
+                                                                                class="copy btn btn-primary">
+                                                                                کپی لینک اشتراک
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {/if}
+                                                            {if $public_setting['enable_trojan_sub']}<p>
+                                                                <div class="accordion-item">
+                                                                    <h2 class="accordion-header" id="heading-5">
+                                                                        <button class="accordion-button collapsed" type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            data-bs-target="#collapse-5" aria-expanded="false">
+                                                                            Trojan (سنتی)
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="collapse-5" class="accordion-collapse collapse"
+                                                                        data-bs-parent="#config-accordion">
+                                                                        <div class="accordion-body pt-0">
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                                سازگار با Trojan: </strong>
+                                                                            <p>
+                                                                                <br>
+                                                                                <code>{$TraditionalSub}?trojan=1</code>
+                                                                            </p>
+                                                                            <a data-clipboard-text="{$TraditionalSub}?trojan=1"
+                                                                                class="copy btn btn-primary">
+                                                                                کپی لینک اشتراک
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {/if}
+                                                            {if $public_setting['enable_ss_sub']}<p>
+                                                                <div class="accordion-item">
+                                                                    <h2 class="accordion-header" id="heading-6">
+                                                                        <button class="accordion-button collapsed" type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            data-bs-target="#collapse-6" aria-expanded="false">
+                                                                            Shadowsocks (سنتی)
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="collapse-6" class="accordion-collapse collapse"
+                                                                        data-bs-parent="#config-accordion">
+                                                                        <div class="accordion-body pt-0">
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                                سازگار با Shadowsocks: </strong>
+                                                                            <p>
+                                                                                <br>
+                                                                                <code>{$TraditionalSub}?ss=1</code>
+                                                                            </p>
+                                                                            <a data-clipboard-text="{$TraditionalSub}?ss=1"
+                                                                                class="copy btn btn-primary">
+                                                                                Shadowsocks کپی لینک اشتراک
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="accordion-body pt-0">
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                                سازگار با Shadowsocks SIP002: </strong>
+                                                                            <p>
+                                                                                <br>
+                                                                                <code>{$TraditionalSub}?sip002=1</code>
+                                                                            </p>
+                                                                            <a data-clipboard-text="{$TraditionalSub}?sip002=1"
+                                                                                class="copy btn btn-primary">
+                                                                                Shadowsocks SIP002 کپی لینک اشتراک
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {/if}
+
+                                                        {/if}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                {/if}
+                                </div>
                                 <div class="tab-pane" id="windows">
-                                    <div>
-                                        <p>
-                                            لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
-                                        </p>
-                                        <p>
-                                        متاسفانه در حال حاضر 
-                                        </p>
-                                        <div class="btn-list justify-content-start">
-                                            <a data-clipboard-text="{$UniversalSub}/clash"
-                                               class="copy btn btn-primary">
-                                                کپی لینک اشتراک کلش
-                                            </a>
-                                            <a href="/clients/Clash.Verge.msi"
-                                               class="btn btn-primary">
-                                                دانلود Clash Verge
-                                            </a>
-                                            <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                               class="btn btn-primary">
-                                                افزودن به کلش
-                                            </a>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="windows-accordion">
+                                            <h2 class="accordion-header" id="heading-1">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapse-1"
+                                                    aria-expanded="false">
+                                                    CLASH (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="collapse-1" class="accordion-collapse collapse"
+                                                data-bs-parent="#windows-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                        سازگار با کلش متا:</strong>
+                                                    <br>
+                                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از لینک های
+                                                    زیر
+                                                    دانلود
+                                                    کنید.
+
+
+                                                    <div class="btn-list justify-content-start">
+                                                        <a href="/clients/Clash.Verge.msi" class="btn btn-primary">
+                                                            دانلود
+                                                        </a>
+                                                    </div>
+
+                                                    <br>
+                                                    <p>
+                                                        حال کافیست تا بر روی دکمه زیر کلیک کنید و با مشاهده پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به نرم
+                                                        افزار Clash
+                                                        Verge
+                                                        افزوده شود.
+
+                                                    <div class="btn-list justify-content-start">
+
+
+                                                        <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                            class="btn btn-primary">
+                                                            افزودن خودکار به Clash Verge
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="windows-accordion">
+                                            <h2 class="accordion-header" id="heading-2">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapse-2"
+                                                    aria-expanded="false">
+                                                    V2rayN
+                                                </button>
+                                            </h2>
+                                            <div id="collapse-2" class="accordion-collapse collapse"
+                                                data-bs-parent="#windows-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <strong>جهت استفاده در کلاینت v2rayN:</strong>
+                                                    <br>
+                                                    <br>
+                                                    ابتدا نرم افزار v2rayN را با توجه به نوع سیستم عامل از لینک های
+                                                    زیر
+                                                    دانلود
+                                                    کنید.
+
+
+                                                    <div class="btn-list justify-content-start">
+                                                        <a href="/clients/v2rayN-Core.zip" class="btn btn-primary">
+                                                            دانلود v2rayN（Windows）
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <p>
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="macos">
+
+                                    <p>
+                                        ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از لینک های زیر دانلود
+                                        کنید.
+                                    </p>
+                                    <div class="btn-list justify-content-start">
+                                        <a href="/clients/Clash.Verge_x64.dmg" class="btn btn-primary">
+                                            دانلود (x86_64)
+                                        </a>
+                                        <a href="/clients/Clash.Verge_aarch64.dmg" class="btn btn-primary">
+                                            دانلود (aarch64)
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <p>
+                                        حال کافیست تا بر روی دکمه زیر کلیک کنید و با مشاهده پنجره باز شده در مرورگر بر
+                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به نرم افزار Clash Verge
+                                        افزوده شود.
+
+                                    <div class="btn-list justify-content-start">
+
+
+                                        <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                            class="btn btn-primary">
+                                            افزودن به Clash Verge
+                                        </a>
+                                    </div>
+                                    </p>
                                     <p>
                                         لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
-                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                           class="copy btn btn-primary">
+                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
-                                        </a>
-                                        <a href="/clients/Clash.Verge_aarch64.dmg"
-                                           class="btn btn-primary">
-                                            دانلود Clash Verge (aarch64)
-                                        </a>
-                                        <a href="/clients/Clash.Verge_x64.dmg"
-                                           class="btn btn-primary">
-                                            دانلود Clash Verge (x86_64)
-                                        </a>
-                                        <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
-                                            افزودن به کلش
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="android">
-                                    <p>
-                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
-                                    </p>
+                                <div class="tab-pane active show" id="android">
                                     <div class="btn-list justify-content-start">
-                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                           class="copy btn btn-primary">
+                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
                                         </a>
-                                        <a href="/clients/Clash-Android.apk"
-                                           class="btn btn-primary">
+                                        <a href="/clients/Clash-Android.apk" class="btn btn-primary">
                                             دانلود Clash for Android
                                         </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                            class="btn btn-primary">
                                             افزودن به کلش
+                                        </a>
+                                        <a href="/clients/v2rayNG.apk" class="btn btn-primary">
+                                            دانلود v2rayNG（Android）
                                         </a>
                                     </div>
                                 </div>
@@ -316,19 +500,19 @@
                                         اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <p>
-                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>کپی لینک اشتراک کلش</code>را فشار دهید و سپس کلاینت سازگار با کلش را برای افزودن باز کنید.
+                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>کپی لینک اشتراک
+                                            کلش</code>را فشار دهید و سپس کلاینت سازگار با کلش را برای افزودن باز کنید.
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
-                                           class="btn btn-primary">
+                                            class="btn btn-primary">
                                             Stash را بخرید
                                         </a>
-                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                           class="copy btn btn-primary">
+                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
                                         </a>
                                         <a href="stash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                            class="btn btn-primary">
                                             افزودن به stash
                                         </a>
                                     </div>
@@ -338,16 +522,14 @@
                                         لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
-                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                           class="copy btn btn-primary">
+                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
                                         </a>
-                                        <a href="/clients/Clash.Verge.AppImage.tar.gz"
-                                           class="btn btn-primary">
+                                        <a href="/clients/Clash.Verge.AppImage.tar.gz" class="btn btn-primary">
                                             دانلود Clash Verge
                                         </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                            class="btn btn-primary">
                                             افزودن به کلش
                                         </a>
                                     </div>
@@ -357,22 +539,22 @@
                                     <div class="table-responsive">
                                         <table class="table table-vcenter card-table">
                                             <tbody>
-                                            <tr>
-                                                <td><strong>پورت</strong></td>
-                                                <td>{$user->port}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>رمز اتصال</strong></td>
-                                                <td>{$user->passwd}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>UUID</strong></td>
-                                                <td>{$user->uuid}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>رمزنگاری سفارشی</strong></td>
-                                                <td>{$user->method}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td><strong>پورت</strong></td>
+                                                    <td>{$user->port}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>رمز اتصال</strong></td>
+                                                    <td>{$user->passwd}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>UUID</strong></td>
+                                                    <td>{$user->uuid}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>رمزنگاری سفارشی</strong></td>
+                                                    <td>{$user->method}</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -416,7 +598,7 @@
                             </div>
                             <p class="my-3">
                                 {if time() > strtotime($user->class_expire)}
-                                    بسته شما منقضی شده است، لطفا جهت خرید بسته به  
+                                    بسته شما منقضی شده است، لطفا جهت خرید بسته به
                                     <a href="/user/product">فروشگاه</a>
                                     مراجعه نمایید.
                                 {else}
@@ -433,17 +615,17 @@
                             <i class="ti ti-bell-ringing icon"></i>
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title">آخرین اطلاعیه 
-                            {if $ann !== null}
-                            <span class="card-subtitle">{$ann->date}</span>
-                            {/if}
+                            <h3 class="card-title">آخرین اطلاعیه
+                                {if $ann !== null}
+                                    <span class="card-subtitle">{$ann->date}</span>
+                                {/if}
                             </h3>
                             <p class="text-secondary">
-                            {if $ann !== null}
-                                {$ann->content}
-                            {else}
-                                هنوز اطلاعیه ای وجود ندارد
-                            {/if}
+                                {if $ann !== null}
+                                    {$ann->content}
+                                {else}
+                                    هنوز اطلاعیه ای وجود ندارد
+                                {/if}
                             </p>
                         </div>
                     </div>
@@ -459,9 +641,9 @@
                             <div class="card-body">
                                 <h3 class="card-title">ترافیک هدیه ورود روزانه</h3>
                                 <p>
-                                    جهت دریافت حجم هدیه بین 
+                                    جهت دریافت حجم هدیه بین
                                     {if $config['checkinMin'] !== $config['checkinMax']}
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> 至 <code>{$config['checkinMax']} MB</code>
+                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
                                         ترافیک در محدوده
                                     {else}
                                         <code>{$config['checkinMin']} MB</code>
@@ -475,30 +657,27 @@
                             <div class="card-footer">
                                 <div class="d-flex">
                                     {if ! $user->isAbleToCheckin()}
-                                    <button id="check-in" class="btn btn-primary ms-auto" disabled>وارد شدن</button>
+                                        <button id="check-in" class="btn btn-primary ms-auto" disabled>وارد شدن</button>
                                     {else}
-                                    {if $public_setting['enable_checkin_captcha']}
-                                        {if $public_setting['captcha_provider'] === 'turnstile'}
-                                            <div id="cf-turnstile" class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}"
-                                            {if $user->is_dark_mode}
-                                                 data-theme="dark"
-                                            {else}
-                                                 data-theme="light"
+                                        {if $public_setting['enable_checkin_captcha']}
+                                            {if $public_setting['captcha_provider'] === 'turnstile'}
+                                                <div id="cf-turnstile" class="cf-turnstile"
+                                                    data-sitekey="{$captcha['turnstile_sitekey']}" {if $user->is_dark_mode}
+                                                    data-theme="dark" {else} data-theme="light" 
+                                                    {/if}></div>
                                             {/if}
-                                            ></div>
+                                            {if $public_setting['captcha_provider'] === 'geetest'}
+                                                <div id="geetest"></div>
+                                            {/if}
                                         {/if}
-                                        {if $public_setting['captcha_provider'] === 'geetest'}
-                                            <div id="geetest"></div>
-                                        {/if}
-                                    {/if}
-                                    <button id="check-in" class="btn btn-primary ms-auto">بررسی</button>
+                                        <button id="check-in" class="btn btn-primary ms-auto">بررسی</button>
                                     {/if}
                                 </div>
                             </div>
                         </div>
                     </div>
                 {/if}
-                
+
             </div>
         </div>
     </div>
@@ -514,7 +693,7 @@
             $.ajax({
                 type: "POST",
                 url: "/user/checkin",
-                dataType: "json",              
+                dataType: "json",
                 data: {
                     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
                         {if $public_setting['captcha_provider'] === 'turnstile'}
@@ -550,8 +729,8 @@
                     captchaId: '{$captcha['geetest_id']}',
                     product: 'float',
                     language: "zho",
-                    riskType:'slide'
-                }, function (geetest) {
+                    riskType: 'slide'
+                }, function(geetest) {
                     geetest.appendTo("#geetest");
                     geetest.onSuccess(function() {
                         geetest_result = geetest.getValidate();

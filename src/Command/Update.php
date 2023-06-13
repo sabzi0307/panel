@@ -91,7 +91,7 @@ END;
         echo "migration complete.\n";
 
         // 更新 GeoLite2 数据库
-        if ($_ENV['maxmind_license_key'] !== '') {
+        if ($_ENV['maxmind_license_key'] !== '' || $_ENV['maxmind_license_key'] !== 'local') {
             echo "Updating GeoLite2 database...\n";
             $client = new Client([
                 'license_key' => $_ENV['maxmind_license_key'],

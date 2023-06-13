@@ -16,7 +16,7 @@ final class Reply
         $text = [
             'وضعیت ترافیک فعلی شما:',
             '',
-            'امروزه استفاده می شود ' . $user->todayUsedTrafficPercent() . '% ：' . $user->todayUsedTraffic(),
+            'امروز استفاده شده ' . $user->todayUsedTrafficPercent() . '% ：' . $user->todayUsedTraffic(),
             'قبل استفاده شده ' . $user->lastUsedTrafficPercent() . '% ：' . $user->lastUsedTraffic(),
             'ترافیک تقریباً باقی مانده است ' . $user->unusedTrafficPercent() . '% ：' . $user->unusedTraffic(),
         ];

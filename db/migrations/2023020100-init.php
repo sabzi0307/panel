@@ -241,9 +241,9 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `stream_media` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                `node_id` int(11) DEFAULT NULL COMMENT '节点id',
-                `result` text DEFAULT NULL COMMENT '检测结果',
-                `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+                `node_id` int(11) DEFAULT NULL COMMENT 'node id',
+                `result` text DEFAULT NULL COMMENT 'Test results',
+                `created_at` int(11) DEFAULT NULL COMMENT 'created time',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

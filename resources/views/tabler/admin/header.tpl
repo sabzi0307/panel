@@ -148,7 +148,7 @@
                                         <i class="ti ti-brand-hipchat icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        اقدام
+                                        پشتیبانی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -158,7 +158,7 @@
                                     </a>
                                     <a class="dropdown-item" href="/admin/ticket">
                                         <i class="ti ti-messages"></i>&nbsp;
-                                        دستور کار
+                                        تیکت
                                     </a>
                                 </div>
                             </li>
@@ -169,7 +169,7 @@
                                         <i class="ti ti-address-book icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        ورود به سیستم
+                                        سوابق و گزارش ها
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">

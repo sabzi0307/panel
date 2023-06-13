@@ -83,10 +83,9 @@ html, body, h1, h2 {
   margin: 0 calc(var(--tblr-btn-padding-x)/ -4) 0 calc(var(--tblr-btn-padding-x)/ 2);
 }
 
-.btn-primary .btn-icon .icon{
+.ti-plus {
   margin: unset !important;
 }
-
 
 .fbtn-container {
   Right: unset;

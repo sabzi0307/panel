@@ -127,13 +127,6 @@ final class LinkController extends BaseController
             } else {
                 $server = $node_custom_config['server_user'];
             }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
-                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
-                    $server = $ip;
-                } elseif ($ip === "auto") {
-                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                }
-            }
 
             if ((int) $node_raw->sort === 0) {
                 $links .= base64_encode($user->method . ':' . $user->passwd . '@' . $server . ':' . $user->port) . '#' .
@@ -168,13 +161,6 @@ final class LinkController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
-            }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
-                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
-                    $server = $ip;
-                } elseif ($ip === "auto") {
-                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                }
             }
             if ((int) $node_raw->sort === 0) {
                 $plugin = $node_custom_config['plugin'] ?? '';
@@ -212,13 +198,6 @@ final class LinkController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
-            }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
-                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
-                    $server = $ip;
-                } elseif ($ip === "auto") {
-                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                }
             }
             if ((int) $node_raw->sort === 11) {
                 $v2_port = $node_custom_config['v2_port'] ?? ($node_custom_config['offset_port_user']
@@ -276,13 +255,6 @@ final class LinkController extends BaseController
                 $server = $node_raw->server;
             } else {
                 $server = $node_custom_config['server_user'];
-            }
-            if ($_ENV['cleanIP_enable'] && isset($ip)) {
-                if (Tools::isIPv4($ip) || Tools::isIPv6($ip)) {
-                    $server = $ip;
-                } elseif ($ip === "auto") {
-                    $server = Tools::getServerAddr($_SERVER['REMOTE_ADDR']);
-                }
             }
             if ((int) $node_raw->sort === 14) {
                 $trojan_port = $node_custom_config['trojan_port'] ?? ($node_custom_config['offset_port_user']

@@ -25,7 +25,7 @@
                                 <a href="#personal_information" class="nav-link active" data-bs-toggle="tab"
                                     aria-selected="true" role="tab">
                                     <i class="ti ti-chart-candle icon"></i>&nbsp;
-                                    اطلاعات
+                                    اطلاعات کاربری
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -39,14 +39,14 @@
                                 <a href="#use_safety" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                     tabindex="-1" role="tab">
                                     <i class="ti ti-brand-telegram icon"></i>&nbsp;
-                                    استفاده
+                                    اشتراک
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="#other_settings" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                     tabindex="-1" role="tab">
                                     <i class="ti ti-settings icon"></i>&nbsp;
-                                    دیگر
+                                    سایر
                                 </a>
                             </li>
                         </ul>
@@ -57,7 +57,7 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">ورود به ایمیل</h3>
+                                                    <h3 class="card-title">ایمیل ورود به حساب</h3>
                                                     <p>ایمیل فعلی：<code>{$user->email}</code></p>
                                                     <div class="mb-3">
                                                         <input id="new-email" type="email" class="form-control"
@@ -75,10 +75,10 @@
                                                         {if $public_setting['reg_email_verify'] && $config['enable_change_email']}
                                                         <a id="email-verify" class="btn btn-link">دریافت کد تایید</a>
                                                         <button id="modify-email"
-                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</button>
+                                                            class="btn btn-primary ms-auto">تغییر ایمیل</button>
                                                         {elseif $config['enable_change_email']}
                                                         <button id="modify-email"
-                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</button>
+                                                            class="btn btn-primary ms-auto">تغییر ایمیل</button>
                                                         {else}
                                                         <button id="modify-email" class="btn btn-primary ms-auto"
                                                             disabled>تغییر مجاز نیست</button>
@@ -108,12 +108,12 @@
                                                     <div class="mb-3">
                                                         <input id="imvalue" type="text" class="form-control" 
                                                             {if $user->im_type === 4} disabled="" {/if}
-                                                            value="{$user->im_value}" placeholder="حساب اجتماعی">
+                                                            value="{$user->im_value}" placeholder="حساب شبکه های اجتماعی">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-im" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                        <a id="modify-im" class="btn btn-primary ms-auto">تغییر حساب اجتماعی</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,7 +130,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-username" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                        <a id="modify-username" class="btn btn-primary ms-auto">تغییر شناسه کاربری</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,7 +224,7 @@
                                                                     <option value="0">استفاده نشود</option>
                                                                     <option value="1"
                                                                         {if $user->ga_enable === '1'}selected{/if}>
-                                                                        با احراز هویت دو مرحله ای وارد شوید
+                                                                        استفاده از احراز هویت ۲ مرحله ای
                                                                     </option>
                                                                 </select>
                                                             </div>
@@ -275,7 +275,7 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="modify-login-passwd"
-                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                            class="btn btn-primary ms-auto">تغییر رمز عبور</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -302,7 +302,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-user-method" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                        <a id="modify-user-method" class="btn btn-primary ms-auto">اعمال تغییرات</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -344,17 +344,17 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">فشار مصرف روزانه</h3>
+                                                    <h3 class="card-title">گزارش مصرف روزانه</h3>
                                                     <div class="mb-3">
                                                         <select id="daily-report" class="form-select">
                                                             <option value="0" {if $user->sendDailyMail === 0}selected{/if}>
-                                                                نفرست
+                                                                ارسال نشود
                                                             </option>
                                                             <option value="1" {if $user->sendDailyMail === 1}selected{/if}>
-                                                                دریافت پستی
+                                                                ارسال به ایمیل
                                                             </option>
                                                             <option value="2" {if $user->sendDailyMail === 2}selected{/if}>
-                                                                Telegram Bot به عهده گرفتن
+                                                                ارسال از طریق بات تلگرام
                                                             </option>
                                                         </select>
                                                     </div>
@@ -362,7 +362,7 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex">
                                                         <a id="modify-daily-report"
-                                                            class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                            class="btn btn-primary ms-auto">اعمال ویرایش</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -370,7 +370,7 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">تم را تغییر دهید</h3>
+                                                    <h3 class="card-title">پوسته سایت را تغییر دهید</h3>
                                                     <div class="mb-3">
                                                         <select id="user-theme" class="form-select">
                                                             {foreach $themes as $theme}
@@ -383,7 +383,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="d-flex">
-                                                        <a id="modify-user-theme" class="btn btn-primary ms-auto">تجدید نظر کنید</a>
+                                                        <a id="modify-user-theme" class="btn btn-primary ms-auto">اعمال ویرایش</a>
                                                     </div>
                                                 </div>
                                             </div>   

@@ -9,7 +9,7 @@
                         <span class="home-title">لیست سرویس ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">محصولات مورد نیاز خود را مرور کنید</span>
+                        <span class="home-subtitle">سرویس های خود را مرور کنید</span>
                     </div>
                 </div>
             </div>

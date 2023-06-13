@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                ￥{$today_income}
+                                                {$today_income} تومان
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی امروز
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                ￥{$yesterday_income}
+                                                {$yesterday_income} تومان
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی دیروز
@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                ￥{$this_month_income}
+                                                {$this_month_income} تومان
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی این ماه
@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                ￥{$total_income}
+                                                {$total_income} تومان
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی کل
@@ -304,7 +304,7 @@
                     opacity: 1,
                 },
                 series: [{$sts->getRawGbTodayTrafficUsage()}, {$sts->getRawGbLastTrafficUsage()}, {$sts->getRawGbUnusedTrafficUsage()}],
-                labels: ["امروزه استفاده می شود({$sts->getTodayTrafficUsage()})", "در گذشته استفاده شده({$sts->getLastTrafficUsage()})", "ترافیک باقیمانده({$sts->getUnusedTrafficUsage()})"],
+                labels: ["امروز استفاده شده({$sts->getTodayTrafficUsage()})", "در گذشته استفاده شده({$sts->getLastTrafficUsage()})", "ترافیک باقیمانده({$sts->getUnusedTrafficUsage()})"],
                 grid: {
                     strokeDashArray: 3,
                 },

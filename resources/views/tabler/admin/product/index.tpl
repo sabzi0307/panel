@@ -16,7 +16,7 @@
                     <div class="btn-list">
                         <a href="/admin/product/create" class="btn btn-primary">
                             <i class="icon ti ti-plus"></i>
-                            افزودن به
+                            افزودن
                         </a>
                     </div>
                 </div>

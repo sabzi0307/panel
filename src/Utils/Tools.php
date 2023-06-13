@@ -88,12 +88,27 @@ final class Tools
             $err_msg = 'سرویس GeoIP2 پیکربندی نشده است';
         } else {
             $geoip = new GeoIP2();
-            $city = $geoip->getCity($ip);
-            $country = $geoip->getCountry($ip);
+            try {
+                $city = $geoip->getCity($ip);
+            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
+                $city = 'ناشناخته';
+            }
+            try {
+                $country = $geoip->getCountry($ip);
+            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
+                $country = 'ناشناخته';
+            }
+            try {
+                $asn = $geoip->getAsn($ip);
+            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
+                $asn = 'ناشناخته';
+            }
+            
+            
         }
 
-        if ($city !== null) {
-            return $city . ', ' . $country;
+        if ($city !== null && $country !== null && $asn !== null) {
+            return $city . ', ' . $asn . ', ' . $country;
         }
 
         if ($country !== null) {

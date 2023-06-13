@@ -89,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
-                    <button id="create-button" type="button" class="btn btn-primary" data-bs-dismiss="modal">افزودن به</button>
+                    <button id="create-button" type="button" class="btn btn-primary" data-bs-dismiss="modal">افزودن کاربر</button>
                 </div>
             </div>
         </div>

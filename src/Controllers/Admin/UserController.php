@@ -32,7 +32,6 @@ final class UserController extends BaseController
             'ref_by' => 'دعوت شده',
             'transfer_enable' => 'محدودیت های ترافیکی',
             'transfer_used' => 'مصرف کنونی',
-            'last_day_t' => 'استفاده تجمعی',
             'class' => 'درجه',
             'reg_date' => 'زمان ثبت نام',
             'expire_in' => 'حساب منقضی شده است',
@@ -41,19 +40,19 @@ final class UserController extends BaseController
         'create_dialog' => [
             [
                 'id' => 'email',
-                'info' => 'ورود به ایمیل',
+                'info' => 'ایمیل ورود',
                 'type' => 'input',
                 'placeholder' => '',
             ],
             [
                 'id' => 'password',
-                'info' => 'رمز عبور ورود',
+                'info' => 'رمز عبور',
                 'type' => 'input',
                 'placeholder' => 'خالی بگذارید تا به صورت تصادفی تولید شود',
             ],
             [
                 'id' => 'ref_by',
-                'info' => 'دعوت شده',
+                'info' => 'کاربر دعوت کننده',
                 'type' => 'input',
                 'placeholder' => 'شناسه کاربر دعوت کننده، می تواند خالی بماند',
             ],
@@ -61,7 +60,7 @@ final class UserController extends BaseController
                 'id' => 'balance',
                 'info' => 'موجودی حساب',
                 'type' => 'input',
-                'placeholder' => '-1 به طور پیش فرض تنظیم شده است، بقیه مقادیر مشخص شده هستند',
+                'placeholder' => 'به طور پیش فرض ۱- تنظیم شده است،',
             ],
         ],
     ];

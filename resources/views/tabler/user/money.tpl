@@ -80,7 +80,7 @@
                 <div class="modal-body">
                     <div class="form-group mb-3 row">
                         <div class="col">
-                            <input id="giftcard" type="text" class="form-control" placeholder="شماره کارت هدیه را وارد کنید و روی بازخرید کلیک کنید">
+                            <input id="giftcard" type="text" class="form-control" placeholder="شماره کارت هدیه را وارد کنید و روی اعمال کلیک کنید">
                         </div>
                     </div>
                 </div>

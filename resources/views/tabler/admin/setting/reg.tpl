@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تایید ایمیل</label>
+                                    <label class="form-label col-3 col-form-label">الزام به تایید ایمیل</label>
                                     <div class="col">
                                         <select id="reg_email_verify" class="col form-select" value="{$settings['reg_email_verify']}">
                                             <option value="0" {if $settings['reg_email_verify'] === false}selected{/if}>غیرفعال</option>
@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که می‌توان یک آدرس ایمیل را در مدت اعتبار کد تأیید درخواست کرد</label>
+                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک آدرس ایمیل می تواند در مدت اعتبار کد تأیید درخواست کند</label>
                                     <div class="col">
                                         <input id="email_verify_email_limit" type="text" class="form-control" value="{$settings['email_verify_email_limit']}">
                                     </div>
@@ -97,15 +97,6 @@
                                         <select id="enable_reg_im" class="col form-select" value="{$settings['enable_reg_im']}">
                                             <option value="0" {if $settings['enable_reg_im'] === false}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_reg_im']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">به طور پیش فرض از سیستم فروشگاه جدید استفاده کنید</label>
-                                    <div class="col">
-                                        <select id="enable_reg_new_shop" class="col form-select" value="{$settings['enable_reg_new_shop']}">
-                                            <option value="0" {if $settings['enable_reg_new_shop'] == false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_reg_new_shop'] == true}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>

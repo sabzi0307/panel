@@ -87,7 +87,7 @@ final class TicketController extends BaseController
             $_ENV['appName'] . '-تیکت پاسخ داده شد',
             'warn.tpl',
             [
-                'text' => 'سلام یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.',
+                'text' => 'سلام یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت پشتیبانی</a>，لطفا آن را بررسی کنید.',
             ],
             []
         );
@@ -138,7 +138,7 @@ final class TicketController extends BaseController
             $_ENV['appName'] . '- تیکت پاسخ داده شده است',
             'warn.tpl',
             [
-                'text' => 'سلام، ChatGPT پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.',
+                'text' => 'سلام، ChatGPT پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت پشتیبانی</a>，لطفا آن را بررسی کنید.',
             ],
             []
         );
@@ -208,7 +208,7 @@ final class TicketController extends BaseController
             $_ENV['appName'] . '-تیکت بسته است',
             'warn.tpl',
             [
-                'text' => 'سلام دستور کار شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، لطفا تیکت جدید ارسال کنید.',
+                'text' => 'سلام تیکت پشتیبانی شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، لطفا تیکت جدید ارسال کنید.',
             ],
             []
         );
