@@ -87,6 +87,19 @@ html, body, h1, h2 {
   margin: unset !important;
 }
 
+.dropend .dropdown-toggle:after {
+    margin-left: unset;
+    margin-right: auto;
+    transform: rotate(42deg);
+}
+
+.dropend .dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 100%;
+  margin-right: var(--tblr-dropdown-spacer);
+  margin-left: unset;
+}
+
 .fbtn-container {
   Right: unset;
   left: 100px;

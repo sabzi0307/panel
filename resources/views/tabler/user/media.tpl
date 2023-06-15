@@ -20,43 +20,49 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="card">
-                        <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap datatable">
-                                <thead>
-                                    <tr>
-                                        <th>سرور</th>
-                                        {foreach $results['0']['unlock_item'] as $key => $value}
-                                            {if $key !== 'BilibiliChinaMainland'}
-                                                {if $key === 'BilibiliHKMCTW'}
-                                                    <th>Bilibili（هنگ کنگ، ماکائو و تایوان）</th>
-                                                {elseif $key === 'BilibiliTW'}
-                                                    <th>Bilibili（تایوان）</th>
-                                                {else}
-                                                    <th>{$key}</th>
-                                                {/if}
-                                            {/if}
-                                        {/foreach}
-                                        <th>زمان به روز رسانی</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {foreach $results as $result}
+                        {if $results != null}
+                            <div class="table-responsive">
+                                <table class="table card-table table-vcenter text-nowrap datatable">
+                                    <thead>
                                         <tr>
-                                            <td>{$result['node_name']}</td>
-                                            <td>{$result['unlock_item']['YouTube']}</td>
-                                            <td>{$result['unlock_item']['Netflix']}</td>
-                                            <td>{$result['unlock_item']['DisneyPlus']}</td>
-                                            <td>{$result['unlock_item']['BilibiliHKMCTW']}</td>
-                                            <td>{$result['unlock_item']['BilibiliTW']}</td>
-                                            <td>{$result['unlock_item']['MyTVSuper']}
-                                            <td>{$result['unlock_item']['BBC']}</td>
-                                            <td>{$result['unlock_item']['Abema']}</td>
-                                            <td>{date('Y-m-d H:i:s', $result['created_at'])}</td>
+                                            <th>سرور</th>
+                                            {foreach $results['0']['unlock_item'] as $key => $value}
+                                                {if $key !== 'BilibiliChinaMainland'}
+                                                    {if $key === 'BilibiliHKMCTW'}
+                                                        <th>Bilibili（هنگ کنگ، ماکائو و تایوان）</th>
+                                                    {elseif $key === 'BilibiliTW'}
+                                                        <th>Bilibili（تایوان）</th>
+                                                    {else}
+                                                        <th>{$key}</th>
+                                                    {/if}
+                                                {/if}
+                                            {/foreach}
+                                            <th>زمان به روز رسانی</th>
                                         </tr>
-                                    {/foreach}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {foreach $results as $result}
+                                            <tr>
+                                                <td>{$result['node_name']}</td>
+                                                <td>{$result['unlock_item']['YouTube']}</td>
+                                                <td>{$result['unlock_item']['Netflix']}</td>
+                                                <td>{$result['unlock_item']['DisneyPlus']}</td>
+                                                <td>{$result['unlock_item']['BilibiliHKMCTW']}</td>
+                                                <td>{$result['unlock_item']['BilibiliTW']}</td>
+                                                <td>{$result['unlock_item']['MyTVSuper']}
+                                                <td>{$result['unlock_item']['BBC']}</td>
+                                                <td>{$result['unlock_item']['Abema']}</td>
+                                                <td>{date('Y-m-d H:i:s', $result['created_at'])}</td>
+                                            </tr>
+                                        {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {else}
+                            <div class="card-body">
+                                <p>در حال حاضر اطلاعاتی داده ای موجود نیست.</p>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             </div>
