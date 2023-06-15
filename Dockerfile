@@ -1,4 +1,4 @@
-FROM richarvey/nginx-php-fpm:2.1.2
+FROM richarvey/nginx-php-fpm:latest
 
 LABEL maintainer="kontorol <kontorol.dev@gmail.com>"
 
