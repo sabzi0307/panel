@@ -37,14 +37,10 @@ if [ "$INIT" = true ];then
         pwdMethod="bcrypt"
     fi
 
-
     if [ -z "$salt" ];then
         echo >&2 "salt not set! "
         salt=""
     fi
-
-
-
 
     if [ -z "$debug" ];then
         echo >&2 "debug not set! using false"
@@ -611,39 +607,21 @@ else
     fi
 fi
 
-echo >&2 "Good"
-if [ "$INIT" = true ];then
+# if [ "$INIT" = true ];then
     echo -n >&2 "\nChecking if database exists..."
-
     if [ -z "$db_host" ]; then
-        if mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
-            echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
-            if [ -z "$temp_sql_result" ]; then
-                echo >&2 "Importing config to database..."
-                    composer install --no-dev
-                    composer selfupdate
-                    php xcat Migration new
-                    php xcat Tool importAllSettings
-                if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
-                    echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
-                    exit
-                else
-                echo -n >&2 "\n" 
-                    printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
-                fi
-            fi
-            # mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-            echo >&2 "Done"
-        else
-            echo >&2 "\nCould not connect to database with Database Socket..."
+        if [[ $(mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE") ]]
+        then
+            echo "Table not exists ..."
             exit
-        fi
-    else
-        if mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE" > /dev/null; then
-            echo -n >&2 "\nInitialize database..."
-            temp_sql_result=$(mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';")
-            if [ -z "$temp_sql_result" ]; then
+        else
+            echo "Table exists ..."
+            # Check if table has records    
+            if [[ $(mysql -S $DB_SOCKET -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';") ]]
+            then
+                echo "Table has records ..."
+            else
+                echo "Table is empty ..."
                 echo >&2 "Importing config to database..."
                 composer install --no-dev
                 composer selfupdate
@@ -653,36 +631,69 @@ if [ "$INIT" = true ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit
                 else
-                echo -n >&2 "\n" 
+                    echo -n >&2 "\n" 
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
+                current_dir=$(pwd)
+                crontab -l > cron.tmp
+                echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
+                crontab cron.tmp
+                rm cron.tmp
+
+                echo -n >&2 "\nApplying permissions..."
+                chown $php_user_group -R "$WEBROOT"/*
+                chmod 755 -R $WEBROOT/*
+                # chown www-data:www-data -R *
+                # chmod -R 777 storage
+
+                echo >&2 "Done"
+                exit
             fi
-            # mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        
-            echo >&2 "Done"
+        fi
+    else
+        echo -n >&2 "\nInitialize database..."
+        if [[ $(mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "USE $MYSQL_DATABASE") ]]
+        then
+            echo "Table not exists ..."
+            exit
         else
-            echo >&2 "\nCould not connect to database with Database Host..."
+            echo "Table exists ..."
+            # Check if table has records    
+            if [[ $(mysql -h $db_host -P $db_port -u $MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT user_name FROM $MYSQL_DATABASE.user WHERE user_name = 'admin';") ]]
+            then
+                echo "Table has records ..."
+            else
+                echo "Table is empty ..."
+                echo >&2 "Importing config to database..."
+                composer install --no-dev
+                composer selfupdate
+                php xcat Migration new
+                php xcat Tool importAllSettings
+                if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
+                    echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
+                    exit
+                else
+                    echo -n >&2 "\n" 
+                    printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
+                fi
+                current_dir=$(pwd)
+                crontab -l > cron.tmp
+                echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
+                crontab cron.tmp
+                rm cron.tmp
+
+                echo -n >&2 "\nApplying permissions..."
+                chown $php_user_group -R "$WEBROOT"/*
+                chmod 755 -R $WEBROOT/*
+                # chown www-data:www-data -R *
+                # chmod -R 777 storage
+
+                echo >&2 "Done"
+            fi
         fi
     fi
+# fi
 
-
-
-    current_dir=$(pwd)
-    crontab -l > cron.tmp
-    echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
-    crontab cron.tmp
-    rm cron.tmp
-
-    echo -n >&2 "\nApplying permissions..."
-    chown $php_user_group -R "$WEBROOT"/*
-    chmod 755 -R $WEBROOT/*
-    chmod 777 -R $WEBROOT/storage/framework/smarty/compile/
-    # chown www-data:www-data -R *
-    # chmod -R 777 storage
-
-    echo >&2 "Done"
-
-fi
 echo -n >&2 "\nChecking if client binaries exist..."
 
 if [ ! -d "public/clients" ]; then

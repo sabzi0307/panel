@@ -12,8 +12,10 @@ services:
         ports:
           - 80:80
           - 443:443
+          - 9003:9003
         env_file:
           - .env
+          - XDEBUG_MODE=develop,debug
         depends_on:
           ss_db:
             condition: service_healthy
