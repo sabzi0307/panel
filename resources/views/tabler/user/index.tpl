@@ -127,43 +127,43 @@
                     <div class="card">
                         <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                <a href="#android" class="nav-link active" data-bs-toggle="tab">
+                                {if $os eq "Droid"}<a href="#android" class="nav-link active" data-bs-toggle="tab">{else}<a href="#android" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-brand-android icon"></i>
                                     &nbsp;اندروید
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#ios" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "iPhone" or $os eq "iPad"}<a href="#ios" class="nav-link active" data-bs-toggle="tab">{else}<a href="#ios" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-brand-apple icon"></i>
                                     &nbsp;آی او اس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#windows" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "Windows"}<a href="#windows" class="nav-link active" data-bs-toggle="tab">{else}<a href="#windows" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-brand-windows icon"></i>
                                     &nbsp;ویندوز
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#macos" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "Mac"}<a href="#macos" class="nav-link active" data-bs-toggle="tab">{else}<a href="#macos" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-brand-finder icon"></i>
                                     &nbsp;مک
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#linux" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "Linux"}<a href="#linux" class="nav-link active" data-bs-toggle="tab">{else}<a href="#linux" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-brand-redhat icon"></i>
                                     &nbsp;لینوکس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sub" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "Unknown"}<a href="#sub" class="nav-link active" data-bs-toggle="tab">{else}<a href="#sub" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-rss icon"></i>
                                     &nbsp;تمامی کانفیگ ها
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#config" class="nav-link" data-bs-toggle="tab">
+                                {if $os eq "Unix"}<a href="#config" class="nav-link active" data-bs-toggle="tab">{else}<a href="#config" class="nav-link" data-bs-toggle="tab">{/if}
                                     <i class="ti ti-file-text icon"></i>
                                     &nbsp;اطلاعات اتصال
                                 </a>
@@ -171,7 +171,7 @@
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane" id="sub">
+                                {if $os eq "Unknown"}<div class="tab-pane active show" id="sub">{else}<div class="tab-pane" id="sub">{/if}
                                     <div class="page-body">
                                         <div class="container-xl">
                                             <div class="card">
@@ -355,7 +355,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="windows">
+                                {if $os eq "Windows"}<div class="tab-pane active show" id="windows">{else}<div class="tab-pane" id="windows">{/if}
                                     <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -440,8 +440,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="macos">
-
+                                {if $os eq "Mac"}<div class="tab-pane active show" id="macos">{else}<div class="tab-pane" id="macos">{/if}
                                     <p>
                                         ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از لینک های زیر دانلود
                                         کنید.
@@ -478,7 +477,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane active show" id="android">
+                                {if $os eq "Droid"}<div class="tab-pane active show" id="android">{else}<div class="tab-pane" id="android">{/if}
                                     <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
@@ -495,7 +494,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="ios">
+                                {if $os eq "iPhone" or $os eq "iPad"}<div class="tab-pane active show" id="ios">{else}<div class="tab-pane" id="ios">{/if}
                                     <p>
                                         اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -517,7 +516,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="linux">
+                                {if $os eq "Linux"}<div class="tab-pane active show" id="linux">{else}<div class="tab-pane" id="linux">{/if}
                                     <p>
                                         لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -534,7 +533,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="config">
+                                {if $os eq "Unix"}<div class="tab-pane active show" id="config">{else}<div class="tab-pane" id="config">{/if}
                                     <p>اطلاعات اتصال شما：</p>
                                     <div class="table-responsive">
                                         <table class="table table-vcenter card-table">
