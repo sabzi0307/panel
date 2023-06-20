@@ -131,3 +131,7 @@ html, body, h1, h2 {
 .form-select {
   padding-inline-start: 2.3rem;
 }
+
+.note {
+  margin: 20px;
+}

@@ -395,12 +395,14 @@
                                                         افزوده شود.
 
                                                     <div class="btn-list justify-content-start">
-
-
                                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                             class="btn btn-primary">
                                                             افزودن خودکار به Clash Verge
                                                         </a>
+                                                        <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
+                                                            آموزش استفاده از iClash
+                                                        </a>
+                                                        {include file='user/knowledge/i2RayN.tpl' ros="windows"}
                                                     </div>
                                                 </div>
                                             </div>
