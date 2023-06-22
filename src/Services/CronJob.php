@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\PasswordReset;
 use App\Models\Paylist;
 use App\Models\Setting;
+use App\Models\SharedAccount;
 use App\Models\StreamMedia;
 use App\Models\TelegramSession;
 use App\Models\User;
@@ -69,6 +70,7 @@ final class CronJob
         PasswordReset::where('expire_time', '<', time() - 86400)->delete();
         OnlineLog::where('last_time', '<', time() - 86400)->delete();
         StreamMedia::where('created_at', '<', time() - 86400)->delete();
+        SharedAccount::where('updated_at', '<', time() - 1200)->delete();
         TelegramSession::where('datetime', '<', time() - 900)->delete();
 
         echo date('Y-m-d H:i:s') . ' پاکسازی دیتابیس کامل شد' . PHP_EOL;

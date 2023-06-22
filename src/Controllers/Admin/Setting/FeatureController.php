@@ -12,6 +12,7 @@ use function json_encode;
 final class FeatureController extends BaseController
 {
     public static array $update_field = [
+        'shared_account',
         'display_media',
         'display_subscribe_log',
         'display_detect_log',

@@ -62,20 +62,29 @@ final class UserController extends BaseController
 
         // Detect Device/Operating System
 
-        if(preg_match('/Linux/i',$agent)) $os = 'Linux';
-        elseif(preg_match('/Mac/i',$agent)) $os = 'Mac'; 
-        elseif(preg_match('/iPhone/i',$agent)) $os = 'iPhone'; 
-        elseif(preg_match('/iPad/i',$agent)) $os = 'iPad'; 
-        elseif(preg_match('/Droid/i',$agent)) $os = 'Droid'; 
-        elseif(preg_match('/Unix/i',$agent)) $os = 'Unix'; 
-        elseif(preg_match('/Windows/i',$agent)) $os = 'Windows';
-        else $os = 'Unknown';
+        if (preg_match('/Linux/i', $agent))
+            $os = 'Linux';
+        elseif (preg_match('/Mac/i', $agent))
+            $os = 'Mac';
+        elseif (preg_match('/iPhone/i', $agent))
+            $os = 'iPhone';
+        elseif (preg_match('/iPad/i', $agent))
+            $os = 'iPad';
+        elseif (preg_match('/Droid/i', $agent))
+            $os = 'Droid';
+        elseif (preg_match('/Unix/i', $agent))
+            $os = 'Unix';
+        elseif (preg_match('/Windows/i', $agent))
+            $os = 'Windows';
+        else
+            $os = 'Unknown';
 
         return $response->write(
             $this->view()
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
                 ->assign('UniversalSub', SubController::getUniversalSub($this->user))
                 ->assign('TraditionalSub', LinkController::getTraditionalSub($this->user))
+                ->assign('SharedAccounts', LinkController::getSharedAccounts($this->user))
                 ->assign('captcha', $captcha)
                 ->assign('os', $os)
                 ->fetch('user/index.tpl')
@@ -225,7 +234,7 @@ final class UserController extends BaseController
         }
 
         $paybacks_sum = Payback::where('ref_by', $this->user->id)->sum('ref_get');
-        if (! $paybacks_sum) {
+        if (!$paybacks_sum) {
             $paybacks_sum = 0;
         }
 
@@ -250,7 +259,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
         }
 
-        if (! Hash::checkPassword($user->pass, $oldpwd)) {
+        if (!Hash::checkPassword($user->pass, $oldpwd)) {
             return ResponseHelper::error($response, 'خطای رمز قدیمی');
         }
 
@@ -265,7 +274,7 @@ final class UserController extends BaseController
         $hashPwd = Hash::passwordHash($pwd);
         $user->pass = $hashPwd;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -283,7 +292,7 @@ final class UserController extends BaseController
         $new_email = $antiXss->xss_clean($request->getParam('newemail'));
         $old_email = $user->email;
 
-        if (! $_ENV['enable_change_email']) {
+        if (!$_ENV['enable_change_email']) {
             return ResponseHelper::error($response, 'این مورد مجاز به تغییر توسط خودتان نیست، لطفاً برای عملیات با مدیر تماس بگیرید');
         }
 
@@ -291,7 +300,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'آدرس ایمیل وارد نشده است');
         }
 
-        if (! Tools::isEmailLegal($new_email)) {
+        if (!Tools::isEmailLegal($new_email)) {
             return $response->withJson($check_res);
         }
 
@@ -321,7 +330,7 @@ final class UserController extends BaseController
 
         $user->email = $new_email;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -335,7 +344,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->user_name = $newusername;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -364,7 +373,7 @@ final class UserController extends BaseController
         $user->im_type = $type;
         $user->im_value = $value;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -383,7 +392,7 @@ final class UserController extends BaseController
 
         $user->theme = $theme;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -394,13 +403,13 @@ final class UserController extends BaseController
     {
         $value = (int) $request->getParam('mail');
 
-        if (! in_array($value, [0, 1, 2])) {
+        if (!in_array($value, [0, 1, 2])) {
             return ResponseHelper::error($response, 'خطای پارامتر');
         }
 
         $user = $this->user;
 
-        if ($value === 2 && ! $_ENV['enable_telegram']) {
+        if ($value === 2 && !$_ENV['enable_telegram']) {
             return ResponseHelper::error(
                 $response,
                 'ویرایش انجام نشد، در حال حاضر نمی‌توان گزارش‌های روزانه را با استفاده از تلگرام دریافت کرد'
@@ -409,7 +418,7 @@ final class UserController extends BaseController
 
         $user->sendDailyMail = $value;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -422,7 +431,7 @@ final class UserController extends BaseController
         $user->uuid = Uuid::uuid4();
         $user->passwd = Tools::genRandomChar(16);
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -434,7 +443,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->api_token = Uuid::uuid4();
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -451,13 +460,13 @@ final class UserController extends BaseController
         if ($method === '') {
             ResponseHelper::error($response, 'ورودی غیرمجاز');
         }
-        if (! Tools::isParamValidate('method', $method)) {
+        if (!Tools::isParamValidate('method', $method)) {
             ResponseHelper::error($response, 'رمزگذاری نامعتبر است');
         }
 
         $user->method = $method;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');
         }
 
@@ -472,13 +481,13 @@ final class UserController extends BaseController
 
     public function doCheckIn(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (! $_ENV['enable_checkin']) {
+        if (!$_ENV['enable_checkin']) {
             return ResponseHelper::error($response, 'هنوز قادر به ورود به سیستم نیست');
         }
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $ret = Captcha::verify($request->getParams());
-            if (! $ret) {
+            if (!$ret) {
                 return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }
         }
@@ -489,7 +498,7 @@ final class UserController extends BaseController
 
         $checkin = $this->user->checkin();
 
-        if (! $checkin['ok']) {
+        if (!$checkin['ok']) {
             return ResponseHelper::error($response, (string) $checkin['msg']);
         }
 
@@ -523,7 +532,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
         }
 
-        if (! Hash::checkPassword($user->pass, $passwd)) {
+        if (!Hash::checkPassword($user->pass, $passwd)) {
             return ResponseHelper::error($response, 'رمز عبور اشتباه');
         }
 
@@ -578,7 +587,7 @@ final class UserController extends BaseController
 
         $user->is_dark_mode = $user->is_dark_mode === 1 ? 0 : 1;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'سوئیچ ناموفق بود');
         }
 

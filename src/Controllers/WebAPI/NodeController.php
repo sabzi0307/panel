@@ -7,6 +7,7 @@ namespace App\Controllers\WebAPI;
 use App\Controllers\BaseController;
 use App\Models\Node;
 use App\Models\StreamMedia;
+use App\Models\SharedAccount;
 use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -18,6 +19,26 @@ use const VERSION;
 
 final class NodeController extends BaseController
 {
+    public function saveSharedIds(ServerRequest $request, Response $response, array $args): ResponseInterface
+    {
+        $body = $request->getBody()->getContents();
+        $details = json_decode($body, true);
+        foreach($details as $item) { //foreach element in $arr
+            $ids = new SharedAccount();
+            $ids->priority = $item['priority'];
+            $ids->status = $item['status'];
+            $ids->created_at = time();
+            $ids->updated_at = $item['updated_at'];
+            $ids->account = $item['account'];
+            $ids->password = $item['password'];
+            $ids->save();
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'data' => 'ok',
+        ]);
+    }
     public function saveReport(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $node_id = $request->getParam('node_id');

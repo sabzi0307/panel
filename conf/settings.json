@@ -1361,6 +1361,16 @@
     },
     {
         "id": null,
+        "item": "shared_account",
+        "value": "0",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Display Shared Account"
+    },
+    {
+        "id": null,
         "item": "display_subscribe_log",
         "value": "0",
         "class": "feature",

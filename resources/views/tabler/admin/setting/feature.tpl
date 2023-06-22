@@ -40,6 +40,15 @@
                         <div class="tab-pane active show" id="display">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">نمایش اکانت های اشتراکی</label>
+                                    <div class="col">
+                                        <select id="shared_account" class="col form-select" value="{$settings['shared_account']}">
+                                            <option value="0" {if $settings['shared_account'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['shared_account']}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">نمایش وضعیت باز کردن قفل جریان سرور</label>
                                     <div class="col">
                                         <select id="display_media" class="col form-select" value="{$settings['display_media']}">
