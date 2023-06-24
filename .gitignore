@@ -24,7 +24,8 @@ conf/.config.php
 conf/.config.php.bak
 conf/appprofile.php
 
-public/clients/
+public/clients/*.*
+!public/clients/.gitkeep
 
 storage/framework/smarty/cache/*
 storage/framework/smarty/compile/*

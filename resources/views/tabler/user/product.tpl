@@ -38,99 +38,231 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="page-body">
-        <div class="container-xl">
+        <div class="container-xl my-4">
             <div class="row row-cards">
                 <div class="col-12">
                     <div class="card">
+                        <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+                            <li class="nav-item">
+                                <a href="#tabp" class="nav-link active" data-bs-toggle="tab">
+                                    <i class="ti ti-rotate-360 icon"></i>
+                                    &nbsp;بسته ترافیک زمانی
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#bandwidth" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-arrows-down-up icon"></i>
+                                    &nbsp;بسته ترافیک
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#time" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-clock icon"></i>
+                                    &nbsp;بسته زمانی
+                                </a>
+                            </li>
+                        </ul>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="row">
-                                    {foreach $products as $product}
-                                    <div class="col-md-3 col-sm-12 my-3">
-                                        <div class="card card-md">
-                                            {if $product->type === 'tabp'}
-                                            <div class="ribbon bg-blue">بسته ترافیک مدت دار</div>
-                                            {elseif $product->type === 'time'}
-                                            <div class="ribbon bg-blue">بسته مدت دار</div>
-                                            {else}
-                                            <div class="ribbon bg-blue">بسته ترافیک</div>
-                                            {/if}
-                                            <div class="card-body text-center">
-                                                <div id="product-{$product->id}-name"
-                                                    class="text-uppercase text-secondary font-weight-medium">
-                                                    {$product->name}</div>
-                                                <div id="product-{$product->id}-price"
-                                                    class="display-6 my-3"><p class="fw-bold">{$product->price}</p> <i class="ti ti-currency-yuan"></i>
-                                                </div>
-                                                <div class="list-group list-group-flush">
-                                                    <div class="list-group-item">
-                                                        <div class="row align-items-center">
-                                                            <div class="col text-truncate">
-                                                                <div class="text-reset d-block">Lv. {$product->content->class}</div>
-                                                                <div class="d-block text-secondary text-truncate mt-n1">سطح</div>
+                                <div class="tab-pane active show" id="tabp">
+                                    <div class="row">
+                                        {foreach $tabps as $tabp}
+                                            <div class="col-md-3 col-sm-12 my-3">
+                                                <div class="card card-md">
+                                                    <div class="card-body text-center">
+                                                        <div id="product-{$tabp->id}-name"
+                                                             class="text-uppercase text-secondary font-weight-medium">
+                                                            {$tabp->name}</div>
+                                                        <div id="product-{$tabp->id}-price"
+                                                             class="display-6 my-3">
+                                                            <p class="fw-bold">{$tabp->price}</p>
+                                                            <i class="ti ti-currency-yuan"></i>
+                                                        </div>
+                                                        <div class="list-group list-group-flush">
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">Lv. {$tabp->content->class}</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">سطح</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">{$tabp->content->class_time} روز</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">مدت زمان سطح</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">{$tabp->content->bandwidth} GB</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">ترافیک باقیمانده</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        {if $tabp->content->speed_limit === '0'}
+                                                                            <div class="text-reset d-block">بدون محدودیت</div>
+                                                                        {else}
+                                                                            <div class="text-reset d-block">{$tabp->content->speed_limit} Mbps</div>
+                                                                        {/if}
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">سرعت اتصال</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        {if $tabp->content->ip_limit === '0'}
+                                                                            <div class="text-reset d-block">بدون محدودیت</div>
+                                                                        {else}
+                                                                            <div class="text-reset d-block">{$tabp->content->ip_limit}</div>
+                                                                        {/if}
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">آی پی های متصل به طور همزمان</div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="list-group-item">
-                                                        <div class="row align-items-center">
-                                                            <div class="col text-truncate">
-                                                                <div class="text-reset d-block">{$product->content->class_time} 天</div>
-                                                                <div class="d-block text-secondary text-truncate mt-n1">مدت زمان سطح</div>
-                                                            </div>
+                                                        <div class="row g-2">
+                                                            {if $tabp->stock === -1 || $tabp->stock > 0}
+                                                                <div class="col">
+                                                                    <a href="/user/order/create?product_id={$tabp->id}"
+                                                                       class="btn btn-primary w-100 my-3">بخرید</a>
+                                                                </div>
+                                                            {else}
+                                                                <div class="col">
+                                                                    <a href="" class="btn btn-primary w-100 my-3"
+                                                                       disabled>فروخته شده</a>
+                                                                </div>
+                                                            {/if}
                                                         </div>
                                                     </div>
-                                                    <div class="list-group-item">
-                                                        <div class="row align-items-center">
-                                                            <div class="col text-truncate">
-                                                                <div class="text-reset d-block">{$product->content->bandwidth} GB</div>
-                                                                <div class="d-block text-secondary text-truncate mt-n1">ترافیک موجود</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item">
-                                                        <div class="row align-items-center">
-                                                            <div class="col text-truncate">
-                                                                {if $product->content->speed_limit === '0'}
-                                                                <div class="text-reset d-block">بدون محدودیت</div>  
-                                                                {else}
-                                                                <div class="text-reset d-block">{$product->content->speed_limit} Mbps</div>
-                                                                {/if}
-                                                                <div class="d-block text-secondary text-truncate mt-n1">سرعت اتصال</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item">
-                                                        <div class="row align-items-center">
-                                                            <div class="col text-truncate">
-                                                                {if $product->content->ip_limit === '0'}
-                                                                <div class="text-reset d-block">بدون محدودیت</div>
-                                                                {else}
-                                                                <div class="text-reset d-block">{$product->content->ip_limit}</div>
-                                                                {/if}
-                                                                <div class="d-block text-secondary text-truncate mt-n1">آی پی های متصل به طور همزمان</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2">
-                                                    {if $product->stock === -1 || $product->stock > 0}
-                                                    <div class="col">
-                                                        <a href="/user/order/create?product_id={$product->id}"
-                                                            class="btn btn-primary w-100 my-3">بخرید</a>
-                                                    </div>
-                                                    {else}
-                                                    <div class="col">
-                                                        <a href="" class="btn btn-primary w-100 my-3"
-                                                            disabled>فروخته شده</a>
-                                                    </div>
-                                                    {/if}
                                                 </div>
                                             </div>
-                                        </div>
+                                        {/foreach}
                                     </div>
-                                    {/foreach}
+                                </div>
+                                <div class="tab-pane show" id="bandwidth">
+                                    <div class="row">
+                                        {foreach $bandwidths as $bandwidth}
+                                            <div class="col-md-3 col-sm-12 my-3">
+                                                <div class="card card-md">
+                                                    <div class="card-body text-center">
+                                                        <div id="product-{$bandwidth->id}-name"
+                                                             class="text-uppercase text-secondary font-weight-medium">
+                                                            {$bandwidth->name}</div>
+                                                        <div id="product-{$bandwidth->id}-price"
+                                                             class="display-6 my-3">
+                                                            <p class="fw-bold">{$bandwidth->price}</p>
+                                                            <i class="ti ti-coin"></i>
+                                                        </div>
+                                                        <div class="list-group list-group-flush">
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">{$bandwidth->content->bandwidth} GB</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">ترافیک باقیمانده</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row g-2">
+                                                            {if $bandwidth->stock === -1 || $bandwidth->stock > 0}
+                                                                <div class="col">
+                                                                    <a href="/user/order/create?product_id={$bandwidth->id}"
+                                                                       class="btn btn-primary w-100 my-3">بخرید</a>
+                                                                </div>
+                                                            {else}
+                                                                <div class="col">
+                                                                    <a href="" class="btn btn-primary w-100 my-3"
+                                                                       disabled>فروخته شده</a>
+                                                                </div>
+                                                            {/if}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                                <div class="tab-pane show" id="time">
+                                    <div class="row">
+                                        {foreach $times as $time}
+                                            <div class="col-md-3 col-sm-12 my-3">
+                                                <div class="card card-md">
+                                                    <div class="card-body text-center">
+                                                        <div id="product-{$time->id}-name"
+                                                             class="text-uppercase text-secondary font-weight-medium">
+                                                            {$time->name}
+                                                        </div>
+                                                        <div id="product-{$time->id}-price"
+                                                             class="display-6 my-3"><p class="fw-bold">{$time->price}</p>
+                                                        </div>
+                                                        <div class="list-group list-group-flush">
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">Lv. {$time->content->class}</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">سطح</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        <div class="text-reset d-block">{$time->content->class_time} روز</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">مدت زمان سطح</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        {if $time->content->speed_limit === '0'}
+                                                                            <div class="text-reset d-block">بدون محدودیت</div>
+                                                                        {else}
+                                                                            <div class="text-reset d-block">{$time->content->speed_limit} Mbps</div>
+                                                                        {/if}
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">سرعت اتصال</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col text-truncate">
+                                                                        {if $time->content->ip_limit === '0'}
+                                                                            <div class="text-reset d-block">بدون محدودیت</div>
+                                                                        {else}
+                                                                            <div class="text-reset d-block">{$time->content->ip_limit}</div>
+                                                                        {/if}
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">آی پی های متصل به طور همزمان</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row g-2">
+                                                            {if $time->stock === -1 || $time->stock > 0}
+                                                                <div class="col">
+                                                                    <a href="/user/order/create?product_id={$time->id}"
+                                                                       class="btn btn-primary w-100 my-3">بخرید</a>
+                                                                </div>
+                                                            {else}
+                                                                <div class="col">
+                                                                    <a href="" class="btn btn-primary w-100 my-3"
+                                                                       disabled>فروخته شده</a>
+                                                                </div>
+                                                            {/if}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {/foreach}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -139,5 +271,5 @@
             </div>
         </div>
     </div>
-    
+
 {include file='user/footer.tpl'}

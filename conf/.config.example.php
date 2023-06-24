@@ -140,4 +140,3 @@ $_ENV['ai_model'] = 'gpt-3.5-turbo';
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 $_ENV['github_access_token'] = '';
 
-$_ENV['php_user_group'] = 'www:www';

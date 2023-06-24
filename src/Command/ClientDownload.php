@@ -6,15 +6,13 @@ namespace App\Command;
 
 use Exception;
 use GuzzleHttp\Client;
+use function get_current_user;
 use function json_decode;
 use function json_encode;
+use function posix_geteuid;
+use function posix_getpwuid;
 use function time;
 
-/**
- * 世界这么大，何必要让它更艰难呢？
- *
- * By GeekQuerxy
- */
 final class ClientDownload extends Command
 {
     public string $description = '├─=: php xcat ClientDownload - regularly update the client' . PHP_EOL;
@@ -42,6 +40,14 @@ final class ClientDownload extends Command
             exit(0);
         }
 
+        $runningUser = posix_getpwuid(posix_geteuid())['name'];
+        $fileOwner = get_current_user();
+
+        if ($runningUser !== $fileOwner) {
+            echo 'current user is ' . $runningUser . ', with the file owner ' . $fileOwner . ' If it does not match, the script aborts.' . PHP_EOL;
+            exit(0);
+        }
+
         $clients = json_decode(file_get_contents($clientsPath), true);
 
         foreach ($clients['clients'] as $client) {
@@ -56,18 +62,19 @@ final class ClientDownload extends Command
     {
         try {
             if (! file_exists($savePath)) {
-                echo 'target folder ' . $savePath . ' does not exist, creating...' . PHP_EOL;
-                system('mkdir ' . $savePath);
+                echo 'target folder ' . $savePath . ' does not exist, the download failed.' . PHP_EOL;
+                return false;
             }
+
             echo '- start download ' . $fileName . '...' . PHP_EOL;
             $request = $this->client->get($url);
             echo '- download ' . $fileName . ' successful, saving...' . PHP_EOL;
             $result = file_put_contents($savePath . $fileName, $request->getBody()->getContents());
+
             if ($result === false) {
                 echo '- keep ' . $fileName . ' to ' . $savePath . ' fail.' . PHP_EOL;
             } else {
                 echo '- keep ' . $fileName . ' to ' . $savePath . ' success.' . PHP_EOL;
-                system('chown ' . $_ENV['php_user_group'] . ' ' . $savePath . $fileName);
             }
 
             return true;

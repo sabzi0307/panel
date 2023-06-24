@@ -33,23 +33,23 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">نام</label>
+                                <label class="form-label col-3 col-form-label required">نام</label>
                                 <div class="col">
-                                    <input id="name" type="text" class="form-control" 
+                                    <input id="name" type="text" class="form-control"
                                         value="{$product->name}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">قیمت</label>
+                                <label class="form-label col-3 col-form-label required">قیمت</label>
                                 <div class="col">
-                                    <input id="price" type="text" class="form-control" 
+                                    <input id="price" type="text" class="form-control"
                                         value="{$product->price}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">موجودی (نامحدود زمانی که کمتر از 0 باشد)</label>
+                                <label class="form-label col-3 col-form-label required">موجودی (نامحدود زمانی که کمتر از 0 باشد)</label>
                                 <div class="col">
-                                    <input id="stock" type="text" class="form-control" 
+                                    <input id="stock" type="text" class="form-control"
                                         value="{$product->stock}">
                                 </div>
                             </div>
@@ -81,50 +81,50 @@
                             <h3 class="card-title">عنوان سرویس</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">مدت زمان سرویس (天)</label>
+                            <div id="time_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">مدت زمان سرویس (天)</label>
                                 <div class="col">
-                                    <input id="time" type="text" class="form-control" 
+                                    <input id="time" type="text" class="form-control"
                                         value="{$content->time}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سطح</label>
+                            <div id="class_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">
-                                    <input id="class" type="text" class="form-control" 
+                                    <input id="class" type="text" class="form-control"
                                         value="{$content->class}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">مدت زمان سطح (روز)</label>
+                            <div id="class_time_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">مدت زمان سطح (روز)</label>
                                 <div class="col">
-                                    <input id="class_time" type="text" class="form-control" 
+                                    <input id="class_time" type="text" class="form-control"
                                         value="{$content->class_time}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
+                            <div id="bandwidth_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">ترافیک موجود (GB)</label>
                                 <div class="col">
-                                    <input id="bandwidth" type="text" class="form-control" 
+                                    <input id="bandwidth" type="text" class="form-control"
                                         value="{$content->bandwidth}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">گروه کاربران</label>
+                            <div id="node_group_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">گروه کاربران</label>
                                 <div class="col">
-                                    <input id="node_group" type="text" class="form-control" 
+                                    <input id="node_group" type="text" class="form-control"
                                         value="{$content->node_group}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت سرعت (Mbps)</label>
+                            <div id="speed_limit_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
                                         value="{$content->speed_limit}">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت IP اتصال همزمان</label>
+                            <div id="ip_limit_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="{$content->ip_limit}">
@@ -152,7 +152,7 @@
                                     <span class="col">فقط کاربران جدید</span>
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
-                                            <input id="new_user_requried" class="form-check-input" type="checkbox" 
+                                            <input id="new_user_requried" class="form-check-input" type="checkbox"
                                                 {if $limit->new_user_required === 1}checked="" {/if}>
                                         </label>
                                     </span>
@@ -167,28 +167,95 @@
 </div>
 
 <script>
+    $(function () {
+        $("#type").change();
+    });
+
+    $("#type").on("change", function() {
+        if (this.value === "bandwidth")
+        {
+            $("#time_option").hide();
+            $("#class_option").hide();
+            $("#class_time_option").hide();
+            $("#bandwidth_option").show();
+            $("#node_group_option").hide();
+            $("#speed_limit_option").hide();
+            $("#ip_limit_option").hide();
+            $("#time").prop("required",false);
+            $("#class").prop("required",false);
+            $("#class_time").prop("required",false);
+            $("#bandwidth").prop("required",true);
+            $("#node_group").prop("required",false);
+            $("#speed_limit").prop("required",false);
+            $("#ip_limit").prop("required",false);
+        }
+        else if (this.value === "time")
+        {
+            $("#time_option").show();
+            $("#class_option").show();
+            $("#class_time_option").show();
+            $("#bandwidth_option").hide();
+            $("#node_group_option").show();
+            $("#speed_limit_option").show();
+            $("#ip_limit_option").show();
+            $("#time").prop("required",true);
+            $("#class").prop("required",true);
+            $("#class_time").prop("required",true);
+            $("#bandwidth").prop("required",false);
+            $("#node_group").prop("required",true);
+            $("#speed_limit").prop("required",true);
+            $("#ip_limit").prop("required",true);
+        }
+        else
+        {
+            $("#time_option").show();
+            $("#class_option").show();
+            $("#class_time_option").show();
+            $("#bandwidth_option").show();
+            $("#node_group_option").show();
+            $("#speed_limit_option").show();
+            $("#ip_limit_option").show();
+            $("#time").prop("required",true);
+            $("#class").prop("required",true);
+            $("#class_time").prop("required",true);
+            $("#bandwidth").prop("required",true);
+            $("#node_group").prop("required",true);
+            $("#speed_limit").prop("required",true);
+            $("#ip_limit").prop("required",true);
+        }
+    });
+
     $("#save-product").click(function() {
-        $.ajax({
-            url: '/admin/product/{$product->id}',
-            type: 'PUT',
-            dataType: "json",
-            data: {
-                {foreach $update_field as $key}
-                {$key}: $('#{$key}').val(),
-                {/foreach}
-                new_user_required: $("#new_user_required").is(":checked"),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                    window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
+        var emptyFields = $('input[required]').filter(function() {
+            return $(this).val() === '';
+        });
+
+        if (emptyFields.length > 0) {
+            $("#fail-message").text("لطفا همه قسمت های لازم را تکمیل کنید");
+            $("#fail-dialog").modal("show");
+        } else {
+            $.ajax({
+                url: '/admin/product/{$product->id}',
+                type: 'PUT',
+                dataType: "json",
+                data: {
+                    {foreach $update_field as $key}
+                    {$key}: $('#{$key}').val(),
+                    {/foreach}
+                    new_user_required: $("#new_user_required").is(":checked"),
+                },
+                success: function (data) {
+                    if (data.ret === 1) {
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                        window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});
+                    } else {
+                        $('#fail-message').text(data.msg);
+                        $('#fail-dialog').modal('show');
+                    }
                 }
-            }
-        })
+            })
+        }
     });
 </script>
 

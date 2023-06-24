@@ -347,13 +347,13 @@
                                                     <h3 class="card-title">گزارش مصرف روزانه</h3>
                                                     <div class="mb-3">
                                                         <select id="daily-report" class="form-select">
-                                                            <option value="0" {if $user->sendDailyMail === 0}selected{/if}>
+                                                            <option value="0" {if $user->daily_mail_enable === 0}selected{/if}>
                                                                 ارسال نشود
                                                             </option>
-                                                            <option value="1" {if $user->sendDailyMail === 1}selected{/if}>
+                                                            <option value="1" {if $user->daily_mail_enable === 1}selected{/if}>
                                                                 ارسال به ایمیل
                                                             </option>
-                                                            <option value="2" {if $user->sendDailyMail === 2}selected{/if}>
+                                                            <option value="2" {if $user->daily_mail_enable === 2}selected{/if}>
                                                                 ارسال از طریق بات تلگرام
                                                             </option>
                                                         </select>

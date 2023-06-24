@@ -698,12 +698,12 @@ final class Callback
                 $OpEnd = end($Operate);
 
                 if ($OpEnd === 'update') {
-                    $this->User->sendDailyMail = ($this->User->sendDailyMail === 0 ? 1 : 0);
+                    $this->User->daily_mail_enable = ($this->User->daily_mail_enable === 0 ? 1 : 0);
 
                     if ($this->User->save()) {
                         $text = 'تنظیمات با موفقیت تغییر کرد، دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
                         $text .= '<strong>';
-                        $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
+                        $text .= ($this->User->daily_mail_enable === 0 ? 'نفرست' : 'ارسال');
                         $text .= '</strong>';
                     } else {
                         $text = 'خطایی رخ داد.';
@@ -711,7 +711,7 @@ final class Callback
                 } else {
                     $text = 'دریافت روزانه ایمیل در حال حاضر تنظیم شده است：';
                     $text .= '<strong>';
-                    $text .= ($this->User->sendDailyMail === 0 ? 'نفرست' : 'ارسال');
+                    $text .= ($this->User->daily_mail_enable === 0 ? 'نفرست' : 'ارسال');
                     $text .= '</strong>';
                 }
 

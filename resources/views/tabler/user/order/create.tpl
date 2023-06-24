@@ -1,10 +1,10 @@
 {include file='user/header.tpl'}
 
 <div class="page-wrapper">
-    <div class="container-xl">        
+    <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
-                <div class="col">                   
+                <div class="col">
                     <h2 class="page-title">
                         <span class="home-title">ایجاد سفارش</span>
                     </h2>
@@ -39,10 +39,11 @@
                                         <td class="text-end">بسته ترافیک زمانی</td>
                                     {elseif $product->type === 'time'}
                                         <td class="text-end">بسته زمانی</td>
-                                    {else}
+                                    {elseif $product->type === 'bandwidth'}
                                         <td class="text-end">بسته ترافیک</td>
                                     {/if}
                                 </tr>
+                                {if $product->type === 'tabp' || $product->type === 'time'}
                                 <tr>
                                     <td>مدت زمان محصول</td>
                                     <td class="text-end">{$product->content->time} 天</td>
@@ -55,18 +56,21 @@
                                     <td>سطح</td>
                                     <td class="text-end">Lv. {$product->content->class}</td>
                                 </tr>
+                                {/if}
+                                {if $product->type === 'tabp' || $product->type === 'bandwidth'}
                                 <tr>
                                     <td>ترافیک موجود</td>
                                     <td class="text-end">{$product->content->bandwidth} GB</td>
                                 </tr>
+                                {/if}
+                                {if $product->type === 'tabp' || $product->type === 'time'}
                                 <tr>
                                     <td>محدودیت نرخ</td>
                                     {if $product->content->speed_limit === '0'}
-                                    <td class="text-end">بدون محدودیت</td>  
+                                    <td class="text-end">بدون محدودیت</td>
                                     {else}
                                     <td class="text-end">{$product->content->speed_limit} Mbps</td>
                                     {/if}
-                                    
                                 </tr>
                                 <tr>
                                     <td>محدودیت IP اتصال همزمان</td>
@@ -75,8 +79,8 @@
                                     {else}
                                     <td class="text-end">{$product->content->ip_limit}</td>
                                     {/if}
-                                    
                                 </tr>
+                                {/if}
                             </table>
                         </div>
                     </div>
@@ -178,5 +182,5 @@
             })
         });
     </script>
-    
+
 {include file='user/footer.tpl'}

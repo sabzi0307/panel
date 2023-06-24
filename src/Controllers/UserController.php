@@ -416,7 +416,7 @@ final class UserController extends BaseController
             );
         }
 
-        $user->sendDailyMail = $value;
+        $user->daily_mail_enable = $value;
 
         if (!$user->save()) {
             return ResponseHelper::error($response, 'ویرایش نشد');

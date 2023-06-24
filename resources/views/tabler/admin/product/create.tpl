@@ -1,4 +1,4 @@
-{include file='admin/header.tpl'}
+{include file="admin/header.tpl"}
 
 <div class="page-wrapper">
     <div class="container-xl">
@@ -35,19 +35,19 @@
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">نام</label>
                                 <div class="col">
-                                    <input id="name" type="text" class="form-control" value="">
+                                    <input id="name" type="text" class="form-control" value="" required>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">قیمت</label>
                                 <div class="col">
-                                    <input id="price" type="text" class="form-control" value="">
+                                    <input id="price" type="text" class="form-control" value="" required>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">موجودی (نامحدود زمانی که کمتر از 0 باشد)</label>
+                                <label class="form-label col-3 col-form-label required">موجودی (-1 نامحدود است)</label>
                                 <div class="col">
-                                    <input id="stock" type="text" class="form-control" value="">
+                                    <input id="stock" type="text" class="form-control" value="" required>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -64,8 +64,8 @@
                                 <div class="col">
                                     <select id="type" class="col form-select">
                                         <option value="tabp">بسته ترافیک زمانی</option>
-                                        <option value="time">بسته زمانی</option>
                                         <option value="bandwidth">بسته ترافیک</option>
+                                        <option value="time">بسته زمانی</option>
                                     </select>
                                 </div>
                             </div>
@@ -78,44 +78,44 @@
                             <h3 class="card-title">شرح سرویس</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">مدت زمان سرویس (روز)</label>
+                            <div id="time_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">مدت زمان سرویس (روز)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سطح</label>
+                            <div id="class_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">
                                     <input id="class" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">مدت زمان سطح (روز)</label>
+                            <div id="class_time_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">مدت زمان سطح (روز)</label>
                                 <div class="col">
                                     <input id="class_time" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">ترافیک موجود (GB)</label>
+                            <div id="bandwidth_option" class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">ترافیک باقیمانده (GB)</label>
                                 <div class="col">
                                     <input id="bandwidth" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
+                            <div id="node_group_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
+                            <div id="speed_limit_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
                                         value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
+                            <div id="ip_limit_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت IP اتصال همزمان</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
@@ -158,29 +158,96 @@
 </div>
 
 <script>
+    $(function () {
+        $("#type").change();
+    });
+
+    $("#type").on("change", function() {
+        if (this.value === "bandwidth")
+        {
+            $("#time_option").hide();
+            $("#class_option").hide();
+            $("#class_time_option").hide();
+            $("#bandwidth_option").show();
+            $("#node_group_option").hide();
+            $("#speed_limit_option").hide();
+            $("#ip_limit_option").hide();
+            $("#time").prop("required",false);
+            $("#class").prop("required",false);
+            $("#class_time").prop("required",false);
+            $("#bandwidth").prop("required",true);
+            $("#node_group").prop("required",false);
+            $("#speed_limit").prop("required",false);
+            $("#ip_limit").prop("required",false);
+        }
+        else if (this.value === "time")
+        {
+            $("#time_option").show();
+            $("#class_option").show();
+            $("#class_time_option").show();
+            $("#bandwidth_option").hide();
+            $("#node_group_option").show();
+            $("#speed_limit_option").show();
+            $("#ip_limit_option").show();
+            $("#time").prop("required",true);
+            $("#class").prop("required",true);
+            $("#class_time").prop("required",true);
+            $("#bandwidth").prop("required",false);
+            $("#node_group").prop("required",true);
+            $("#speed_limit").prop("required",true);
+            $("#ip_limit").prop("required",true);
+        }
+        else
+        {
+            $("#time_option").show();
+            $("#class_option").show();
+            $("#class_time_option").show();
+            $("#bandwidth_option").show();
+            $("#node_group_option").show();
+            $("#speed_limit_option").show();
+            $("#ip_limit_option").show();
+            $("#time").prop("required",true);
+            $("#class").prop("required",true);
+            $("#class_time").prop("required",true);
+            $("#bandwidth").prop("required",true);
+            $("#node_group").prop("required",true);
+            $("#speed_limit").prop("required",true);
+            $("#ip_limit").prop("required",true);
+        }
+    });
+
     $("#create-product").click(function() {
-        $.ajax({
-            url: '/admin/product',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                {foreach $update_field as $key}
-                {$key}: $('#{$key}').val(),
-                {/foreach}
-                new_user_required: $("#new_user_required").is(":checked"),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                    window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
+        var emptyFields = $('input[required]').filter(function() {
+            return $(this).val() === '';
+        });
+
+        if (emptyFields.length > 0) {
+            $("#fail-message").text("لطفا همه قسمت های لازم را تکمیل کنید");
+            $("#fail-dialog").modal("show");
+        } else {
+            $.ajax({
+                url: "/admin/product",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    {foreach $update_field as $key}
+                    {$key}: $("#{$key}").val(),
+                    {/foreach}
+                    new_user_required: $("#new_user_required").is(":checked"),
+                },
+                success: function (data) {
+                    if (data.ret === 1) {
+                        $("#success-message").text(data.msg);
+                        $("#success-dialog").modal("show");
+                        window.setTimeout("location.href=top.document.referrer", {$config["jump_delay"]});
+                    } else {
+                        $("#fail-message").text(data.msg);
+                        $("#fail-dialog").modal("show");
+                    }
                 }
-            }
-        })
+            })
+        }
     });
 </script>
 
-{include file='admin/footer.tpl'}
+{include file="admin/footer.tpl"}
