@@ -402,7 +402,8 @@
                                                         <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
                                                             آموزش استفاده از iClash
                                                         </a>
-                                                        {include file='user/knowledge/i2RayN.tpl' ros="windows"}
+
+                                                        {include file='user/knowledge/shadowRocket.tpl' results=$SharedAccounts}
                                                     </div>
                                                 </div>
                                             </div>

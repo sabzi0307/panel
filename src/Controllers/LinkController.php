@@ -14,6 +14,9 @@ use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use DateTime;
+use DateTimeZone;
+use IntlDateFormatter;
 use function array_key_exists;
 use function base64_encode;
 use function json_decode;
@@ -295,26 +298,39 @@ final class LinkController extends BaseController
 
     public static function getSharedAccounts($user): array
     {
-        
+
+        $en = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        $fa = array("۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹");
+
         $results = [];
         $pdo = DB::getPdo();
-        $accounts = $pdo->query('SELECT DISTINCT account FROM shared_account');
+        $accounts = $pdo->query('SELECT account FROM shared_account');
 
         foreach ($accounts as $user_id) {
 
             $id = SharedAccount::where('account', $user_id)
-                ->where('updated_at', '>', time() - 1200) // 只获取最近一天内上报的数据
+                ->where('updated_at', '>', time() - 1800)
+                ->where('country', '=', 'USA')
                 ->first();
 
             if ($id !== null) {
+                $date = \Morilog\Jalali\Jalalian::forge($id->updated_at);
+                $ago = $date->ago();
+                if (!str_contains($ago, "پیش")) {
+                    $ago = $ago . " پیش";
+                }
+                $jdate = $ago . " ( " . $date->format('%A, %d %B %Y H:i:s') . " )";
+
+
                 $info = [];
                 $info = [
                     'priority' => $id->priority,
                     'status' => $id->status,
                     'created_at' => $id->created_at,
-                    'updated_at' => $id->updated_at,
+                    'updated_at' => str_replace($en, $fa, $jdate),
                     'account' => $id->account,
                     'password' => $id->password,
+                    'country' => $id->country,
                 ];
                 $results[] = $info;
             }
@@ -322,9 +338,6 @@ final class LinkController extends BaseController
 
         $node_names = array_column($results, 'updated_at');
         array_multisort($node_names, SORT_ASC, $results);
-
-        // $userid = $user->id;
-        // $token = Link::where('userid', $userid)->first();
         return $results;
     }
 }

@@ -250,11 +250,12 @@ return new class() implements MigrationInterface {
             CREATE TABLE `shared_account` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `priority` int(11) DEFAULT NULL COMMENT 'node id',
-                `status` text DEFAULT NULL COMMENT 'Test results',
+                `status` int(11) DEFAULT NULL COMMENT 'Test results',
                 `created_at` int(11) DEFAULT NULL COMMENT 'created time',
-                `updateded_at` int(11) DEFAULT NULL COMMENT 'updated time',
+                `updated_at` int(11) DEFAULT NULL COMMENT 'updated time',
                 `account` varchar(255) DEFAULT NULL COMMENT 'user name',
                 `password` varchar(255) DEFAULT NULL COMMENT 'account password',
+                `country` varchar(255) DEFAULT NULL COMMENT 'account registerd country',
                 UNIQUE KEY (`account`),
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

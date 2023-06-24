@@ -8,6 +8,7 @@ use App\Controllers\BaseController;
 use App\Models\Node;
 use App\Models\StreamMedia;
 use App\Models\SharedAccount;
+use App\Services\DB;
 use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -21,17 +22,22 @@ final class NodeController extends BaseController
 {
     public function saveSharedIds(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $body = $request->getBody()->getContents();
-        $details = json_decode($body, true);
-        foreach($details as $item) { //foreach element in $arr
-            $ids = new SharedAccount();
-            $ids->priority = $item['priority'];
-            $ids->status = $item['status'];
-            $ids->created_at = time();
-            $ids->updated_at = $item['updated_at'];
-            $ids->account = $item['account'];
-            $ids->password = $item['password'];
-            $ids->save();
+        
+        $body = $request->getParsedBody();
+
+        foreach ($body as $item) { //foreach element in $arr
+            $ids = DB::getPdo()->prepare('
+            INSERT INTO shared_account (priority, status, created_at, updated_at, account, password, country)
+                VALUES (?, ?, UNIX_TIMESTAMP(), ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE status = ?, updated_at = ?, password = ?
+        ');
+            $priority = $item['priority'];
+            $status = $item['status'];
+            $updated_at = $item['update'];
+            $account = $item['account'];
+            $password = $item['password'];
+            $country = $item['country'];
+            $ids->execute([$priority, $status, $updated_at, $account, $password, $country, $status, $updated_at, $password]);
         }
 
         return $response->withJson([
@@ -39,6 +45,7 @@ final class NodeController extends BaseController
             'data' => 'ok',
         ]);
     }
+    
     public function saveReport(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $node_id = $request->getParam('node_id');

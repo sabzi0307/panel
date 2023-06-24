@@ -33,3 +33,15 @@ services:
           test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
           timeout: 20s
           retries: 10
+        
+    myadmin:
+      image: phpmyadmin/phpmyadmin:latest
+      container_name: myadmin
+      restart: always
+      environment:
+        - PMA_ARBITRARY=1
+        - PMA_HOST=ss_db
+      ports:
+        - "8090:80"
+      links:
+          - ss_db:db
