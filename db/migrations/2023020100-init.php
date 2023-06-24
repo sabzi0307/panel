@@ -303,7 +303,7 @@ return new class() implements MigrationInterface {
                 `last_detect_ban_time` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Last banned time',
                 `all_detect_number` int(11)unsigned NOT NULL DEFAULT 0 COMMENT 'total number of violations',
                 `last_check_in_time` int(11) unsigned DEFAULT 0 COMMENT 'Last check-in time',
-                `reg_date` datetime NOT NULL DEFAULT NULL '1989-06-04 00:05:00' COMMENT 'Registration time',
+                `reg_date` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Registration time',
                 `invite_num` int(11) NOT NULL DEFAULT 0 COMMENT 'Available invitations',
                 `money` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Account Balance',
                 `ref_by` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Inviter ID',
