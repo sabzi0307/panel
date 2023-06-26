@@ -100,12 +100,12 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                موجودی حساب جاری موجود:<code>{$user->money}</code> 元
+                                موجودی فعلی حساب:<code>{$user->money}</code> تومان
                             </div>
                         </div>
                         <div class="card-footer">
                           <div class="d-flex">
-                          <button id="pay-balance" class="btn btn-blue" type="button">برای پرداخت</button>
+                          <button id="pay-balance" class="btn btn-blue" type="button">پرداخت از موجودی حساب</button>
                           </div>
                         </div>
                     </div>

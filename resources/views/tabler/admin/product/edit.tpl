@@ -82,7 +82,7 @@
                         </div>
                         <div class="card-body">
                             <div id="time_option" class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">مدت زمان سرویس (天)</label>
+                                <label class="form-label col-3 col-form-label required">مدت زمان سرویس (روز)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control"
                                         value="{$content->time}">
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div id="ip_limit_option" class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">محدودیت IP اتصال همزمان</label>
+                                <label class="form-label col-3 col-form-label required">محدودیت اتصال همزمان IP</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="{$content->ip_limit}">

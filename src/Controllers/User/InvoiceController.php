@@ -100,7 +100,7 @@ final class InvoiceController extends BaseController
         if ($user->money < $invoice->price) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'موجودی کافی نیست',
+                'msg' => 'موجودی حساب کافی نیست',
             ]);
         }
 

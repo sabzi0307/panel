@@ -181,7 +181,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">استفاده از محدودیت نرخ</label>
+                                    <label class="form-label col-3 col-form-label">استفاده از محدودیت نرخ داده</label>
                                     <div class="col">
                                         <input id="connection_rate_limit" type="text" class="form-control" value="{$settings['connection_rate_limit']}">
                                     </div>

@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">محدودیت نرخ سرعت داده (Mbps)</label>
+                                <label class="form-label col-3 col-form-label">محدودیت نرخ داده (Mbps)</label>
                                 <div class="col">
                                     <input id="node_speedlimit" type="text" class="form-control"
                                         value="{$node->node_speedlimit}">

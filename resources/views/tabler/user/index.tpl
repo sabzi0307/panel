@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                محدودیت IP اتصال همزمان
+                                                محدودیت اتصال همزمان IP
                                             </div>
                                             <div class="text-secondary">
                                                 {if $user->node_iplimit !== 0}
@@ -127,51 +127,70 @@
                     <div class="card">
                         <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                {if $os eq "Droid"}<a href="#android" class="nav-link active" data-bs-toggle="tab">{else}<a href="#android" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-brand-android icon"></i>
-                                    &nbsp;اندروید
-                                </a>
+                                {if $os eq "Droid"}<a href="#android" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#android" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-brand-android icon"></i>
+                                        &nbsp;اندروید
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "iPhone" or $os eq "iPad"}<a href="#ios" class="nav-link active" data-bs-toggle="tab">{else}<a href="#ios" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-brand-apple icon"></i>
-                                    &nbsp;آی او اس
-                                </a>
+                                {if $os eq "iPhone" or $os eq "iPad"}<a href="#ios" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#ios" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-brand-apple icon"></i>
+                                        &nbsp;آی او اس
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "Windows"}<a href="#windows" class="nav-link active" data-bs-toggle="tab">{else}<a href="#windows" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-brand-windows icon"></i>
-                                    &nbsp;ویندوز
-                                </a>
+                                {if $os eq "Windows"}<a href="#windows" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#windows" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-brand-windows icon"></i>
+                                        &nbsp;ویندوز
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "Mac"}<a href="#macos" class="nav-link active" data-bs-toggle="tab">{else}<a href="#macos" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-brand-finder icon"></i>
-                                    &nbsp;مک
-                                </a>
+                                {if $os eq "Mac"}<a href="#macos" class="nav-link active" data-bs-toggle="tab">
+                                    {else}<a href="#macos" class="nav-link" data-bs-toggle="tab">
+                                        {/if}
+                                        <i class="ti ti-brand-finder icon"></i>
+                                        &nbsp;مک
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "Linux"}<a href="#linux" class="nav-link active" data-bs-toggle="tab">{else}<a href="#linux" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-brand-redhat icon"></i>
-                                    &nbsp;لینوکس
-                                </a>
+                                {if $os eq "Linux"}<a href="#linux" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#linux" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-brand-redhat icon"></i>
+                                        &nbsp;لینوکس
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "Unknown"}<a href="#sub" class="nav-link active" data-bs-toggle="tab">{else}<a href="#sub" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-rss icon"></i>
-                                    &nbsp;تمامی کانفیگ ها
-                                </a>
+                                {if $os eq "Unknown"}<a href="#sub" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#sub" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-rss icon"></i>
+                                        &nbsp;تمامی کانفیگ ها
+                                    </a>
                             </li>
                             <li class="nav-item">
-                                {if $os eq "Unix"}<a href="#config" class="nav-link active" data-bs-toggle="tab">{else}<a href="#config" class="nav-link" data-bs-toggle="tab">{/if}
-                                    <i class="ti ti-file-text icon"></i>
-                                    &nbsp;اطلاعات اتصال
-                                </a>
+                                {if $os eq "Unix"}<a href="#config" class="nav-link active"
+                                    data-bs-toggle="tab">{else}<a href="#config" class="nav-link"
+                                        data-bs-toggle="tab">{/if}
+                                        <i class="ti ti-file-text icon"></i>
+                                        &nbsp;اطلاعات اتصال
+                                    </a>
                             </li>
                         </ul>
+                        
                         <div class="card-body">
                             <div class="tab-content">
-                                {if $os eq "Unknown"}<div class="tab-pane active show" id="sub">{else}<div class="tab-pane" id="sub">{/if}
+                            <div class="tab-content accordion tab-pane active show accordion-body pt-0">
+                            {include file='user/knowledge/iClash.tpl' ros="all"}
+                            </div>
+                                <div {if $os eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="sub">
                                     <div class="page-body">
                                         <div class="container-xl">
                                             <div class="card">
@@ -189,7 +208,8 @@
                                                                 class="accordion-collapse collapse show"
                                                                 data-bs-parent="#config-accordion">
                                                                 <div class="accordion-body pt-0">
-                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                        های
                                                                         سازگار با کلش متا:</strong>
 
                                                                     <p>
@@ -214,7 +234,8 @@
                                                             <div id="collapse-2" class="accordion-collapse collapse"
                                                                 data-bs-parent="#config-accordion">
                                                                 <div class="accordion-body pt-0">
-                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                        های
                                                                         سازگار با JSON: </strong>
                                                                     <p>
                                                                         <br>
@@ -239,7 +260,8 @@
                                                                 <div id="collapse-3" class="accordion-collapse collapse"
                                                                     data-bs-parent="#config-accordion">
                                                                     <div class="accordion-body pt-0">
-                                                                        <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                        <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                            های
                                                                             سازگار با SIP008:</strong>
                                                                         <p>
                                                                             <br>
@@ -269,7 +291,8 @@
                                                                     <div id="collapse-4" class="accordion-collapse collapse"
                                                                         data-bs-parent="#config-accordion">
                                                                         <div class="accordion-body pt-0">
-                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                                های
                                                                                 سازگار با V2Ray: </strong>
                                                                             <p>
                                                                                 <br>
@@ -295,7 +318,8 @@
                                                                     <div id="collapse-5" class="accordion-collapse collapse"
                                                                         data-bs-parent="#config-accordion">
                                                                         <div class="accordion-body pt-0">
-                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                                های
                                                                                 سازگار با Trojan: </strong>
                                                                             <p>
                                                                                 <br>
@@ -321,7 +345,8 @@
                                                                     <div id="collapse-6" class="accordion-collapse collapse"
                                                                         data-bs-parent="#config-accordion">
                                                                         <div class="accordion-body pt-0">
-                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                                های
                                                                                 سازگار با Shadowsocks: </strong>
                                                                             <p>
                                                                                 <br>
@@ -333,7 +358,8 @@
                                                                             </a>
                                                                         </div>
                                                                         <div class="accordion-body pt-0">
-                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                                            <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت
+                                                                                های
                                                                                 سازگار با Shadowsocks SIP002: </strong>
                                                                             <p>
                                                                                 <br>
@@ -355,7 +381,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                {if $os eq "Windows"}<div class="tab-pane active show" id="windows">{else}<div class="tab-pane" id="windows">{/if}
+                                <div {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="windows">
                                     <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -368,42 +395,53 @@
                                             <div id="collapse-1" class="accordion-collapse collapse"
                                                 data-bs-parent="#windows-accordion">
                                                 <div class="accordion-body pt-0">
+
+                                                    
+                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" style="background-color: green">
+                                                        آموزش نصب و استفاده از iClash
+                                                    </a>
+                                                    <br>
+                                                    <br>
                                                     <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong>
                                                     <br>
-                                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از لینک های
+                                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                    لینک های
                                                     زیر
                                                     دانلود
                                                     کنید.
-
-
-                                                    <div class="btn-list justify-content-start">
-                                                        <a href="/clients/Clash.Verge.msi" class="btn btn-primary">
-                                                            دانلود
-                                                        </a>
-                                                    </div>
+                                                    <br>
+                                                    <br>
+                                                    سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong>
+                                                    کلیک کنید و با مشاهده
+                                                    پنجره باز
+                                                    شده در
+                                                    مرورگر
+                                                    بر
+                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                    نرم
+                                                    افزار Clash
+                                                    افزوده شود.
 
                                                     <br>
-                                                    <p>
-                                                        حال کافیست تا بر روی دکمه زیر کلیک کنید و با مشاهده پنجره باز
-                                                        شده در
-                                                        مرورگر
-                                                        بر
-                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به نرم
-                                                        افزار Clash
-                                                        Verge
-                                                        افزوده شود.
+                                                    <br>
 
-                                                    <div class="btn-list justify-content-start">
+                                                    <p>
+                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
+                                    </p>
+                                    <div class="btn-list justify-content-start">
+                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
+                                            کپی لینک اشتراک کلش
+                                        </a>
+                                                        <a href="/clients/Clash.Verge.msi" class="btn btn-primary">
+                                                            دانلود ClashVerge
+                                                        </a>
+
                                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                                             class="btn btn-primary">
-                                                            افزودن خودکار به Clash Verge
+                                                            افزودن خودکار به Clash
                                                         </a>
-                                                        <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
-                                                            آموزش استفاده از iClash
-                                                        </a>
-
-                                                        {include file='user/knowledge/shadowRocket.tpl' results=$SharedAccounts}
                                                     </div>
                                                 </div>
                                             </div>
@@ -421,10 +459,17 @@
                                             <div id="collapse-2" class="accordion-collapse collapse"
                                                 data-bs-parent="#windows-accordion">
                                                 <div class="accordion-body pt-0">
-                                                    <strong>جهت استفاده در کلاینت v2rayN:</strong>
+                                                {include file='user/knowledge/i2RayN.tpl'}
+                                                
+                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                        href="#i2rayNcanvasEnd" role="button" aria-controls="i2rayNcanvasEndLabel" style="background-color: green">
+                                                        آموزش نصب و استفاده از i2RayN
+                                                    </a>
                                                     <br>
                                                     <br>
-                                                    ابتدا نرم افزار v2rayN را با توجه به نوع سیستم عامل از لینک های
+                                                    <p><strong>جهت استفاده در کلاینت v2rayN:</strong></p>
+                                                    ابتدا نرم افزار i2RayN را با توجه به نوع سیستم عامل از لینک
+                                                    های
                                                     زیر
                                                     دانلود
                                                     کنید.
@@ -443,44 +488,64 @@
                                         </div>
                                     </div>
                                 </div>
-                                {if $os eq "Mac"}<div class="tab-pane active show" id="macos">{else}<div class="tab-pane" id="macos">{/if}
+                                <div {if $os eq "Mac"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="macos">
+                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" style="background-color: green;">
+                                                        آموزش نصب و استفاده از iClash
+                                                    </a>
+                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
+
+
+                                    <br>
+                                    <br>
+                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                        سازگار با کلش متا:</strong>
+                                    <br>
+                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                    لینک های
+                                    زیر
+                                    دانلود
+                                    کنید.
+                                    <br>
+                                    <br>
+                                    سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و با
+                                    مشاهده
+                                    پنجره باز
+                                    شده در
+                                    مرورگر
+                                    بر
+                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                    نرم
+                                    افزار Clash
+                                    افزوده شود.
+
+                                    <br>
+                                    <br>
+
                                     <p>
-                                        ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از لینک های زیر دانلود
-                                        کنید.
+                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
+                                        
                                         <a href="/clients/Clash.Verge_x64.dmg" class="btn btn-primary">
                                             دانلود (x86_64)
                                         </a>
                                         <a href="/clients/Clash.Verge_aarch64.dmg" class="btn btn-primary">
                                             دانلود (aarch64)
                                         </a>
-                                    </div>
-                                    <br>
-                                    <p>
-                                        حال کافیست تا بر روی دکمه زیر کلیک کنید و با مشاهده پنجره باز شده در مرورگر بر
-                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به نرم افزار Clash Verge
-                                        افزوده شود.
-
-                                    <div class="btn-list justify-content-start">
-
 
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
                                             class="btn btn-primary">
-                                            افزودن به Clash Verge
+                                            افزودن خودکار به Clash
                                         </a>
-                                    </div>
-                                    </p>
-                                    <p>
-                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
-                                    </p>
-                                    <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
                                         </a>
                                     </div>
                                 </div>
-                                {if $os eq "Droid"}<div class="tab-pane active show" id="android">{else}<div class="tab-pane" id="android">{/if}
+                                <div {if $os eq "Droid"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="android">
                                     <div class="btn-list justify-content-start">
                                         <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
                                             کپی لینک اشتراک کلش
@@ -497,13 +562,18 @@
                                         </a>
                                     </div>
                                 </div>
-                                {if $os eq "iPhone" or $os eq "iPad"}<div class="tab-pane active show" id="ios">{else}<div class="tab-pane" id="ios">{/if}
+                                <div {if $os eq "iPhone" or $os eq "iPad"} class="tab-pane active show" 
+                                {else}
+                                    class="tab-pane" {/if} id="ios">
                                     <p>
-                                        اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
+                                        اشتراک برای کلاینت های سازگار با
+                                        کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <p>
-                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash، روی<code>کپی لینک اشتراک
-                                            کلش</code>را فشار دهید و سپس کلاینت سازگار با کلش را برای افزودن باز کنید.
+                                        پس از خرید و نصب یک کلاینت سازگار با Clash مانند Stash،
+                                        روی<code>کپی لینک اشتراک
+                                            کلش</code>را فشار دهید و سپس کلاینت سازگار با کلش را
+                                        برای افزودن باز کنید.
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
@@ -519,7 +589,37 @@
                                         </a>
                                     </div>
                                 </div>
-                                {if $os eq "Linux"}<div class="tab-pane active show" id="linux">{else}<div class="tab-pane" id="linux">{/if}
+                                <div {if $os eq "Linux"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="linux">
+                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" style="background-color: green">
+                                                        آموزش نصب و استفاده از iClash
+                                                    </a>
+                                                    <br>
+                                                    <br>
+                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                        سازگار با کلش متا:</strong>
+                                                    <br>
+                                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                    لینک های
+                                                    زیر
+                                                    دانلود
+                                                    کنید.
+                                                    <br>
+                                                    <br>
+                                                    سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong>
+                                                    کلیک کنید و با مشاهده
+                                                    پنجره باز
+                                                    شده در
+                                                    مرورگر
+                                                    بر
+                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                    نرم
+                                                    افزار Clash
+                                                    افزوده شود.
+
+                                                    <br>
+                                                    <br>
                                     <p>
                                         لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -536,7 +636,8 @@
                                         </a>
                                     </div>
                                 </div>
-                                {if $os eq "Unix"}<div class="tab-pane active show" id="config">{else}<div class="tab-pane" id="config">{/if}
+                                <div {if $os eq "Unix"} class="tab-pane active show" {else} class="tab-pane" {/if}
+                                    id="config">
                                     <p>اطلاعات اتصال شما：</p>
                                     <div class="table-responsive">
                                         <table class="table table-vcenter card-table">
@@ -554,13 +655,15 @@
                                                     <td>{$user->uuid}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>رمزنگاری سفارشی</strong></td>
+                                                    <td><strong>رمزنگاری سفارشی</strong>
+                                                    </td>
                                                     <td>{$user->method}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -581,7 +684,8 @@
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-success" role="progressbar"
-                                        style="width: {$user->TodayusedTrafficPercent()}%"></div>
+                                        style="width: {$user->TodayusedTrafficPercent()}%">
+                                    </div>
                                 {/if}
                             </div>
                             <div class="row">
@@ -591,7 +695,8 @@
                                 </div>
                                 <div class="col-auto d-flex align-items-center px-2">
                                     <span class="legend me-2 bg-success"></span>
-                                    <span>میزان مصرفی امروز {$user->TodayusedTraffic()}</span>
+                                    <span>میزان مصرفی امروز
+                                        {$user->TodayusedTraffic()}</span>
                                 </div>
                                 <div class="col-auto d-flex align-items-center ps-2">
                                     <span class="legend me-2"></span>
@@ -605,7 +710,8 @@
                                     مراجعه نمایید.
                                 {else}
                                     {$diff = round((strtotime($user->class_expire) - time()) / 86400)}
-                                    من LV. {$user->class} وجود دارد در مورد {$diff} روزهای یاقی مانده（{$user->class_expire}）
+                                    من LV. {$user->class} وجود دارد در مورد {$diff} روزهای یاقی
+                                    مانده（{$user->class_expire}）
                                 {/if}
                             </p>
                         </div>
@@ -645,7 +751,8 @@
                                 <p>
                                     جهت دریافت حجم هدیه بین
                                     {if $config['checkinMin'] !== $config['checkinMax']}
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
+                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا
+                                        <code>{$config['checkinMax']} MB</code>
                                         ترافیک در محدوده
                                     {else}
                                         <code>{$config['checkinMin']} MB</code>
@@ -721,7 +828,8 @@
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
         {if $public_setting['captcha_provider'] === 'turnstile'}
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer>
+            </script>
         {/if}
         {if $public_setting['captcha_provider'] === 'geetest'}
             <script src="https://static.geetest.com/v4/gt4.js"></script>

@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">محدودیت IP اتصال همزمان</label>
+                                    <label class="form-label col-12 col-form-label">محدودیت اتصال همزمان IP</label>
                                     <div class="col">
                                         <input id="node_iplimit" type="text" class="form-control"
                                             value="{$edit_user->node_iplimit}">

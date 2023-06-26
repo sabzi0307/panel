@@ -127,7 +127,7 @@ final class ProductController extends BaseController
             if ($time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان محصول نامعتبر است',
+                    'msg' => 'مدت زمان سرویس نامعتبر است',
                 ]);
             }
 
@@ -158,7 +158,7 @@ final class ProductController extends BaseController
             if ($time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان محصول نامعتبر است',
+                    'msg' => 'مدت زمان سرویس نامعتبر است',
                 ]);
             }
 
@@ -254,7 +254,7 @@ final class ProductController extends BaseController
             if ($time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان محصول نامعتبر است',
+                    'msg' => 'مدت زمان سرویس نامعتبر است',
                 ]);
             }
 
@@ -285,7 +285,7 @@ final class ProductController extends BaseController
             if ($time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان محصول نامعتبر است',
+                    'msg' => 'مدت زمان سرویس نامعتبر است',
                 ]);
             }
 

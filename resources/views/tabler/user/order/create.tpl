@@ -34,7 +34,7 @@
                                     <td class="text-end">{$product->name}</td>
                                 </tr>
                                 <tr>
-                                    <td>انواع محصولات</td>
+                                    <td>نوع سرویس</td>
                                     {if $product->type === 'tabp'}
                                         <td class="text-end">بسته ترافیک زمانی</td>
                                     {elseif $product->type === 'time'}
@@ -45,12 +45,12 @@
                                 </tr>
                                 {if $product->type === 'tabp' || $product->type === 'time'}
                                 <tr>
-                                    <td>مدت زمان محصول</td>
-                                    <td class="text-end">{$product->content->time} 天</td>
+                                    <td>مدت زمان سرویس</td>
+                                    <td class="text-end">{$product->content->time} روز</td>
                                 </tr>
                                 <tr>
                                     <td>مدت زمان سطح</td>
-                                    <td class="text-end">{$product->content->class_time} 天</td>
+                                    <td class="text-end">{$product->content->class_time} روز</td>
                                 </tr>
                                 <tr>
                                     <td>سطح</td>
@@ -65,7 +65,7 @@
                                 {/if}
                                 {if $product->type === 'tabp' || $product->type === 'time'}
                                 <tr>
-                                    <td>محدودیت نرخ</td>
+                                    <td>محدودیت نرخ داده</td>
                                     {if $product->content->speed_limit === '0'}
                                     <td class="text-end">بدون محدودیت</td>
                                     {else}
@@ -73,7 +73,7 @@
                                     {/if}
                                 </tr>
                                 <tr>
-                                    <td>محدودیت IP اتصال همزمان</td>
+                                    <td>محدودیت اتصال همزمان IP</td>
                                     {if $product->content->ip_limit === '0'}
                                     <td class="text-end">بدون محدودیت</td>
                                     {else}
@@ -118,7 +118,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <div class="input-group mb-2">
-                                    <input id="coupon" type="text" class="form-control" placeholder="کد تخفیف را وارد کنید، لطفا خالی بگذارید">
+                                    <input id="coupon" type="text" class="form-control" placeholder="اگرندارید، خالی بگذارید" style="font-size: small;">
                                     <button id="verify-coupon" class="btn" type="button">بررسی کدتخفیف</button>
                                 </div>
                             </div>

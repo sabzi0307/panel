@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <div id="ip_limit_option" class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">محدودیت IP اتصال همزمان</label>
+                                <label class="form-label col-3 col-form-label required">محدودیت اتصال همزمان IP</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
                                         value="">

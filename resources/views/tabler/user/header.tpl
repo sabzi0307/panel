@@ -196,11 +196,11 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/product">
                                                 <i class="ti ti-list"></i>&nbsp;
-                                                خدمات
+                                                خرید سرویس
                                             </a>
                                             <a class="dropdown-item" href="/user/order">
                                                 <i class="ti ti-file-invoice"></i>&nbsp;
-                                                سفارش
+                                                لیست خرید ها
                                             </a>
                                             <a class="dropdown-item" href="/user/invoice">
                                                 <i class="ti ti-file-dollar"></i>&nbsp;

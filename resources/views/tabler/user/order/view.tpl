@@ -32,11 +32,11 @@
                 <div class="card-body">
                     <div class="datagrid">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">انواع محصولات</div>
+                            <div class="datagrid-title">نوع سرویس</div>
                             <div class="datagrid-content">{$order->product_type}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">نام محصول</div>
+                            <div class="datagrid-title">نام سرویس</div>
                             <div class="datagrid-content">{$order->product_name}</div>
                         </div>
                         <div class="datagrid-item">
@@ -69,7 +69,7 @@
                 <div class="card-body">
                     <div class="datagrid">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان محصول (روز)</div>
+                            <div class="datagrid-title">مدت زمان سرویس (روز)</div>
                             <div class="datagrid-content">{$product_content->time}</div>
                         </div>
                         <div class="datagrid-item">
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">محدودیت IP اتصال همزمان</div>
+                            <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
                             <div class="datagrid-content">
                             {if $product_content->ip_limit === '0'}
                             بدون محدودیت

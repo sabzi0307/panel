@@ -634,20 +634,10 @@ fi
                     echo -n >&2 "\n" 
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
-                current_dir=$(pwd)
-                crontab -l > cron.tmp
-                echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
-                crontab cron.tmp
-                rm cron.tmp
-
-                echo -n >&2 "\nApplying permissions..."
-                chown $php_user_group -R "$WEBROOT"/*
-                chmod 755 -R $WEBROOT/*
-                # chown www-data:www-data -R *
-                # chmod -R 777 storage
+                
 
                 echo >&2 "Done"
-                exit
+                
             fi
         fi
     else
@@ -676,17 +666,7 @@ fi
                     echo -n >&2 "\n" 
                     printf $ADMIN_EMAIL'\n'$ADMIN_PASSWORD'\ny\n' | php xcat Tool createAdmin
                 fi
-                current_dir=$(pwd)
-                crontab -l > cron.tmp
-                echo "*/5 * * * * php $WEBROOT/xcat Cron" >> cron.tmp
-                crontab cron.tmp
-                rm cron.tmp
-
-                echo -n >&2 "\nApplying permissions..."
-                chown $php_user_group -R "$WEBROOT"/*
-                chmod 755 -R $WEBROOT/*
-                # chown www-data:www-data -R *
-                # chmod -R 777 storage
+                
 
                 echo >&2 "Done"
             fi
@@ -703,6 +683,19 @@ if [ ! -d "public/clients" ]; then
 else
 	echo >&2 "Found"
 fi
+
+current_dir=$(pwd)
+crontab -l > cron.tmp
+echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
+crontab cron.tmp
+rm cron.tmp
+crond -b
+
+echo -n >&2 "\nApplying permissions..."
+chown $php_user_group -R "$current_dir"/*
+chmod 755 -R $current_dir/*
+# chown www-data:www-data -R *
+# chmod -R 777 storage
 
 echo >&2  "\nAll set, please enjoy!\n\n"
 

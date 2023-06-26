@@ -243,11 +243,11 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/admin/product">
                                                 <i class="ti ti-list-details"></i>&nbsp;
-                                                خدمات
+                                                خرید سرویس
                                             </a>
                                             <a class="dropdown-item" href="/admin/order">
                                                 <i class="ti ti-receipt"></i>&nbsp;
-                                                سفارش
+                                                لیست خرید ها
                                             </a>
                                             <a class="dropdown-item" href="/admin/invoice">
                                                 <i class="ti ti-file-dollar"></i>&nbsp;

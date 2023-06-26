@@ -76,7 +76,8 @@
                                                         <div id="product-{$tabp->id}-price"
                                                              class="display-6 my-3">
                                                             <p class="fw-bold">{$tabp->price}</p>
-                                                            <i class="ti ti-currency-yuan"></i>
+                                                            {* <i class="ti ti-coin"></i> *}
+                                                            <p style="font-size: medium;">هزار تومان</p>
                                                         </div>
                                                         <div class="list-group list-group-flush">
                                                             <div class="list-group-item">
@@ -123,7 +124,7 @@
                                                                         {else}
                                                                             <div class="text-reset d-block">{$tabp->content->ip_limit}</div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">آی پی های متصل به طور همزمان</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1" style="font-size: small;">IP های متصل به طور همزمان</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -240,7 +241,7 @@
                                                                         {else}
                                                                             <div class="text-reset d-block">{$time->content->ip_limit}</div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">آی پی های متصل به طور همزمان</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">IP های متصل به طور همزمان</div>
                                                                     </div>
                                                                 </div>
                                                             </div>

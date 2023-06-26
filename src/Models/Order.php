@@ -15,7 +15,7 @@ final class Order extends Model
     public function status(): string
     {
         return match ($this->status) {
-            'pending_payment' => 'منتظر پرداخت باشید',
+            'pending_payment' => 'منتظر تایید پرداخت',
             'pending_activation' => 'منتظر فعال سازی',
             'activated' => 'فعال شده',
             'expired' => 'منقضی شده',
