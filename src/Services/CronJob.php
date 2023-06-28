@@ -30,7 +30,6 @@ use function array_map;
 use function date;
 use function in_array;
 use function json_decode;
-use function max;
 use function str_replace;
 use function strtotime;
 use function time;
@@ -180,7 +179,7 @@ final class CronJob
             }
         }
 
-        echo date('Y-m-d H:i:s') . ' شناسایی انقضای کاربر پرداخت شده تکمیل شد' . PHP_EOL;
+        echo date('Y-m-d H:i:s') . ' تشخیص انقضای کاربر پولی تکمیل شد' . PHP_EOL;
     }
 
     public static function processEmailQueue(): void
