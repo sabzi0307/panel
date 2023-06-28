@@ -9,23 +9,24 @@ use App\Models\Ann;
 use App\Models\User;
 use App\Utils\Telegram;
 use Exception;
-use League\HTMLToMarkdown\HtmlConverter;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use function date;
+use const PHP_EOL;
 
 final class AnnController extends BaseController
 {
     public static array $details =
-    [
-        'field' => [
-            'op' => 'operate',
-            'id' => 'Announcement ID',
-            'date' => 'date',
-            'content' => 'Announcement content',
-        ],
-    ];
+        [
+            'field' => [
+                'op' => 'operate',
+                'id' => 'Announcement ID',
+                'date' => 'date',
+                'content' => 'Announcement content',
+            ],
+        ];
 
     public static array $update_field = [
         'email_notify_class',
@@ -103,12 +104,9 @@ final class AnnController extends BaseController
             }
         }
 
-        $converter = new HtmlConverter();
-
         if ($_ENV['enable_telegram']) {
             try {
-                Telegram::sendMarkdown('اعلان جدید：' . PHP_EOL . $converter
-                    ->convert($content));
+                Telegram::sendHtml('اعلان جدید：' . PHP_EOL . $content);
             } catch (TelegramSDKException $e) {
                 return $response->withJson([
                     'ret' => 0,
@@ -146,18 +144,30 @@ final class AnnController extends BaseController
     public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $ann = Ann::find($args['id']);
-        $ann->content = $request->getParam('content');
+        $ann->content = (string) $request->getParam('content');
         $ann->date = date('Y-m-d H:i:s');
+
         if (! $ann->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'موفق به ویرایش نمی شوند',
+                'msg' => 'به روز رسانی بولتن ناموفق بود',
             ]);
         }
-        Telegram::sendMarkdown('به روز رسانی اعلان：' . PHP_EOL . $request->getParam('markdown'));
+
+        if ($_ENV['enable_telegram']) {
+            try {
+                Telegram::sendHtml('به روز رسانی اعلان：' . PHP_EOL . $request->getParam('content'));
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'اطلاعیه با موفقیت به‌روزرسانی شد، ارسال تلگرام ناموفق بود',
+                ]);
+            }
+        }
+
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'با موفقیت اصلاح شد',
+            'msg' => 'اطلاعیه با موفقیت به روز شد',
         ]);
     }
 
