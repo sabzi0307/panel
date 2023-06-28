@@ -76,73 +76,6 @@ final class CronJob
         echo date('Y-m-d H:i:s') . ' پاکسازی دیتابیس کامل شد' . PHP_EOL;
     }
 
-    public static function cleanUser(): void
-    {
-        $freeUsers = User::where('class', 0)->get();
-
-        foreach ($freeUsers as $user) {
-            if (
-                $_ENV['account_expire_delete_days'] >= 0 &&
-                strtotime($user->expire_in) + $_ENV['account_expire_delete_days'] * 86400 < time() &&
-                $user->money <= $_ENV['auto_clean_min_money']
-            ) {
-                $user->sendMail(
-                    $_ENV['appName'] . '- حساب کاربری شما به دلیل انقضا حذف شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما منقضی شده است ' . $_ENV['account_expire_delete_days'] . ' اوه، حساب حذف شده است.',
-                    ],
-                    [],
-                    true
-                );
-                $user->killUser();
-                continue;
-            }
-
-            if (
-                $_ENV['auto_clean_uncheck_days'] > 0 &&
-                max(
-                    $user->last_check_in_time,
-                    strtotime($user->reg_date)
-                ) + ($_ENV['auto_clean_uncheck_days'] * 86400) < time() &&
-                $user->class === 0 &&
-                $user->money <= $_ENV['auto_clean_min_money']
-            ) {
-                $user->sendMail(
-                    $_ENV['appName'] . '-اکانت شما به دلیل عدم حضور حذف شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما  ' . $_ENV['auto_clean_uncheck_days'] . ' من چند روزی است که وارد سیستم نشده ام و اکانت حذف شده است.',
-                    ],
-                    [],
-                    true
-                );
-                $user->killUser();
-                continue;
-            }
-
-            if (
-                $_ENV['auto_clean_unused_days'] > 0 &&
-                max($user->t, strtotime($user->reg_date)) + ($_ENV['auto_clean_unused_days'] * 86400) < time() &&
-                $user->class === 0 &&
-                $user->money <= $_ENV['auto_clean_min_money']
-            ) {
-                $user->sendMail(
-                    $_ENV['appName'] . '- حساب کاربری شما به دلیل عدم فعالیت حذف شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما  ' . $_ENV['auto_clean_unused_days'] . ' چند روزی است که استفاده نشده و اکانت حذف شده است.',
-                    ],
-                    [],
-                    true
-                );
-                $user->killUser();
-            }
-        }
-
-        echo date('Y-m-d H:i:s') . ' کاربران رایگان پاک شدند' . PHP_EOL;
-    }
-
     /**
      * @throws TelegramSDKException
      */
@@ -248,39 +181,6 @@ final class CronJob
         }
 
         echo date('Y-m-d H:i:s') . ' شناسایی انقضای کاربر پرداخت شده تکمیل شد' . PHP_EOL;
-    }
-
-    // This shit should be removed but kept for compatibility reason, for now. User account should never expire.
-    public static function expireFreeUserAccount(): void
-    {
-        $freeUsers = User::where('class', 0)->get();
-
-        foreach ($freeUsers as $user) {
-            if (strtotime($user->expire_in) < time() && ! $user->expire_notified) {
-                $user->transfer_enable = 0;
-                $user->u = 0;
-                $user->d = 0;
-                $user->transfer_today = 0;
-
-                $user->sendMail(
-                    $_ENV['appName'] . '- حساب شما منقضی شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'سلام، سیستم متوجه شد که اکانت شما منقضی شده است.',
-                    ],
-                    [],
-                    true
-                );
-
-                $user->expire_notified = true;
-                $user->save();
-            } elseif (strtotime($user->expire_in) > time() && $user->expire_notified) {
-                $user->expire_notified = false;
-                $user->save();
-            }
-        }
-
-        echo date('Y-m-d H:i:s') . ' تشخیص انقضای کاربر رایگان تکمیل شد' . PHP_EOL;
     }
 
     public static function processEmailQueue(): void

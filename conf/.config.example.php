@@ -36,20 +36,14 @@ $_ENV['enable_checkin']             = true;         // enable the sign-in functi
 $_ENV['checkinMin']                 = 1;            // User sign-in minimum traffic unit MB
 $_ENV['checkinMax']                 = 50;           // User check-in traffic with the most traffic
 
-$_ENV['auto_clean_uncheck_days']    = -1;           //Automatically clean up level 0 users who have not signed in for how many days, and close when less than or equal to 0
-$_ENV['auto_clean_unused_days']     = -1;           //How many days of unused level 0 users will be automatically cleared, and it will be turned off when it is less than or equal to 0
-$_ENV['auto_clean_min_money']       = 1;            //Level 0 users whose balance is lower than a certain amount can be cleared
-
 #advanced
 $_ENV['class_expire_reset_traffic'] = 0;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
-$_ENV['account_expire_delete_days'] = -1;           //The account will be deleted a few days after the account expires, and it will not be deleted when it is less than 0
-
 $_ENV['enable_kill']                = true;         //allow users to log out of accounts
 $_ENV['enable_change_email']        = true;         //allow users to change account email
 
 #Email reminder for insufficient user data allowance
 $_ENV['notify_limit_mode']          = false;         //false is closed, per is reminded according to percentage, mb is reminded according to fixed remaining traffic
-$_ENV['notify_limit_value']         = 20;           //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
+$_ENV['notify_limit_value']         = 500;           //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
 
 //log settings---------------------------------------------------------------------------------------
 $_ENV['trafficLog']               = false;                          //record the traffic used by users every hour
