@@ -1,7 +1,6 @@
 {include file='admin/header.tpl'}
 
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/libs/tinymce/skins/ui/oxide/skin.min.css">
-<script src="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/libs/tinymce/tinymce.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/6.6.0/tinymce.min.js"></script>
 
 <div class="page-wrapper">
     <div class="container-xl">
@@ -17,10 +16,10 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a id="create-ann" href="#" class="btn btn-primary">
+                        <button id="create-ann" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
                             保存
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -72,7 +71,7 @@
             plugins:
               'advlist autolink lists link image charmap preview anchor ' +
               'searchreplace visualblocks code fullscreen ' +
-              'insertdatetime media table code help wordcount',
+              'insertdatetime media table wordcount',
             toolbar: 'undo redo | formatselect | ' +
               'bold italic backcolor link | blocks | alignleft aligncenter ' +
               'alignright alignjustify | bullist numlist outdent indent | ' +
