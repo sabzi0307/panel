@@ -114,7 +114,7 @@ class ToolsTest extends TestCase
         $email2 = 'test@example.org';
 
         $expected1 = ['ret' => 1];
-        $expected2 = ['ret' => 0, 'msg' => '邮箱域名 example.org 无效，请更换邮件地址'];
+        $expected2 = ['ret' => 0, 'msg' => 'نام دامنه ایمیل example.org نامعتبر است، لطفا آدرس ایمیل را تغییر دهید'];
 
         $this->assertEquals($expected1, Tools::isEmailLegal($email1));
         $this->assertEquals($expected2, Tools::isEmailLegal($email2));
