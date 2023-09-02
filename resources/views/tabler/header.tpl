@@ -1,6 +1,5 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl" >
-
 <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex">
@@ -9,11 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{$config['appName']}</title>
     <!-- CSS files -->
-    <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script src="//{$config['jsdelivr_url']}/npm/jquery/dist/jquery.min.js"></script>
+
 </head>

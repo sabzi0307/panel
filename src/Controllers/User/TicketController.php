@@ -7,12 +7,17 @@ namespace App\Controllers\User;
 use App\Controllers\BaseController;
 use App\Models\Setting;
 use App\Models\Ticket;
-use App\Models\User;
+use App\Services\Notification;
+use App\Services\RateLimit;
 use App\Utils\Tools;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use RedisException;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use voku\helper\AntiXSS;
 use function array_merge;
 use function count;
@@ -49,11 +54,27 @@ final class TicketController extends BaseController
         );
     }
 
+    /**
+     * @throws RedisException
+     * @throws ClientExceptionInterface
+     * @throws TelegramSDKException
+     * @throws GuzzleException
+     */
     public function ticketAdd(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $title = $request->getParam('title') ?? '';
         $comment = $request->getParam('comment') ?? '';
         $type = $request->getParam('type') ?? '';
+
+        if (! Setting::obtain('enable_ticket') ||
+            $this->user->is_shadow_banned ||
+            ! RateLimit::checkTicketLimit($this->user->id)
+        ) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'در حال حاضر امکان باز کردن تیکت جدید وجود ندارد، لطفاً بعداً دوباره امتحان کنید',
+            ]);
+        }
 
         if ($title === '' || $comment === '' || $type === '') {
             return $response->withJson([
@@ -83,17 +104,10 @@ final class TicketController extends BaseController
         $ticket->save();
 
         if (Setting::obtain('mail_ticket')) {
-            $adminUser = User::where('is_admin', 1)->get();
-            foreach ($adminUser as $user) {
-                $user->sendMail(
-                    $_ENV['appName'] . '-یک تیکت جدید باز شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع بهش ​​رسیدگی کنید.',
-                    ],
-                    []
-                );
-            }
+            Notification::notifyAdmin(
+                $_ENV['appName'] . '-تیکت جدید باز شد',
+                'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع باهاش ​​رسیدگی کنید.'
+            );
         }
 
         return $response->withJson([
@@ -102,10 +116,29 @@ final class TicketController extends BaseController
         ]);
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws TelegramSDKException
+     * @throws ClientExceptionInterface
+     */
     public function ticketUpdate(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
+        if (! Setting::obtain('enable_ticket')) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'در حال حاضر نمی توان به تیکت پاسخ داد، لطفاً بعداً دوباره امتحان کنید',
+            ]);
+        }
+
         $id = $args['id'];
         $comment = $request->getParam('comment') ?? '';
+
+        if ($this->user->is_shadow_banned) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'در حال حاضر نمی توان به تیکت پاسخ داد، لطفاً بعداً دوباره امتحان کنید',
+            ]);
+        }
 
         if ($comment === '') {
             return $response->withJson([
@@ -140,19 +173,12 @@ final class TicketController extends BaseController
         $ticket->save();
 
         if (Setting::obtain('mail_ticket')) {
-            $adminUser = User::where('is_admin', 1)->get();
-            foreach ($adminUser as $user) {
-                $user->sendMail(
-                    $_ENV['appName'] . '-تیکت پاسخ داده شده است',
-                    'warn.tpl',
-                    [
-                        'text' => 'ادمین یکی جواب داد <a href="' .
-                            $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">#' . $ticket->id .
-                            '</a> تیکت پشتیبانی، لطفا به موقع به آن رسیدگی کنید.',
-                    ],
-                    []
-                );
-            }
+            Notification::notifyAdmin(
+                $_ENV['appName'] . '-تیکت پاسخ داده شده است',
+                'ادمین یکی جواب داد <a href="' .
+                $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">#' . $ticket->id .
+                '</a> دستور کار، لطفا به موقع به آن رسیدگی کنید.'
+            );
         }
 
         return $response->withJson([
@@ -166,6 +192,10 @@ final class TicketController extends BaseController
      */
     public function ticketView(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
+        if (! Setting::obtain('enable_ticket')) {
+            return $response->withRedirect('/user');
+        }
+
         $id = $args['id'];
         $ticket = Ticket::where('id', '=', $id)->where('userid', $this->user->id)->first();
 

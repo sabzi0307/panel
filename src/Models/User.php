@@ -5,26 +5,19 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Services\DB;
-use App\Services\Mail;
+use App\Services\IM;
 use App\Utils\Hash;
-use App\Utils\Telegram;
-use App\Utils\Telegram\TelegramTools;
 use App\Utils\Tools;
 use Exception;
-use Psr\Http\Client\ClientExceptionInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Ramsey\Uuid\Uuid;
-use function array_merge;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use function date;
-use function in_array;
 use function is_null;
-use function json_encode;
 use function md5;
 use function random_int;
 use function round;
-use function str_replace;
-use function strtolower;
 use function time;
-use function trim;
 use const PHP_EOL;
 
 final class User extends Model
@@ -35,8 +28,8 @@ final class User extends Model
      * @var bool
      */
     public bool $isLogin;
-    protected $connection = 'default';
 
+    protected $connection = 'default';
     protected $table = 'user';
 
     /**
@@ -46,19 +39,17 @@ final class User extends Model
      */
     protected $casts = [
         'port' => 'int',
-        'is_admin' => 'boolean',
         'node_speedlimit' => 'float',
         'daily_mail_enable' => 'int',
         'ref_by' => 'int',
     ];
 
     /**
-     * Gravatar 头像地址
+     * DiceBear 头像
      */
-    public function getGravatarAttribute(): string
+    public function getDiceBearAttribute(): string
     {
-        $hash = md5(strtolower(trim($this->email)));
-        return 'https://www.gravatar.com/avatar/' . $hash . '?&d=identicon';
+        return 'https://api.dicebear.com/6.x/identicon/svg?seed=' . md5($this->email);
     }
 
     /**
@@ -67,30 +58,18 @@ final class User extends Model
     public function imType(): string
     {
         return match ($this->im_type) {
-            1 => 'WeChat',
-            2 => 'QQ',
-            5 => 'Discord',
+            1 => 'Slack',
+            2 => 'Discord',
             default => 'Telegram',
-        };
-    }
-
-    /**
-     * 联系方式
-     */
-    public function imValue(): string
-    {
-        return match ($this->im_type) {
-            1, 2, 5 => $this->im_value,
-            default => '<a href="https://telegram.me/' . $this->im_value . '">' . $this->im_value . '</a>',
         };
     }
 
     /**
      * 最后使用时间
      */
-    public function lastSsTime(): string
+    public function lastUseTime(): string
     {
-        return $this->t === 0 || $this->t === null ? 'هرگز از meow استفاده نکردم' : Tools::toDateTime($this->t);
+        return $this->last_use_time === 0 ? 'هرگز استفاده نشده است' : Tools::toDateTime($this->last_use_time);
     }
 
     /**
@@ -107,17 +86,8 @@ final class User extends Model
     public function updatePassword(string $pwd): bool
     {
         $this->pass = Hash::passwordHash($pwd);
+
         return $this->save();
-    }
-
-    public function getForbiddenIp(): array|string
-    {
-        return str_replace(',', PHP_EOL, $this->forbidden_ip);
-    }
-
-    public function getForbiddenPort(): array|string
-    {
-        return str_replace(',', PHP_EOL, $this->forbidden_port);
     }
 
     /**
@@ -125,19 +95,12 @@ final class User extends Model
      */
     public function addInviteCode(): string
     {
-        while (true) {
-            $temp_code = Tools::genRandomChar(10);
-            if (InviteCode::where('code', $temp_code)->first() === null) {
-                if (InviteCode::where('user_id', $this->id)->count() === 0) {
-                    $code = new InviteCode();
-                    $code->code = $temp_code;
-                    $code->user_id = $this->id;
-                    $code->save();
-                    return $temp_code;
-                }
-                return InviteCode::where('user_id', $this->id)->first()->code;
-            }
-        }
+        $code = new InviteCode();
+        $code->code = Tools::genRandomChar(10);
+        $code->user_id = $this->id;
+        $code->save();
+
+        return $code->code;
     }
 
     /**
@@ -146,6 +109,7 @@ final class User extends Model
     public function addInviteNum(int $num): bool
     {
         $this->invite_num += $num;
+
         return $this->save();
     }
 
@@ -155,6 +119,7 @@ final class User extends Model
     public function generateUUID(): bool
     {
         $this->uuid = Uuid::uuid4();
+
         return $this->save();
     }
 
@@ -164,6 +129,7 @@ final class User extends Model
     public function generateApiToken(): bool
     {
         $this->api_token = Uuid::uuid4();
+
         return $this->save();
     }
 
@@ -173,14 +139,6 @@ final class User extends Model
     public function enableTraffic(): string
     {
         return Tools::autoBytes($this->transfer_enable);
-    }
-
-    /*
-     * 总流量[GB]，不含单位
-     */
-    public function enableTrafficInGB(): float
-    {
-        return Tools::flowToGB($this->transfer_enable);
     }
 
     /*
@@ -202,14 +160,12 @@ final class User extends Model
     /*
      * 已用流量占总流量的百分比
      */
-    public function trafficUsagePercent(): int
+    public function trafficUsagePercent(): float
     {
-        if ($this->transfer_enable === 0) {
-            return 0;
-        }
-        $percent = ($this->u + $this->d) / $this->transfer_enable;
-        $percent = round($percent, 2);
-        return (int) $percent * 100;
+        return $this->transfer_enable === 0 ?
+            0
+            :
+            round(($this->u + $this->d) / $this->transfer_enable, 2) * 100;
     }
 
     /*
@@ -225,13 +181,10 @@ final class User extends Model
      */
     public function unusedTrafficPercent(): float
     {
-        if ($this->transfer_enable === 0) {
-            return 0;
-        }
-        $unused = $this->transfer_enable - ($this->u + $this->d);
-        $percent = $unused / $this->transfer_enable;
-        $percent = round($percent, 4);
-        return $percent * 100;
+        return $this->transfer_enable === 0 ?
+            0
+            :
+            round(($this->transfer_enable - ($this->u + $this->d)) / $this->transfer_enable, 2) * 100;
     }
 
     /*
@@ -247,12 +200,10 @@ final class User extends Model
      */
     public function todayUsedTrafficPercent(): float
     {
-        if ($this->transfer_enable === 0 || $this->transfer_enable === null) {
-            return 0;
-        }
-        $percent = $this->transfer_today / $this->transfer_enable;
-        $percent = round($percent, 4);
-        return $percent * 100;
+        return $this->transfer_enable === 0 ?
+            0
+            :
+            round($this->transfer_today / $this->transfer_enable, 2) * 100;
     }
 
     /*
@@ -268,12 +219,10 @@ final class User extends Model
      */
     public function lastUsedTrafficPercent(): float
     {
-        if ($this->transfer_enable === 0 || $this->transfer_enable === null) {
-            return 0;
-        }
-        $percent = ($this->u + $this->d - $this->transfer_today) / $this->transfer_enable;
-        $percent = round($percent, 4);
-        return $percent * 100;
+        return $this->transfer_enable === 0 ?
+            0
+            :
+            round(($this->u + $this->d - $this->transfer_today) / $this->transfer_enable, 2) * 100;
     }
 
     /*
@@ -282,39 +231,6 @@ final class User extends Model
     public function isAbleToCheckin(): bool
     {
         return date('Ymd') !== date('Ymd', $this->last_check_in_time);
-    }
-
-    /**
-     * 获取用户的邀请码
-     */
-    public function getInviteCodes(): ?InviteCode
-    {
-        return InviteCode::where('user_id', $this->id)->first();
-    }
-
-    /**
-     * 用户的邀请人
-     */
-    public function refByUser(): ?User
-    {
-        return self::find($this->ref_by);
-    }
-
-    /**
-     * 用户邀请人的用户名
-     */
-    public function refByUserName(): string
-    {
-        if ($this->ref_by === 0) {
-            return 'دعوت نامه سیستم';
-        }
-
-        $refUser = $this->refByUser();
-
-        if ($refUser === null) {
-            return 'دعوت کننده حذف شده است';
-        }
-        return $refUser->user_name;
     }
 
     /**
@@ -363,63 +279,19 @@ final class User extends Model
     /**
      * 销户
      */
-    public function killUser(): bool
+    public function kill(): bool
     {
         $uid = $this->id;
-        $email = $this->email;
 
-        DetectBanLog::where('user_id', '=', $uid)->delete();
-        DetectLog::where('user_id', '=', $uid)->delete();
-        EmailVerify::where('email', $email)->delete();
-        InviteCode::where('user_id', '=', $uid)->delete();
-        OnlineLog::where('user_id', '=', $uid)->delete();
-        Link::where('userid', '=', $uid)->delete();
-        LoginIp::where('userid', '=', $uid)->delete();
-        PasswordReset::where('email', '=', $email)->delete();
-        TelegramSession::where('user_id', '=', $uid)->delete();
-        UserSubscribeLog::where('user_id', '=', $uid)->delete();
+        DetectBanLog::where('user_id', $uid)->delete();
+        DetectLog::where('user_id', $uid)->delete();
+        InviteCode::where('user_id', $uid)->delete();
+        OnlineLog::where('user_id', $uid)->delete();
+        Link::where('userid', $uid)->delete();
+        LoginIp::where('userid', $uid)->delete();
+        SubscribeLog::where('user_id', $uid)->delete();
 
-        $this->delete();
-
-        return true;
-    }
-
-    /**
-     * 最后一次被封禁的时间
-     */
-    public function lastDetectBanTime(): string
-    {
-        return $this->last_detect_ban_time === '1989-06-04 00:05:00' ? 'ممنوع نیست' : $this->last_detect_ban_time;
-    }
-
-    /**
-     * 当前解封时间
-     */
-    public function relieveTime(): string
-    {
-        $logs = DetectBanLog::where('user_id', $this->id)->orderBy('id', 'desc')->first();
-        if ($this->enable === 0 && $logs !== null) {
-            $time = $logs->end_time + $logs->ban_time * 60;
-            return date('Y-m-d H:i:s', $time);
-        }
-        return 'در حال حاضر ممنوع نیست';
-    }
-
-    /**
-     * 累计被封禁的次数
-     */
-    public function detectBanNumber(): int
-    {
-        return DetectBanLog::where('user_id', $this->id)->count();
-    }
-
-    /**
-     * 最后一次封禁的违规次数
-     */
-    public function userDetectBanNumber(): int
-    {
-        $logs = DetectBanLog::where('user_id', $this->id)->orderBy('id', 'desc')->first();
-        return $logs->detect_number;
+        return $this->delete();
     }
 
     /**
@@ -430,7 +302,8 @@ final class User extends Model
         $return = [
             'ok' => true,
         ];
-        if (! $this->isAbleToCheckin()) {
+
+        if (! $this->isAbleToCheckin() || $this->is_shadow_banned) {
             $return['ok'] = false;
             $return['msg'] = 'به نظر می رسد شما وارد سیستم شده اید...';
         } else {
@@ -448,124 +321,11 @@ final class User extends Model
         return $return;
     }
 
-    /**
-     * 解绑 Telegram
-     */
-    public function telegramReset(): array
+    public function unbindIM(): bool
     {
-        $return = [
-            'ok' => true,
-            'msg' => 'با موفقیت باز شد.',
-        ];
-        $telegram_id = $this->telegram_id;
-        $this->telegram_id = 0;
-        if ($this->save()) {
-            if (
-                $_ENV['enable_telegram']
-                &&
-                Setting::obtain('telegram_group_bound_user')
-                &&
-                Setting::obtain('telegram_unbind_kick_member')
-                &&
-                ! $this->is_admin
-            ) {
-                TelegramTools::SendPost(
-                    'kickChatMember',
-                    [
-                        'chat_id' => $_ENV['telegram_chatid'],
-                        'user_id' => $telegram_id,
-                    ]
-                );
-            }
-        } else {
-            $return = [
-                'ok' => false,
-                'msg' => 'باز کردن پیوند انجام نشد.',
-            ];
-        }
-
-        return $return;
-    }
-
-    /**
-     * 更新端口
-     */
-    public function setPort(int $Port): array
-    {
-        $PortOccupied = User::pluck('port')->toArray();
-        if (in_array($Port, $PortOccupied)) {
-            return [
-                'ok' => false,
-                'msg' => 'پورت در حال حاضر در حال استفاده است',
-            ];
-        }
-        $this->port = $Port;
-        $this->save();
-        return [
-            'ok' => true,
-            'msg' => $this->port,
-        ];
-    }
-
-    /**
-     * 发送邮件
-     */
-    public function sendMail(string $subject, string $template, array $array = [], array $files = [], $is_queue = false): bool
-    {
-        if ($is_queue) {
-            $emailqueue = new EmailQueue();
-            $emailqueue->to_email = $this->email;
-            $emailqueue->subject = $subject;
-            $emailqueue->template = $template;
-            $emailqueue->time = time();
-            $array = array_merge(['user' => $this], $array);
-            $emailqueue->array = json_encode($array);
-            $emailqueue->save();
-            return true;
-        }
-        // 验证邮箱地址是否正确
-        if (Tools::isEmail($this->email)) {
-            // 发送邮件
-            try {
-                Mail::send(
-                    $this->email,
-                    $subject,
-                    $template,
-                    array_merge(
-                        [
-                            'user' => $this,
-                        ],
-                        $array
-                    ),
-                    $files
-                );
-                return true;
-            } catch (Exception | ClientExceptionInterface $e) {
-                echo $e->getMessage();
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 发送 Telegram 讯息
-     */
-    public function sendTelegram(string $text): bool
-    {
-        $result = false;
-        try {
-            if ($this->telegram_id > 0) {
-                Telegram::send(
-                    $text,
-                    $this->telegram_id
-                );
-                $result = true;
-            }
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-        return $result;
+        $this->im_type = 0;
+        $this->im_value = '';
+        return $this->save();
     }
 
     /**
@@ -579,37 +339,36 @@ final class User extends Model
         $enable_traffic = $this->enableTraffic();
         $used_traffic = $this->usedTraffic();
         $unused_traffic = $this->unusedTraffic();
-        switch ($this->daily_mail_enable) {
-            case 1:
-                echo 'Send daily mail to user: ' . $this->id;
-                $this->sendMail(
-                    $_ENV['appName'] . '-گزارش و اطلاعیه های ترافیک روزانه',
-                    'traffic_report.tpl',
-                    [
-                        'user' => $this,
-                        'text' => 'در زیر آخرین اطلاعیه های موجود در این سیستم آمده است:<br><br>' . $ann . '<br><br>شب بخیر！',
-                        'lastday_traffic' => $lastday_traffic,
-                        'enable_traffic' => $enable_traffic,
-                        'used_traffic' => $used_traffic,
-                        'unused_traffic' => $unused_traffic,
-                    ],
-                    [],
-                    true
-                );
-                break;
-            case 2:
-                echo 'Send daily Telegram message to user: ' . $this->id;
-                $text = date('Y-m-d') . ' گزارش استفاده از ترافیک' . PHP_EOL . PHP_EOL;
-                $text .= 'کل ترافیک：' . $enable_traffic . PHP_EOL;
-                $text .= 'ترافیک استفاده شده：' . $used_traffic . PHP_EOL;
-                $text .= 'ترافیک باقیمانده：' . $unused_traffic . PHP_EOL;
-                $text .= 'استفاده از امروز：' . $lastday_traffic;
-                $this->sendTelegram(
-                    $text
-                );
-                break;
-            case 0:
-            default:
+
+        if ($this->daily_mail_enable === 1) {
+            echo 'Send daily mail to user: ' . $this->id . PHP_EOL;
+
+            (new EmailQueue())->add(
+                $this->email,
+                $_ENV['appName'] . '-گزارش ها و اطلاعیه های ترافیک روزانه',
+                'traffic_report.tpl',
+                [
+                    'user' => $this,
+                    'text' => 'در زیر آخرین اطلاعیه های موجود در این سیستم آمده است:<br><br>' . $ann . '<br><br>شب بخیر!',
+                    'lastday_traffic' => $lastday_traffic,
+                    'enable_traffic' => $enable_traffic,
+                    'used_traffic' => $used_traffic,
+                    'unused_traffic' => $unused_traffic,
+                ]
+            );
+        } else {
+            echo 'Send daily IM message to user: ' . $this->id . PHP_EOL;
+            $text = date('Y-m-d') . ' گزارش مصرف ترافیک' . PHP_EOL . PHP_EOL;
+            $text .= 'ترافیک کل：' . $enable_traffic . PHP_EOL;
+            $text .= 'ترافیک استفاده شده：' . $used_traffic . PHP_EOL;
+            $text .= 'ترافیک باقیمانده：' . $unused_traffic . PHP_EOL;
+            $text .= 'استفاده امروز：' . $lastday_traffic;
+
+            try {
+                IM::send($this->im_value, $text, $this->im_type);
+            } catch (GuzzleException|TelegramSDKException $e) {
+                echo $e->getMessage() . PHP_EOL;
+            }
         }
     }
 
@@ -625,6 +384,11 @@ final class User extends Model
         $loginip->userid = $this->id;
         $loginip->datetime = time();
         $loginip->type = $type;
+
+        if ($type === 0) {
+            $this->last_login_time = time();
+            $this->save();
+        }
 
         return $loginip->save();
     }

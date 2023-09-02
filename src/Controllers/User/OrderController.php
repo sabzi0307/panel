@@ -132,15 +132,15 @@ final class OrderController extends BaseController
             ]);
         }
 
-        if ($product->stock === 0) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'تمام شده',
-            ]);
-        }
-
         $buy_price = $product->price;
         $user = $this->user;
+
+        if ($user->is_shadow_banned) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'مورد نامعتبر است',
+            ]);
+        }
 
         if ($coupon_raw !== '') {
             $coupon = UserCoupon::where('code', $coupon_raw)->first();
@@ -161,14 +161,11 @@ final class OrderController extends BaseController
                 ]);
             }
 
-            if ($coupon_limit->product_id !== '') {
-                $product_limit = explode(',', $coupon_limit->product_id);
-                if (! in_array($product_id, $product_limit)) {
-                    return $response->withJson([
-                        'ret' => 0,
-                        'msg' => 'کد کوپن نامعتبر است',
-                    ]);
-                }
+            if ($coupon_limit->product_id !== '' && ! in_array($product_id, explode(',', $coupon_limit->product_id))) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'کد کوپن نامعتبر است',
+                ]);
             }
 
             $coupon_use_limit = $coupon_limit->use_time;

@@ -9,7 +9,7 @@
                         <span class="home-title">لیست سرویس ها</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">سرویس های خود را مرور کنید</span>
+                        <span class="home-subtitle">سرویس های مورد نیاز خود را مرور کنید</span>
                     </div>
                 </div>
             </div>
@@ -17,28 +17,6 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-deck row-cards">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="m-0 my-2">
-                                <div>
-                                    <p>موجودی فعلی حساب <code>{$user->money}</code> تومان، ترافیک باقی مانده <code>{$user->unusedTraffic()}</code>
-                                        {if time() > strtotime($user->expire_in)}
-                                            ，حساب شما منقضی شده است
-                                        {else}
-                                            {$diff = round((strtotime($user->expire_in) - time()) / 86400)}
-                                            ，سطح Lv.{$user->class}，اعتبار باقی مانده است <code>{$diff}</code> روز
-                                        {/if}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-xl my-4">
             <div class="row row-cards">
                 <div class="col-12">
                     <div class="card">

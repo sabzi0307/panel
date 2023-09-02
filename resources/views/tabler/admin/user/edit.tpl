@@ -77,13 +77,6 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">زمان انقضای حساب</label>
-                                <div class="col">
-                                    <input id="expire_in" type="text" class="form-control"
-                                        value="{$edit_user->expire_in}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">روز ریست ترافیک رایگان کاربر</label>
                                 <div class="col">
                                     <input id="auto_reset_day" type="text" class="form-control"
@@ -121,12 +114,10 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">از سیستم فروشگاه جدید استفاده کنید</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input id="use_new_shop" class="form-check-input" type="checkbox"
-                                            {if $edit_user->use_new_shop}checked="" {/if}>
-                                    </label>
+                                <span class="col">وضعیت غیر عادی حساب</span>
+                                <span class="col-auto form-check-single form-switch">
+                                    <input id="is_shadow_banned" class="form-check-input" type="checkbox"
+                                            {if $edit_user->is_shadow_banned}checked=""{/if}>
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
@@ -155,10 +146,10 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">محدودیت های ترافیکی (GB)</label>
+                                <label class="form-label col-4 col-form-label">محدودیت های ترافیکی</label>
                                 <div class="col">
                                     <input id="transfer_enable" type="text" class="form-control"
-                                        value="{$edit_user->enableTrafficInGB()}">
+                                        value="{$edit_user->enableTraffic()}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -286,7 +277,7 @@
                 is_admin: $("#is_admin").is(":checked"),
                 is_banned: $("#is_banned").is(":checked"),
                 ga_enable: $("#ga_enable").is(":checked"),
-                use_new_shop: $("#use_new_shop").is(":checked"),
+                is_shadow_banned: $("#is_shadow_banned").is(":checked"),
             },
             success: function(data) {
                 if (data.ret === 1) {

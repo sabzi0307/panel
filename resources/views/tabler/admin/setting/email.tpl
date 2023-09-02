@@ -34,6 +34,9 @@
                             <a href="#email" class="nav-link active" data-bs-toggle="tab">تنظیمات ایمیل</a>
                         </li>
                         <li class="nav-item">
+                            <a href="#limit" class="nav-link" data-bs-toggle="tab">محدودیت ارسال</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#smtp" class="nav-link" data-bs-toggle="tab">SMTP</a>
                         </li>
                         <li class="nav-item">
@@ -74,6 +77,38 @@
                                         <div class="col">
                                             <button id="test-email" class="btn btn-primary">ارسال ایمیل آزمایشی</button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="limit">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">مدت اعتبار کد تأیید ایمیل (ثانیه)</label>
+                                    <div class="col">
+                                        <input id="email_verify_code_ttl" type="text" class="form-control"
+                                               value="{$settings['email_verify_code_ttl']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">بازنشانی ایمیل دوره اعتبار لینک رمز عبور (ثانیه)</label>
+                                    <div class="col">
+                                        <input id="email_password_reset_ttl" type="text" class="form-control"
+                                               value="{$settings['email_password_reset_ttl']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک IP می تواند درخواست ارسال نامه در ساعت کند</label>
+                                    <div class="col">
+                                        <input id="email_request_ip_limit" type="text" class="form-control"
+                                               value="{$settings['email_request_ip_limit']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">تعداد ایمیل هایی که می توان در هر ساعت برای یک آدرس ایمیل درخواست کرد</label>
+                                    <div class="col">
+                                        <input id="email_request_address_limit" type="text" class="form-control"
+                                               value="{$settings['email_request_address_limit']}">
                                     </div>
                                 </div>
                             </div>

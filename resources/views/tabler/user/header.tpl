@@ -9,15 +9,15 @@
     <meta name="referrer" content="never">
     <title>{$config['appName']}</title>
     <!-- CSS files -->
-    <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/clipboard@latest/dist/clipboard.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/qrcode_js@latest/qrcode.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/jquery/dist/jquery.min.js"></script>
     <style>
         .home-subtitle {
             font-size: 14px;
@@ -48,7 +48,7 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <span class="avatar avatar-sm"
-                                style="background-image: url({$user->gravatar})"></span>
+                                style="background-image: url({$user->dice_bear})"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{$user->email}</div>
                                 <div class="mt-1 small text-secondary">{$user->user_name}</div>
@@ -92,7 +92,7 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/user/profile">
                                                 <i class="ti ti-info-square"></i>&nbsp;
-                                                اطلاعات حساب
+                                                حساب کاربری
                                             </a>
                                             <a class="dropdown-item" href="/user/edit">
                                                 <i class="ti ti-edit"></i>&nbsp;
@@ -153,8 +153,15 @@
                                     {if $public_setting['enable_ticket']}
                                     <a class="dropdown-item" href="/user/ticket">
                                         <i class="ti ti-ticket"></i>&nbsp;
-                                        تیکت
+                                        دستور کار
                                     </a>
+                                    {/if}
+                                    {if $public_setting['display_docs'] &&
+                                    (! $public_setting['display_docs_only_for_paid_user'] || $user->class !== 0)}
+                                        <a class="dropdown-item" href="/user/docs">
+                                            <i class="ti ti-notes"></i>&nbsp;
+                                            سند
+                                        </a>
                                     {/if}
                                 </div>
                             </li>
@@ -173,7 +180,6 @@
                                         <i class="ti ti-barrier-block"></i>&nbsp;
                                         قوانین
                                     </a>
-                                    {if $public_setting['display_detect_log']}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
                                         سوابق ممیزی

@@ -99,6 +99,12 @@
                                             <option value="1" {if $settings['mail_ticket']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
+                                    <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">سهمیه تیکت کاربر (ماهانه)</label>
+                                    <div class="col">
+                                        <input id="ticket_limit" type="text" class="form-control" value="{$settings['ticket_limit']}">
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

@@ -9,16 +9,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{$config['appName']}</title>
     <!-- CSS files -->
-    <link href="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
-    <script src="//cdn.jsdelivr.net/npm/qrcode_js@latest/qrcode.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/clipboard@latest/dist/clipboard.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="//cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/qrcode_js@latest/qrcode.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/jquery/dist/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.js"></script>
     <style>
         .home-subtitle {
             font-size: 14px;
@@ -49,7 +49,7 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <span class="avatar avatar-sm"
-                                style="background-image: url({$user->gravatar})"></span>
+                                style="background-image: url({$user->dice_bear})"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{$user->email}</div>
                                 <div class="mt-1 small text-secondary">{$user->user_name}</div>
@@ -94,38 +94,38 @@
                                             <div class="dropend">
                                                 <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                                                     <i class="ti ti-settings"></i>&nbsp;
-                                                    نصب
-                                                </a>
-                                                <div class="dropdown-menu">
+                                                راه اندازی
+                                            </a>
+                                             <div class="dropdown-menu">
                                                     <a href="/admin/setting/billing" class="dropdown-item">
-                                                      مالی
+                                                        امور مالی
                                                     </a>
                                                     <a href="/admin/setting/email" class="dropdown-item">
-                                                      ایمیل
+                                                        پست الکترونیکی
                                                     </a>
                                                     <a href="/admin/setting/support" class="dropdown-item">
-                                                      پشتیبانی
+                                                        پشتیبانی
                                                     </a>
                                                     <a href="/admin/setting/captcha" class="dropdown-item">
-                                                      چپتا
+                                                        chapta
                                                     </a>
                                                     <a href="/admin/setting/reg" class="dropdown-item">
-                                                      ثبت نام
+                                                        ثبت نام
                                                     </a>
                                                     <a href="/admin/setting/ref" class="dropdown-item">
-                                                      دعوت
+                                                        دعوت
                                                     </a>
                                                     <a href="/admin/setting/im" class="dropdown-item">
-                                                      IM
+                                                        IM
                                                     </a>
                                                     <a href="/admin/setting/sub" class="dropdown-item">
-                                                      عضویت
-                                                    </a>
-                                                    <a href="/admin/setting/feature" class="dropdown-item">
-                                                      ویژگی ها
+                                                        عضویت
                                                     </a>
                                                     <a href="/admin/setting/cron" class="dropdown-item">
-                                                      وظایف زمان بندی شده
+                                                        وظایف زمان بندی شده
+                                                    </a>
+                                                    <a href="/admin/setting/feature" class="dropdown-item">
+                                                        تنظیمات دیگر
                                                     </a>
                                                 </div>
                                             </div>
@@ -135,7 +135,11 @@
                                             </a>
                                             <a class="dropdown-item" href="/admin/node">
                                                 <i class="ti ti-server-2"></i>&nbsp;
-                                                گره
+                                                نود
+                                            </a>
+                                            <a class="dropdown-item" href="/admin/system">
+                                                <i class="ti ti-tool"></i>&nbsp;
+                                                سیستم
                                             </a>
                                         </div>
                                     </div>
@@ -159,6 +163,10 @@
                                     <a class="dropdown-item" href="/admin/ticket">
                                         <i class="ti ti-messages"></i>&nbsp;
                                         تیکت
+                                    </a>
+                                    <a class="dropdown-item" href="/admin/docs">
+                                        <i class="ti ti-notes"></i>&nbsp;
+                                        مدارک
                                     </a>
                                 </div>
                             </li>
@@ -235,7 +243,7 @@
                                         <i class="ti ti-coin icon"></i>
                                     </span>
                                     <span class="nav-link-title">
-                                        مالی
+                                        امور مالی
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
@@ -243,7 +251,7 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="/admin/product">
                                                 <i class="ti ti-list-details"></i>&nbsp;
-                                                ویرایش سرویس ها
+                                                سرویس
                                             </a>
                                             <a class="dropdown-item" href="/admin/order">
                                                 <i class="ti ti-receipt"></i>&nbsp;

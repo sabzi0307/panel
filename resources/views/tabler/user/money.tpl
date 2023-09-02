@@ -29,10 +29,6 @@
             <div class="row row-deck">
                 <div class="col-sm-12 col-lg-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">ثبت موجودی حساب</h3>
-                        </div>
-                        {if $moneylogs->count() !== 0}
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
@@ -59,11 +55,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        {else}
-                            <div class="card-body">
-                                <p>هیچ سابقه ای پیدا نشد</p>
-                            </div>
-                        {/if}
                     </div>
                 </div>
             </div>

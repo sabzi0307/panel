@@ -28,26 +28,10 @@
                                 <input id="repasswd" type="password" class="form-control" placeholder="تکرار رمز ورود به سیستم">
                             </div>
                         </div>
-                        {if $public_setting['enable_reg_im']}
-                            <div class="mb-3">
-                                <select id="im_type" class="col form-select">
-                                    <option value="0">لطفا نرم افزار فضای مجازی مورد نظر را انتخاب کنید</option>
-                                    <option value="1">WeChat</option>
-                                    <option value="2">QQ</option>
-                                    <option value="4">Telegram</option>
-                                    <option value="5">Discord</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group input-group-flat">
-                                    <input id="im_value" type="text" class="form-control" placeholder="حساب اجتماعی">
-                                </div>
-                            </div>
-                        {/if}
                         {if $public_setting['reg_mode'] !== 'close' }
                             <div class="mb-3">
                                 <div class="input-group input-group-flat">
-                                    <input id="code" type="text" class="form-control" placeholder="کد دعوت نامه ثبت نام{if $public_setting['reg_mode'] === 'open'}（اختیاری）{else}（ضروری）{/if}" value="{$code}">
+                                    <input id="code" type="text" class="form-control" placeholder="کد دعوتنامه ثبت نام{if $public_setting['reg_mode'] === 'open'}（اختیاری）{else}（ضروری）{/if}" value="{$code}">
                                 </div>
                             </div>
                         {/if}
@@ -129,10 +113,6 @@
                 url: '/auth/register',
                 dataType: "json",
                 data: {
-                    {if $public_setting['enable_reg_im']}
-                        im_value: $('#im_value').val(),
-                        im_type: $('#im_type').val(),
-                    {/if}
                     {if $public_setting['reg_email_verify']}
                         emailcode: $('#emailcode').val(),
                     {/if}

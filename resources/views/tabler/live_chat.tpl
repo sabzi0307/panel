@@ -30,8 +30,6 @@
                   ["user_id","{$user->id}"],
                   ["user_class","{$user->class}"],
                   ["reg_email","{$user->email}"],
-                  ["last_use_time","{$user->lastSsTime()}"],
-                  ["expire_in","{$user->expire_in}"],
                   ["class_expire_time","{$user->class_expire}"],
                   ["available_traffic","{$user->unusedTraffic()}"],
                   ["balance","{$user->money}"]
@@ -48,8 +46,6 @@ window.__lc.params = [
     { name: 'شناسه کاربر', value: '{$user->id}' },
     { name: 'دسته کاربری', value: '{$user->class}' },
     { name: 'ثبت نام ایمیل', value: '{$user->email}' },
-    { name: 'آخرین استفاده', value: '{$user->lastSsTime()}' },
-    { name: 'تاریخ انقضا', value: '{$user->expire_in}' },
     { name: 'زمان سطح', value: '{$user->class_expire}' },
     { name: 'ترافیک باقیمانده', value: '{$user->unusedTraffic()}' },
     { name: 'موجودی حساب', value: '{$user->money}' }

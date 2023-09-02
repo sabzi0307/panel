@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\UserSubscribeLog;
+use App\Models\SubscribeLog;
 use App\Utils\Tools;
 use Exception;
-use GeoIp2\Exception\AddressNotFoundException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -20,10 +19,8 @@ final class SubscribeLogController extends BaseController
     [
         'field' => [
             'id' => 'شناسه رویداد',
-            'user_name' => 'نام کاربری',
             'user_id' => 'شناسه کاربر',
-            'email' => 'ایمیل کاربر',
-            'subscribe_type' => 'دریافت نوع اشتراک',
+            'type' => 'دریافت نوع اشتراک',
             'request_ip' => 'درخواست IP',
             'location' => 'انتساب IP',
             'request_time' => 'زمان درخواست',
@@ -41,14 +38,13 @@ final class SubscribeLogController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('details', self::$details)
-                ->fetch('admin/subscribe.tpl')
+                ->fetch('admin/log/subscribe.tpl')
         );
     }
 
     /**
      * 后台订阅记录页面 AJAX
      *
-     * @throws AddressNotFoundException
      * @throws InvalidDatabaseException
      */
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
@@ -57,11 +53,12 @@ final class SubscribeLogController extends BaseController
         $page = $request->getParam('start') / $length + 1;
         $draw = $request->getParam('draw');
 
-        $subscribes = UserSubscribeLog::orderBy('id', 'desc')->paginate($length, '*', '', $page);
-        $total = UserSubscribeLog::count();
+        $subscribes = SubscribeLog::orderBy('id', 'desc')->paginate($length, '*', '', $page);
+        $total = SubscribeLog::count();
 
         foreach ($subscribes as $subscribe) {
-            $subscribe->location = Tools::getIpLocation($subscribe->request_ip);
+            $subscribe->request_time = Tools::toDateTime($subscribe->request_time);
+            $subscribe->location = $subscribe->getAttributes();
         }
 
         return $response->withJson([

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
 use function array_key_exists;
 use function count;
+use function dns_get_record;
 use function time;
+use const DNS_A;
+use const DNS_AAAA;
 
 final class Node extends Model
 {
@@ -17,6 +21,18 @@ final class Node extends Model
         'traffic_rate' => 'float',
         'node_heartbeat' => 'int',
     ];
+
+    /**
+     * 节点状态颜色
+     */
+    public function getColorAttribute(): string
+    {
+        return match ($this->getNodeOnlineStatus()) {
+            0 => 'orange',
+            1 => 'green',
+            default => 'red',
+        };
+    }
 
     /**
      * 节点是否显示和隐藏
@@ -33,6 +49,8 @@ final class Node extends Model
     {
         return match ($this->sort) {
             0 => 'Shadowsocks',
+            1 => 'WireGuard',
+            2 => 'TUIC',
             11 => 'V2Ray',
             14 => 'Trojan',
             default => 'ناشناخته',
@@ -40,49 +58,13 @@ final class Node extends Model
     }
 
     /**
-     * 节点最后活跃时间
-     */
-    public function nodeHeartbeat(): string
-    {
-        return date('Y-m-d H:i:s', $this->node_heartbeat);
-    }
-
-    /**
-     * Get node online status
+     * 获取节点在线状态
      *
      * @return int 0 = new node OR -1 = offline OR 1 = online
      */
     public function getNodeOnlineStatus(): int
     {
-        // Type 9 or heartbeat 0
-        if ($this->node_heartbeat === 0) {
-            return 0;
-        }
-
-        return $this->node_heartbeat + 600 > time() ? 1 : -1;
-    }
-
-    /**
-     * 获取节点速率文本信息
-     */
-    public function getNodeSpeedlimit(): string
-    {
-        if ($this->node_speedlimit === 0.0) {
-            return '0';
-        }
-        if ($this->node_speedlimit >= 1024.00) {
-            return round($this->node_speedlimit / 1024.00, 1) . 'Gbps';
-        }
-
-        return $this->node_speedlimit . 'Mbps';
-    }
-
-    /**
-     * 节点流量已耗尽
-     */
-    public function isNodeTrafficOut(): bool
-    {
-        return ! ($this->node_bandwidth_limit === 0 || $this->node_bandwidth < $this->node_bandwidth_limit);
+        return $this->node_heartbeat === 0 ? 0 : ($this->node_heartbeat + 600 > time() ? 1 : -1);
     }
 
     /**
@@ -90,7 +72,12 @@ final class Node extends Model
      */
     public function changeNodeIp(string $server_name): void
     {
-        $result = dns_get_record($server_name, DNS_A + DNS_AAAA);
+        try {
+            $result = dns_get_record($server_name, DNS_A + DNS_AAAA);
+        } catch (Exception $e) {
+            $result = false;
+        }
+
         $dns = [];
 
         if ($result !== false && count($result) > 0) {

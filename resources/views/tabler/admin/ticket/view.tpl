@@ -18,7 +18,7 @@
                         <button href="#" class="btn btn-red" data-bs-toggle="modal"
                             data-bs-target="#close_ticket_confirm_dialog">
                             <i class="icon ti ti-x"></i>
-                            بسته
+                            بستن
                         </button>
                         {/if}
                         <button id="add_ai_reply" href="#" class="btn btn-primary">

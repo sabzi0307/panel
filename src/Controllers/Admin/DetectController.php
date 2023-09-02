@@ -8,7 +8,7 @@ use App\Controllers\BaseController;
 use App\Models\DetectBanLog;
 use App\Models\DetectLog;
 use App\Models\DetectRule;
-use App\Utils\Telegram;
+use App\Services\IM\Telegram;
 use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -122,7 +122,7 @@ final class DetectController extends BaseController
             ]);
         }
 
-        Telegram::sendMarkdown('قوانین فیلترینگ جدیدی وجود دارد：' . $rule->name);
+        (new Telegram())->sendMarkdown(0, 'قوانین ممیزی جدید وجود دارد:' . $rule->name);
         return $response->withJson([
             'ret' => 1,
             'msg' => 'با موفقیت اضافه شد',

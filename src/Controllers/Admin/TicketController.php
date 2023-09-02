@@ -7,12 +7,16 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\Ticket;
 use App\Models\User;
-use App\Services\ChatGPT;
+use App\Services\LLM;
+use App\Services\Notification;
 use App\Utils\Tools;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use function array_merge;
 use function count;
 use function json_decode;
@@ -49,7 +53,9 @@ final class TicketController extends BaseController
     }
 
     /**
-     * 后台更新工单内容
+     * @throws TelegramSDKException
+     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
@@ -68,7 +74,7 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکتی وجود ندارد',
+                'msg' => 'تیکت وجود ندارد',
             ]);
         }
 
@@ -83,13 +89,11 @@ final class TicketController extends BaseController
         ];
 
         $user = User::find($ticket->userid);
-        $user->sendMail(
-            $_ENV['appName'] . '-تیکت پاسخ داده شد',
-            'warn.tpl',
-            [
-                'text' => 'سلام یکی جواب داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت پشتیبانی</a>，لطفا آن را بررسی کنید.',
-            ],
-            []
+
+        Notification::notifyUser(
+            $user,
+            $_ENV['appName'] . '-بلیت پاسخ داده شده است',
+            'سلام، یکی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.'
         );
 
         $ticket->content = json_encode(array_merge($content_old, $content_new));
@@ -98,12 +102,14 @@ final class TicketController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'با موفقیت ذخیره شد',
+            'msg' => 'با موفقیت ثبت شد',
         ]);
     }
 
     /**
-     * 喊 ChatGPT 帮忙回复工单
+     * @throws GuzzleException
+     * @throws TelegramSDKException
+     * @throws ClientExceptionInterface
      */
     public function updateAI(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
@@ -119,28 +125,23 @@ final class TicketController extends BaseController
         }
 
         $content_old = json_decode($ticket->content, true);
-        // 获取用户的第一个问题，作为 ChatGPT 的输入
-        $user_question = $content_old[0]['comment'];
-        // 这里可能要等4-5秒
-        $ai_reply = ChatGPT::askOnce($user_question);
-
+        // 获取用户的第一个问题，作为 LLM 的输入
+        $ai_reply = LLM::genTextResponse($content_old[0]['comment']);
         $content_new = [
             [
                 'comment_id' => $content_old[count($content_old) - 1]['comment_id'] + 1,
-                'commenter_name' => 'AI Admin by GPT',
+                'commenter_name' => 'AI Admin',
                 'comment' => $ai_reply,
                 'datetime' => time(),
             ],
         ];
 
         $user = User::find($ticket->userid);
-        $user->sendMail(
-            $_ENV['appName'] . '- تیکت پاسخ داده شده است',
-            'warn.tpl',
-            [
-                'text' => 'سلام، ChatGPT پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت پشتیبانی</a>，لطفا آن را بررسی کنید.',
-            ],
-            []
+
+        Notification::notifyUser(
+            $user,
+            $_ENV['appName'] . '-تیکت پاسخ داده شده است',
+            'سلام，هوش مصنوعی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.'
         );
 
         $ticket->content = json_encode(array_merge($content_old, $content_new));
@@ -182,7 +183,7 @@ final class TicketController extends BaseController
     }
 
     /**
-     * 后台غیرفعال工单
+     * 后台关闭工单
      */
     public function close(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
@@ -192,26 +193,16 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکتی وجود ندارد',
+                'msg' => 'تیکت وجود ندارد',
             ]);
         }
 
         if ($ticket->status === 'closed') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'عملیات انجام نشد، تیکت بسته شد',
+                'msg' => 'عملیات شکست خورد، تیکت بسته شد',
             ]);
         }
-
-        $user = User::find($ticket->userid);
-        $user->sendMail(
-            $_ENV['appName'] . '-تیکت بسته است',
-            'warn.tpl',
-            [
-                'text' => 'سلام تیکت پشتیبانی شما #'. $ticket->id .' بسته شده است، اگر همچنان مشکل دارید، لطفا تیکت جدید ارسال کنید.',
-            ],
-            []
-        );
 
         $ticket->status = 'closed';
         $ticket->save();

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Models\Setting;
-use App\Services\CronDetect;
-use App\Services\CronJob;
+use App\Services\Cron as CronService;
+use App\Services\Detect;
 use Exception;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use function mktime;
@@ -15,7 +15,7 @@ use function time;
 final class Cron extends Command
 {
     public string $description = <<<EOL
-├─=: php xcat Cron - Site timed task, every 5 minutes
+├─=: php xcat Cron - کار زمان بندی شده سایت، هر پنج دقیقه
 EOL;
 
     /**
@@ -30,7 +30,7 @@ EOL;
         $hour = (int) date('H');
         $minute = (int) date('i');
 
-        $jobs = new CronJob();
+        $jobs = new CronService();
 
         // Run new shop related jobs
         $jobs->processPendingOrder();
@@ -64,6 +64,10 @@ EOL;
             $jobs->resetFreeUserTraffic();
             $jobs->sendDailyTrafficReport();
 
+            if (Setting::obtain('enable_detect_inactive_user')) {
+                $jobs->detectInactiveUser();
+            }
+
             if (Setting::obtain('telegram_diary')) {
                 $jobs->sendTelegramDiary();
             }
@@ -74,7 +78,7 @@ EOL;
                 $jobs->sendTelegramDailyJob();
             }
 
-            Setting::where('item', '=', 'last_daily_job_time')->update([
+            Setting::where('item', 'last_daily_job_time')->update([
                 'value' => mktime(
                     Setting::obtain('daily_job_hour'),
                     Setting::obtain('daily_job_minute'),
@@ -115,14 +119,14 @@ EOL;
         // Detect GFW
         if (Setting::obtain('enable_detect_gfw') && $minute === 0
         ) {
-            $detect = new CronDetect();
+            $detect = new Detect();
             $detect->gfw();
         }
 
         // Detect ban
         if (Setting::obtain('enable_detect_ban') && $minute === 0
         ) {
-            $detect = new CronDetect();
+            $detect = new Detect();
             $detect->ban();
         }
 

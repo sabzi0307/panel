@@ -43,11 +43,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE email_queue MODIFY COLUMN `template` varchar(255) NOT NULL DEFAULT '' COMMENT 'email template';
         ALTER TABLE email_queue MODIFY COLUMN `array` longtext NOT NULL DEFAULT '{}' COMMENT 'template parameter' CHECK (json_valid(`array`));
         ALTER TABLE email_queue MODIFY COLUMN `time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'add time';
-        ALTER TABLE email_verify MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
-        ALTER TABLE email_verify MODIFY COLUMN `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'email';
-        ALTER TABLE email_verify MODIFY COLUMN `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'IP';
-        ALTER TABLE email_verify MODIFY COLUMN `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'verification code';
-        ALTER TABLE email_verify MODIFY COLUMN `expire_in` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'expiration time';
         ALTER TABLE gift_card MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Gift Card ID';
         ALTER TABLE gift_card MODIFY COLUMN `card` text NOT NULL DEFAULT '' COMMENT 'card number';
         ALTER TABLE gift_card MODIFY COLUMN `balance` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'balance';
@@ -177,21 +172,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user_invite_code MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'created_at`;
         ALTER TABLE user_invite_code MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Updated time';
         ALTER TABLE user_money_log MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
-        ALTER TABLE user_password_reset MODIFY COLUMN `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
-        ALTER TABLE user_password_reset MODIFY COLUMN `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'User Email';
-        ALTER TABLE user_password_reset MODIFY COLUMN `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'Reset password token';
-        ALTER TABLE user_password_reset MODIFY COLUMN `init_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Creation time';
-        ALTER TABLE user_password_reset MODIFY COLUMN `expire_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'expire time';
-        ALTER TABLE user_password_reset ADD KEY IF NOT EXISTS `email` (`email`);
-        ALTER TABLE user_password_reset ADD KEY IF NOT EXISTS `token` (`token`);
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `user_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'username';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'User Email';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `subscribe_type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Get the subscription type';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `request_ip` varcha
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `request_time` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'request time';
-        ALTER TABLE user_subscribe_log MODIFY COLUMN `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'Request UA information';
         SET FOREIGN_KEY_CHECKS = 1;");
 
         return 2023061800;

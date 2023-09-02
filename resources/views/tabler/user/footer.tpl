@@ -117,9 +117,11 @@
         location.reload();
     });
 </script>
-<script src="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script src="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 <script>console.table([['پرس و جو پایگاه داده', 'زمان اجرا'], ['{count($queryLog)} درجه دوم', '{$optTime} ms']])</script>
 
 {include file='live_chat.tpl'}
 
 </body>
+
+</html>

@@ -6,79 +6,34 @@ namespace App\Controllers\WebAPI;
 
 use App\Controllers\BaseController;
 use App\Models\Node;
-use App\Models\StreamMedia;
-use App\Models\SharedAccount;
-use App\Services\DB;
 use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use function json_decode;
-use function json_encode;
-use function time;
 use const VERSION;
 
 final class NodeController extends BaseController
 {
-    public function saveSharedIds(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        
-        $body = $request->getParsedBody();
-
-        foreach ($body as $item) { //foreach element in $arr
-            $ids = DB::getPdo()->prepare('
-            INSERT INTO shared_account (priority, status, created_at, updated_at, account, password, country)
-                VALUES (?, ?, UNIX_TIMESTAMP(), ?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE status = ?, updated_at = ?, password = ?
-        ');
-            $priority = $item['priority'];
-            $status = $item['status'];
-            $updated_at = $item['update'];
-            $account = $item['account'];
-            $password = $item['password'];
-            $country = $item['country'];
-            $ids->execute([$priority, $status, $updated_at, $account, $password, $country, $status, $updated_at, $password]);
-        }
-
-        return $response->withJson([
-            'ret' => 1,
-            'data' => 'ok',
-        ]);
-    }
-    
-    public function saveReport(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $node_id = $request->getParam('node_id');
-        $content = $request->getParam('content');
-        $result = json_decode(base64_decode($content), true);
-        $report = new StreamMedia();
-        $report->node_id = $node_id;
-        $report->result = json_encode($result);
-        $report->created_at = time();
-        $report->save();
-
-        return $response->withJson([
-            'ret' => 1,
-            'data' => 'ok',
-        ]);
-    }
-
     public function getInfo(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $node_id = $args['id'];
         $node = Node::find($node_id);
+
         if ($node === null) {
-            $res = [
+            return $response->withJson([
                 'ret' => 0,
-            ];
-            return $response->withJson($res);
+                'data' => 'Node not found.',
+            ]);
         }
+
         if ($node->sort === 0) {
             $node_explode = explode(';', $node->server);
             $node_server = $node_explode[0];
         } else {
             $node_server = $node->server;
         }
+
         $data = [
             'node_group' => $node->node_group,
             'node_class' => $node->node_class,

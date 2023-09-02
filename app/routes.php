@@ -17,8 +17,11 @@ return static function (Slim\App $app): void {
     $app->get('/404', App\Controllers\HomeController::class . ':notFound');
     $app->get('/405', App\Controllers\HomeController::class . ':methodNotAllowed');
     $app->get('/500', App\Controllers\HomeController::class . ':internalServerError');
-    // Telegram
-    $app->post('/telegram_callback', App\Controllers\HomeController::class . ':telegram');
+    // Bot Callback
+    $app->post('/callback/{type}', App\Controllers\CallbackController::class . ':index');
+    // OAuth
+    $app->post('/oauth/{type}', App\Controllers\OAuthController::class . ':index');
+    $app->get('/oauth/{type}', App\Controllers\OAuthController::class . ':index');
     // User Center
     $app->group('/user', static function (RouteCollectorProxy $group): void {
         $group->get('', App\Controllers\UserController::class . ':index');
@@ -28,9 +31,8 @@ return static function (Slim\App $app): void {
         // 公告
         $group->get('/announcement', App\Controllers\UserController::class . ':announcement');
         // 文档
-        $group->get('/docs', App\Controllers\UserController::class . ':docs');
-        // 流媒体解锁
-        $group->get('/media', App\Controllers\UserController::class . ':media');
+        $group->get('/docs', App\Controllers\User\DocsController::class . ':index');
+        $group->get('/docs/{id}/view', App\Controllers\User\DocsController::class . ':detail');
         // 个人资料
         $group->get('/profile', App\Controllers\UserController::class . ':profile');
         $group->get('/invite', App\Controllers\UserController::class . ':invite');
@@ -47,29 +49,28 @@ return static function (Slim\App $app): void {
         $group->get('/ticket/{id}/view', App\Controllers\User\TicketController::class . ':ticketView');
         $group->put('/ticket/{id}', App\Controllers\User\TicketController::class . ':ticketUpdate');
         // 资料编辑
-        $group->get('/edit', App\Controllers\UserController::class . ':edit');
-        $group->post('/email', App\Controllers\UserController::class . ':updateEmail');
-        $group->post('/username', App\Controllers\UserController::class . ':updateUsername');
-        $group->post('/password', App\Controllers\UserController::class . ':updatePassword');
+        $group->get('/edit', App\Controllers\User\InfoController::class . ':index');
+        $group->post('/email', App\Controllers\User\InfoController::class . ':updateEmail');
+        $group->post('/username', App\Controllers\User\InfoController::class . ':updateUsername');
+        $group->post('/unbind_im', App\Controllers\User\InfoController::class . ':unbindIM');
+        $group->post('/password', App\Controllers\User\InfoController::class . ':updatePassword');
+        $group->post('/passwd_reset', App\Controllers\User\InfoController::class . ':resetPasswd');
+        $group->post('/apitoken_reset', App\Controllers\User\InfoController::class . ':resetApiToken');
+        $group->post('/method', App\Controllers\User\InfoController::class . ':updateMethod');
+        $group->post('/url_reset', App\Controllers\User\InfoController::class . ':resetURL');
+        $group->post('/invite_reset', App\Controllers\User\InfoController::class . ':resetInviteURL');
+        $group->post('/daily_mail', App\Controllers\User\InfoController::class . ':updateDailyMail');
+        $group->post('/contact_method', App\Controllers\User\InfoController::class . ':updateContactMethod');
+        $group->post('/theme', App\Controllers\User\InfoController::class . ':updateTheme');
+        $group->post('/kill', App\Controllers\User\InfoController::class . ':sendToGulag');
+        // 发送验证邮件
         $group->post('/send', App\Controllers\AuthController::class . ':sendVerify');
-        $group->post('/contact_update', App\Controllers\UserController::class . ':updateContact');
-        $group->post('/theme', App\Controllers\UserController::class . ':updateTheme');
-        $group->post('/mail', App\Controllers\UserController::class . ':updateMail');
-        $group->post('/passwd_reset', App\Controllers\UserController::class . ':resetPasswd');
-        $group->post('/apitoken_reset', App\Controllers\UserController::class . ':resetApiToken');
-        $group->post('/method', App\Controllers\UserController::class . ':updateMethod');
-        $group->get('/kill', App\Controllers\UserController::class . ':kill');
-        $group->post('/kill', App\Controllers\UserController::class . ':handleKill');
+        // 登出
         $group->get('/logout', App\Controllers\UserController::class . ':logout');
         // MFA
         $group->post('/ga_check', App\Controllers\User\MFAController::class . ':checkGa');
         $group->post('/ga_set', App\Controllers\User\MFAController::class . ':setGa');
         $group->post('/ga_reset', App\Controllers\User\MFAController::class . ':resetGa');
-        // Telegram
-        $group->post('/telegram_reset', App\Controllers\UserController::class . ':resetTelegram');
-        // URL
-        $group->post('/url_reset', App\Controllers\UserController::class . ':resetURL');
-        $group->put('/invite', App\Controllers\UserController::class . ':resetInviteURL');
         // 深色模式切换
         $group->post('/switch_theme_mode', App\Controllers\UserController::class . ':switchThemeMode');
         // 记录
@@ -98,6 +99,8 @@ return static function (Slim\App $app): void {
         $group->post('/payment/purchase/{type}', App\Services\Payment::class . ':purchase');
         $group->get('/payment/purchase/{type}', App\Services\Payment::class . ':purchase');
         $group->get('/payment/return/{type}', App\Services\Payment::class . ':returnHTML');
+        // Get Clients
+        $group->get('/clients/{name}', App\Controllers\User\ClientController::class . ':getClients');
     })->add(new Auth());
 
     $app->group('/payment', static function (RouteCollectorProxy $group): void {
@@ -128,7 +131,7 @@ return static function (Slim\App $app): void {
     $app->group('/admin', static function (RouteCollectorProxy $group): void {
         $group->get('', App\Controllers\AdminController::class . ':index');
         $group->get('/', App\Controllers\AdminController::class . ':index');
-        // Node Mange
+        // Node
         $group->get('/node', App\Controllers\Admin\NodeController::class . ':index');
         $group->get('/node/create', App\Controllers\Admin\NodeController::class . ':create');
         $group->post('/node', App\Controllers\Admin\NodeController::class . ':add');
@@ -138,7 +141,7 @@ return static function (Slim\App $app): void {
         $group->put('/node/{id}', App\Controllers\Admin\NodeController::class . ':update');
         $group->delete('/node/{id}', App\Controllers\Admin\NodeController::class . ':delete');
         $group->post('/node/ajax', App\Controllers\Admin\NodeController::class . ':ajax');
-        // Ticket Mange
+        // Ticket
         $group->get('/ticket', App\Controllers\Admin\TicketController::class . ':index');
         $group->post('/ticket', App\Controllers\Admin\TicketController::class . ':add');
         $group->get('/ticket/{id}/view', App\Controllers\Admin\TicketController::class . ':ticketView');
@@ -147,7 +150,7 @@ return static function (Slim\App $app): void {
         $group->put('/ticket/{id}/ai', App\Controllers\Admin\TicketController::class . ':updateAI');
         $group->delete('/ticket/{id}', App\Controllers\Admin\TicketController::class . ':delete');
         $group->post('/ticket/ajax', App\Controllers\Admin\TicketController::class . ':ajax');
-        // Ann Mange
+        // Ann
         $group->get('/announcement', App\Controllers\Admin\AnnController::class . ':index');
         $group->get('/announcement/create', App\Controllers\Admin\AnnController::class . ':create');
         $group->post('/announcement', App\Controllers\Admin\AnnController::class . ':add');
@@ -155,6 +158,15 @@ return static function (Slim\App $app): void {
         $group->put('/announcement/{id}', App\Controllers\Admin\AnnController::class . ':update');
         $group->delete('/announcement/{id}', App\Controllers\Admin\AnnController::class . ':delete');
         $group->post('/announcement/ajax', App\Controllers\Admin\AnnController::class . ':ajax');
+        // Docs
+        $group->get('/docs', App\Controllers\Admin\DocsController::class . ':index');
+        $group->get('/docs/create', App\Controllers\Admin\DocsController::class . ':create');
+        $group->post('/docs', App\Controllers\Admin\DocsController::class . ':add');
+        $group->post('/docs/generate', App\Controllers\Admin\DocsController::class . ':generate');
+        $group->get('/docs/{id}/edit', App\Controllers\Admin\DocsController::class . ':edit');
+        $group->put('/docs/{id}', App\Controllers\Admin\DocsController::class . ':update');
+        $group->delete('/docs/{id}', App\Controllers\Admin\DocsController::class . ':delete');
+        $group->post('/docs/ajax', App\Controllers\Admin\DocsController::class . ':ajax');
         // 审计
         $group->get('/detect', App\Controllers\Admin\DetectController::class . ':detect');
         $group->get('/detect/create', App\Controllers\Admin\DetectController::class . ':create');
@@ -165,26 +177,25 @@ return static function (Slim\App $app): void {
         $group->post('/detect/log/ajax', App\Controllers\Admin\DetectController::class . ':ajaxLog');
         $group->get('/detect/ban', App\Controllers\Admin\DetectController::class . ':ban');
         $group->post('/detect/ban/ajax', App\Controllers\Admin\DetectController::class . ':ajaxBan');
-        // User Mange
+        // User
         $group->get('/user', App\Controllers\Admin\UserController::class . ':index');
         $group->get('/user/{id}/edit', App\Controllers\Admin\UserController::class . ':edit');
         $group->put('/user/{id}', App\Controllers\Admin\UserController::class . ':update');
-        $group->post('/user/changetouser', App\Controllers\Admin\UserController::class . ':changetouser');
         $group->post('/user/create', App\Controllers\Admin\UserController::class . ':createNewUser');
         $group->delete('/user/{id}', App\Controllers\Admin\UserController::class . ':delete');
         $group->post('/user/ajax', App\Controllers\Admin\UserController::class . ':ajax');
-        // Coupon Mange
+        // Coupon
         $group->get('/coupon', App\Controllers\Admin\CouponController::class . ':index');
         $group->post('/coupon', App\Controllers\Admin\CouponController::class . ':add');
         $group->post('/coupon/ajax', App\Controllers\Admin\CouponController::class . ':ajax');
         $group->delete('/coupon/{id}', App\Controllers\Admin\CouponController::class . ':delete');
         $group->post('/coupon/{id}/disable', App\Controllers\Admin\CouponController::class . ':disable');
         // 登录日志
-        $group->get('/login', App\Controllers\Admin\IpController::class . ':login');
-        $group->post('/login/ajax', App\Controllers\Admin\IpController::class . ':ajaxLogin');
+        $group->get('/login', App\Controllers\Admin\LoginLogController::class . ':index');
+        $group->post('/login/ajax', App\Controllers\Admin\LoginLogController::class . ':ajax');
         // 在线IP
-        $group->get('/online', App\Controllers\Admin\IpController::class . ':online');
-        $group->post('/online/ajax', App\Controllers\Admin\IpController::class . ':ajaxOnline');
+        $group->get('/online', App\Controllers\Admin\OnlineIpController::class . ':index');
+        $group->post('/online/ajax', App\Controllers\Admin\OnlineIpController::class . ':ajax');
         // 订阅日志
         $group->get('/subscribe', App\Controllers\Admin\SubscribeLogController::class . ':index');
         $group->post('/subscribe/ajax', App\Controllers\Admin\SubscribeLogController::class . ':ajax');
@@ -197,11 +208,14 @@ return static function (Slim\App $app): void {
         $group->get('/trafficlog', App\Controllers\Admin\TrafficLogController::class . ':index');
         $group->post('/trafficlog/ajax', App\Controllers\Admin\TrafficLogController::class . ':ajax');
         // 用户余额日志
-        $group->get('/moneylog', App\Controllers\Admin\MoneyLogController::class . ':log');
+        $group->get('/moneylog', App\Controllers\Admin\MoneyLogController::class . ':index');
         $group->post('/moneylog/ajax', App\Controllers\Admin\MoneyLogController::class . ':ajax');
         // 支付网关日志
-        $group->get('/gateway', App\Controllers\Admin\PaylistController::class . ':gateway');
+        $group->get('/gateway', App\Controllers\Admin\PaylistController::class . ':index');
         $group->post('/gateway/ajax', App\Controllers\Admin\PaylistController::class . ':ajax');
+        // 系统状态
+        $group->get('/system', App\Controllers\Admin\SystemController::class . ':index');
+        $group->post('/system/check_update', App\Controllers\Admin\SystemController::class . ':checkUpdate');
         // 设置中心
         $group->get('/setting/billing', App\Controllers\Admin\Setting\BillingController::class . ':billing');
         $group->post('/setting/billing', App\Controllers\Admin\Setting\BillingController::class . ':saveBilling');
@@ -224,6 +238,9 @@ return static function (Slim\App $app): void {
         $group->get('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':support');
         $group->post('/setting/support', App\Controllers\Admin\Setting\SupportController::class . ':saveSupport');
         $group->post('/setting/test_email', App\Controllers\Admin\Setting\EmailController::class . ':testEmail');
+        $group->post('/setting/test_telegram', App\Controllers\Admin\Setting\ImController::class . ':testTelegram');
+        $group->post('/setting/test_discord', App\Controllers\Admin\Setting\ImController::class . ':testDiscord');
+        $group->post('/setting/test_slack', App\Controllers\Admin\Setting\ImController::class . ':testSlack');
         // 礼品卡
         $group->get('/giftcard', App\Controllers\Admin\GiftCardController::class . ':index');
         $group->post('/giftcard', App\Controllers\Admin\GiftCardController::class . ':add');
@@ -261,9 +278,6 @@ return static function (Slim\App $app): void {
 
     // WebAPI
     $app->group('/mod_mu', static function (RouteCollectorProxy $group): void {
-        // 流媒体检测
-        $group->post('/media/save_report', App\Controllers\WebAPI\NodeController::class . ':saveReport');
-        $group->post('/save_id', App\Controllers\WebAPI\NodeController::class . ':saveSharedIds');
         // 节点
         $group->get('/nodes/{id}/info', App\Controllers\WebAPI\NodeController::class . ':getInfo');
         // 用户
@@ -277,8 +291,7 @@ return static function (Slim\App $app): void {
     })->add(new NodeToken());
 
     // 传统订阅（SS/V2Ray/Trojan etc.）
-    $app->get('/link/{token}', App\Controllers\LinkController::class . ':getContent');
-
+    $app->get('/link/{token}', App\Controllers\SubController::class . ':getTraditionalSubContent');
     // 通用订阅（Json/Clash/SIP008）
-    $app->get('/sub/{token}/{subtype}', App\Controllers\SubController::class . ':getContent');
+    $app->get('/sub/{token}/{subtype}', App\Controllers\SubController::class . ':getUniversalSubContent');
 };

@@ -5,42 +5,23 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Ann;
-use App\Models\Docs;
-use App\Models\EmailVerify;
 use App\Models\InviteCode;
 use App\Models\LoginIp;
 use App\Models\Node;
 use App\Models\OnlineLog;
 use App\Models\Payback;
 use App\Models\Setting;
-use App\Models\StreamMedia;
-use App\Models\User;
 use App\Services\Auth;
 use App\Services\Captcha;
-use App\Services\Config;
-use App\Services\DB;
-use App\Services\MFA;
-use App\Utils\Hash;
 use App\Utils\ResponseHelper;
-use App\Utils\Telegram;
 use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
-use Ramsey\Uuid\Uuid;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
-use voku\helper\AntiXSS;
-use function array_column;
-use function array_multisort;
-use function in_array;
-use function json_decode;
 use function str_replace;
-use function strlen;
-use function strtolower;
 use function strtotime;
 use function time;
-use const BASE_PATH;
-use const SORT_ASC;
 
 /**
  *  HomeController
@@ -53,40 +34,20 @@ final class UserController extends BaseController
     public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $captcha = [];
+        $class_expire_days = $this->user->class > 0 ?
+            round((strtotime($this->user->class_expire) - time()) / 86400) : 0;
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $captcha = Captcha::generate();
         }
 
-        $agent = $_SERVER['HTTP_USER_AGENT'];
-
-        // Detect Device/Operating System
-
-        if (preg_match('/Linux/i', $agent))
-            $os = 'Linux';
-        elseif (preg_match('/Mac/i', $agent))
-            $os = 'Mac';
-        elseif (preg_match('/iPhone/i', $agent))
-            $os = 'iPhone';
-        elseif (preg_match('/iPad/i', $agent))
-            $os = 'iPad';
-        elseif (preg_match('/Droid/i', $agent))
-            $os = 'Droid';
-        elseif (preg_match('/Unix/i', $agent))
-            $os = 'Unix';
-        elseif (preg_match('/Windows/i', $agent))
-            $os = 'Windows';
-        else
-            $os = 'Unknown';
-
         return $response->write(
             $this->view()
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
-                ->assign('UniversalSub', SubController::getUniversalSub($this->user))
-                ->assign('TraditionalSub', LinkController::getTraditionalSub($this->user))
-                ->assign('SharedAccounts', LinkController::getSharedAccounts($this->user))
                 ->assign('captcha', $captcha)
-                ->assign('os', $os)
+                ->assign('class_expire_days', $class_expire_days)
+                ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
+                ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
                 ->fetch('user/index.tpl')
         );
     }
@@ -97,9 +58,9 @@ final class UserController extends BaseController
     public function profile(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         // 登录IP
-        $logins = LoginIp::where('userid', '=', $this->user->id)
+        $logins = LoginIp::where('userid', $this->user->id)
             ->where('type', '=', 0)->orderBy('datetime', 'desc')->take(10)->get();
-        $ips = OnlineLog::where('user_id', '=', $this->user->id)
+        $ips = OnlineLog::where('user_id', $this->user->id)
             ->where('last_time', '>', time() - 90)->orderByDesc('last_time')->get();
 
         foreach ($logins as $login) {
@@ -139,90 +100,12 @@ final class UserController extends BaseController
     /**
      * @throws Exception
      */
-    public function docs(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $docs = Docs::orderBy('id', 'desc')->get();
-
-        return $response->write(
-            $this->view()
-                ->assign('docs', $docs)
-                ->fetch('user/docs.tpl')
-        );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function media(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $results = [];
-        $pdo = DB::getPdo();
-        $nodes = $pdo->query('SELECT DISTINCT node_id FROM stream_media');
-
-        foreach ($nodes as $node_id) {
-            $node = Node::where('id', $node_id)->first();
-
-            $unlock = StreamMedia::where('node_id', $node_id)
-                ->orderBy('id', 'desc')
-                ->where('created_at', '>', time() - 86400) // 只获取最近一天内上报的数据
-                ->first();
-
-            if ($unlock !== null && $node !== null) {
-                $details = json_decode($unlock->result, true);
-                $details = str_replace('Originals Only', 'فقط خانگی', $details);
-                $details = str_replace('Oversea Only', 'فقط در خارج از کشور', $details);
-                $info = [];
-
-                foreach ($details as $key => $value) {
-                    $info = [
-                        'node_name' => $node->name,
-                        'created_at' => $unlock->created_at,
-                        'unlock_item' => $details,
-                    ];
-                }
-
-                $results[] = $info;
-            }
-        }
-
-        $node_names = array_column($results, 'node_name');
-        array_multisort($node_names, SORT_ASC, $results);
-
-        return $response->write($this->view()
-            ->assign('results', $results)
-            ->fetch('user/media.tpl'));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function edit(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $themes = Tools::getDir(BASE_PATH . '/resources/views');
-        $bind_token = Telegram::addBindSession($this->user);
-        $methods = Config::getSupportParam('method');
-        $gaurl = MFA::getGAurl($this->user);
-
-        return $response->write($this->view()
-            ->assign('user', $this->user)
-            ->assign('themes', $themes)
-            ->assign('bind_token', $bind_token)
-            ->assign('methods', $methods)
-            ->assign('gaurl', $gaurl)
-            ->assign('telegram_bot', $_ENV['telegram_bot'])
-            ->registerClass('Config', Config::class)
-            ->fetch('user/edit.tpl'));
-    }
-
-    /**
-     * @throws Exception
-     */
     public function invite(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $code = InviteCode::where('user_id', $this->user->id)->first();
+        $code = InviteCode::where('user_id', $this->user->id)->first()?->code;
+
         if ($code === null) {
-            $this->user->addInviteCode();
-            $code = InviteCode::where('user_id', $this->user->id)->first();
+            $code = $this->user->addInviteCode();
         }
 
         $paybacks = Payback::where('ref_by', $this->user->id)
@@ -234,243 +117,20 @@ final class UserController extends BaseController
         }
 
         $paybacks_sum = Payback::where('ref_by', $this->user->id)->sum('ref_get');
-        if (!$paybacks_sum) {
+
+        if (! $paybacks_sum) {
             $paybacks_sum = 0;
         }
 
-        $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
+        $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
+        $rebate_ratio_per = Setting::obtain('rebate_ratio') * 100;
 
         return $response->write($this->view()
-            ->assign('code', $code)
             ->assign('paybacks', $paybacks)
             ->assign('invite_url', $invite_url)
             ->assign('paybacks_sum', $paybacks_sum)
+            ->assign('rebate_ratio_per', $rebate_ratio_per)
             ->fetch('user/invite.tpl'));
-    }
-
-    public function updatePassword(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $oldpwd = $request->getParam('oldpwd');
-        $pwd = $request->getParam('pwd');
-        $repwd = $request->getParam('repwd');
-        $user = $this->user;
-
-        if ($oldpwd === '' || $pwd === '' || $repwd === '') {
-            return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
-        }
-
-        if (!Hash::checkPassword($user->pass, $oldpwd)) {
-            return ResponseHelper::error($response, 'خطای رمز قدیمی');
-        }
-
-        if ($pwd !== $repwd) {
-            return ResponseHelper::error($response, 'این دو ورودی مطابقت ندارند');
-        }
-
-        if (strlen($pwd) < 8) {
-            return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
-        }
-
-        $hashPwd = Hash::passwordHash($pwd);
-        $user->pass = $hashPwd;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        if (Setting::obtain('enable_forced_replacement')) {
-            $user->cleanLink();
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateEmail(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $antiXss = new AntiXSS();
-        $user = $this->user;
-        $new_email = $antiXss->xss_clean($request->getParam('newemail'));
-        $old_email = $user->email;
-
-        if (!$_ENV['enable_change_email']) {
-            return ResponseHelper::error($response, 'این مورد مجاز به تغییر توسط خودتان نیست، لطفاً برای عملیات با مدیر تماس بگیرید');
-        }
-
-        if ($new_email === '') {
-            return ResponseHelper::error($response, 'آدرس ایمیل وارد نشده است');
-        }
-
-        if (!Tools::isEmailLegal($new_email)) {
-            return $response->withJson($check_res);
-        }
-
-        $exist_user = User::where('email', $new_email)->first();
-
-        if ($exist_user !== null) {
-            return ResponseHelper::error($response, 'ایمیل در حال حاضر در حال استفاده می باشد');
-        }
-
-        if ($new_email === $old_email) {
-            return ResponseHelper::error($response, 'ایمیل جدید نمی تواند مانند ایمیل قبلی باشد');
-        }
-
-        if (Setting::obtain('reg_email_verify')) {
-            $email_code = $request->getParam('emailcode');
-            $email_verify = EmailVerify::where('email', '=', $new_email)
-                ->where('code', '=', $email_code)
-                ->where('expire_in', '>', time())
-                ->first();
-
-            if ($email_verify === null) {
-                return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
-            }
-
-            EmailVerify::where('email', $email)->delete();
-        }
-
-        $user->email = $new_email;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateUsername(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $antiXss = new AntiXSS();
-        $newusername = $antiXss->xss_clean($request->getParam('newusername'));
-        $user = $this->user;
-        $user->user_name = $newusername;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateContact(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $antiXss = new AntiXSS();
-        $type = $antiXss->xss_clean($request->getParam('imtype'));
-        $value = $antiXss->xss_clean($request->getParam('imvalue'));
-        $user = $this->user;
-
-        if ($user->telegram_id !== null) {
-            return ResponseHelper::error($response, 'حساب شما به تلگرام متصل است، بنابراین این مورد قابل تغییر نیست');
-        }
-
-        if ($value === '' || $type === '') {
-            return ResponseHelper::error($response, 'اطلاعات تماس نمی تواند خالی باشد');
-        }
-
-        if (User::where('im_value', $value)->where('im_type', $type)->first() !== null) {
-            return ResponseHelper::error($response, 'این مخاطب قبلاً ثبت شده است');
-        }
-
-        $user->im_type = $type;
-        $user->im_value = $value;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateTheme(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $antiXss = new AntiXSS();
-        $theme = $antiXss->xss_clean($request->getParam('theme'));
-        $user = $this->user;
-
-        if ($theme === '') {
-            return ResponseHelper::error($response, 'موضوع نمی تواند خالی باشد');
-        }
-
-        $user->theme = $theme;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateMail(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $value = (int) $request->getParam('mail');
-
-        if (!in_array($value, [0, 1, 2])) {
-            return ResponseHelper::error($response, 'خطای پارامتر');
-        }
-
-        $user = $this->user;
-
-        if ($value === 2 && !$_ENV['enable_telegram']) {
-            return ResponseHelper::error(
-                $response,
-                'ویرایش انجام نشد، در حال حاضر نمی‌توان گزارش‌های روزانه را با استفاده از تلگرام دریافت کرد'
-            );
-        }
-
-        $user->daily_mail_enable = $value;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function resetPasswd(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->uuid = Uuid::uuid4();
-        $user->passwd = Tools::genRandomChar(16);
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function resetApiToken(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->api_token = Uuid::uuid4();
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
-    }
-
-    public function updateMethod(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $antiXss = new AntiXSS();
-
-        $user = $this->user;
-        $method = strtolower($antiXss->xss_clean($request->getParam('method')));
-
-        if ($method === '') {
-            ResponseHelper::error($response, 'ورودی غیرمجاز');
-        }
-        if (!Tools::isParamValidate('method', $method)) {
-            ResponseHelper::error($response, 'رمزگذاری نامعتبر است');
-        }
-
-        $user->method = $method;
-
-        if (!$user->save()) {
-            return ResponseHelper::error($response, 'ویرایش نشد');
-        }
-
-        return ResponseHelper::successfully($response, 'با موفقیت اصلاح شد');
     }
 
     public function logout(ServerRequest $request, Response $response, array $args): Response
@@ -481,24 +141,20 @@ final class UserController extends BaseController
 
     public function doCheckIn(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (!$_ENV['enable_checkin']) {
-            return ResponseHelper::error($response, 'هنوز قادر به ورود به سیستم نیست');
+        if (! $_ENV['enable_checkin']) {
+            return ResponseHelper::error($response, 'هنوز امکان ورود به سیستم وجود ندارد');
         }
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $ret = Captcha::verify($request->getParams());
-            if (!$ret) {
+            if (! $ret) {
                 return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }
         }
 
-        if (strtotime($this->user->expire_in) < time()) {
-            return ResponseHelper::error($response, 'فقط حساب‌هایی که منقضی نشده‌اند می‌توانند وارد شوند');
-        }
-
         $checkin = $this->user->checkin();
 
-        if (!$checkin['ok']) {
+        if (! $checkin['ok']) {
             return ResponseHelper::error($response, (string) $checkin['msg']);
         }
 
@@ -518,36 +174,6 @@ final class UserController extends BaseController
     /**
      * @throws Exception
      */
-    public function kill(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        return $response->write($this->view()->fetch('user/kill.tpl'));
-    }
-
-    public function handleKill(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $passwd = $request->getParam('passwd');
-
-        if ($passwd === '') {
-            return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
-        }
-
-        if (!Hash::checkPassword($user->pass, $passwd)) {
-            return ResponseHelper::error($response, 'رمز عبور اشتباه');
-        }
-
-        if ($_ENV['enable_kill']) {
-            Auth::logout();
-            $user->killUser();
-            return ResponseHelper::successfully($response, 'حساب شما از سیستم ما حذف شده است. مجدد خوش آمدید');
-        }
-
-        return ResponseHelper::error($response, 'سرویس حذف حساب فعال نیست. اگر نیاز به حذف حساب دارید، لطفاً با سرپرست تماس بگیرید.');
-    }
-
-    /**
-     * @throws Exception
-     */
     public function banned(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $user = $this->user;
@@ -557,40 +183,15 @@ final class UserController extends BaseController
             ->fetch('user/banned.tpl'));
     }
 
-    public function resetTelegram(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->telegramReset();
-
-        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
-    }
-
-    public function resetURL(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->cleanLink();
-
-        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
-    }
-
-    public function resetInviteURL(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->clearInviteCodes();
-
-        return ResponseHelper::successfully($response, 'تنظیم مجدد با موفقیت انجام شد');
-    }
-
     public function switchThemeMode(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $user = $this->user;
-
         $user->is_dark_mode = $user->is_dark_mode === 1 ? 0 : 1;
 
-        if (!$user->save()) {
+        if (! $user->save()) {
             return ResponseHelper::error($response, 'سوئیچ ناموفق بود');
         }
 
-        return ResponseHelper::successfully($response, 'با موفقیت تغییر دهید');
+        return ResponseHelper::success($response, 'با موفقیت تغییر دهید');
     }
 }

@@ -43,7 +43,7 @@
                                 </thead>
                                 <tbody>
                                     {foreach $rules as $rule}
-                                    <tr>
+                                         <tr>
                                         <td>#{$rule->id}</td>
                                         <td>{$rule->name}</td>
                                         <td>{$rule->text}</td>

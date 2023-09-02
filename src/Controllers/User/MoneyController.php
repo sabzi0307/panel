@@ -32,9 +32,12 @@ final class MoneyController extends BaseController
             $moneylog->create_time = Tools::toDateTime($moneylog->create_time);
         }
 
+        $moneylog_count = $moneylogs->count();
+
         return $response->write(
             $this->view()
                 ->assign('moneylogs', $moneylogs)
+                ->assign('moneylog_count', $moneylog_count)
                 ->fetch('user/money.tpl')
         );
     }
@@ -43,7 +46,6 @@ final class MoneyController extends BaseController
     {
         $antiXss = new AntiXSS();
         $giftcard_raw = $antiXss->xss_clean($request->getParam('giftcard'));
-
         $giftcard = GiftCard::where('card', $giftcard_raw)->first();
 
         if ($giftcard === null || $giftcard->status !== 0) {
@@ -55,6 +57,13 @@ final class MoneyController extends BaseController
 
         $user = $this->user;
 
+        if ($user->is_shadow_banned) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'کارت هدیه نامعتبر است',
+            ]);
+        }
+
         $giftcard->status = 1;
         $giftcard->use_time = time();
         $giftcard->use_user = $user->id;
@@ -64,7 +73,7 @@ final class MoneyController extends BaseController
         $user->money += $giftcard->balance;
         $user->save();
 
-        (new UserMoneyLog())->addMoneyLog(
+        (new UserMoneyLog())->add(
             $user->id,
             (float) $money_before,
             (float) $user->money,

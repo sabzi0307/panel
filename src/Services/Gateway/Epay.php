@@ -145,25 +145,14 @@ final class Epay extends AbstractPayment
 
         $money = $_GET['money'];
 
-        if ($user->use_new_shop) {
-            $html = <<<HTML
-            شما با موفقیت شارژ کردید {$money} تومان，پرش..
+        $html = <<<HTML
+            شما با موفقیت دوباره {$money} تومان را شارژ کردید.
             <script>
                 setTimeout(function() {
                     location.href="/user/invoice";
                 },500)
             </script>
             HTML;
-        } else {
-            $html = <<<HTML
-            شما با موفقیت شارژ کردید {$money} تومان，پرش..
-            <script>
-                setTimeout(function() {
-                    location.href="/user/code";
-                },500)
-            </script>
-            HTML;
-        }
 
         return $response->write($html);
     }

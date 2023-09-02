@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\PasswordReset;
 use App\Models\Setting;
 use App\Models\User;
+use App\Services\Cache;
 use App\Services\Captcha;
 use App\Services\Password;
+use App\Services\RateLimit;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
 use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use RedisException;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use voku\helper\AntiXSS;
 use function strlen;
-use function time;
 
 /*
  * Class Password
@@ -45,6 +47,9 @@ final class PasswordController extends BaseController
         );
     }
 
+    /**
+     * @throws RedisException
+     */
     public function handleReset(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         if (Setting::obtain('enable_reset_password_captcha')) {
@@ -54,19 +59,31 @@ final class PasswordController extends BaseController
             }
         }
 
-        $email = strtolower($request->getParam('email'));
+        $antiXss = new AntiXSS();
+        $email = strtolower($antiXss->xss_clean($request->getParam('email')));
+
+        if ($email === '') {
+            return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
+        }
+
+        if (! RateLimit::checkEmailIpLimit($request->getServerParam('REMOTE_ADDR')) ||
+            ! RateLimit::checkEmailAddressLimit($email)
+        ) {
+            return ResponseHelper::error($response, 'درخواست شما خیلی زیاد است، لطفاً بعداً دوباره امتحان کنید');
+        }
+
         $user = User::where('email', $email)->first();
         $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
 
         if ($user !== null) {
             try {
                 Password::sendResetEmail($email);
-            } catch (ClientExceptionInterface $e) {
+            } catch (ClientExceptionInterface|RedisException $e)  {
                 $msg = 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.';
             }
         }
 
-        return ResponseHelper::successfully($response, $msg);
+        return ResponseHelper::success($response, $msg);
     }
 
     /**
@@ -74,10 +91,12 @@ final class PasswordController extends BaseController
      */
     public function token(ServerRequest $request, Response $response, array $args)
     {
-        $token = PasswordReset::where('token', $args['token'])
-            ->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
+        $antiXss = new AntiXSS();
+        $token = $antiXss->xss_clean($args['token']);
+        $redis = Cache::initRedis();
+        $email = $redis->get('password_reset:' . $token);
 
-        if ($token === null) {
+        if (! $email) {
             return $response->withStatus(302)->withHeader('Location', '/password/reset');
         }
 
@@ -86,9 +105,13 @@ final class PasswordController extends BaseController
         );
     }
 
+    /**
+     * @throws RedisException
+     */
     public function handleToken(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $tokenStr = $args['token'];
+        $antiXss = new AntiXSS();
+        $token = $antiXss->xss_clean($args['token']);
         $password = $request->getParam('password');
         $repasswd = $request->getParam('repasswd');
 
@@ -100,14 +123,15 @@ final class PasswordController extends BaseController
             return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
         }
 
-        /** @var PasswordReset $token */
-        $token = PasswordReset::where('token', $tokenStr)
-            ->where('expire_time', '>', time())->orderBy('id', 'desc')->first();
-        if ($token === null) {
-            return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
+        $redis = Cache::initRedis();
+        $email = $redis->get('password_reset:' . $token);
+
+        if (! $email) {
+            return ResponseHelper::error($response, 'لینک نامعتبر');
         }
 
-        $user = $token->user();
+        $user = User::where('email', $email)->first();
+
         if ($user === null) {
             return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');
         }
@@ -124,9 +148,7 @@ final class PasswordController extends BaseController
             $user->cleanLink();
         }
 
-        // 禁止链接多次使用
-        $token->expire_time = time();
-        $token->save();
+        $redis->del('password_reset:' . $token);
 
         return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
     }

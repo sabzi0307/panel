@@ -15,6 +15,10 @@ final class EmailController extends BaseController
 {
     public static array $update_field = [
         'mail_driver',
+        'email_verify_code_ttl',
+        'email_password_reset_ttl',
+        'email_request_ip_limit',
+        'email_request_address_limit',
         // SMTP
         'smtp_host',
         'smtp_username',
@@ -112,6 +116,7 @@ final class EmailController extends BaseController
                 'msg' => 'ایمیل آزمایشی ارسال نشد',
             ]);
         }
+        
         return $response->withJson([
             'ret' => 1,
             'msg' => 'ایمیل آزمایشی با موفقیت ارسال شد',

@@ -132,7 +132,7 @@
                             <h3 class="card-title">کاربر آنلاین</h3>
                         </div>
                         <div class="card-body">
-                            <div id="user-online"></div>
+                            <div id="user-inactive"></div>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,6 @@
     </div>
 
     <script>
-        // @formatter:off
         document.addEventListener("DOMContentLoaded", function() {
             window.ApexCharts && (new ApexCharts(document.getElementById('check-in'), {
                 chart: {
@@ -192,12 +191,7 @@
                     fillSeriesColor: false
                 },
             })).render();
-        });
-        // @formatter:on
-    </script>
-    <script>
-        // @formatter:off
-        document.addEventListener("DOMContentLoaded", function() {
+
             window.ApexCharts && (new ApexCharts(document.getElementById('node-online'), {
                 chart: {
                     type: "donut",
@@ -237,13 +231,8 @@
                     fillSeriesColor: false
                 },
             })).render();
-        });
-        // @formatter:on
-    </script>
-    <script>
-        // @formatter:off
-        document.addEventListener("DOMContentLoaded", function() {
-            window.ApexCharts && (new ApexCharts(document.getElementById('user-online'), {
+
+            window.ApexCharts && (new ApexCharts(document.getElementById('user-inactive'), {
                 chart: {
                     type: "donut",
                     fontFamily: 'inherit',
@@ -258,12 +247,12 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getUnusedUser()}, {$sts->getTotalUser()-$sts->getOnlineUser(86400)-$sts->getUnusedUser()}, {$sts->getOnlineUser(86400)}, {$sts->getOnlineUser(3600)}, {$sts->getOnlineUser(60)}],
-                labels: ["هرگز آنلاین نیستم", "یک روز پیش آنلاین", "آنلاین امروز", "آنلاین یک ساعت پیش", "آنلاین یک دقیقه پیش"],
+                series: [{$sts->getInactiveUser()}, {$sts->getActiveUser()}],
+                labels: ["حساب غیرفعال", "حساب فعال"],
                 grid: {
                     strokeDashArray: 4,
                 },
-                colors: ["#0e72cc", "#6ca30f", "#f59311", "#fa4343", "#16afcc"],
+                colors: ["#f59311", "#6ca30f"],
                 legend: {
                     show: true,
                     position: 'bottom',
@@ -282,12 +271,7 @@
                     fillSeriesColor: false
                 },
             })).render();
-        });
-        // @formatter:on
-    </script>
-    <script>
-        // @formatter:off
-        document.addEventListener("DOMContentLoaded", function() {
+
             window.ApexCharts && (new ApexCharts(document.getElementById('traffic-usage'), {
                 chart: {
                     type: "donut",
@@ -327,9 +311,8 @@
                 },
             })).render();
         });
-        // @formatter:on
     </script>
 
-    <script src="//cdn.jsdelivr.net/npm/@tabler/core@latest/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
 
 {include file='admin/footer.tpl'}

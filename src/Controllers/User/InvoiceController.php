@@ -104,6 +104,13 @@ final class InvoiceController extends BaseController
             ]);
         }
 
+        if ($user->money < $invoice->price) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'موجودی حساب کافی نیست',
+            ]);
+        }
+
         $money_before = $user->money;
         $user->money -= $invoice->price;
         $user->save();

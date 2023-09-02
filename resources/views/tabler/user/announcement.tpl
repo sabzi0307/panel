@@ -18,7 +18,7 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
-                <div class="col-12">
+                <div class="col-sm-12 col-lg-12">
                     <div class="card">
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">

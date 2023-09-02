@@ -86,9 +86,9 @@ END;
             echo "New .config.php configuration item：" . $difference . ":" . $comment . " \n";
         }
 
-        echo "No new .config.php configuration items need to be added。\n";
+        echo "هیچ مورد جدید پیکربندی .config.php برای افزودن وجود ندارد.\n";
         file_put_contents(BASE_PATH . '/conf/.config.php', $config_new);
-        echo "migration complete.\n";
+        echo "مهاجرت کامل شد\n";
 
         // 更新 GeoLite2 数据库
         if ($_ENV['maxmind_license_key'] !== '' || $_ENV['maxmind_license_key'] !== 'local') {

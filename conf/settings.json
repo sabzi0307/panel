@@ -59,7 +59,7 @@
         "default": "",
         "mark": "Personal payment custom callback address"
     },
-    {
+        {
         "id": null,
         "item": "stripe_currency",
         "value": "USD",
@@ -351,13 +351,53 @@
     },
     {
         "id": null,
-        "item": "mail_driver",
+        "item": "email_driver",
         "value": "none",
-        "class": "mail",
+        "class": "email",
         "is_public": 0,
         "type": "string",
         "default": "none",
         "mark": "Mail Service Provider"
+    },
+    {
+        "id": null,
+        "item": "email_verify_code_ttl",
+        "value": "3600",
+        "class": "email",
+        "is_public": 0,
+        "type": "int",
+        "default": "3600",
+        "mark": "Email verification code validity period"
+    },
+    {
+        "id": null,
+        "item": "email_password_reset_ttl",
+        "value": "3600",
+        "class": "email",
+        "is_public": 0,
+        "type": "int",
+        "default": "3600",
+        "mark": "Email reset password link validity period"
+    },
+    {
+        "id": null,
+        "item": "email_request_ip_limit",
+        "value": "3",
+        "class": "email",
+        "is_public": 0,
+        "type": "int",
+        "default": "3",
+        "mark": "The number of times a single IP can request to send letters per hour"
+    },
+    {
+        "id": null,
+        "item": "email_request_address_limit",
+        "value": "3",
+        "class": "email",
+        "is_public": 0,
+        "type": "int",
+        "default": "3",
+        "mark": "The number of emails that can be requested per hour for a single email address"
     },
     {
         "id": null,
@@ -601,6 +641,396 @@
     },
     {
         "id": null,
+        "item": "enable_telegram",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable Telegram bot"
+    },
+    {
+        "id": null,
+        "item": "telegram_token",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Telegram Bot Token"
+    },
+    {
+        "id": null,
+        "item": "telegram_chatid",
+        "value": "-1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "int",
+        "default": "-1",
+        "mark": "Telegram chat ID"
+    },
+    {
+        "id": null,
+        "item": "telegram_bot",
+        "value": "_bot",
+        "class": "telegram",
+        "is_public": 1,
+        "type": "string",
+        "default": "_bot",
+        "mark": "Telegram bot account"
+    },
+    {
+        "id": null,
+        "item": "telegram_request_token",
+        "value": "",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Telegram Webhook key"
+    },
+    {
+        "id": null,
+        "item": "telegram_add_node",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable the Telegram bot to add node notifications"
+    },
+    {
+        "id": null,
+        "item": "telegram_add_node_text",
+        "value": "%node_name% افزوده شده است",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% افزوده شده است",
+        "mark": "Telegram bot adds node notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_update_node",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable Telegram bot modification node notification"
+    },
+    {
+        "id": null,
+        "item": "telegram_update_node_text",
+        "value": "%node_name% تغییر یافته است",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% تغییر یافته است",
+        "mark": "Telegram bot modifies node notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_delete_node",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable the Telegram bot delete node notification"
+    },
+    {
+        "id": null,
+        "item": "telegram_delete_node_text",
+        "value": "%node_name% حذف شد",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% حذف شد",
+        "mark": "Telegram bot delete node notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_gfwed",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable the Telegram bot node to be notified by the wall"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_gfwed_text",
+        "value": "%node_name% گره مسدود شده است",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% گره دیواره است",
+        "mark": "Telegram bot node is notified by wall"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_ungfwed",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable the notification that the Telegram bot node is restored by the wall"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_ungfwed_text",
+        "value": "~ گره %node_name% که توسط دیوار مسدود شده بود، میو را بازیابی کرد~",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "~ گره %node_name% که توسط دیوار مسدود شده بود، میو را بازیابی کرد~",
+        "mark": "Telegram bot node restored text by wall"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_online",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable the Telegram bot node recovery online notification"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_online_text",
+        "value": "%node_name% ترمیم شد",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% ترمیم شد",
+        "mark": "Telegram bot node recovery online notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_offline",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable Telegram bot node offline notification"
+    },
+    {
+        "id": null,
+        "item": "telegram_node_offline_text",
+        "value": "%node_name% مشکلی پیش آمده",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "%node_name% مشکلی پیش آمده",
+        "mark": "Telegram bot node offline notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_daily_job",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable daily task notifications for Telegram bots"
+    },
+    {
+        "id": null,
+        "item": "telegram_daily_job_text",
+        "value": "کارهای روزانه با موفقیت انجام شد",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "کارهای روزانه با موفقیت انجام شد",
+        "mark": "Telegram bot daily task notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_diary",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "enable Telegram bot system health notifications"
+    },
+    {
+        "id": null,
+        "item": "telegram_diary_text",
+        "value": "تعداد ورود امروز: %getTodayCheckinUser% \n کل ترافیک استفاده شده امروز: %lastday_total%",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "تعداد ورود امروز: %getTodayCheckinUser% \n کل ترافیک استفاده شده امروز: %lastday_total%",
+        "mark": "Telegram bot system health notification text"
+    },
+    {
+        "id": null,
+        "item": "telegram_unbind_kick_member",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Automatically kick out the group after unbinding the Telegram account"
+    },
+    {
+        "id": null,
+        "item": "telegram_group_bound_user",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Whether to allow only users with bound Telegram accounts to join the group"
+    },
+    {
+        "id": null,
+        "item": "enable_welcome_message",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Telegram bot sends welcome message"
+    },
+    {
+        "id": null,
+        "item": "telegram_group_quiet",
+        "value": "1",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "Telegram bot not responding in groups"
+    },
+    {
+        "id": null,
+        "item": "allow_to_join_new_groups",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Allow bots to join groups other than those configured below"
+    },
+    {
+        "id": null,
+        "item": "group_id_allowed_to_join",
+        "value": "[]",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "array",
+        "default": "[]",
+        "mark": "Allowed group ids"
+    },
+    {
+        "id": null,
+        "item": "help_any_command",
+        "value": "0",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Allow any unknown command to trigger a /help reply"
+    },
+    {
+        "id": null,
+        "item": "user_not_bind_reply",
+        "value": "شما حساب این سایت را باند نکرده اید، می توانید وارد **ویرایش داده** وب سایت شوید و حساب خود را در پایین سمت راست قید کنید.",
+        "class": "telegram",
+        "is_public": 0,
+        "type": "string",
+        "default": "شما حساب این سایت را باند نکرده اید، می توانید وارد **ویرایش داده** وب سایت شوید و حساب خود را در پایین سمت راست قید کنید.",
+        "mark": "Reply from unbound account"
+    },
+    {
+        "id": null,
+        "item": "discord_bot_token",
+        "value": "",
+        "class": "discord",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Discord Bot Token"
+    },
+    {
+        "id": null,
+        "item": "discord_client_id",
+        "value": "0",
+        "class": "discord",
+        "is_public": 0,
+        "type": "int",
+        "default": "0",
+        "mark": "Discord Client ID"
+    },
+    {
+        "id": null,
+        "item": "discord_client_secret",
+        "value": "",
+        "class": "discord",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Discord Client Secret"
+    },
+    {
+        "id": null,
+        "item": "discord_guild_id",
+        "value": "0",
+        "class": "discord",
+        "is_public": 0,
+        "type": "int",
+        "default": "0",
+        "mark": "Discord Guild ID"
+    },
+    {
+        "id": null,
+        "item": "slack_token",
+        "value": "",
+        "class": "slack",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Slack App Token"
+    },
+    {
+        "id": null,
+        "item": "slack_client_id",
+        "value": "",
+        "class": "slack",
+        "is_public": 0,
+        "type": "",
+        "default": "string",
+        "mark": "Slack Client ID"
+    },
+    {
+        "id": null,
+        "item": "slack_client_secret",
+        "value": "",
+        "class": "slack",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Slack Client Secret"
+    },
+    {
+        "id": null,
+        "item": "slack_team_id",
+        "value": "",
+        "class": "slack",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Slack Team ID"
+    },
+    {
+        "id": null,
         "item": "tawk_id",
         "value": "",
         "class": "support",
@@ -671,6 +1101,16 @@
     },
     {
         "id": null,
+        "item": "ticket_limit",
+        "value": "3",
+        "class": "support",
+        "is_public": 0,
+        "type": "int",
+        "default": "3",
+        "mark": "User ticket quota (monthly)"
+    },
+    {
+        "id": null,
         "item": "reg_mode",
         "value": "open",
         "class": "register",
@@ -688,56 +1128,6 @@
         "type": "bool",
         "default": "0",
         "mark": "Email Verification"
-    },
-    {
-        "id": null,
-        "item": "email_verify_ttl",
-        "value": "3600",
-        "class": "register",
-        "is_public": 0,
-        "type": "int",
-        "default": "3600",
-        "mark": "Email verification code validity period"
-    },
-    {
-        "id": null,
-        "item": "email_verify_ip_limit",
-        "value": "5",
-        "class": "register",
-        "is_public": 0,
-        "type": "int",
-        "default": "5",
-        "mark": "The number of times a single ip can request to send letters within the validity period of the verification code"
-    },
-    {
-        "id": null,
-        "item": "email_verify_email_limit",
-        "value": "5",
-        "class": "register",
-        "is_public": 0,
-        "type": "int",
-        "default": "5",
-        "mark": "The number of times a single mailbox can request to send letters within the validity period of the verification code"
-    },
-    {
-        "id": null,
-        "item": "email_verify_email_limit",
-        "value": "5",
-        "class": "register",
-        "is_public": 0,
-        "type": "int",
-        "default": "5",
-        "mark": "The number of times a single mailbox can request to send letters within the validity period of the verification code"
-    },
-    {
-        "id": null,
-        "item": "enable_reg_im",
-        "value": "0",
-        "class": "register",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Whether the user is required to enter IM contact information when registering"
     },
     {
         "id": null,
@@ -812,22 +1202,12 @@
     {
         "id": null,
         "item": "sign_up_for_free_traffic",
-        "value": "20",
+        "value": "0",
         "class": "register",
         "is_public": 0,
         "type": "int",
-        "default": "20",
+        "default": "0",
         "mark": "Free traffic when you sign up (GB)"
-    },
-    {
-        "id": null,
-        "item": "sign_up_for_free_time",
-        "value": "365",
-        "class": "register",
-        "is_public": 0,
-        "type": "int",
-        "default": "365",
-        "mark": "The account validity period set at the time of registration (days)"
     },
     {
         "id": null,
@@ -978,377 +1358,7 @@
         "type": "int",
         "default": "180",
         "mark": "Rebate Time Range Limit (days)"
-    },
-    {
-        "id": null,
-        "item": "telegram_enable",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "enable Telegram bot"
-    },
-    {
-        "id": null,
-        "item": "telegram_add_node",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot to add node notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_add_node_text",
-        "value": "%node_name% has been added",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "%node_name% has been added",
-        "mark": "Telegram robot added node notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_update_node",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot modification node notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_update_node_text",
-        "value": "%node_name% has been modified",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "%node_name% has been modified",
-        "mark": "Telegram robot modify node notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_delete_node",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot delete node notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_delete_node_text",
-        "value": "%node_name% was deleted",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "%node_name% was deleted",
-        "mark": "Telegram robot delete node notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_gfwed",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable the Telegram robot node to be notified by the wall"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_gfwed_text",
-        "value": "Meow meow~ %node_name% node is walled~",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "Meow meow~ %node_name% node is walled~",
-        "mark": "Telegram robot node is notified by the wall"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_ungfwed",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable the notification that the Telegram robot node is restored by the wall"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_ungfwed_text",
-        "value": "Meow meow~ The %node_name% node that was blocked by the wall has recovered meow~",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "Meow meow~ The %node_name% node that was blocked by the wall recovered meow~",
-        "mark": "Telegram robot node is walled to restore text"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_online",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable the Telegram robot node recovery online notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_online_text",
-        "value": "%node_name% was fixed",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "%node_name% is fixed",
-        "mark": "Telegram robot node back online notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_offline",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot node offline notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_node_offline_text",
-        "value": "%node_name% has some failures",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "%node_name% has some failures",
-        "mark": "Telegram robot node offline notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_daily_job",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot daily task notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_daily_job_text",
-        "value": "Daily successfully executed",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "dailies successfully executed",
-        "mark": "Telegram robot daily task notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_diary",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "enable Telegram robot system health notification"
-    },
-    {
-        "id": null,
-        "item": "telegram_diary_text",
-        "value": "Today's checkin number: %getTodayCheckinUser% \n Today's total traffic usage: %lastday_total%",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "Today's checkin number: %getTodayCheckinUser% \n Today's total traffic usage: %lastday_total%",
-        "mark": "Telegram bot system health notification text"
-    },
-    {
-        "id": null,
-        "item": "telegram_unbind_kick_member",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Automatically kick out of the group after unbinding the Telegram account"
-    },
-    {
-        "id": null,
-        "item": "telegram_group_bound_user",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Whether only users with bound Telegram accounts are allowed to join the group"
-    },
-    {
-        "id": null,
-        "item": "telegram_show_group_link",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "enable Telegram bots to display user group links"
-    },
-    {
-        "id": null,
-        "item": "telegram_group_link",
-        "value": "https://t.me/joinchat/XXXXX",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "https://t.me/joinchat/XXXXX",
-        "mark": "Usergroup link"
-    },
-    {
-        "id": null,
-        "item": "enable_welcome_message",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Telegram bot sends welcome message"
-    },
-    {
-        "id": null,
-        "item": "telegram_group_quiet",
-        "value": "1",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "Telegram Bots not responding in groups"
-    },
-    {
-        "id": null,
-        "item": "allow_to_join_new_groups",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Allow bots to join groups other than those configured below"
-    },
-    {
-        "id": null,
-        "item": "group_id_allowed_to_join",
-        "value": "[]",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "array",
-        "default": "[]",
-        "mark": "Group IDs allowed to join"
-    },
-    {
-        "id": null,
-        "item": "telegram_admins",
-        "value": "[]",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "array",
-        "default": "[]",
-        "mark": "Additional Telegram admin ID"
-    },
-    {
-        "id": null,
-        "item": "enable_not_admin_reply",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Whether the administrator function of non-administrator operation is restored"
-    },
-    {
-        "id": null,
-        "item": "not_admin_reply_msg",
-        "value": "",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Reply content of non-administrator operation administrator function"
-    },
-    {
-        "id": null,
-        "item": "no_user_found",
-        "value": "",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "When the administrator operates, the user's reply cannot be found"
-    },
-    {
-        "id": null,
-        "item": "data_method_not_found",
-        "value": "",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "When the administrator operates, the field to modify the data is not found."
-    },
-    {
-        "id": null,
-        "item": "help_any_command",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Allow any unknown command to trigger a /help reply"
-    },
-    {
-        "id": null,
-        "item": "enable_user_email_group_show",
-        "value": "0",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable to display the user's full mailbox when searching for user information in groups, and disable to code the middle content of the mailbox"
-    },
-    {
-        "id": null,
-        "item": "user_not_bind_reply",
-        "value": "You have not bound the account of this site, you can enter the **data editing** of the website, and bind your account at the bottom right.",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "You have not bound the account of this site, you can enter the **data editing** of the website, and bind your account at the bottom right.",
-        "mark": "Reply from unbound account"
-    },
-    {
-        "id": null,
-        "item": "telegram_general_pricing",
-        "value": "",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Product introduction for tourists"
-    },
-    {
-        "id": null,
-        "item": "telegram_general_terms",
-        "value": "",
-        "class": "telegram",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Terms of Service for Visitors"
-    },
+    },   
     {
         "id": null,
         "item": "display_media",
@@ -1361,22 +1371,12 @@
     },
     {
         "id": null,
-        "item": "shared_account",
-        "value": "0",
-        "class": "feature",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Display Shared Account"
-    },
-    {
-        "id": null,
         "item": "display_subscribe_log",
         "value": "0",
         "class": "feature",
         "is_public": 1,
         "type": "bool",
-        "default": "1",
+        "default": "0",
         "mark": "Display user subscription records"
     },
     {
@@ -1388,6 +1388,36 @@
         "type": "bool",
         "default": "1",
         "mark": "show user audit records"
+    },
+    {
+        "id": null,
+        "item": "display_docs",
+        "value": "1",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "1",
+        "mark": "show document"
+    },
+    {
+        "id": null,
+        "item": "display_docs_only_for_paid_user",
+        "value": "0",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Documentation is only visible to paid users"
+    },
+    {
+        "id": null,
+        "item": "enable_forced_replacement",
+        "value": "1",
+        "class": "subscribe",
+        "is_public": 0,
+        "type": "bool",
+        "default": "1",
+        "mark": "forcibly change the subscription address when the user modifies the account login password"
     },
     {
         "id": null,
@@ -1428,16 +1458,6 @@
         "type": "bool",
         "default": "1",
         "mark": "Trojan Subscription Switch"
-    },
-    {
-        "id": null,
-        "item": "enable_forced_replacement",
-        "value": "1",
-        "class": "subscribe",
-        "is_public": 0,
-        "type": "bool",
-        "default": "1",
-        "mark": "forcibly change the subscription address when the user modifies the account login password"
     },
     {
         "id": null,
@@ -1491,6 +1511,46 @@
     },
     {
         "id": null,
+        "item": "enable_detect_inactive_user",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "enable idle user detection"
+    },
+    {
+        "id": null,
+        "item": "detect_inactive_user_checkin_days",
+        "value": "90",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "90",
+        "mark": "Length of non-sign-in (days)"
+    },
+    {
+        "id": null,
+        "item": "detect_inactive_user_login_days",
+        "value": "90",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "90",
+        "mark": "Not logged in time (days)"
+    },
+    {
+        "id": null,
+        "item": "detect_inactive_user_use_days",
+        "value": "90",
+        "class": "cron",
+        "is_public": 0,
+        "type": "int",
+        "default": "90",
+        "mark": "Unused time (days)"
+    },
+    {
+        "id": null,
         "item": "daily_job_hour",
         "value": "0",
         "class": "cron",
@@ -1528,5 +1588,15 @@
         "type": "int",
         "default": "2023020100",
         "mark": "current database version"
+    },
+    {
+        "id": null,
+        "item": "shared_account",
+        "value": "0",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Display Shared Account"
     }
 ]

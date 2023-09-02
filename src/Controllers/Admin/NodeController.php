@@ -8,7 +8,7 @@ use App\Controllers\BaseController;
 use App\Models\Node;
 use App\Models\Setting;
 use App\Services\Cloudflare;
-use App\Utils\Telegram;
+use App\Services\IM\Telegram;
 use App\Utils\Tools;
 use Cloudflare\API\Endpoints\EndpointException;
 use Exception;
@@ -152,12 +152,13 @@ final class NodeController extends BaseController
 
         if ($_ENV['cloudflare_enable']) {
             $domain_name = explode('.' . $_ENV['cloudflare_name'], $node->server);
-            Cloudflare::updateRecord($domain_name[0], $node->node_ip, $_ENV['cloudflare_email'], $_ENV['cloudflare_key'], $_ENV['cloudflare_name']);
+            Cloudflare::updateRecord($domain_name[0], $node->node_ip);
         }
 
         if (Setting::obtain('telegram_add_node')) {
             try {
-                Telegram::send(
+                (new Telegram())->send(
+                    0,
                     str_replace(
                         '%node_name%',
                         $request->getParam('name'),
@@ -245,7 +246,8 @@ final class NodeController extends BaseController
 
         if (Setting::obtain('telegram_update_node')) {
             try {
-                Telegram::send(
+                (new Telegram())->send(
+                    0,
                     str_replace(
                         '%node_name%',
                         $request->getParam('name'),
@@ -266,8 +268,11 @@ final class NodeController extends BaseController
         ]);
     }
 
-    public function resetNodePassword(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
+    public function resetNodePassword(
+        ServerRequest $request,
+        Response $response,
+        array $args
+    ): Response|ResponseInterface {
         $id = $args['id'];
         $node = Node::find($id);
         $password = Tools::genRandomChar(32);
@@ -299,7 +304,8 @@ final class NodeController extends BaseController
 
         if (Setting::obtain('telegram_delete_node')) {
             try {
-                Telegram::send(
+                (new Telegram())->send(
+                    0,
                     str_replace(
                         '%node_name%',
                         $node->name,
@@ -358,7 +364,7 @@ final class NodeController extends BaseController
             onclick="deleteNode(' . $node->id . ')">حذف</button>
             <button type="button" class="btn btn-orange" id="copy-node-' . $node->id . '" 
             onclick="copyNode(' . $node->id . ')">کپی</button>
-            <a class="btn btn-blue" href="/admin/node/' . $node->id . '/edit">ویرایش کنید</a>';
+            <a class="btn btn-blue" href="/admin/node/' . $node->id . '/edit">ویرایش</a>';
             $node->type = $node->type();
             $node->sort = $node->sort();
             $node->node_bandwidth = round(Tools::flowToGB($node->node_bandwidth), 2);

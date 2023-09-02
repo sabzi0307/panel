@@ -26,6 +26,22 @@ $_ENV['db_charset']   = 'utf8mb4';
 $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
 $_ENV['db_prefix']    = '';
 
+//Redis设置-------------------------------------------------------------------------------------------
+$_ENV['redis_host']     = '127.0.0.1';        //Redis地址
+$_ENV['redis_port']     = 6379;               //Redis端口
+$_ENV['redis_timeout']  = 2;                  //Redis连接超时时间，单位秒
+$_ENV['redis_username'] = '';                 //Redis用户名，留空则不使用用户名连接
+$_ENV['redis_password'] = '';                 //Redis密码，留空则无密码
+$_ENV['redis_ssl']      = false;              //是否使用SSL连接Redis，如果使用了SSL，那么Redis端口应为Redis实例的TLS端口
+
+//Rate Limit设置--------------------------------------------------------------------------------------------
+$_ENV['enable_rate_limit']    = true;            //是否开启请求限制
+$_ENV['rate_limit_ip']        = 120;             //每分钟每个IP的全局请求限制
+$_ENV['rate_limit_sub']       = 30;              //每分钟每个用户的订阅链接请求限制
+$_ENV['rate_limit_webapi']    = 600;             //每分钟每个节点WebAPI密钥请求限制
+$_ENV['rate_limit_user_api']  = 60;              //每分钟每个用户的API请求限制
+$_ENV['rate_limit_admin_api'] = 60;              //每分钟每个管理员的API请求限制
+
 //E-Mail settings--------------------------------------------------------------------------------------------
 $_ENV['mail_filter']        = 0;            //0: off; 1: whitelist mode; 2; blacklist mode;
 $_ENV['mail_filter_list']   = array("qq.com", "vip.qq.com", "foxmail.com");
@@ -55,20 +71,13 @@ $_ENV['subscribeLog_keep_days']     = 7;                            //Number of 
 //subscription settings---------------------------------------------------------------------------------------
 $_ENV['Subscribe']                  = true;                         //Does this site provide a subscription function?
 $_ENV['subUrl']                     = $_ENV['baseUrl'];             //Subscription address, if it needs to be the same as the site name, please do not modify
+$_ENV['sub_token_len']              = 16;                           //订阅token长度
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 $_ENV['auto_detect_ban_allow_admin'] = true;        // Administrators are not subject to audit restrictions
 $_ENV['auto_detect_ban_allow_users'] = [];          // Exception User IDs for Audit Bans
 $_ENV['auto_detect_ban_number']      = 30;             // The number of procs needed to enforce a ban in mercy mode
 $_ENV['auto_detect_ban_time']        = 60;             // The duration of each ban in mercy mode (minutes)
-
-//Bot set up--------------------------------------------------------------------------------------------
-# Telegram bot
-$_ENV['enable_telegram']                    = false;        //enable Telegram bot
-$_ENV['telegram_token']                     = '';           //Telegram bot token ，with father bot Application
-$_ENV['telegram_chatid']                    = -111;         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
-$_ENV['telegram_bot']                       = '_bot';       //Telegram bot account
-$_ENV['telegram_request_token']             = '';           //Webhook key, after updating this parameter please php xcat Tool setTelegram, Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
 
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection
@@ -85,12 +94,6 @@ $_ENV['enable_detect_offline']           = true;
 // - Can be set to false if all your nodes use database connections or if you have a separate WebAPI site or gRPC API.
 $_ENV['WebAPI']     = true;
 
-#Misc
-$_ENV['authDriver']             = 'cookie';            //optional: cookies
-$_ENV['sessionDriver']          = 'cookie';            //optional: cookie
-$_ENV['cacheDriver']            = 'cookie';            //optional: cookie
-$_ENV['tokenDriver']            = 'db';                //optional: db
-
 $_ENV['enable_login_bind_ip']   = false;        //bind the login thread to the IP
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 
@@ -101,24 +104,10 @@ $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it
 $_ENV['checkNodeIp']            = true;                 // webapi verifies node ip
 $_ENV['keep_connect']           = false;               // Speed limit to 1Mbps for traffic exhausted users
 
-#Cloudflare
-$_ENV['cloudflare_enable']      = false;         //enable Cloudflare analysis
-$_ENV['cloudflare_email']       = '';            //Cloudflare email address
-$_ENV['cloudflare_key']         = '';            //Cloudflare API Key
-$_ENV['cloudflare_name']        = '';            //domain name
-
 #Whether to include statistical codes, create an analytics.tpl under resources/views/{theme name}, and use literal delimiters if necessary
 $_ENV['enable_analytics_code']  = false;
 
-#Obtain the user's real ip after setting up the CDN. If you don't know what this is, please don't mess around
-$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
-foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
-    if (isset($_SERVER[$cdn_forwarded_ip])) {
-        $list = explode(',', $_SERVER[$cdn_forwarded_ip]);
-        $_SERVER['REMOTE_ADDR'] = $list[0];
-        break;
-    }
-}
+$_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
 
 // https://sentry.io for production debugging
 $_ENV['sentry_dsn'] = '';
@@ -127,10 +116,31 @@ $_ENV['sentry_dsn'] = '';
 $_ENV['maxmind_license_key'] = 'local';
 $_ENV['geoip_locale'] = 'en';
 
-// OpenAI API Key for GPT powered ticket reply and more
+// Large language model powered ticket reply and more
+$_ENV['llm_backend'] = 'openai'; // openai/palm/huggingface
+// OpenAI ChatGPT
 $_ENV['openai_api_key'] = '';
-$_ENV['ai_model'] = 'gpt-3.5-turbo';
+$_ENV['openai_model'] = 'gpt-3.5-turbo-16k';
+// Google PaLM API
+$_ENV['palm_api_key'] = '';
+$_ENV['palm_text_model'] = 'text-bison-001';
+// Hugging Face Inference API
+$_ENV['huggingface_api_key'] = '';
+$_ENV['huggingface_endpoint_url'] = '';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 $_ENV['github_access_token'] = '';
 
+#Cloudflare
+$_ENV['cloudflare_enable']      = false;         //enable Cloudflare analysis
+$_ENV['cloudflare_email']       = '';            //Cloudflare email address
+$_ENV['cloudflare_key']         = '';            //Cloudflare API Key
+$_ENV['cloudflare_name']        = '';            //domain name
+
+// use Cloudflare R2 for clients download
+$_ENV['enable_r2_client_download'] = false;
+$_ENV['r2_bucket_name'] = '';
+$_ENV['r2_account_id'] = '';
+$_ENV['r2_access_key_id'] = '';
+$_ENV['r2_access_key_secret'] = '';
+$_ENV['r2_client_download_timeout'] = 10;

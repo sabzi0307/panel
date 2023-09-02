@@ -16,9 +16,21 @@ final class Payback extends Model
         return User::where('id', $this->userid)->first();
     }
 
+    public function getUserNameAttribute(): string
+    {
+        return User::where('id', $this->userid)->first() === null ? 'از سیستم خارج شده است' :
+            User::where('id', $this->userid)->first()->user_name;
+    }
+
     public function refUser()
     {
         return User::where('id', $this->ref_by)->first();
+    }
+
+    public function getRefUserNameAttribute(): string
+    {
+        return User::where('id', $this->ref_by)->first() === null ? 'از سیستم خارج شده است' :
+            User::where('id', $this->ref_by)->first()->user_name;
     }
 
     public static function rebate($user_id, $order_amount): void
@@ -29,6 +41,7 @@ final class Payback extends Model
 
         // 判断
         $invite_rebate_mode = (string) $configs['invite_rebate_mode'];
+
         if ($invite_rebate_mode === 'continued') {
             // 不设限制
             self::executeRebate($user_id, $gift_user_id, $order_amount);
@@ -64,6 +77,7 @@ final class Payback extends Model
     public static function executeRebate($user_id, $gift_user_id, $order_amount, $adjust_rebate = null): void
     {
         $gift_user = User::where('id', $gift_user_id)->first();
+
         if ($gift_user !== null) {
             $rebate_amount = $order_amount * Setting::obtain('rebate_ratio');
             // 返利
@@ -71,12 +85,12 @@ final class Payback extends Model
             $gift_user->money += $adjust_rebate ?? $rebate_amount;
             $gift_user->save();
             // 余额变动记录
-            (new UserMoneyLog())->addMoneyLog(
+            (new UserMoneyLog())->add(
                 $gift_user->id,
                 (float) $money_before,
                 (float) $gift_user->money,
                 $adjust_rebate ?? $rebate_amount,
-                'دعوت از کاربران #' . $user_id . ' تخفیف',
+                'دعوت از کاربر #' . $user_id . ' تخفیف',
             );
             // 记录
             $payback = new Payback();

@@ -14,7 +14,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `email` varchar(255) NOT NULL COMMENT 'Email';
         ALTER TABLE user MODIFY COLUMN `pass` varchar(255) NOT NULL COMMENT 'login password';
         ALTER TABLE user MODIFY COLUMN `passwd` varchar(255) NOT NULL COMMENT 'node password';
-        ALTER TABLE user MODIFY COLUMN `t` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Last use time';
         ALTER TABLE user MODIFY COLUMN `u` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'account current upload traffic';
         ALTER TABLE user MODIFY COLUMN `d` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'account current download traffic';
         ALTER TABLE user MODIFY COLUMN `transfer_today` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Account traffic used today';
@@ -35,7 +34,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `im_value` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contact information';
         ALTER TABLE user MODIFY COLUMN `class` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'class';
         ALTER TABLE user MODIFY COLUMN `class_expire` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'class expiration time';
-        ALTER TABLE user MODIFY COLUMN `expire_in` datetime NOT NULL DEFAULT '2199-01-01 00:00:00' COMMENT 'Account expiration time';
         ALTER TABLE user MODIFY COLUMN `theme` varchar(255) NOT NULL DEFAULT 'tabler' COMMENT 'website theme';
         ALTER TABLE user MODIFY COLUMN `ga_token` varchar(255) NOT NULL DEFAULT '' COMMENT 'GA key';
         ALTER TABLE user MODIFY COLUMN `ga_enable` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'GA switch';
@@ -43,7 +41,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `node_group` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'node group';
         ALTER TABLE user MODIFY COLUMN `is_banned` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'is_banned';
         ALTER TABLE user MODIFY COLUMN `banned_reason` varchar(255) NOT NULL DEFAULT '' COMMENT 'Banned reason';
-        UPDATE user SET telegram_id = 0 WHERE telegram_id IS NULL;
         ALTER TABLE user MODIFY COLUMN `telegram_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Telegram ID';
         ALTER TABLE user MODIFY COLUMN `expire_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Expired reminder';
         ALTER TABLE user MODIFY COLUMN `traffic_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'traffic notification';
@@ -51,7 +48,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `forbidden_port` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden to access port';
         ALTER TABLE user MODIFY COLUMN `auto_reset_day` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'Auto reset traffic day';
         ALTER TABLE user MODIFY COLUMN `auto_reset_bandwidth` decimal(12,2) unsigned NOT NULL DEFAULT 0.00 COMMENT 'Auto reset bandwidth';
-        ALTER TABLE user MODIFY COLUMN `use_new_shop` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'whether to enable new shop';
         ALTER TABLE user MODIFY COLUMN `is_dark_mode` tinyint(1) NOT NULL DEFAULT 0;
         ALTER TABLE user DROP KEY IF EXISTS `user_name`;
         ALTER TABLE user ADD UNIQUE KEY IF NOT EXISTS `api_token` (`api_token`);

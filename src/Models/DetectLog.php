@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Utils\Tools;
+
 final class DetectLog extends Model
 {
     protected $connection = 'default';
@@ -22,10 +24,7 @@ final class DetectLog extends Model
      */
     public function userName(): string
     {
-        if ($this->user() === null) {
-            return 'کاربر دیگر وجود ندارد';
-        }
-        return $this->user()->user_name;
+        return $this->user() === null ? 'کاربر وجود ندارد' : $this->user()->user_name;
     }
 
     /**
@@ -41,10 +40,7 @@ final class DetectLog extends Model
      */
     public function nodeName(): string
     {
-        if ($this->node() === null) {
-            return 'سرور دیگر وجود ندارد';
-        }
-        return $this->node()->name;
+        return $this->node() === null ? 'گره وجود ندارد' : $this->node()->name;
     }
 
     /**
@@ -60,10 +56,7 @@ final class DetectLog extends Model
      */
     public function ruleName(): string
     {
-        if ($this->rule() === null) {
-            return 'قانون دیگر وجود ندارد';
-        }
-        return $this->rule()->name;
+        return $this->rule() === null ? 'قانون وجود ندارد' : $this->rule()->name;
     }
 
     /**
@@ -71,10 +64,7 @@ final class DetectLog extends Model
      */
     public function ruleText(): string
     {
-        if ($this->rule() === null) {
-            return 'قانون دیگر وجود ندارد';
-        }
-        return $this->rule()->text;
+        return $this->rule() === null ? 'قانون وجود ندارد' : $this->rule()->text;
     }
 
     /**
@@ -82,10 +72,7 @@ final class DetectLog extends Model
      */
     public function ruleRegex(): string
     {
-        if ($this->rule() === null) {
-            return 'قانون دیگر وجود ندارد';
-        }
-        return $this->rule()->regex;
+        return $this->rule() === null ? 'قانون دیگر وجود ندارد' : $this->rule()->regex;
     }
 
     /**
@@ -93,10 +80,7 @@ final class DetectLog extends Model
      */
     public function ruleType(): string
     {
-        if ($this->rule() === null) {
-            return 'قانون دیگر وجود ندارد';
-        }
-        return $this->rule()->type();
+        return $this->rule() === null ? 'قانون دیگر وجود ندارد' : $this->rule()->type();
     }
 
     /**
@@ -104,6 +88,6 @@ final class DetectLog extends Model
      */
     public function datetime(): string
     {
-        return date('Y-m-d H:i:s', $this->datetime);
+        return Tools::toDateTime($this->datetime);
     }
 }

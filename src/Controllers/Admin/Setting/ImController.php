@@ -6,12 +6,22 @@ namespace App\Controllers\Admin\Setting;
 
 use App\Controllers\BaseController;
 use App\Models\Setting;
+use App\Services\IM\Discord;
+use App\Services\IM\Slack;
+use App\Services\IM\Telegram;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use function json_encode;
 
 final class ImController extends BaseController
 {
     public static array $update_field = [
+        'enable_telegram',
+        'telegram_token',
+        'telegram_chatid',
+        'telegram_bot',
+        'telegram_request_token',
         'telegram_add_node',
         'telegram_add_node_text',
         'telegram_update_node',
@@ -32,22 +42,20 @@ final class ImController extends BaseController
         'telegram_diary_text',
         'telegram_unbind_kick_member',
         'telegram_group_bound_user',
-        'telegram_show_group_link',
-        'telegram_group_link',
         'enable_welcome_message',
         'telegram_group_quiet',
         'allow_to_join_new_groups',
         'group_id_allowed_to_join',
-        'telegram_admins',
-        'enable_not_admin_reply',
-        'not_admin_reply_msg',
-        'no_user_found',
-        'data_method_not_found',
         'help_any_command',
-        'enable_user_email_group_show',
         'user_not_bind_reply',
-        'telegram_general_pricing',
-        'telegram_general_terms',
+        'discord_bot_token',
+        'discord_client_id',
+        'discord_client_secret',
+        'discord_guild_id',
+        'slack_token',
+        'slack_client_id',
+        'slack_client_secret',
+        'slack_team_id',
     ];
 
     /**
@@ -90,14 +98,74 @@ final class ImController extends BaseController
             if (! $setting->save()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "ذخیره {$item} خطا در",
+                    'msg' => "خطا در ذخیره {$item}",
                 ]);
             }
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'ذخیره با موفقیت',
+            'msg' => 'با موفقیت ذخیره شد',
+        ]);
+    }
+
+    public function testTelegram($request, $response, $args)
+    {
+        try {
+            (new Telegram())->send(
+                $request->getParam('telegram_user_id'),
+                'این یک پیام آزمایشی است',
+            );
+        } catch (TelegramSDKException|Exception $e) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'پیام آزمایشی ارسال نشد ' . $e->getMessage(),
+            ]);
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'پیام آزمایشی با موفقیت ارسال شد',
+        ]);
+    }
+
+    public function testDiscord($request, $response, $args)
+    {
+        try {
+            (new Discord())->send(
+                $request->getParam('discord_user_id'),
+                'این یک پیام آزمایشی است',
+            );
+        } catch (GuzzleException|Exception $e) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'پیام آزمایشی ارسال نشد ' . $e->getMessage(),
+            ]);
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'پیام آزمایشی با موفقیت ارسال شد',
+        ]);
+    }
+
+    public function testSlack($request, $response, $args)
+    {
+        try {
+            (new Slack())->send(
+                $request->getParam('slack_user_id'),
+                'این یک پیام آزمایشی است',
+            );
+        } catch (GuzzleException|Exception $e) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'پیام آزمایشی ارسال نشد ' . $e->getMessage(),
+            ]);
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'پیام آزمایشی با موفقیت ارسال شد',
         ]);
     }
 }

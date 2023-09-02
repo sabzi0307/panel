@@ -6,14 +6,18 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Ann;
+use App\Models\EmailQueue;
+use App\Models\Setting;
 use App\Models\User;
-use App\Utils\Telegram;
+use App\Services\IM\Telegram;
+use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use function date;
+use function str_replace;
+use function strip_tags;
 use const PHP_EOL;
 
 final class AnnController extends BaseController
@@ -70,12 +74,19 @@ final class AnnController extends BaseController
         $email_notify_class = (int) $request->getParam('email_notify_class');
         $email_notify = $request->getParam('email_notify') === 'true' ? 1 : 0;
 
-        $content = (string) $request->getParam('content');
-        $subject = $_ENV['appName'] . ' - اطلاعیه';
+        $content = strip_tags(
+            str_replace(
+                ['<p>','</p>'],
+                ['','<br><br>'],
+                $request->getParam('content')
+            ),
+            ['br', 'a', 'strong']
+        );
+        $subject = $_ENV['appName'] . ' - اطلاعیه جدید منتشر شد';
 
         if ($content !== '') {
             $ann = new Ann();
-            $ann->date = date('Y-m-d H:i:s');
+            $ann->date = Tools::toDateTime(time());
             $ann->content = $content;
 
             if (! $ann->save()) {
@@ -86,31 +97,30 @@ final class AnnController extends BaseController
             }
         }
 
-        if ($email_notify === 1) {
+        if ($email_notify) {
             $users = User::where('class', '>=', $email_notify_class)
                 ->get();
 
             foreach ($users as $user) {
-                $user->sendMail(
+                (new EmailQueue())->add(
+                    $user->email,
                     $subject,
                     'warn.tpl',
                     [
                         'user' => $user,
                         'text' => $content,
-                    ],
-                    [],
-                    true
+                    ]
                 );
             }
         }
 
-        if ($_ENV['enable_telegram']) {
+        if (Setting::obtain('enable_telegram')) {
             try {
-                Telegram::sendHtml('اعلان جدید：' . PHP_EOL . $content);
+                (new Telegram())->sendHtml(0, 'اطلاعیه جدید：' . PHP_EOL . $content);
             } catch (TelegramSDKException $e) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => $email_notify === 1 ? 'اعلان با موفقیت اضافه شد، ایمیل با موفقیت ارسال شد، اما تلگرام ارسال نشد' : 'اعلان با موفقیت اضافه شد، ارسال تلگرام ناموفق بود',
+                    'msg' => $email_notify === 1 ? 'اعلان با موفقیت اضافه شد، ایمیل با موفقیت ارسال شد، ارسال تلگرام ناموفق بود' : 'اعلان با موفقیت اضافه شد، ارسال تلگرام ناموفق بود',
                 ]);
             }
         }
@@ -145,7 +155,7 @@ final class AnnController extends BaseController
     {
         $ann = Ann::find($args['id']);
         $ann->content = (string) $request->getParam('content');
-        $ann->date = date('Y-m-d H:i:s');
+        $ann->date = Tools::toDateTime(time());
 
         if (! $ann->save()) {
             return $response->withJson([
@@ -154,13 +164,13 @@ final class AnnController extends BaseController
             ]);
         }
 
-        if ($_ENV['enable_telegram']) {
+        if (Setting::obtain('enable_telegram')) {
             try {
-                Telegram::sendHtml('به روز رسانی اعلان：' . PHP_EOL . $request->getParam('content'));
+                (new Telegram())->sendHtml(0, 'به روز رسانی اطلاعیه：' . PHP_EOL . $request->getParam('content'));
             } catch (TelegramSDKException $e) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'اطلاعیه با موفقیت به‌روزرسانی شد، ارسال تلگرام ناموفق بود',
+                    'msg' => 'اطلاعیه با موفقیت به روز شد، ارسال تلگرام ناموفق بود',
                 ]);
             }
         }

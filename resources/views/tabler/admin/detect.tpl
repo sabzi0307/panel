@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">قوانین ممیزی</span>
+                        <span class="home-title">审计规则</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">مشاهده قوانین ممیزی در سایت</span>
+                        <span class="home-subtitle">查看站点中的审计规则</span>
                     </div>
                 </div>
                 <div class="col-auto">
@@ -17,7 +17,7 @@
                         <button href="#" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#add-detect-dialog">
                             <i class="icon ti ti-plus"></i>
-                            افزودن قانون ممیزی
+                            添加审计规则
                         </button>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">افزودن قانون ممیزی</h5>
+                    <h5 class="modal-title">添加审计规则</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -86,8 +86,8 @@
                     {/foreach}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
-                    <button id="add-detect-button" type="button" class="btn btn-primary" data-bs-dismiss="modal">ثبت</button>
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">取消</button>
+                    <button id="add-detect-button" type="button" class="btn btn-primary" data-bs-dismiss="modal">提交</button>
                 </div>
             </div>
         </div>
@@ -118,27 +118,27 @@
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row card-footer d-flex align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             language: {
-                "sProcessing": "در حال پردازش...",
-                "sLengthMenu": "نمایش ورودی های _MENU_",
-                "sZeroRecords": "هیچ نتیجه منطبقی وجود ندارد",
-                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
-                "sInfoEmpty": "نتایج 0 تا 0 از 0",
-                "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 条",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(在 _MAX_ 项中查找)",
                 "sInfoPostFix": "",
                 "sSearch": "<i class=\"ti ti-search\"></i> ",
                 "sUrl": "",
-                "sEmptyTable": "اطلاعات جدول خالی است",
-                "sLoadingRecords": "بارگذاری...",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
                 "sInfoThousands": ",",
                 "oPaginate": {
-                    "sFirst": "صفحه اول",
+                    "sFirst": "首页",
                     "sPrevious": "<i class=\"ti ti-arrow-left\"></i>",
                     "sNext": "<i class=\"ti ti-arrow-right\"></i>",
-                    "sLast": "آخرین صفحه"
+                    "sLast": "末页"
                 },
                 "oAria": {
-                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
-                    "sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
                 }
             }
         });
@@ -167,7 +167,7 @@
         });
 
         function deleteRule(rule_id) {
-            $('#notice-message').text('آیا از حذف این قانون ممیزی اطمینان دارید؟');
+            $('#notice-message').text('确定删除此审计规则？');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').off('click').on('click', function() {
                 $.ajax({

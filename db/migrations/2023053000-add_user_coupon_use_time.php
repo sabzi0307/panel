@@ -8,7 +8,7 @@ use App\Services\DB;
 return new class() implements MigrationInterface {
     public function up(): int
     {
-        DB::getPdo()->exec("ALTER TABLE user_coupon ADD COLUMN IF NOT EXISTS `use_count` int(11) NOT NULL DEFAULT 0 COMMENT 'استفاده کل';");
+        DB::getPdo()->exec("ALTER TABLE user_coupon ADD COLUMN IF NOT EXISTS `use_count` int(11) NOT NULL DEFAULT 0 COMMENT 'total usage';");
 
         return 2023053000;
     }

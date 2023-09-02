@@ -25,10 +25,7 @@ final class LoginIp extends Model
      */
     public function userName(): string
     {
-        if ($this->user() === null) {
-            return 'کاربر دیگر وجود ندارد';
-        }
-        return $this->user()->user_name;
+        return $this->user() === null ? 'کاربر وجود ندارد' : $this->user()->user_name;
     }
 
     /**

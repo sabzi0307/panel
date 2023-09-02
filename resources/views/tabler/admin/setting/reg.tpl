@@ -65,38 +65,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">مدت اعتبار کد تأیید ایمیل (ثانیه)</label>
-                                    <div class="col">
-                                        <input id="email_verify_ttl" type="text" class="form-control" value="{$settings['email_verify_ttl']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک IP می تواند در مدت اعتبار کد تأیید درخواست کند</label>
-                                    <div class="col">
-                                        <input id="email_verify_ip_limit" type="text" class="form-control" value="{$settings['email_verify_ip_limit']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک آدرس ایمیل می تواند در مدت اعتبار کد تأیید درخواست کند</label>
-                                    <div class="col">
-                                        <input id="email_verify_email_limit" type="text" class="form-control" value="{$settings['email_verify_email_limit']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">به طور پیش‌ فرض، ایمیل مصرف روزانه را دریافت کنید</label>
+                                    <label class="form-label col-3 col-form-label">به طور پیش‌فرض، ایمیل مصرف روزانه را دریافت کنید</label>
                                     <div class="col">
                                         <select id="sign_up_for_daily_report" class="col form-select" value="{$settings['sign_up_for_daily_report']}">
-                                            <option value="0" {if $settings['sign_up_for_daily_report'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['sign_up_for_daily_report']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['sign_up_for_daily_report']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">این که آیا کاربر باید یک مخاطب IM را وارد کند یا خیر</label>
-                                    <div class="col">
-                                        <select id="enable_reg_im" class="col form-select" value="{$settings['enable_reg_im']}">
-                                            <option value="0" {if $settings['enable_reg_im'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_reg_im']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
@@ -138,12 +111,6 @@
                                     <label class="form-label col-3 col-form-label">ترافیک رایگانی که باید ریست شود، وقتی روی 0 تنظیم شود ریست نمی شود</label>
                                     <div class="col">
                                         <input id="free_user_reset_bandwidth" type="text" class="form-control" value="{$settings['free_user_reset_bandwidth']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">مدت اعتبار حساب تعیین شده در زمان ثبت نام (روزها)</label>
-                                    <div class="col">
-                                        <input id="sign_up_for_free_time" type="text" class="form-control" value="{$settings['sign_up_for_free_time']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">

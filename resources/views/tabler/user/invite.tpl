@@ -1,7 +1,7 @@
 {include file='user/header.tpl'}
 
 <div class="page-wrapper">
-    <div class="container-xl">       
+    <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
                 <div class="col">
@@ -17,7 +17,7 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-cards">
+            <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="row row-deck row-cards">
                         <div class="col-sm-12 col-lg-6">
@@ -25,12 +25,11 @@
                                 <div class="card-body">
                                     <h3 class="card-title">قوانین دعوت</h3>
                                     <ul>
-                                        <li>پس از تایید صورت حساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض را دریافت کنید <code>{$public_setting['rebate_ratio'] * 100} %</code>
+                                        <li>پس از تایید صورتحساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض آنها را دریافت کنید <code>{$rebate_ratio_per} %</code>
                                             به عنوان تخفیف</li>
-                                        <li>لطفاً اطلاعیه را برای قوانین خاص تخفیف دعوت بررسی کنید یا از طریق تیکت سیستم پشتیبانی از مدیر سؤال کنید</li>
-                                        <li>نسبت تخفیف برخی از سرویس ها ممکن است از نسبت فوق پیروی نکند</li>
+                                        <li>نسبت تخفیف برخی محصولات ممکن است از نسبت فوق تبعیت نکند</li>
                                     </ul>
-                                    <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید، می باشد <code>{$paybacks_sum}</code> تومان</p>
+                                    <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید است <code>{$paybacks_sum}</code> تومان</p>
                                 </div>
                             </div>
                         </div>
@@ -38,9 +37,6 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">لینک دعوت</h3>
-                                    {if $user->invite_num >= 0}
-                                        <p>تعداد باقی مانده لینک دعوت شما：<code>{$user->invite_num}</code></p>
-                                    {/if}
                                     <input class="form-control" value="{$invite_url}" disabled />
                                 </div>
                                 <div class="card-footer">
@@ -58,40 +54,30 @@
                         <div class="card-header">
                             <h3 class="card-title">سابقه تخفیف</h3>
                         </div>
-                        {if $paybacks->count() !== 0}
-                            <div class="table-responsive">
-                                <table class="table card-table table-vcenter text-nowrap datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>شناسه کاربری کاربر دعوت شده</th>
-                                            <th>نام مستعار کاربر دعوت شده</th>
-                                            <th>مقدار تخفیف</th>
-                                            <th>زمان تخفیف</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {foreach $paybacks as $payback}
-                                            <tr>
-                                                <td>{$payback->id}</td>
-                                                <td>{$payback->userid}</td>
-                                                {if $payback->user()!=null}
-                                                    <td>{$payback->user()->user_name}</td>
-                                                {else}
-                                                    <td>از سیستم خارج شده است</td>
-                                                {/if}
-                                                <td>{$payback->ref_get} تومان</td>
-                                                <td>{$payback->datetime}</td>
-                                            </tr>
-                                        {/foreach}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {else}
-                            <div class="card-body">
-                                <p>هیچ سابقه ای پیدا نشد</p>
-                            </div>
-                        {/if}
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th>شناسه ثبت</th>
+                                        <th>شناسه کاربری کاربر دعوت شده</th>
+                                        <th>نام مستعار کاربر دعوت شده</th>
+                                        <th>میزان تخفیف</th>
+                                        <th>زمان اعمال تخفیف‍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {foreach $paybacks as $payback}
+                                    <tr>
+                                        <td>{$payback->id}</td>
+                                        <td>{$payback->userid}</td>
+                                        <td>{$payback->user_name}</td>
+                                        <td>{$payback->ref_get} تومان</td>
+                                        <td>{$payback->datetime}</td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,8 +93,8 @@
 
         $("#reset-url").click(function() {
             $.ajax({
-                type: "PUT",
-                url: "/user/invite",
+                type: "POST",
+                url: "/user/invite_reset",
                 dataType: "json",
                 success: function(data) {
                     if (data.ret === 1) {

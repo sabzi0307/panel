@@ -31,127 +31,133 @@
                     <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
                         <li class="nav-item">
-                            <a href="#telegram_notification" class="nav-link active" data-bs-toggle="tab">تنظیمات اعلان تلگرام</a>
+                            <a href="#notification" class="nav-link active" data-bs-toggle="tab">تنظیمات نوتیفیکیشن</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#telegram_bot" class="nav-link" data-bs-toggle="tab">تنظیمات ربات تلگرام</a>
+                            <a href="#telegram" class="nav-link" data-bs-toggle="tab">Telegram Bot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#discord" class="nav-link" data-bs-toggle="tab">Discord Bot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#slack" class="nav-link" data-bs-toggle="tab">Slack Bot</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active show" id="telegram_notification">
+                        <div class="tab-pane active show" id="notification">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان افزودن سرور</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی افزودن گره</label>
                                     <div class="col">
                                         <select id="telegram_add_node" class="col form-select" value="{$settings['telegram_add_node']}">
-                                            <option value="0" {if $settings['telegram_add_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_add_node']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_add_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان افزوده شدن سرور</label>
+                                    <label class="form-label col-3 col-form-label">متن اطلاع رسانی گره اضافه شد</label>
                                     <div class="col">
                                         <input id="telegram_add_node_text" type="text" class="form-control" value="{$settings['telegram_add_node_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان تغییر در سرور</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی گره را تغییر دهید</label>
                                     <div class="col">
                                         <select id="telegram_update_node" class="col form-select" value="{$settings['telegram_update_node']}">
-                                            <option value="0" {if $settings['telegram_update_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_update_node']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_update_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان تغییر در سرور</label>
+                                    <label class="form-label col-3 col-form-label">متن اطلاع رسانی گره را تغییر دهید</label>
                                     <div class="col">
                                         <input id="telegram_update_node_text" type="text" class="form-control" value="{$settings['telegram_update_node_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان حذف سرور</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی گره را حذف کنید</label>
                                     <div class="col">
                                         <select id="telegram_delete_node" class="col form-select" value="{$settings['telegram_delete_node']}">
-                                            <option value="0" {if $settings['telegram_delete_node'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_delete_node']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_delete_node']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان حذف سرور</label>
+                                    <label class="form-label col-3 col-form-label">حذف متن اطلاع رسانی گره</label>
                                     <div class="col">
                                         <input id="telegram_delete_node_text" type="text" class="form-control" value="{$settings['telegram_delete_node_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان شناسایی سرور توسط فایروال</label>
+                                    <label class="form-label col-3 col-form-label">گره ها از طریق دیوارها اطلاع رسانی می شوند</label>
                                     <div class="col">
                                         <select id="telegram_node_gfwed" class="col form-select" value="{$settings['telegram_node_gfwed']}">
-                                            <option value="0" {if $settings['telegram_node_gfwed'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_node_gfwed']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_node_gfwed']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان شناسایی سرور توسط فایروال</label>
+                                    <label class="form-label col-3 col-form-label">Node is walled notification text</label>
                                     <div class="col">
                                         <input id="telegram_node_gfwed_text" type="text" class="form-control" value="{$settings['telegram_node_gfwed_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان رفع شناسایی توسط فایروال</label>
+                                    <label class="form-label col-3 col-form-label">The node is restored by the wall</label>
                                     <div class="col">
                                         <select id="telegram_node_ungfwed" class="col form-select" value="{$settings['telegram_node_ungfwed']}">
-                                            <option value="0" {if $settings['telegram_node_ungfwed'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_node_ungfwed']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_node_ungfwed']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان رفع شناسایی توسط فایروال</label>
+                                    <label class="form-label col-3 col-form-label">Node restored notification text by wall</label>
                                     <div class="col">
                                         <input id="telegram_node_ungfwed_text" type="text" class="form-control" value="{$settings['telegram_node_ungfwed_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان آفلاین سرور</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی آفلاین گره</label>
                                     <div class="col">
                                         <select id="telegram_node_offline" class="col form-select" value="{$settings['telegram_node_offline']}">
-                                            <option value="0" {if $settings['telegram_node_offline'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_node_offline']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_node_offline']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان آفلاین سرور</label>
+                                    <label class="form-label col-3 col-form-label">متن اطلاع رسانی آفلاین گره</label>
                                     <div class="col">
                                         <input id="telegram_node_offline_text" type="text" class="form-control" value="{$settings['telegram_node_offline_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان آنلاین سرور</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی آنلاین نود</label>
                                     <div class="col">
                                         <select id="telegram_node_online" class="col form-select" value="{$settings['telegram_node_online']}">
-                                            <option value="0" {if $settings['telegram_node_online'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_node_online']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_node_online']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان آنلاین سرور</label>
+                                    <label class="form-label col-3 col-form-label">متن اطلاع رسانی آنلاین گره</label>
                                     <div class="col">
                                         <input id="telegram_node_online_text" type="text" class="form-control" value="{$settings['telegram_node_online_text']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اطلاع رسانی تلاش روزانه</label>
+                                    <label class="form-label col-3 col-form-label">اطلاع رسانی وظایف روزانه</label>
                                     <div class="col">
                                         <select id="telegram_daily_job" class="col form-select" value="{$settings['telegram_daily_job']}">
-                                            <option value="0" {if $settings['telegram_daily_job'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_daily_job']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_daily_job']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -163,29 +169,62 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اعلان‌های سلامت سیستم</label>
+                                    <label class="form-label col-3 col-form-label">اطلاعیه های سلامت سیستم</label>
                                     <div class="col">
                                         <select id="telegram_diary" class="col form-select" value="{$settings['telegram_diary']}">
-                                            <option value="0" {if $settings['telegram_diary'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_diary']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_diary']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">متن اعلان سلامت سیستم</label>
+                                    <label class="form-label col-3 col-form-label">متن اطلاع رسانی سلامت سیستم</label>
                                     <div class="col">
                                         <input id="telegram_diary_text" type="text" class="form-control" value="{$settings['telegram_diary_text']}">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="telegram_bot">
+                        <div class="tab-pane" id="telegram">
                             <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">فعال کردن ربات تلگرام</label>
+                                    <div class="col">
+                                        <select id="enable_telegram" class="col form-select" value="{$settings['enable_telegram']}">
+                                            <option value="0" {if ! $settings['enable_telegram']}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_telegram']}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Bot Token</label>
+                                    <div class="col">
+                                        <input id="telegram_token" type="text" class="form-control" value="{$settings['telegram_token']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Telegram chat ID</label>
+                                    <div class="col">
+                                        <input id="telegram_chatid" type="text" class="form-control" value="{$settings['telegram_chatid']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Telegram حساب ربات</label>
+                                    <div class="col">
+                                        <input id="telegram_bot" type="text" class="form-control" value="{$settings['telegram_bot']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Telegram Webhook کلید</label>
+                                    <div class="col">
+                                        <input id="telegram_request_token" type="text" class="form-control" value="{$settings['telegram_request_token']}">
+                                    </div>
+                                </div>
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">پس از لغو لینک اکانت تلگرام، گروه را به صورت خودکار بیرون کنید</label>
                                     <div class="col">
                                         <select id="telegram_unbind_kick_member" class="col form-select" value="{$settings['telegram_unbind_kick_member']}">
-                                            <option value="0" {if $settings['telegram_unbind_kick_member'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_unbind_kick_member']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_unbind_kick_member']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -194,31 +233,16 @@
                                     <label class="form-label col-3 col-form-label">فقط به کاربرانی که اکانت های تلگرام لینک شده دارند اجازه دهید به گروه بپیوندند</label>
                                     <div class="col">
                                         <select id="telegram_group_bound_user" class="col form-select" value="{$settings['telegram_group_bound_user']}">
-                                            <option value="0" {if $settings['telegram_group_bound_user'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_group_bound_user']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_group_bound_user']}selected{/if}>فعال</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">فعال کردن ربات تلگرام برای نمایش لینک های گروه کاربری</label>
-                                    <div class="col">
-                                        <select id="telegram_show_group_link" class="col form-select" value="{$settings['telegram_show_group_link']}">
-                                            <option value="0" {if $settings['telegram_show_group_link'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['telegram_show_group_link']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">لینک گروه کاربری</label>
-                                    <div class="col">
-                                        <input id="telegram_group_link" type="text" class="form-control" value="{$settings['telegram_group_link']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">ربات تلگرام پیام خوشامدگویی ارسال کند</label>
                                     <div class="col">
                                         <select id="enable_welcome_message" class="col form-select" value="{$settings['enable_welcome_message']}">
-                                            <option value="0" {if $settings['enable_welcome_message'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['enable_welcome_message']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_welcome_message']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -227,7 +251,7 @@
                                     <label class="form-label col-3 col-form-label">پاسخ ندادن ربات تلگرام در گروه</label>
                                     <div class="col">
                                         <select id="telegram_group_quiet" class="col form-select" value="{$settings['telegram_group_quiet']}">
-                                            <option value="0" {if $settings['telegram_group_quiet'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['telegram_group_quiet']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['telegram_group_quiet']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -236,84 +260,113 @@
                                     <label class="form-label col-3 col-form-label">به ربات‌ها اجازه دهید به گروه‌هایی غیر از آنهایی که در زیر پیکربندی شده‌اند بپیوندند</label>
                                     <div class="col">
                                         <select id="allow_to_join_new_groups" class="col form-select" value="{$settings['allow_to_join_new_groups']}">
-                                            <option value="0" {if $settings['allow_to_join_new_groups'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['allow_to_join_new_groups']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['allow_to_join_new_groups']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">شناسه های گروه مجاز</label>
+                                    <label class="form-label col-3 col-form-label">شناسه گروه های مجاز</label>
                                     <div class="col">
                                         <input id="group_id_allowed_to_join" type="text" class="form-control" value="{$settings['group_id_allowed_to_join']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آیدی ادمین اضافی تلگرام</label>
-                                    <div class="col">
-                                        <input id="telegram_admins" type="text" class="form-control" value="{$settings['telegram_admins']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Not admin replay</label>
-                                    <div class="col">
-                                        <select id="enable_not_admin_reply" class="col form-select" value="{$settings['enable_not_admin_reply']}">
-                                            <option value="0" {if $settings['enable_not_admin_reply'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_not_admin_reply']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Not Admin Replay message</label>
-                                    <div class="col">
-                                        <input id="not_admin_reply_msg" type="text" class="form-control" value="{$settings['not_admin_reply_msg']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">هنگامی که مدیر کار می کند، پاسخ کاربر را نمی توان یافت</label>
-                                    <div class="col">
-                                        <input id="no_user_found" type="text" class="form-control" value="{$settings['no_user_found']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">هنگامی که مدیر کار می کند، فیلد برای تغییر داده ها یافت نمی شود.</label>
-                                    <div class="col">
-                                        <input id="data_method_not_found" type="text" class="form-control" value="{$settings['data_method_not_found']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">به هر دستور ناشناخته ای اجازه دهید تا یک پاسخ /help را راه اندازی کند</label>
                                     <div class="col">
                                         <select id="help_any_command" class="col form-select" value="{$settings['help_any_command']}">
-                                            <option value="0" {if $settings['help_any_command'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['help_any_command']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['help_any_command']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">فعال هنگام جستجوی اطلاعات کاربر در گروه، آدرس ایمیل کامل کاربر را نمایش دهید，غیرفعال محتوای موجود در وسط صندوق پستی کدگذاری خواهد شد</label>
-                                    <div class="col">
-                                        <select id="enable_user_email_group_show" class="col form-select" value="{$settings['enable_user_email_group_show']}">
-                                            <option value="0" {if $settings['enable_user_email_group_show'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_user_email_group_show']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">پاسخ از حساب غیرمجاز</label>
+                                    <label class="form-label col-3 col-form-label">Reply from unbound account</label>
                                     <div class="col">
                                         <input id="user_not_bind_reply" type="text" class="form-control" value="{$settings['user_not_bind_reply']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">معرفی محصولات برای گردشگران</label>
+                                    <label class="form-label col-3 col-form-label">شناسه کاربری تلگرام</label>
+                                    <input type="text" class="form-control" id="telegram_user_id" value="">
+                                    <div class="row my-3">
+                                        <div class="col">
+                                            <button id="test-telegram" class="btn btn-primary">ارسال اطلاعات تست</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="discord">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Bot Token</label>
                                     <div class="col">
-                                        <input id="telegram_general_pricing" type="text" class="form-control" value="{$settings['telegram_general_pricing']}">
+                                        <input id="discord_bot_token" type="text" class="form-control" value="{$settings['discord_bot_token']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">شرایط خدمات برای بازدید کنندگان</label>
+                                    <label class="form-label col-3 col-form-label">Client ID</label>
                                     <div class="col">
-                                        <input id="telegram_general_terms" type="text" class="form-control" value="{$settings['telegram_general_terms']}">
+                                        <input id="discord_client_id" type="text" class="form-control" value="{$settings['discord_client_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Client Secret</label>
+                                    <div class="col">
+                                        <input id="discord_client_secret" type="text" class="form-control" value="{$settings['discord_client_secret']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Guild ID</label>
+                                    <div class="col">
+                                        <input id="discord_guild_id" type="text" class="form-control" value="{$settings['discord_guild_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Discord user ID</label>
+                                    <input type="text" class="form-control" id="discord_user_id" value="">
+                                    <div class="row my-3">
+                                        <div class="col">
+                                            <button id="test-discord" class="btn btn-primary">ارسال اطلاعات تست</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="slack">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">App Token</label>
+                                    <div class="col">
+                                        <input id="slack_token" type="text" class="form-control" value="{$settings['slack_token']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Client ID</label>
+                                    <div class="col">
+                                        <input id="slack_client_id" type="text" class="form-control" value="{$settings['slack_client_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Client Secret</label>
+                                    <div class="col">
+                                        <input id="slack_client_secret" type="text" class="form-control" value="{$settings['slack_client_secret']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Team ID</label>
+                                    <div class="col">
+                                        <input id="slack_team_id" type="text" class="form-control" value="{$settings['slack_team_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Slack user ID</label>
+                                    <input type="text" class="form-control" id="slack_user_id" value="">
+                                    <div class="row my-3">
+                                        <div class="col">
+                                            <button id="test-slack" class="btn btn-primary">ارسال اطلاعات تست</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -340,6 +393,66 @@
                 if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#test-telegram").click(function() {
+        $.ajax({
+            url: '/admin/setting/test_telegram',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                telegram_user_id: $('#telegram_user_id').val(),
+            },
+            success: function(data) {
+                if (data.ret === 1) {
+                    $('#success-noreload-message').text(data.msg);
+                    $('#success-noreload-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#test-discord").click(function() {
+        $.ajax({
+            url: '/admin/setting/test_discord',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                discord_user_id: $('#discord_user_id').val(),
+            },
+            success: function(data) {
+                if (data.ret === 1) {
+                    $('#success-noreload-message').text(data.msg);
+                    $('#success-noreload-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#test-slack").click(function() {
+        $.ajax({
+            url: '/admin/setting/test_slack',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                slack_user_id: $('#slack_user_id').val(),
+            },
+            success: function(data) {
+                if (data.ret === 1) {
+                    $('#success-noreload-message').text(data.msg);
+                    $('#success-noreload-dialog').modal('show');
                 } else {
                     $('#fail-message').text(data.msg);
                     $('#fail-dialog').modal('show');

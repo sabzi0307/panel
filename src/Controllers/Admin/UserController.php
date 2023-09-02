@@ -8,8 +8,6 @@ use App\Controllers\AuthController;
 use App\Controllers\BaseController;
 use App\Models\User;
 use App\Models\UserMoneyLog;
-use App\Services\Auth;
-use App\Utils\Cookie;
 use App\Utils\Hash;
 use App\Utils\Tools;
 use Exception;
@@ -17,7 +15,6 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use function str_replace;
-use function time;
 use const PHP_EOL;
 
 final class UserController extends BaseController
@@ -33,8 +30,10 @@ final class UserController extends BaseController
             'transfer_enable' => 'محدودیت های ترافیکی',
             'transfer_used' => 'مصرف کنونی',
             'class' => 'درجه',
+            'is_admin' => 'آیا شما مدیر هستید',
+            'is_banned' => 'دلیل ممنوعیت',
+            'is_inactive' => 'غیرفعال',
             'reg_date' => 'زمان ثبت نام',
-            'expire_in' => 'حساب منقضی شده است',
             'class_expire' => 'درجه منقضی شده',
         ],
         'create_dialog' => [
@@ -73,14 +72,13 @@ final class UserController extends BaseController
         'money',
         'is_admin',
         'ga_enable',
-        'use_new_shop',
         'is_banned',
         'banned_reason',
+        'is_shadow_banned',
         'transfer_enable',
         'invite_num',
         'ref_by',
         'class_expire',
-        'expire_in',
         'node_group',
         'class',
         'auto_reset_day',
@@ -136,7 +134,7 @@ final class UserController extends BaseController
             $password = Tools::genRandomChar(16);
         }
 
-        AuthController::registerHelper($response, 'user', $email, $password, '', 1, '', 0, $balance, 1);
+        AuthController::registerHelper($response, 'user', $email, $password, '', 0, '', $balance, 1);
         $user = User::where('email', $email)->first();
 
         if ($ref_by !== '') {
@@ -182,7 +180,7 @@ final class UserController extends BaseController
             $money = (float) $request->getParam('money');
             $diff = $money - $user->money;
             $remark = ($diff > 0 ? 'ادمین افزودن ترافیک' : 'ادمین کسر موجودی');
-            (new UserMoneyLog())->addMoneyLog($id, (float) $user->money, $money, $diff, $remark);
+            (new UserMoneyLog())->add($id, (float) $user->money, $money, $diff, $remark);
             $user->money = $money;
         }
 
@@ -191,14 +189,13 @@ final class UserController extends BaseController
         $user->remark = $request->getParam('remark');
         $user->is_admin = $request->getParam('is_admin') === 'true' ? 1 : 0;
         $user->ga_enable = $request->getParam('ga_enable') === 'true' ? 1 : 0;
-        $user->use_new_shop = $request->getParam('use_new_shop') === 'true' ? 1 : 0;
         $user->is_banned = $request->getParam('is_banned') === 'true' ? 1 : 0;
         $user->banned_reason = $request->getParam('banned_reason');
-        $user->transfer_enable = Tools::toGB($request->getParam('transfer_enable'));
+        $user->is_shadow_banned = $request->getParam('is_shadow_banned') === 'true' ? 1 : 0;
+        $user->transfer_enable = Tools::autoBytesR($request->getParam('transfer_enable'));
         $user->invite_num = $request->getParam('invite_num');
         $user->ref_by = $request->getParam('ref_by');
         $user->class_expire = $request->getParam('class_expire');
-        $user->expire_in = $request->getParam('expire_in');
         $user->node_group = $request->getParam('node_group');
         $user->class = $request->getParam('class');
         $user->auto_reset_day = $request->getParam('auto_reset_day');
@@ -228,7 +225,7 @@ final class UserController extends BaseController
         $id = $args['id'];
         $user = User::find((int) $id);
 
-        if (! $user->killUser()) {
+        if (! $user->kill()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'حذف نشد',
@@ -241,41 +238,6 @@ final class UserController extends BaseController
         ]);
     }
 
-    public function changetouser(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $userid = $request->getParam('userid');
-        $adminid = $request->getParam('adminid');
-        $user = User::find($userid);
-        $admin = User::find($adminid);
-        $expire_in = time() + 60 * 60;
-
-        if (! $admin->is_admin || ! $user || ! Auth::getUser()->isLogin) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'درخواست غیر مجاز',
-            ]);
-        }
-
-        Cookie::set([
-            'uid' => $user->id,
-            'email' => $user->email,
-            'key' => Hash::cookieHash($user->pass, $expire_in),
-            'ip' => Hash::ipHash($_SERVER['REMOTE_ADDR'], $user->id, $expire_in),
-            'expire_in' => $expire_in,
-            'old_uid' => Cookie::get('uid'),
-            'old_email' => Cookie::get('email'),
-            'old_key' => Cookie::get('key'),
-            'old_ip' => Cookie::get('ip'),
-            'old_expire_in' => Cookie::get('expire_in'),
-            'old_local' => $request->getParam('local'),
-        ], $expire_in);
-
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'با موفقیت تغییر دهید',
-        ]);
-    }
-
     public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $users = User::orderBy('id', 'desc')->get();
@@ -283,9 +245,12 @@ final class UserController extends BaseController
         foreach ($users as $user) {
             $user->op = '<button type="button" class="btn btn-red" id="delete-user-' . $user->id . '" 
             onclick="deleteUser(' . $user->id . ')">حذف</button>
-            <a class="btn btn-blue" href="/admin/user/' . $user->id . '/edit">ویرایش کنید</a>';
+            <a class="btn btn-blue" href="/admin/user/' . $user->id . '/edit">ویرایش</a>';
             $user->transfer_enable = $user->enableTraffic();
             $user->transfer_used = $user->usedTraffic();
+            $user->is_admin = $user->is_admin === 1 ? 'بله' : 'خیر';
+            $user->is_banned = $user->is_banned === 1 ? 'بله' : 'خیر';
+            $user->is_inactive = $user->is_inactive === 1 ? 'بله' : 'خیر';
         }
 
         return $response->withJson([

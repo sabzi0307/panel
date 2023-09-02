@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\EmailVerify;
 use App\Models\InviteCode;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\Auth;
+use App\Services\Cache;
 use App\Services\Captcha;
 use App\Services\Mail;
+use App\Services\MFA;
+use App\Services\RateLimit;
 use App\Utils\Cookie;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
@@ -19,9 +21,9 @@ use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
+use RedisException;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
-use Vectorface\GoogleAuthenticator;
 use voku\helper\AntiXSS;
 use function array_rand;
 use function date;
@@ -57,6 +59,7 @@ final class AuthController extends BaseController
     {
         if (Setting::obtain('enable_login_captcha')) {
             $ret = Captcha::verify($request->getParams());
+
             if (! $ret) {
                 return $response->withJson([
                     'ret' => 0,
@@ -65,42 +68,48 @@ final class AuthController extends BaseController
             }
         }
 
-        $code = $request->getParam('code');
+        $antiXss = new AntiXSS();
+
+        $code = $antiXss->xss_clean($request->getParam('code'));
         $passwd = $request->getParam('passwd');
-        $rememberMe = $request->getParam('remember_me');
-        $email = strtolower(trim($request->getParam('email')));
-        $redir = Cookie::get('redir') ?? '/user';
+        $rememberMe = $request->getParam('remember_me') === 'true' ? 1 : 0;
+        $email = strtolower(trim($antiXss->xss_clean($request->getParam('email'))));
+        $redir = Cookie::get('redir') === '' ? $antiXss->xss_clean(Cookie::get('redir')) : '/user';
 
         $user = User::where('email', $email)->first();
 
         if ($user === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'خطا در ایمیل یا رمز عبور',
+                'msg' => 'خطای ایمیل یا رمز عبور',
             ]);
         }
 
         if (! Hash::checkPassword($user->pass, $passwd)) {
             // 记录登录失败
             $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
+
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'خطای ایمیل یا رمز عبور',
             ]);
         }
 
-        if ($user->ga_enable === 1) {
+        if ($user->ga_enable) {
             if (strlen($code) !== 6) {
+                // 记录登录失败
+                $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
+
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'خطای کد تایید دو مرحله ای',
                 ]);
             }
 
-            $ga = new GoogleAuthenticator();
-            $rcode = $ga->verifyCode($user->ga_token, $code);
+            if (! MFA::verifyGa($user, $code)) {
+                // 记录登录失败
+                $user->collectLoginIP($_SERVER['REMOTE_ADDR'], 1);
 
-            if (! $rcode) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'خطای کد تایید دو مرحله ای',
@@ -108,9 +117,10 @@ final class AuthController extends BaseController
             }
         }
 
-        $time = 3600 * 24;
+        $time = 3600;
+
         if ($rememberMe) {
-            $time = 3600 * 24 * ($_ENV['rememberMeDuration'] ?: 7);
+            $time = 86400 * ($_ENV['rememberMeDuration'] ?: 7);
         }
 
         Auth::login($user->id, $time);
@@ -135,25 +145,25 @@ final class AuthController extends BaseController
             $captcha = Captcha::generate();
         }
 
-        $ary = $request->getQueryParams();
-        $code = '';
-        if (isset($ary['code'])) {
-            $antiXss = new AntiXSS();
-            $code = $antiXss->xss_clean($ary['code']);
-        }
+        $antiXss = new AntiXSS();
+        $code = $antiXss->xss_clean($request->getParam('code'));
 
-        return $response->write($this->view()
-            ->assign('code', $code)
-            ->assign('base_url', $_ENV['baseUrl'])
-            ->assign('captcha', $captcha)
-            ->fetch('auth/register.tpl'));
+        return $response->write(
+            $this->view()
+                ->assign('code', $code)
+                ->assign('base_url', $_ENV['baseUrl'])
+                ->assign('captcha', $captcha)
+                ->fetch('auth/register.tpl')
+        );
     }
 
+    /**
+     * @throws RedisException
+     */
     public function sendVerify(ServerRequest $request, Response $response, $next): Response|ResponseInterface
     {
         if (Setting::obtain('reg_email_verify')) {
             $antiXss = new AntiXSS();
-
             $email = strtolower(trim($antiXss->xss_clean($request->getParam('email'))));
 
             if ($email === '') {
@@ -166,32 +176,21 @@ final class AuthController extends BaseController
                 return $response->withJson($check_res);
             }
 
+            if (! RateLimit::checkEmailIpLimit($request->getServerParam('REMOTE_ADDR')) ||
+                ! RateLimit::checkEmailAddressLimit($email)
+            ) {
+                return ResponseHelper::error($response, 'درخواست شما خیلی زیاد است، لطفاً بعداً دوباره امتحان کنید');
+            }
+
             $user = User::where('email', $email)->first();
+
             if ($user !== null) {
                 return ResponseHelper::error($response, 'این ایمیل قبلا ذخیره شده است');
             }
 
-            $ipcount = EmailVerify::where('ip', '=', $_SERVER['REMOTE_ADDR'])
-                ->where('expire_in', '>', time())
-                ->count();
-            if ($ipcount > Setting::obtain('email_verify_ip_limit')) {
-                return ResponseHelper::error($response, 'درخواست های این IP بسیار زیاد است');
-            }
-
-            $mailcount = EmailVerify::where('email', '=', $email)
-                ->where('expire_in', '>', time())
-                ->count();
-            if ($mailcount > Setting::obtain('email_verify_email_limit')) {
-                return ResponseHelper::error($response, 'این ایمیل بارها درخواست شده است');
-            }
-
             $code = Tools::genRandomChar(6);
-            $ev = new EmailVerify();
-            $ev->expire_in = time() + Setting::obtain('email_verify_ttl');
-            $ev->ip = $_SERVER['REMOTE_ADDR'];
-            $ev->email = $email;
-            $ev->code = $code;
-            $ev->save();
+            $redis = Cache::initRedis();
+            $redis->setex('email_verify:' . $code, Setting::obtain('email_verify_code_ttl'), $email);
 
             try {
                 Mail::send(
@@ -200,16 +199,17 @@ final class AuthController extends BaseController
                     'verify_code.tpl',
                     [
                         'code' => $code,
-                        'expire' => date('Y-m-d H:i:s', time() + Setting::obtain('email_verify_ttl')),
+                        'expire' => date('Y-m-d H:i:s', time() + Setting::obtain('email_verify_code_ttl')),
                     ]
                 );
-            } catch (Exception | ClientExceptionInterface $e) {
+            } catch (Exception|ClientExceptionInterface $e) {
                 return ResponseHelper::error($response, 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.');
             }
 
-            return ResponseHelper::successfully($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید.');
+            return ResponseHelper::success($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید.');
         }
-        return ResponseHelper::error($response, ' ثبت نام مجاز نیست');
+
+        return ResponseHelper::error($response, 'تایید ایمیل برای سایت فعال نیست');
     }
 
     /**
@@ -220,7 +220,6 @@ final class AuthController extends BaseController
      * @param $code
      * @param $imtype
      * @param $imvalue
-     * @param $telegram_id
      * @param $money
      * @param $is_admin_reg
      *
@@ -236,7 +235,6 @@ final class AuthController extends BaseController
         $code,
         $imtype,
         $imvalue,
-        $telegram_id,
         $money,
         $is_admin_reg
     ): ResponseInterface {
@@ -253,7 +251,6 @@ final class AuthController extends BaseController
         $user->uuid = Uuid::uuid4();
         $user->api_token = Uuid::uuid4();
         $user->port = Tools::getAvPort();
-        $user->t = 0;
         $user->u = 0;
         $user->d = 0;
         $user->method = $configs['sign_up_for_method'];
@@ -261,7 +258,6 @@ final class AuthController extends BaseController
         $user->forbidden_port = Setting::obtain('reg_forbidden_port');
         $user->im_type = $imtype;
         $user->im_value = $imvalue;
-        $user->telegram_id = $telegram_id;
 
         $user->transfer_enable = Tools::toGB($configs['sign_up_for_free_traffic']);
         $user->invite_num = $configs['sign_up_for_invitation_codes'];
@@ -284,16 +280,13 @@ final class AuthController extends BaseController
             $user->money = Setting::obtain('invitation_to_register_balance_reward');
         }
 
-        $ga = new GoogleAuthenticator();
-        $secret = $ga->createSecret();
-        $user->ga_token = $secret;
+        $user->ga_token = MFA::generateGaToken();
         $user->ga_enable = 0;
 
         $user->class_expire = date('Y-m-d H:i:s', time() + (int) $configs['sign_up_for_class_time'] * 86400);
         $user->class = $configs['sign_up_for_class'];
         $user->node_iplimit = $configs['connection_ip_limit'];
         $user->node_speedlimit = $configs['connection_rate_limit'];
-        $user->expire_in = date('Y-m-d H:i:s', time() + (int) $configs['sign_up_for_free_time'] * 86400);
         $user->reg_date = date('Y-m-d H:i:s');
         $user->reg_ip = $_SERVER['REMOTE_ADDR'];
         $user->theme = $_ENV['theme'];
@@ -312,7 +305,7 @@ final class AuthController extends BaseController
 
             return $response->withJson([
                 'ret' => 1,
-                'msg' => 'ثبت نام با موفقیت انجام شد . در حال هدایت به صفحه ورود',
+                'msg' => 'موفقیت در ثبت نام!انتقال به صفحه ورود',
                 'redir' => $redir,
             ]);
         }
@@ -350,7 +343,7 @@ final class AuthController extends BaseController
         $code = $antiXss->xss_clean(trim($request->getParam('code')));
         // Check TOS agreement
         if (! $tos) {
-            return ResponseHelper::error($response, 'لطفاً با شرایط سرویس موافقت کنید');
+            return ResponseHelper::error($response, 'لطفاً با شرایط خدمات موافقت کنید');
         }
         // Check Invite Code
         if ($code === '' && Setting::obtain('reg_mode') === 'invite') {
@@ -370,43 +363,9 @@ final class AuthController extends BaseController
                 return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
             }
         }
-        // Check Invite Code
-        if ($code === '' && Setting::obtain('reg_mode') === 'invite') {
-            return ResponseHelper::error($response, 'کد دعوت نمی تواند خالی باشد');
-        }
 
-        if ($code !== '') {
-            $user_invite = InviteCode::where('code', $code)->first();
-
-            if ($user_invite === null) {
-                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
-            }
-
-            $gift_user = User::where('id', $user_invite->user_id)->first();
-
-            if ($gift_user === null || $gift_user->invite_num === 0) {
-                return ResponseHelper::error($response, 'کد دعوت نامعتبر است');
-            }
-        }
-
-        // Check IM
-        if (Setting::obtain('enable_reg_im')) {
-            $imtype = $antiXss->xss_clean($request->getParam('im_type'));
-            $imvalue = $antiXss->xss_clean($request->getParam('im_value'));
-
-            if ($imtype === '' || $imvalue === '') {
-                return ResponseHelper::error($response, 'لطفا اطلاعات تماس خود را وارد کنید');
-            }
-
-            $user = User::where('im_value', $imvalue)->where('im_type', $imtype)->first();
-
-            if ($user !== null) {
-                return ResponseHelper::error($response, 'این مخاطب قبلاً ذخیره شده است');
-            }
-        } else {
-            $imtype = 1;
-            $imvalue = '';
-        }
+        $imtype = 0;
+        $imvalue = '';
 
         // check email format
         $check_res = Tools::isEmailLegal($email);
@@ -416,7 +375,7 @@ final class AuthController extends BaseController
         // check email
         $user = User::where('email', $email)->first();
         if ($user !== null) {
-            return ResponseHelper::error($response, 'ایمیل ذخیره شده است');
+            return ResponseHelper::error($response, 'ایمیل ثبت شده است');
         }
         // check pwd length
         if (strlen($passwd) < 8) {
@@ -428,20 +387,18 @@ final class AuthController extends BaseController
         }
 
         if (Setting::obtain('reg_email_verify')) {
-            $email_code = trim($antiXss->xss_clean($request->getParam('emailcode')));
-            $email_verify = EmailVerify::where('email', '=', $email)
-                ->where('code', '=', $email_code)
-                ->where('expire_in', '>', time())
-                ->first();
+            $redis = Cache::initRedis();
+            $email_verify_code = trim($antiXss->xss_clean($request->getParam('emailcode')));
+            $email_verify = $redis->get('email_verify:' . $email_verify_code);
 
-            if ($email_verify === null) {
+            if (! $email_verify) {
                 return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
             }
 
-            EmailVerify::where('email', $email)->delete();
+            $redis->del('email_verify:' . $email_verify_code);
         }
 
-        return $this->registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, 0, 0, 0);
+        return $this->registerHelper($response, $name, $email, $passwd, $code, $imtype, $imvalue, 0, 0);
     }
 
     public function logout(ServerRequest $request, Response $response, $next): Response

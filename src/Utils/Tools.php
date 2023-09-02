@@ -47,35 +47,6 @@ final class Tools
     /**
      * 查询IP归属
      *
-     * @throws AddressNotFoundException
-     * @throws InvalidDatabaseException
-     */
-    public static function getServerAddr($ip): string
-    {
-        $geoip = new GeoIP2();
-
-        try {
-            $asn = $geoip->getAsn($ip);
-        } catch (AddressNotFoundException | InvalidDatabaseException $e) {
-            return 'ناشناخته';
-        }
-
-        $providers = $_ENV['Internet_Service_Providers'];
-        $server = $providers[0]['AsName'];
-        foreach ($providers as $provider) {
-            if (in_array($asn->autonomousSystemNumber, $provider['AsNum'])) {
-                $server = $provider['AsName'];
-            }
-            break;
-        }
-
-        return strtolower($server . "." . $_ENV['cleanIP_name']);
-    }
-
-    /**
-     * 查询IP归属
-     *
-     * @throws AddressNotFoundException
      * @throws InvalidDatabaseException
      */
     public static function getIpLocation($ip): string
@@ -88,27 +59,22 @@ final class Tools
             $err_msg = 'سرویس GeoIP2 پیکربندی نشده است';
         } else {
             $geoip = new GeoIP2();
+
             try {
                 $city = $geoip->getCity($ip);
-            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
-                $city = 'ناشناخته';
+            } catch (AddressNotFoundException $e) {
+                $city = 'شهر نامعلوم';
             }
+
             try {
                 $country = $geoip->getCountry($ip);
-            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
-                $country = 'ناشناخته';
+            } catch (AddressNotFoundException $e) {
+                $country = 'کشور ناشناخته';
             }
-            try {
-                $asn = $geoip->getAsn($ip);
-            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
-                $asn = 'ناشناخته';
-            }
-            
-            
         }
 
-        if ($city !== null && $country !== null && $asn !== null) {
-            return $city . ', ' . $asn . ', ' . $country;
+        if ($city !== null) {
+            return $city . ', ' . $country;
         }
 
         if ($country !== null) {
@@ -119,7 +85,10 @@ final class Tools
     }
 
     /**
-     * 根据流量值自动转换单位输出
+     * 查询IP归属
+     *
+     * @throws AddressNotFoundException
+     * @throws InvalidDatabaseException
      */
     public static function autoBytes($size, $precision = 2): string
     {
@@ -157,30 +126,45 @@ final class Tools
         return (int) ($base * pow(1024, array_flip($units)[$suffix]));
     }
 
+    /**
+     * 根据速率值自动转换单位输出
+     */
+    public static function autoMbps($size, $precision = 2): string
+    {
+        if ($size <= 0) {
+            return '0Bps';
+        }
+
+        if ($size > 1000000000) {
+            return '∞';
+        }
+
+        $base = log((float) $size, 1000);
+        $units = ['Mbps', 'Gbps', 'Tbps'];
+
+        return round(pow(1000, $base - floor($base)), $precision) . $units[floor($base)];
+    }
+
     //虽然名字是toMB，但是实际上功能是from MB to B
     public static function toMB($traffic): float|int
     {
-        $mb = 1048576;
-        return $traffic * $mb;
+        return $traffic * 1048576;
     }
 
     //虽然名字是toGB，但是实际上功能是from GB to B
     public static function toGB($traffic): float|int
     {
-        $gb = 1048576 * 1024;
-        return $traffic * $gb;
+        return $traffic * 1073741824;
     }
 
     public static function flowToGB($traffic): float
     {
-        $gb = 1048576 * 1024;
-        return $traffic / $gb;
+        return $traffic / 1073741824;
     }
 
     public static function flowToMB($traffic): float
     {
-        $gb = 1048576;
-        return $traffic / $gb;
+        return $traffic / 1048576;
     }
 
     public static function genRandomChar($length = 8): string
@@ -255,26 +239,31 @@ final class Tools
         $res['ret'] = 0;
 
         if (! self::isEmail($email)) {
-            $res['msg'] = '邮箱不规范';
+            $res['msg'] = 'ایمیل استاندارد نیست';
             return $res;
         }
 
         $mail_suffix = explode('@', $email)[1];
         $mail_filter_list = $_ENV['mail_filter_list'];
-        $res['msg'] = 'نتوانستیم نامه را به دامنه ارسال کنیم ' . $mail_suffix . ' ، لطفا آدرس ایمیل خود را تغییر دهید';
 
         switch ($_ENV['mail_filter']) {
             case 1:
                 // 白名单
                 if (in_array($mail_suffix, $mail_filter_list)) {
                     $res['ret'] = 1;
+                } else {
+                    $res['msg'] = 'نام دامنه ایمیل ' . $mail_suffix . ' نامعتبر است، لطفا آدرس ایمیل را تغییر دهید';
                 }
+
                 return $res;
             case 2:
                 // 黑名单
                 if (! in_array($mail_suffix, $mail_filter_list)) {
                     $res['ret'] = 1;
+                } else {
+                    $res['msg'] = 'نام دامنه ایمیل ' . $mail_suffix . ' نامعتبر است، لطفا آدرس ایمیل را تغییر دهید';
                 }
+
                 return $res;
             default:
                 $res['ret'] = 1;
@@ -284,7 +273,7 @@ final class Tools
 
     public static function isIPv4($input): bool
     {
-        if (filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+        if (! filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return false;
         }
 
@@ -293,7 +282,7 @@ final class Tools
 
     public static function isIPv6($input): bool
     {
-        if (filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+        if (! filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return false;
         }
 
@@ -302,7 +291,7 @@ final class Tools
 
     public static function isInt($input): bool
     {
-        if (filter_var($input, FILTER_VALIDATE_INT) === false) {
+        if (! filter_var($input, FILTER_VALIDATE_INT)) {
             return false;
         }
 
@@ -311,12 +300,11 @@ final class Tools
 
     public static function genSubToken(): string
     {
-        for ($i = 0; $i < 10; $i++) {
-            $token = self::genRandomChar(16);
-            $is_token_used = Link::where('token', $token)->first();
-            if ($is_token_used === null) {
-                return $token;
-            }
+        $token = self::genRandomChar($_ENV['sub_token_len']);
+        $is_token_used = Link::where('token', $token)->first();
+
+        if ($is_token_used === null) {
+            return $token;
         }
 
         return "couldn't alloc token";

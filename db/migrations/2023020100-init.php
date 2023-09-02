@@ -82,15 +82,6 @@ return new class() implements MigrationInterface {
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-            CREATE TABLE `email_verify` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'Mail',
-                `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'IP',
-                `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'verification code',
-                `expire_in` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Expiration',
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
             CREATE TABLE `gift_card` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'gift card ID',
                 `card` text NOT NULL DEFAULT '' COMMENT 'card number',
@@ -243,34 +234,15 @@ return new class() implements MigrationInterface {
                 KEY `status` (`status`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-            CREATE TABLE `stream_media` (
+            CREATE TABLE `subscribe_log` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID',
-                `result` text NOT NULL DEFAULT '' COMMENT 'Test results',
-                `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-            CREATE TABLE `shared_account` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `priority` int(11) DEFAULT NULL COMMENT 'node id',
-                `status` int(11) DEFAULT NULL COMMENT 'Test results',
-                `created_at` int(11) DEFAULT NULL COMMENT 'created time',
-                `updated_at` int(11) DEFAULT NULL COMMENT 'updated time',
-                `account` varchar(255) DEFAULT NULL COMMENT 'user name',
-                `password` varchar(255) DEFAULT NULL COMMENT 'account password',
-                `country` varchar(255) DEFAULT NULL COMMENT 'account registerd country',
-                UNIQUE KEY (`account`),
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-            CREATE TABLE `telegram_session` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `user_id` bigint(20) DEFAULT NULL,
-                `type` int(11) DEFAULT NULL,
-                `session_content` varchar(255) DEFAULT NULL,
-                `datetime` bigint(20) DEFAULT NULL,
-                PRIMARY KEY (`id`)
+                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
+                `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Get the subscription type',
+                `request_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Request IP',
+                `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
+                `request_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'request time',
+                PRIMARY KEY (`id`),
+                KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `ticket` (
@@ -293,7 +265,6 @@ return new class() implements MigrationInterface {
                 `pass` varchar(255) NOT NULL COMMENT 'login password',
                 `passwd` varchar(255) NOT NULL COMMENT 'node password',
                 `uuid` char(36) NOT NULL COMMENT 'UUID',
-                `t` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'last used time',
                 `u` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'The account\'s current upload traffic',
                 `d` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Account current download traffic',
                 `transfer_today` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Account traffic used today',
@@ -302,7 +273,9 @@ return new class() implements MigrationInterface {
                 `port` smallint(6) unsigned NOT NULL COMMENT 'port',
                 `last_detect_ban_time` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Last banned time',
                 `all_detect_number` int(11)unsigned NOT NULL DEFAULT 0 COMMENT 'total number of violations',
+                `last_use_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'last used time',
                 `last_check_in_time` int(11) unsigned DEFAULT 0 COMMENT 'Last check-in time',
+                `last_login_time` int(11) unsigned DEFAULT 0 COMMENT 'last login time',
                 `reg_date` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Registration time',
                 `invite_num` int(11) NOT NULL DEFAULT 0 COMMENT 'Available invitations',
                 `money` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Account Balance',
@@ -393,31 +366,28 @@ return new class() implements MigrationInterface {
                 KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-            CREATE TABLE `user_password_reset` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'User email',
-                `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'reset password token',
-                `init_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
-                `expire_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Expiration',
-                PRIMARY KEY (`id`),
-                KEY `email` (`email`),
-                KEY `token` (`token`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        CREATE TABLE `stream_media` (
+            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+            `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID',
+            `result` text NOT NULL DEFAULT '' COMMENT 'Test results',
+            `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-            CREATE TABLE `user_subscribe_log` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `user_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'username',
-                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
-                `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'User email',
-                `subscribe_type` varchar(255) NOT NULL DEFAULT '' COMMENT 'The type of subscription obtained',
-                `request_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Request IP',
-                `request_time` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'request time',
-                `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
-                PRIMARY KEY (`id`),
-                KEY `user_id` (`user_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
+        CREATE TABLE `shared_account` (
+            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+            `priority` int(11) DEFAULT NULL COMMENT 'node id',
+            `status` int(11) DEFAULT NULL COMMENT 'Test results',
+            `created_at` int(11) DEFAULT NULL COMMENT 'created time',
+            `updated_at` int(11) DEFAULT NULL COMMENT 'updated time',
+            `account` varchar(255) DEFAULT NULL COMMENT 'user name',
+            `password` varchar(255) DEFAULT NULL COMMENT 'account password',
+            `country` varchar(255) DEFAULT NULL COMMENT 'account registerd country',
+            UNIQUE KEY (`account`),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
         );
-
+        
         return 2023020100;
     }
 

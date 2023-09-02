@@ -4,21 +4,33 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Models\Link;
 use App\Models\Node;
 use App\Models\Setting;
 use App\Models\User as ModelsUser;
+use App\Services\MFA;
 use App\Utils\Hash;
 use App\Utils\Tools;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use Vectorface\GoogleAuthenticator;
 use function count;
+use function date;
+use function fgets;
+use function file_get_contents;
+use function file_put_contents;
+use function fwrite;
 use function in_array;
 use function json_decode;
 use function json_encode;
-use function time;
+use function method_exists;
+use function strtolower;
+use function trim;
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_UNICODE;
+use const PHP_EOL;
+use const STDIN;
 
 final class Tool extends Command
 {
@@ -29,11 +41,11 @@ final class Tool extends Command
 │ ├─ exportAllSettings       - export all settings
 │ ├─ importAllSettings       - import all settings
 │ ├─ resetNodePassword       - Reset all node communication keys
-│ ├─ getCookie               - Get the specified user's cookie
 │ ├─ resetPort               - Reset individual user ports
 │ ├─ createAdmin             - Create an administrator account
 │ ├─ resetAllPort            - Reset all user ports
 │ ├─ resetTraffic            - Reset all user traffic
+│ ├─ clearSubToken           - clear user Sub Token
 │ ├─ generateUUID            - Generate new UUIDs for all users
 │ ├─ generateGa              - Generate new Ga Secrets for all users
 │ ├─ generateApiToken        - Generate a new API Token for all users
@@ -58,12 +70,13 @@ EOL;
     /**
      * @throws TelegramSDKException
      */
+    /**
+     * @throws TelegramSDKException
+     */
     public function setTelegram(): void
     {
-        $WebhookUrl = $_ENV['baseUrl'] . '/telegram_callback?token=' . $_ENV['telegram_request_token'];
-
-        $telegram = new Api($_ENV['telegram_token']);
-
+        $WebhookUrl = $_ENV['baseUrl'] . '/callback/telegram?token=' . Setting::obtain('telegram_request_token');
+        $telegram = new Api(Setting::obtain('telegram_token'));
         $telegram->removeWebhook();
 
         if ($telegram->setWebhook(['url' => $WebhookUrl])) {
@@ -88,6 +101,7 @@ EOL;
     public function exportAllSettings(): void
     {
         $settings = Setting::all();
+
         foreach ($settings as $setting) {
             // 因为主键自增所以即便设置为 null 也会在导入时自动分配 id
             // 同时避免多位开发者 pull request 时 settings.json 文件 id 重复所可能导致的冲突
@@ -114,7 +128,7 @@ EOL;
         foreach ($settings as $item) {
             $config[] = $item['item'];
             $item_name = $item['item'];
-            $query = Setting::where('item', '=', $item['item'])->first();
+            $query = Setting::where('item', $item['item'])->first();
 
             if ($query === null) {
                 $new_item = new Setting();
@@ -154,6 +168,7 @@ EOL;
     public function resetNodePassword(): void
     {
         $nodes = Node::all();
+
         foreach ($nodes as $node) {
             $node->password = Tools::genRandomChar(32);
             $node->save();
@@ -168,6 +183,7 @@ EOL;
     {
         fwrite(STDOUT, 'Please enter user id: ');
         $user = ModelsUser::find(trim(fgets(STDIN)));
+
         if ($user !== null) {
             $user->port = Tools::getAvPort();
             if ($user->save()) {
@@ -184,12 +200,15 @@ EOL;
     public function resetAllPort(): void
     {
         $users = ModelsUser::all();
+
         foreach ($users as $user) {
             $origin_port = $user->port;
             $user->port = Tools::getAvPort();
             echo '$origin_port=' . $origin_port . '&$user->port=' . $user->port . PHP_EOL;
             $user->save();
         }
+
+        echo 'reset all ports successful';
     }
 
     /**
@@ -207,7 +226,18 @@ EOL;
             echo $e->getMessage();
             return;
         }
+
         echo 'reset traffic successful';
+    }
+
+    /**
+     * 清除用户 Sub Token
+     */
+    public function clearSubToken(): void
+    {
+        Link::query()->truncate();
+
+        echo 'clear Sub Token successful';
     }
 
     /**
@@ -216,10 +246,11 @@ EOL;
     public function generateUUID(): void
     {
         $users = ModelsUser::all();
+
         foreach ($users as $user) {
-            /** @var ModelsUser $user */
             $user->generateUUID();
         }
+
         echo 'generate UUID successful';
     }
 
@@ -229,19 +260,16 @@ EOL;
     public function generateGa(): void
     {
         $users = ModelsUser::all();
-        foreach ($users as $user) {
-            $secret = '';
-            $ga = new GoogleAuthenticator();
 
+        foreach ($users as $user) {
             try {
-                $secret = $ga->createSecret();
+                $user->ga_token = MFA::generateGaToken();
+                $user->save();
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
-
-            $user->ga_token = $secret;
-            $user->save();
         }
+
         echo 'generate Ga Secret successful';
     }
 
@@ -251,15 +279,18 @@ EOL;
     public function generateApiToken(): void
     {
         $users = ModelsUser::all();
+
         foreach ($users as $user) {
-            /** @var ModelsUser $user */
             $user->generateApiToken();
         }
+
         echo 'generate Api Token successful';
     }
 
     /**
      * 创建 Admin 账户
+     *
+     * @throws Exception
      */
     public function createAdmin(): void
     {
@@ -295,33 +326,22 @@ EOL;
             $user->uuid = Uuid::uuid4();
             $user->api_token = Uuid::uuid4();
             $user->port = Tools::getAvPort();
-            $user->t = 0;
             $user->u = 0;
             $user->d = 0;
             $user->transfer_enable = 0;
             $user->invite_num = 0;
             $user->ref_by = 0;
             $user->is_admin = 1;
-            $user->expire_in = date('Y-m-d H:i:s');
             $user->reg_date = date('Y-m-d H:i:s');
             $user->money = 0;
-            $user->im_type = 1;
+            $user->im_type = 0;
             $user->im_value = '';
             $user->class = 0;
             $user->node_iplimit = 0;
             $user->node_speedlimit = 0;
             $user->theme = $_ENV['theme'];
 
-            $ga = new GoogleAuthenticator();
-            $secret = '';
-
-            try {
-                $secret = $ga->createSecret();
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-
-            $user->ga_token = $secret;
+            $user->ga_token = MFA::generateGaToken();
             $user->ga_enable = 0;
 
             if ($user->save()) {
@@ -331,18 +351,6 @@ EOL;
             }
         } else {
             echo 'Canceled' . PHP_EOL;
-        }
-    }
-
-    /**
-     * 获取 USERID 的 Cookie
-     */
-    public function getCookie(): void
-    {
-        if (count($this->argv) === 4) {
-            $user = ModelsUser::find($this->argv[3]);
-            $expire_in = 86400 + time();
-            echo Hash::cookieHash($user->pass, $expire_in) . ' ' . $expire_in;
         }
     }
 

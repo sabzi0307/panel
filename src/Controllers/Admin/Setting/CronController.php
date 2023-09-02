@@ -19,6 +19,10 @@ final class CronController extends BaseController
         'enable_monthly_finance_mail',
         'enable_detect_gfw',
         'enable_detect_ban',
+        'enable_detect_inactive_user',
+        'detect_inactive_user_checkin_days',
+        'detect_inactive_user_login_days',
+        'detect_inactive_user_use_days',
     ];
 
     /**
@@ -53,14 +57,14 @@ final class CronController extends BaseController
         if ($daily_job_hour < 0 || $daily_job_hour > 23) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'ساعت زمان اجرای وظایف روزانه باید بین 0-23 باشد',
+                'msg' => 'ساعت های زمان اجرای کار روزانه باید بین 0-23 باشد',
             ]);
         }
 
         if ($daily_job_minute < 0 || $daily_job_minute > 59) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'زمان اجرای وظایف روزانه بر حسب دقیقه باید بین 0 تا 59 باشد',
+                'msg' => 'زمان اجرای کار روزانه در دقیقه باید بین 0-59 باشد',
             ]);
         }
 

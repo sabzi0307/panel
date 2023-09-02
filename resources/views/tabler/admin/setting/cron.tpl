@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">تنظیمات وظایف برنامه ریزی شده</span>
+                        <span class="home-title">تنظیمات کار برنامه ریزی شده</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">وظایف برنامه ریزی شده را برای سایت تنظیم کنید</span>
@@ -16,7 +16,7 @@
                     <div class="btn-list">
                         <a id="save-setting" href="#" class="btn btn-primary">
                             <i class="icon ti ti-device-floppy"></i>
-                            ذخیره
+                            دخیره
                         </a>
                     </div>
                 </div>
@@ -37,7 +37,10 @@
                             <a href="#finance_mail" class="nav-link" data-bs-toggle="tab">گزارش مالی</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#detect" class="nav-link" data-bs-toggle="tab">وظایف شناسایی</a>
+                            <a href="#detect" class="nav-link" data-bs-toggle="tab">وظیفه ممیزی</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#inactive" class="nav-link" data-bs-toggle="tab">شناسایی حساب غیرفعال</a>
                         </li>
                     </ul>
                 </div>
@@ -46,15 +49,17 @@
                         <div class="tab-pane active show" id="daily_job">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">زمان اجرای وظایف روزانه (ساعت)</label>
+                                    <label class="form-label col-3 col-form-label">زمان اجرای کار روزانه(ساعت)</label>
                                     <div class="col">
-                                        <input id="daily_job_hour" type="text" class="form-control" value="{$settings['daily_job_hour']}">
+                                        <input id="daily_job_hour" type="text" class="form-control"
+                                               value="{$settings['daily_job_hour']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">زمان اجرای وظایف روزانه (دقیقه)</label>
+                                    <label class="form-label col-3 col-form-label">زمان اجرای کار روزانه (دقیقه)</label>
                                     <div class="col">
-                                        <input id="daily_job_minute" type="text" class="form-control" value="{$settings['daily_job_minute']}">
+                                        <input id="daily_job_minute" type="text" class="form-control"
+                                               value="{$settings['daily_job_minute']}">
                                     </div>
                                 </div>
                             </div>
@@ -64,26 +69,29 @@
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">فعال کردن گزارش‌های مالی روزانه</label>
                                     <div class="col">
-                                        <select id="enable_daily_finance_mail" class="col form-select" value="{$settings['enable_daily_finance_mail']}">
-                                            <option value="0" {if $settings['enable_daily_finance_mail'] === false}selected{/if}>غیرفعال</option>
+                                        <select id="enable_daily_finance_mail" class="col form-select"
+                                                value="{$settings['enable_daily_finance_mail']}">
+                                            <option value="0" {if ! $settings['enable_daily_finance_mail']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_daily_finance_mail']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">فعال کردن گزارش مالی هفتگی</label>
+                                    <label class="form-label col-3 col-form-label">فعال کردن گزارش‌های مالی هفتگی</label>
                                     <div class="col">
-                                        <select id="enable_weekly_finance_mail" class="col form-select" value="{$settings['enable_weekly_finance_mail']}">
-                                            <option value="0" {if $settings['enable_weekly_finance_mail'] === false}selected{/if}>غیرفعال</option>
+                                        <select id="enable_weekly_finance_mail" class="col form-select"
+                                                value="{$settings['enable_weekly_finance_mail']}">
+                                            <option value="0" {if ! $settings['enable_weekly_finance_mail']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_weekly_finance_mail']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">فعال کردن گزارش‌های مالی ماهانه</label>
+                                    <label class="form-label col-3 col-form-label">فعال کردن گزارش های مالی ماهانه</label>
                                     <div class="col">
-                                        <select id="enable_monthly_finance_mail" class="col form-select" value="{$settings['enable_monthly_finance_mail']}">
-                                            <option value="0" {if $settings['enable_monthly_finance_mail'] === false}selected{/if}>غیرفعال</option>
+                                        <select id="enable_monthly_finance_mail" class="col form-select"
+                                                value="{$settings['enable_monthly_finance_mail']}">
+                                            <option value="0" {if ! $settings['enable_monthly_finance_mail']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_monthly_finance_mail']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -96,7 +104,7 @@
                                     <label class="form-label col-3 col-form-label">فعال کردن گره تشخیص دیوار است</label>
                                     <div class="col">
                                         <select id="enable_detect_gfw" class="col form-select" value="{$settings['enable_detect_gfw']}">
-                                            <option value="0" {if $settings['enable_detect_gfw'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['enable_detect_gfw']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_detect_gfw']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
@@ -105,9 +113,44 @@
                                     <label class="form-label col-3 col-form-label">فعال کردن ممنوعیت ممیزی</label>
                                     <div class="col">
                                         <select id="enable_detect_ban" class="col form-select" value="{$settings['enable_detect_ban']}">
-                                            <option value="0" {if $settings['enable_detect_ban'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['enable_detect_ban']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['enable_detect_ban']}selected{/if}>فعال</option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane show" id="inactive">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">فعال کردن شناسایی حساب غیرفعال</label>
+                                    <div class="col">
+                                        <select id="enable_detect_inactive_user" class="col form-select"
+                                                value="{$settings['enable_detect_inactive_user']}">
+                                            <option value="0" {if ! $settings['enable_detect_inactive_user']}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['enable_detect_inactive_user']}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">مدت زمان عدم ورود به سیستم (روزها)</label>
+                                    <div class="col">
+                                        <input id="detect_inactive_user_checkin_days" type="text" class="form-control"
+                                               value="{$settings['detect_inactive_user_checkin_days']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">مدت زمانی که وارد سیستم نشده اید (روزها)</label>
+                                    <div class="col">
+                                        <input id="detect_inactive_user_login_days" type="text" class="form-control"
+                                               value="{$settings['detect_inactive_user_login_days']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">زمان بدون استفاده (روز)</label>
+                                    <div class="col">
+                                        <input id="detect_inactive_user_use_days" type="text" class="form-control"
+                                               value="{$settings['detect_inactive_user_use_days']}">
                                     </div>
                                 </div>
                             </div>

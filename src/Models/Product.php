@@ -14,7 +14,7 @@ final class Product extends Model
      */
     public function status(): string
     {
-        return $this->status ? 'عادی' : 'از قفسه ها بردارید';
+        return $this->status ? 'عادی' : 'توقف فروش';
     }
 
     /**
@@ -35,9 +35,6 @@ final class Product extends Model
      */
     public function stock(): string|int
     {
-        if ($this->stock < 0) {
-            return 'نامحدود';
-        }
-        return $this->stock;
+        return $this->stock < 0 ? 'نامحدود' : $this->stock;
     }
 }
