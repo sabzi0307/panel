@@ -18,7 +18,6 @@ final class Config
             'checkinMax' => $_ENV['checkinMax'],
 
             'jump_delay' => $_ENV['jump_delay'],
-            'enable_analytics_code' => $_ENV['enable_analytics_code'],
 
             'enable_kill' => $_ENV['enable_kill'],
             'enable_change_email' => $_ENV['enable_change_email'],
@@ -62,13 +61,6 @@ final class Config
     public static function getSupportParam($type): array
     {
         return match ($type) {
-            'ss_aead_method' => [
-                'aes-128-gcm',
-                'aes-192-gcm',
-                'aes-256-gcm',
-                'chacha20-ietf-poly1305',
-                'xchacha20-ietf-poly1305',
-            ],
             'ss_obfs' => [
                 'simple_obfs_http',
                 'simple_obfs_http_compatible',
@@ -86,11 +78,6 @@ final class Config
                 'aes-256-gcm',
                 'chacha20-ietf-poly1305',
                 'xchacha20-ietf-poly1305',
-                'none',
-                'plain',
-                '2022-blake3-aes-128-gcm',
-                '2022-blake3-aes-256-gcm',
-                '2022-blake3-chacha20-poly1305',
             ],
         };
     }

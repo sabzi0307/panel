@@ -8,7 +8,12 @@ $_ENV['salt']       = '';                             //Recommended for md5/sha2
 $_ENV['debug']      = false;                          //debug mode switch，The production environment should be kept as false
 $_ENV['appName']    = 'SSPanel-UIM';                  // Site name
 $_ENV['baseUrl']    = 'https://example.com';          // site address
+
+// WebAPI
+$_ENV['webAPI']      = true;               //是否开启WebAPI功能
+$_ENV['webAPIUrl']   = $_ENV['baseUrl'];   //WebAPI地址，如需和站点名称相同，请不要修改
 $_ENV['muKey']      = 'ChangeMe';                     //WebAPI Key, used for communication between the node server and the panel，Be sure to modify this key to a random string
+$_ENV['checkNodeIp'] = true;               //是否webapi验证节点ip
 
 //database settings--------------------------------------------------------------------------------------------
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
@@ -87,27 +92,15 @@ $_ENV['detect_gfw_url']                  = 'http://example.com:8080/tcping?ip={i
 #offline detection
 $_ENV['enable_detect_offline']           = true;
 
-//All of the following are advanced settings (generally not used, do not need to change---------------------------------------------------------------------
-
-// Does the master site provide WebAPI
-// - For security, it is recommended to use the WebAPI mode to connect to the node and close the public network database connection.
-// - Can be set to false if all your nodes use database connections or if you have a separate WebAPI site or gRPC API.
-$_ENV['WebAPI']     = true;
-
 $_ENV['enable_login_bind_ip']   = false;        //bind the login thread to the IP
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
-
 $_ENV['timeZone']               = 'Asia/Tehran';         //Requires a PHP-compatible timezone format
 $_ENV['theme']                  = 'tabler';              //Default Theme
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
-
-$_ENV['checkNodeIp']            = true;                 // webapi verifies node ip
 $_ENV['keep_connect']           = false;               // Speed limit to 1Mbps for traffic exhausted users
 
-#Whether to include statistical codes, create an analytics.tpl under resources/views/{theme name}, and use literal delimiters if necessary
-$_ENV['enable_analytics_code']  = false;
-
 $_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
+
 
 // https://sentry.io for production debugging
 $_ENV['sentry_dsn'] = '';

@@ -187,10 +187,13 @@
                                         <p>
                                             اشتراک جهانی（clash）：<code>{$UniversalSub}/clash</code>
                                         </p>
+                                        <p>
+                                            اشتراک جهانی（sing-box）：<code>{$UniversalSub}/singbox</code>
+                                        </p>
                                         {if $public_setting['enable_ss_sub']}
-                                            <p>
-                                                اشتراک جهانی（sip008）：<code>{$UniversalSub}/sip008</code>
-                                            </p>
+                                        <p>
+                                            اشتراک جهانی（sip008）：<code>{$UniversalSub}/sip008</code>
+                                        </p>
                                         {/if}
                                         <div class="btn-list justify-content-start">
                                             <a data-clipboard-text="{$UniversalSub}/json"
@@ -201,11 +204,15 @@
                                                class="copy btn btn-primary">
                                                 کپی اشتراک جهانی（clash）
                                             </a>
+                                            <a data-clipboard-text="{$UniversalSub}/singbox"
+                                               class="copy btn btn-primary">
+                                                کپی اشتراک جهانی（sing-box）
+                                            </a>
                                             {if $public_setting['enable_ss_sub']}
-                                                <a data-clipboard-text="{$UniversalSub}/sip008"
-                                                   class="copy btn btn-primary">
-                                                    کپی اشتراک جهانی（sip008）
-                                                </a>
+                                            <a data-clipboard-text="{$UniversalSub}/sip008"
+                                               class="copy btn btn-primary">
+                                                کپی اشتراک جهانی（sip008）
+                                            </a>
                                             {/if}
                                         </div>
                                     </div>
@@ -219,15 +226,19 @@
                                                 اشتراک سنتی（Shadowsocks SIP002）：<code>{$TraditionalSub}?sip002=1</code>
                                             </p>
                                             {/if}
-                                            {if $public_setting['enable_v2_sub']}<p>
-                                                اشتراک سنتی（V2Ray）：<code>{$TraditionalSub}?v2ray=1</code></p>
+                                            {if $public_setting['enable_v2_sub']}
+                                            <p>
+                                                اشتراک سنتی（V2Ray）：<code>{$TraditionalSub}?v2ray=1</code>
+                                            </p>
                                             {/if}
-                                            {if $public_setting['enable_trojan_sub']}<p>
-                                                اشتراک سنتی（Trojan）：<code>{$TraditionalSub}?trojan=1</code></p>
+                                            {if $public_setting['enable_trojan_sub']}
+                                            <p>
+                                                اشتراک سنتی（Trojan）：<code>{$TraditionalSub}?trojan=1</code>
+                                            </p>
                                             {/if}
                                             <div class="btn-list justify-content-start">
                                                 {if $public_setting['enable_ss_sub']}
-                                                <a data-clipboard-text="{$TraditionalSub}?ss=1"class="copy btn btn-primary">
+                                                <a data-clipboard-text="{$TraditionalSub}?ss=1" class="copy btn btn-primary">
                                                     کپی اشتراک سنتی（Shadowsocks）
                                                 </a>
                                                 <a data-clipboard-text="{$TraditionalSub}?sip002=1" class="copy btn btn-primary">
@@ -235,25 +246,27 @@
                                                 </a>
                                                 {/if}
                                                 {if $public_setting['enable_v2_sub']}
-                                                    <a data-clipboard-text="{$TraditionalSub}?v2ray=1"class="copy btn btn-primary">کپی اشتراک سنتی（V2Ray）</a>
+                                                <a data-clipboard-text="{$TraditionalSub}?v2ray=1" class="copy btn btn-primary">
+                                                    کپی اشتراک سنتی（V2Ray）
+                                                </a>
                                                 {/if}
                                                 {if $public_setting['enable_trojan_sub']}
-                                                    <a data-clipboard-text="{$TraditionalSub}?trojan=1"class="copy btn btn-primary">کپی اشتراک سنتی（Trojan）</a>
+                                                <a data-clipboard-text="{$TraditionalSub}?trojan=1" class="copy btn btn-primary">
+                                                    کپی اشتراک سنتی（Trojan）
+                                                </a>
                                                 {/if}
                                                 <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/v2rayN-Core.zip"
                                                     {else}
                                                         href="/clients/v2rayN-Core.zip"
-                                                    {/if}
-                                                   class="btn btn-primary">
+                                                    {/if} class="btn btn-azure">
                                                     دانلود v2rayN（Windows）
                                                 </a>
                                                 <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/v2rayNG.apk"
                                                     {else}
                                                         href="/clients/v2rayNG.apk"
-                                                    {/if}
-                                                   class="btn btn-primary">
+                                                    {/if} class="btn btn-azure">
                                                     دانلود v2rayNG（Android）
                                                 </a>
                                             </div>
@@ -266,22 +279,21 @@
                                             اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                         </p>
                                         <div class="btn-list justify-content-start">
+                                            <a
+                                            {if $config['enable_r2_client_download']}
+                                                href="/user/clients/Clash.Verge.exe"
+                                            {else}
+                                                href="/clients/Clash.Verge.exe"
+                                            {/if} class="btn btn-azure">
+                                                دانلود Clash Verge
+                                            </a>
                                             <a data-clipboard-text="{$UniversalSub}/clash"
                                                class="copy btn btn-primary">
                                                 لینک اشتراک کلش را کپی کنید
                                             </a>
-                                            <a
-                                               {if $config['enable_r2_client_download']}
-                                                    href="/user/clients/Clash.Verge.exe"
-                                               {else}
-                                                    href="/clients/Clash.Verge.exe"
-                                               {/if}
-                                               class="btn btn-primary">
-                                                دانلود Clash Verge
-                                            </a>
                                             <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                               class="btn btn-primary">
-                                                افزودن به Clash
+                                               class="btn btn-indigo">
+                                                وارد کردن به کلش
                                             </a>
                                         </div>
                                     </div>
@@ -290,30 +302,41 @@
                                     <p>
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
+                                    <p>
+                                        اشتراک برای sing-box：<code>{$UniversalSub}/singbox</code>
+                                    </p>
                                     <div class="btn-list justify-content-start">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/Clash.Verge_aarch64.dmg"
+                                        {else}
+                                            href="/clients/Clash.Verge_aarch64.dmg"
+                                        {/if} class="btn btn-azure">
+                                            دانلود Clash Verge (aarch64)
+                                        </a>
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
-                                        <a {if $config['enable_r2_client_download']}
-                                                href="/user/clients/Clash.Verge_aarch64.dmg"
-                                            {else}
-                                                href="/clients/Clash.Verge_aarch64.dmg"
-                                            {/if}
-                                           class="btn btn-primary">
-                                            دانلود Clash Verge (aarch64)
-                                        </a>
-                                        <a {if $config['enable_r2_client_download']}
-                                                href="/user/clients/Clash.Verge_x64.dmg"
-                                            {else}
-                                                href="/clients/Clash.Verge_x64.dmg"
-                                            {/if}
-                                           class="btn btn-primary">
-                                            دانلود Clash Verge (x86_64)
-                                        </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                           class="btn btn-indigo">
                                             افزودن به Clash
+                                        </a>
+                                    </div>
+                                    <div class="btn-list justify-content-start my-2">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/SFM.zip"
+                                        {else}
+                                            href="/clients/SFM.zip"
+                                        {/if} class="btn btn-azure">
+                                            دانلود SFM
+                                        </a>
+                                        <a data-clipboard-text="{$UniversalSub}/singbox"
+                                           class="copy btn btn-primary">
+                                            پیوند اشتراک sing-box را کپی کنید
+                                        </a>
+                                        <a href="sing-box://import-remote-profile?url={$UniversalSub}/singbox#{$config['appName']}"
+                                           class="btn btn-indigo">
+                                            افزودن به SFM
                                         </a>
                                     </div>
                                 </div>
@@ -321,22 +344,41 @@
                                     <p>
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
+                                    <p>
+                                        اشتراک برای sing-box：<code>{$UniversalSub}/singbox</code>
+                                    </p>
                                     <div class="btn-list justify-content-start">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/Clash-Android.apk"
+                                        {else}
+                                            href="/clients/Clash-Android.apk"
+                                        {/if} class="btn btn-azure">
+                                            دانلود کلش برای اندروید
+                                        </a>
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
-                                        <a {if $config['enable_r2_client_download']}
-                                                href="/user/clients/Clash-Android.apk"
-                                            {else}
-                                                href="/clients/Clash-Android.apk"
-                                            {/if}
-                                           class="btn btn-primary">
-                                            دانلود Clash for Android
-                                        </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                           class="btn btn-indigo">
                                             افزودن به Clash
+                                        </a>
+                                    </div>
+                                    <div class="btn-list justify-content-start my-2">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/SFA.apk"
+                                        {else}
+                                            href="/clients/SFA.apk"
+                                        {/if} class="btn btn-azure">
+                                            SFA دانلود 
+                                        </a>
+                                        <a data-clipboard-text="{$UniversalSub}/singbox"
+                                           class="copy btn btn-primary">
+                                            پیوند اشتراک sing-box را کپی کنید
+                                        </a>
+                                        <a href="sing-box://import-remote-profile?url={$UniversalSub}/singbox#{$config['appName']}"
+                                           class="btn btn-indigo">
+                                            افزودن به SFA
                                         </a>
                                     </div>
                                 </div>
@@ -345,20 +387,34 @@
                                         اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <p>
-                                        پس از خرید و نصب یک کلاینت سازگار با Clash (مانند Stash)، روی دکمه <code>Copy Subscription Link</code> کلیک کنید و سپس کلاینت سازگار با Clash را باز کنید افزودن به。
+                                        اشتراک برای sing-box：<code>{$UniversalSub}/singbox</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
                                         <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
-                                           class="btn btn-primary">
-                                            购买 Stash
+                                           class="btn btn-azure">
+                                            Stash را بخرید
                                         </a>
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
                                         <a href="stash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                           class="btn btn-indigo">
                                             افزودن به Stash
+                                        </a>
+                                    </div>
+                                    <div class="btn-list justify-content-start my-2">
+                                        <a href="https://apps.apple.com/app/sing-box/id6451272673" target="_blank"
+                                           class="btn btn-azure">
+                                            sing-box را نصب کنید
+                                        </a>
+                                        <a data-clipboard-text="{$UniversalSub}/singbox"
+                                           class="copy btn btn-primary">
+                                            پیوند اشتراک sing-box را کپی کنید
+                                        </a>
+                                        <a href="sing-box://import-remote-profile?url={$UniversalSub}/singbox#{$config['appName']}"
+                                           class="btn btn-indigo">
+                                            افزودن به sing-box
                                         </a>
                                     </div>
                                 </div>
@@ -367,20 +423,19 @@
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
                                     <div class="btn-list justify-content-start">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/Clash.Verge.AppImage.tar.gz"
+                                        {else}
+                                            href="/clients/Clash.Verge.AppImage.tar.gz"
+                                        {/if} class="btn btn-azure">
+                                            دانلود Clash Verge
+                                        </a>
                                         <a data-clipboard-text="{$UniversalSub}/clash"
                                            class="copy btn btn-primary">
                                             لینک اشتراک کلش را کپی کنید
                                         </a>
-                                        <a {if $config['enable_r2_client_download']}
-                                                href="/user/clients/Clash.Verge.AppImage.tar.gz"
-                                            {else}
-                                                href="/clients/Clash.Verge.AppImage.tar.gz"
-                                            {/if}
-                                           class="btn btn-primary">
-                                            دانلود Clash Verge
-                                        </a>
                                         <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-primary">
+                                           class="btn btn-indigo">
                                             افزودن به Clash
                                         </a>
                                     </div>
@@ -430,8 +485,7 @@
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-success" role="progressbar"
-                                        style="width: {$user->TodayusedTrafficPercent()}%">
-                                    </div>
+                                        style="width: {$user->TodayusedTrafficPercent()}%"></div>
                                 {/if}
                             </div>
                             <div class="row">
@@ -441,8 +495,7 @@
                                 </div>
                                 <div class="col-auto d-flex align-items-center px-2">
                                     <span class="legend me-2 bg-success"></span>
-                                    <span>میزان مصرفی امروز
-                                        {$user->TodayusedTraffic()}</span>
+                                    <span>مصرف امروز {$user->TodayusedTraffic()}</span>
                                 </div>
                                 <div class="col-auto d-flex align-items-center ps-2">
                                     <span class="legend me-2"></span>
@@ -494,7 +547,7 @@
                             <p>
                                 برای دریافت وارد شوید
                                 {if $config['checkinMin'] !== $config['checkinMax']}
-                                    &nbsp;<code>{$config['checkinMin']} MB</code> 至 <code>{$config['checkinMax']} MB</code>
+                                    &nbsp;<code>{$config['checkinMin']} MB</code> به <code>{$config['checkinMax']} MB</code>
                                     ترافیک در محدوده
                                 {else}
                                     <code>{$config['checkinMin']} MB</code>

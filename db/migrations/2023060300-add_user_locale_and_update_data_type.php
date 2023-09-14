@@ -41,7 +41,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `node_group` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'node group';
         ALTER TABLE user MODIFY COLUMN `is_banned` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'is_banned';
         ALTER TABLE user MODIFY COLUMN `banned_reason` varchar(255) NOT NULL DEFAULT '' COMMENT 'Banned reason';
-        ALTER TABLE user MODIFY COLUMN `telegram_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Telegram ID';
         ALTER TABLE user MODIFY COLUMN `expire_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Expired reminder';
         ALTER TABLE user MODIFY COLUMN `traffic_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'traffic notification';
         ALTER TABLE user MODIFY COLUMN `forbidden_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden to access IP';

@@ -13,14 +13,21 @@ use App\Models\Setting;
 use App\Models\SubscribeLog;
 use App\Services\Config;
 use App\Utils\Tools;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Collection;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use Telegram\Bot\Objects\CallbackQuery;
+use function array_chunk;
+use function array_merge;
+use function end;
+use function explode;
+use function implode;
 use function in_array;
 use function is_null;
 use function json_encode;
 use function time;
+use const PHP_EOL;
 
 final class Callback
 {
@@ -42,7 +49,7 @@ final class Callback
     /**
      * 回调
      */
-    private CallbackQuery $callback;
+    private Collection $callback;
 
     /**
      * 回调数据内容
@@ -65,21 +72,20 @@ final class Callback
     private bool $allow_edit_message;
 
     /**
-     * @param Api $bot
-     * @param CallbackQuery $callback
-     *
      * @throws InvalidDatabaseException
-     * @throws TelegramSDKException
+     * @throws TelegramSDKException|GuzzleException
      */
-    public function __construct(Api $bot, CallbackQuery $callback)
+    public function __construct(Api $bot, Collection $callback)
     {
         $this->bot = $bot;
+
         $this->trigger_user = [
             'id' => $callback->getFrom()->getId(),
             'name' => $callback->getFrom()->getFirstName() . ' Callback.php' . $callback->getFrom()->getLastName(),
             'username' => $callback->getFrom()->getUsername(),
         ];
-        $this->user = Tool::getUser($this->trigger_user['id']);
+
+        $this->user = Message::getUser($this->trigger_user['id']);
         $this->chat_id = $callback->getMessage()->getChat()->getId();
         $this->callback = $callback;
         $this->message_id = $callback->getMessage()->getMessageId();
@@ -103,6 +109,7 @@ final class Callback
      * @param array $send_message
      *
      * @throws TelegramSDKException
+     * @throws GuzzleException
      */
     public function replyWithMessage(array $send_message): void
     {
@@ -115,7 +122,7 @@ final class Callback
         );
 
         if ($this->allow_edit_message) {
-            Tool::sendPost('editMessageText', $send_message);
+            Message::sendPost('editMessageText', $send_message);
         } else {
             $this->bot->sendMessage($send_message);
         }
@@ -132,6 +139,8 @@ final class Callback
      * </code>
      *
      * @param array $send_message
+     *
+     * @throws GuzzleException
      */
     public function answerCallbackQuery(array $send_message): void
     {
@@ -142,13 +151,15 @@ final class Callback
             ],
             $send_message
         );
-        Tool::sendPost('answerCallbackQuery', $send_message);
+
+        Message::sendPost('answerCallbackQuery', $send_message);
     }
 
     public static function getUserIndexKeyboard($user): array
     {
         $checkin = (! $user->isAbleToCheckin() ? 'signed in' : 'to sign in');
-        $Keyboard = [
+
+        $keyboard = [
             [
                 [
                     'text' => 'مرکز کاربران',
@@ -176,13 +187,14 @@ final class Callback
                 ],
             ],
         ];
+
         $text = Message::getUserTitle($user);
         $text .= PHP_EOL . PHP_EOL;
         $text .= Message::getUserInfo($user);
 
         return [
             'text' => $text,
-            'keyboard' => $Keyboard,
+            'keyboard' => $keyboard,
         ];
     }
 
@@ -190,18 +202,16 @@ final class Callback
      * 用户相关回调数据处理
      *
      * @throws InvalidDatabaseException
-     * @throws TelegramSDKException
+     * @throws TelegramSDKException|GuzzleException
      */
     public function userCallback(): void
     {
-        if ($this->user === null) {
-            if ($this->chat_id < 0) {
-                // 群组内提示
-                $this->answerCallbackQuery([
-                    'text' => 'سلام، شما حسابی را باند نکرده اید و نمی توانید عملیات انجام دهید.',
-                    'show_alert' => true,
-                ]);
-            }
+        if ($this->user === null && $this->chat_id < 0) {
+            // 群组内提示
+            $this->answerCallbackQuery([
+                'text' => 'سلام، شما حسابی را باند نکرده اید و نمی توانید عملیات انجام دهید.',
+                'show_alert' => true,
+            ]);
         }
 
         $CallbackDataExplode = explode('|', $this->callback_data);
@@ -258,6 +268,7 @@ final class Callback
         $text = Message::getUserTitle($this->user);
         $text .= PHP_EOL . PHP_EOL;
         $text .= Message::getUserTrafficInfo($this->user);
+
         $keyboard = [
             [
                 [
@@ -297,7 +308,7 @@ final class Callback
      * 用户中心
      *
      * @throws TelegramSDKException
-     * @throws InvalidDatabaseException
+     * @throws InvalidDatabaseException|GuzzleException
      */
     public function userCenter(): void
     {
@@ -313,6 +324,7 @@ final class Callback
                 ],
             ],
         ];
+
         $CallbackDataExplode = explode('|', $this->callback_data);
         $Operate = explode('.', $CallbackDataExplode[0]);
         $OpEnd = end($Operate);
@@ -325,15 +337,13 @@ final class Callback
                     ->orderBy('datetime', 'desc')
                     ->take(10)
                     ->get();
-                $text = '<strong>موارد زیر 10 آخرین IP ورود به سیستم و مکان های جغرافیایی شما هستند：</strong>' . PHP_EOL;
-                $text .= PHP_EOL;
+                $text = '<strong>موارد زیر 10 آخرین IP ورود به سیستم و مکان های جغرافیایی شما هستند：</strong>' . PHP_EOL . PHP_EOL;
 
                 foreach ($total as $single) {
-                    $location = Tools::getIpLocation($single->ip);
-                    $text .= $single->ip . ' - ' . $location . PHP_EOL;
+                    $text .= $single->ip . ' - ' . Tools::getIpLocation($single->ip) . PHP_EOL;
                 }
 
-                $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
+                $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده MaxMind GeoIP2 تخمین زده شده است و ممکن است با مکان واقعی مطابقت نداشته باشد. این فقط برای مرجع است.</strong>' . PHP_EOL;
 
                 $sendMessage = [
                     'text' => $text,
@@ -346,18 +356,17 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'usage_log':
                 // 使用记录
                 $logs = OnlineLog::where('user_id', $this->user->id)
                     ->where('last_time', '>', time() - 90)->orderByDesc('last_time')->get('ip');
-                $text = '<strong>آدرس زیر IP آنلاین و موقعیت جغرافیایی شما است：</strong>' . PHP_EOL;
-                $text .= PHP_EOL;
+                $text = '<strong>آدرس زیر IP آنلاین و موقعیت جغرافیایی شما است：</strong>' . PHP_EOL . PHP_EOL;
 
                 foreach ($logs as $log) {
                     $ip = $log->ip();
-                    $location = Tools::getIpLocation($ip);
-                    $text .= "{$ip} - {$location}\n";
+                    $text .= $ip . ' - ' . Tools::getIpLocation($ip) . PHP_EOL;
                 }
 
                 $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده IP تخمین زده می شود که ممکن است با مکان واقعی مطابقت نداشته باشد و فقط برای مرجع است.</strong>' . PHP_EOL;
@@ -373,19 +382,19 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'rebate_log':
                 // 返利记录
                 $paybacks = Payback::where('ref_by', $this->user->id)->orderBy('datetime', 'desc')->take(10)->get();
-                $temp = [];
+                $text = '<strong>موارد زیر 10 رکورد آخر تخفیف شما هستند：</strong>' . PHP_EOL . PHP_EOL;
+
                 foreach ($paybacks as $payback) {
-                    $temp[] = '<code>#' . $payback->id .
+                    $text .= '<code>#' . $payback->id .
                         '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شد') . '：' .
-                        $payback->ref_get . ' تومان</code>';
+                        $payback->ref_get . ' تومان</code>' . PHP_EOL;
                 }
-                $text = '<strong>موارد زیر آخرین 10 رکورد تخفیف شما هستند：</strong>';
-                $text .= PHP_EOL . PHP_EOL;
-                $text .= implode(PHP_EOL, $temp);
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -397,20 +406,25 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'subscribe_log':
                 // 订阅记录
-                $logs = SubscribeLog::orderBy('id', 'desc')->where('user_id', $this->user->id)->take(10)->get();
-                $temp = [];
-                foreach ($logs as $log) {
-                    $location = Tools::getIpLocation($log->request_ip);
-                    $temp[] = '<code>' . Tools::toDateTime($log->request_time) .
-                        ' 在 [' . $log->request_ip . '] ' . $location .
-                        ' بازدید کرده است ' . $log->type . ' اشتراک</code>';
+                if ($_ENV['subscribeLog']) {
+                    $logs = SubscribeLog::orderBy('id', 'desc')->where('user_id', $this->user->id)->take(10)->get();
+                    $text = '<strong>موارد زیر 10 آخرین سابقه اشتراک شما هستند：</strong>' . PHP_EOL . PHP_EOL;
+
+                    foreach ($logs as $log) {
+                        $text .= '<code>' . Tools::toDateTime($log->request_time) .
+                            ' وجود دارد [' . $log->request_ip . '] ' . Tools::getIpLocation($log->request_ip) .
+                            ' بازدید کرده است ' . $log->type . ' اشتراک، ابونمان</code>' . PHP_EOL;
+                    }
+
+                    $text .= PHP_EOL . '<strong>توجه: موقعیت جغرافیایی بر اساس پایگاه داده MaxMind GeoIP2 تخمین زده شده است و ممکن است با مکان واقعی مطابقت نداشته باشد. این فقط برای مرجع است.</strong>' . PHP_EOL;
+                } else {
+                    $text = 'سایت عملکرد ضبط اشتراک را فعال نمی کند';
                 }
-                $text = '<strong>موارد زیر 10 آخرین سابقه اشتراک شما هستند：</strong>';
-                $text .= PHP_EOL . PHP_EOL;
-                $text .= implode(PHP_EOL . PHP_EOL, $temp);
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -422,9 +436,11 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             default:
                 $temp = $this->getUserCenterKeyboard();
+
                 $sendMessage = [
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
@@ -435,6 +451,7 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
         }
 
@@ -489,6 +506,7 @@ final class Callback
      * 用户编辑
      *
      * @throws TelegramSDKException
+     * @throws GuzzleException
      */
     public function userEdit(): void
     {
@@ -521,11 +539,14 @@ final class Callback
             case 'update_link':
                 // 重置订阅链接
                 $this->user->cleanLink();
+
                 $this->answerCallbackQuery([
                     'text' => 'پیوند اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',
                     'show_alert' => true,
                 ]);
+
                 $temp = $this->getUserSubscribeKeyboard();
+
                 $sendMessage = [
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
@@ -536,10 +557,12 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'update_passwd':
                 // 重置链接密码
                 $this->user->passwd = Tools::genRandomChar();
+
                 if ($this->user->save()) {
                     $answerCallbackQuery = 'رمز عبور اتصال با موفقیت به روز شد، لطفا اشتراک زیر را تمدید کنید.';
                     $temp = $this->getUserSubscribeKeyboard();
@@ -547,10 +570,12 @@ final class Callback
                     $answerCallbackQuery = 'خطایی روی داد، به‌روزرسانی رمز اتصال ناموفق بود، لطفاً با مدیر تماس بگیرید.';
                     $temp = $this->getUserEditKeyboard();
                 }
+
                 $this->answerCallbackQuery([
                     'text' => $answerCallbackQuery,
                     'show_alert' => true,
                 ]);
+
                 $sendMessage = [
                     'text' => $temp['text'],
                     'disable_web_page_preview' => false,
@@ -561,6 +586,7 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'encrypt':
                 // 加密方式更改
@@ -578,20 +604,25 @@ final class Callback
                     }
                 } else {
                     $Encrypts = [];
+
                     foreach (Config::getSupportParam('method') as $value) {
                         $Encrypts[] = [
                             'text' => $value,
                             'callback_data' => 'user.edit.encrypt|' . $value,
                         ];
                     }
+
                     $Encrypts = array_chunk($Encrypts, 2);
                     $keyboard = [];
+
                     foreach ($Encrypts as $Encrypt) {
                         $keyboard[] = $Encrypt;
                     }
+
                     $keyboard[] = $back[0];
                     $text = 'روش رمزگذاری فعلی شما است：' . $this->user->method;
                 }
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -638,20 +669,23 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
             case 'unban_update':
                 // 提交群组解封
-                Tool::sendPost(
+                Message::sendPost(
                     'unbanChatMember',
                     [
                         'chat_id' => Setting::obtain('telegram_chatid'),
                         'user_id' => $this->trigger_user['id'],
                     ]
                 );
+
                 $this->answerCallbackQuery([
                     'text' => 'برای رفع انسداد ارسال شده است، اگر هنوز نمی توانید به گروه بپیوندید، لطفاً با سرپرست تماس بگیرید.',
                     'show_alert' => true,
                 ]);
+
                 break;
             default:
                 $temp = $this->getUserEditKeyboard();
@@ -659,6 +693,7 @@ final class Callback
                 $text .= 'پورت：' . $this->user->port . PHP_EOL;
                 $text .= 'کلمه عبور：' . $this->user->passwd . PHP_EOL;
                 $text .= 'رمزگذاری：' . $this->user->method;
+
                 $sendMessage = [
                     'text' => $text,
                     'disable_web_page_preview' => false,
@@ -669,6 +704,7 @@ final class Callback
                         ]
                     ),
                 ];
+
                 break;
         }
 
@@ -682,6 +718,7 @@ final class Callback
     public function getUserSubscribeKeyboard(): array
     {
         $text = 'نوع پیوند اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
+
         $keyboard = [
             [
                 [
@@ -725,16 +762,34 @@ final class Callback
             ],
         ];
 
+        if (! Setting::obtain('enable_traditional_sub')) {
+            unset($keyboard[1]);
+            unset($keyboard[2]);
+        }
+
+        if (! Setting::obtain('enable_ss_sub')) {
+            unset($keyboard[0][2]);
+            unset($keyboard[1]);
+        }
+
+        if (! Setting::obtain('enable_v2_sub')) {
+            unset($keyboard[2][0]);
+        }
+
+        if (! Setting::obtain('enable_trojan_sub')) {
+            unset($keyboard[2][1]);
+        }
+
         return [
             'text' => $text,
-            'keyboard' => $keyboard,
+            'keyboard' => array_values($keyboard),
         ];
     }
 
     /**
      * 用户订阅
      *
-     * @throws TelegramSDKException
+     * @throws TelegramSDKException|GuzzleException
      */
     public function userSubscribe(): void
     {
@@ -760,6 +815,7 @@ final class Callback
 
             $UniversalSub_Url = SubController::getUniversalSubLink($this->user);
             $TraditionalSub_Url = SubController::getTraditionalSubLink($this->user);
+
             $text = match ($CallbackDataExplode[1]) {
                 'clash' => 'Clash آدرس اشتراک جهانی：' . PHP_EOL . PHP_EOL .
                     '<code>' . $UniversalSub_Url . '/clash</code>' . PHP_EOL . PHP_EOL,
@@ -777,6 +833,7 @@ final class Callback
                     '<code>' . $TraditionalSub_Url . '?trojan=1</code>' . PHP_EOL . PHP_EOL,
                 default => '未知参数' . PHP_EOL . PHP_EOL,
             };
+
             $sendMessage = [
                 'text' => $text,
                 'disable_web_page_preview' => true,
@@ -789,6 +846,7 @@ final class Callback
             ];
         } else {
             $temp = $this->getUserSubscribeKeyboard();
+
             $sendMessage = [
                 'text' => $temp['text'],
                 'disable_web_page_preview' => false,
@@ -820,6 +878,7 @@ final class Callback
         }
 
         $invite = Setting::getClass('invite');
+
         $text = [
             '<strong>برای هر کاربری که دعوت به ثبت نام می کنید：</strong>',
             '',
@@ -829,6 +888,7 @@ final class Callback
             '',
             'تخفیف دریافت کرده است：' . $paybacks_sum . ' تومان。',
         ];
+
         $keyboard = [
             [
                 [
@@ -853,7 +913,7 @@ final class Callback
     /**
      * 分享计划
      *
-     * @throws TelegramSDKException
+     * @throws TelegramSDKException|GuzzleException
      */
     public function userInvite(): void
     {
@@ -881,6 +941,7 @@ final class Callback
             ];
         } else {
             $temp = $this->getUserInviteKeyboard();
+
             $sendMessage = [
                 'text' => $temp['text'],
                 'disable_web_page_preview' => false,
@@ -906,11 +967,12 @@ final class Callback
     /**
      * 每日签到
      *
-     * @throws TelegramSDKException
+     * @throws TelegramSDKException|GuzzleException
      */
     public function userCheckin(): void
     {
         $checkin = $this->user->checkin();
+
         $this->answerCallbackQuery([
             'text' => $checkin['msg'],
             'show_alert' => true,
@@ -922,6 +984,7 @@ final class Callback
             $temp['text'] = Message::getUserTitle($this->user);
             $temp['text'] .= PHP_EOL . PHP_EOL;
             $temp['text'] .= Message::getUserTrafficInfo($this->user);
+
             $temp['keyboard'] = [
                 [
                     [
