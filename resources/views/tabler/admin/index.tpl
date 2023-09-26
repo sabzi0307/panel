@@ -109,7 +109,7 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{$sts->getTotalUser()} اعلام حضور کاربران</h3>
+                            <h3 class="card-title">{$total_user} اعلام حضور کاربران</h3>
                         </div>
                         <div class="card-body">
                             <div id="check-in"></div>
@@ -119,7 +119,7 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{$sts->getTotalNodes()} وضعیت آنلاین بودن سرورها</h3>
+                            <h3 class="card-title">{$total_node} وضعیت آنلاین بودن سرورها</h3>
                         </div>
                         <div class="card-body">
                             <div id="node-online"></div>
@@ -167,7 +167,7 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getTotalUser()-$sts->getCheckinUser()}, {$sts->getCheckinUser()-$sts->getTodayCheckinUser()}, {$sts->getTodayCheckinUser()}],
+                series: [{$total_user-$checkin_user}, {$checkin_user-$today_checkin_user}, {$today_checkin_user}],
                 labels: ["بدون ورود", "قبلا وارد شده", "امروز وارد شده"],
                 grid: {
                     strokeDashArray: 3,
@@ -207,7 +207,7 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getAliveNodes()}, {$sts->getTotalNodes()-$sts->getAliveNodes()}],
+                series: [{$alive_node}, {$total_node-$alive_node}],
                 labels: ["آنلاین", "آفلاین"],
                 grid: {
                     strokeDashArray: 2,
@@ -247,7 +247,7 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getInactiveUser()}, {$sts->getActiveUser()}],
+                series: [{$inactive_user}, {$active_user}],
                 labels: ["حساب غیرفعال", "حساب فعال"],
                 grid: {
                     strokeDashArray: 4,
@@ -287,8 +287,8 @@
                 fill: {
                     opacity: 1,
                 },
-                series: [{$sts->getRawGbTodayTrafficUsage()}, {$sts->getRawGbLastTrafficUsage()}, {$sts->getRawGbUnusedTrafficUsage()}],
-                labels: ["امروز استفاده شده({$sts->getTodayTrafficUsage()})", "در گذشته استفاده شده({$sts->getLastTrafficUsage()})", "ترافیک باقیمانده({$sts->getUnusedTrafficUsage()})"],
+                series: [{$raw_today_traffic}, {$raw_last_traffic}, {$raw_unused_traffic}],
+                labels: ["امروز استفاده شده({$today_traffic})", "در گذشته استفاده شده({$last_traffic})", "ترافیک باقیمانده({$unused_traffic})"],
                 grid: {
                     strokeDashArray: 3,
                 },

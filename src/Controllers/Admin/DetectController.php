@@ -18,7 +18,7 @@ use Telegram\Bot\Exceptions\TelegramSDKException;
 
 final class DetectController extends BaseController
 {
-    public static array $rule_details =
+    private static array $rule_details =
     [
         'field' => [
             'op' => 'شرح اقدام',
@@ -59,7 +59,7 @@ final class DetectController extends BaseController
         ],
     ];
 
-    public static array $log_details =
+    private static array $log_details =
     [
         'field' => [
             'id' => 'شناسه رویداد',
@@ -76,7 +76,7 @@ final class DetectController extends BaseController
         ],
     ];
 
-    public static array $ban_details =
+    private static array $ban_details =
     [
         'field' => [
             'id' => 'شناسه رویداد',

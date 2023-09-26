@@ -7,11 +7,10 @@ namespace App\Controllers\Admin\Setting;
 use App\Controllers\BaseController;
 use App\Models\Setting;
 use Exception;
-use function json_encode;
 
 final class RefController extends BaseController
 {
-    public static array $update_field = [
+    private static array $update_field = [
         'invitation_to_register_balance_reward',
         'invitation_to_register_traffic_reward',
         'invitation_mode',
@@ -27,16 +26,7 @@ final class RefController extends BaseController
      */
     public function ref($request, $response, $args)
     {
-        $settings = [];
-        $settings_raw = Setting::get(['item', 'value', 'type']);
-
-        foreach ($settings_raw as $setting) {
-            if ($setting->type === 'bool') {
-                $settings[$setting->item] = (bool) $setting->value;
-            } else {
-                $settings[$setting->item] = (string) $setting->value;
-            }
-        }
+        $settings = Setting::getClass('ref');
 
         return $response->write(
             $this->view()
@@ -48,21 +38,11 @@ final class RefController extends BaseController
 
     public function saveRef($request, $response, $args)
     {
-        $list = self::$update_field;
-
-        foreach ($list as $item) {
-            $setting = Setting::where('item', '=', $item)->first();
-
-            if ($setting->type === 'array') {
-                $setting->value = json_encode($request->getParam($item));
-            } else {
-                $setting->value = $request->getParam($item);
-            }
-
-            if (! $setting->save()) {
+        foreach (self::$update_field as $item) {
+            if (! Setting::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "ذخیره {$item} خطا در",
+                    'msg' => 'ذخیره ' . $item . ' خطا در',
                 ]);
             }
         }

@@ -25,7 +25,7 @@ use function time;
 
 final class TicketController extends BaseController
 {
-    public static array $details =
+    private static array $details =
     [
         'field' => [
             'op' => 'شرح عملیات',
@@ -37,6 +37,8 @@ final class TicketController extends BaseController
             'datetime' => 'زمان ایجاد',
         ],
     ];
+
+    private static string $err_msg = 'درخواست ناموفق بود';
 
     /**
      * 后台工单页面
@@ -65,7 +67,7 @@ final class TicketController extends BaseController
         if ($comment === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'پاسخ تیکت نمی تواند خالی باشد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -74,7 +76,7 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکت وجود ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -120,7 +122,7 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکت وجود ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -193,14 +195,14 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکت وجود ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
         if ($ticket->status === 'closed') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'عملیات شکست خورد، تیکت بسته شد',
+                'msg' => self::$err_msg,
             ]);
         }
 

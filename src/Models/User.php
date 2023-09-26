@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Services\DB;
 use App\Services\IM;
 use App\Utils\Hash;
 use App\Utils\Tools;
@@ -45,11 +44,21 @@ final class User extends Model
     ];
 
     /**
+     * @param $len
+     *
+     * @return string
+     */
+    public function getSs2022Pk($len): string
+    {
+        return Tools::genSs2022UserPk($this->passwd, $len);
+    }
+
+    /**
      * DiceBear 头像
      */
     public function getDiceBearAttribute(): string
     {
-        return 'https://api.dicebear.com/6.x/identicon/svg?seed=' . md5($this->email);
+        return 'https://api.dicebear.com/7.x/identicon/svg?seed=' . md5($this->email);
     }
 
     /**
@@ -109,16 +118,6 @@ final class User extends Model
     public function addInviteNum(int $num): bool
     {
         $this->invite_num += $num;
-
-        return $this->save();
-    }
-
-    /**
-     * 生成新的 UUID
-     */
-    public function generateUUID(): bool
-    {
-        $this->uuid = Uuid::uuid4();
 
         return $this->save();
     }
@@ -263,17 +262,7 @@ final class User extends Model
      */
     public function onlineIpCount(): int
     {
-        return DB::select(
-            '
-            SELECT
-                COUNT(*) AS count
-            FROM
-                online_log
-            WHERE
-                user_id = ?
-                AND last_time >= UNIX_TIMESTAMP() - 90',
-            [$this->attributes['id']]
-        )[0]->count;
+        return OnlineLog::where('user_id', $this->id)->where('last_time', '>', time() - 90)->count();
     }
 
     /**
@@ -370,26 +359,5 @@ final class User extends Model
                 echo $e->getMessage() . PHP_EOL;
             }
         }
-    }
-
-    /**
-     * 记录登录 IP
-     *
-     * @param int    $type 登录失败为 1
-     */
-    public function collectLoginIP(string $ip, int $type = 0): bool
-    {
-        $loginip = new LoginIp();
-        $loginip->ip = $ip;
-        $loginip->userid = $this->id;
-        $loginip->datetime = time();
-        $loginip->type = $type;
-
-        if ($type === 0) {
-            $this->last_login_time = time();
-            $this->save();
-        }
-
-        return $loginip->save();
     }
 }

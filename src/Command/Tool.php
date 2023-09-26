@@ -122,6 +122,7 @@ EOL;
         $settings = json_decode($json_settings, true);
         $config = [];
         $add_counter = 0;
+        $update_counter = 0;
         $del_counter = 0;
 
         // 检查新增
@@ -142,12 +143,21 @@ EOL;
                 $new_item->mark = $item['mark'];
                 $new_item->save();
 
-                echo "Add new database settings：{$item_name}" . PHP_EOL;
+                echo 'Add new database settings：' . $item_name . PHP_EOL;
                 $add_counter += 1;
+                continue;
+            }
+
+            if ($query->class !== $item['class']) {
+                $query->class = $item['class'];
+                $query->save();
+                echo 'به روز رسانی تنظیمات پایگاه داده :' . $item_name . PHP_EOL;
+                $update_counter += 1;
             }
         }
         // 检查移除
         $db_settings = Setting::all();
+
         foreach ($db_settings as $db_setting) {
             if (! in_array($db_setting->item, $config)) {
                 $db_setting->delete();
@@ -156,12 +166,15 @@ EOL;
         }
 
         if ($add_counter !== 0) {
-            echo "Total added {$add_counter} item new database settings" . PHP_EOL;
-        } else {
-            echo 'No new database settings need to be added' . PHP_EOL;
+            echo 'Total added ' . $add_counter . ' item new database settings' . PHP_EOL;
         }
+
+        if ($update_counter !== 0) {
+            echo 'updated ' . $update_counter . ' Item database settings' . PHP_EOL;
+        }
+
         if ($del_counter !== 0) {
-            echo "Total removed {$del_counter} item database settings" . PHP_EOL;
+            echo "Total removed {$del_counter} Item database settings" . PHP_EOL;
         }
     }
 
@@ -185,7 +198,7 @@ EOL;
         $user = ModelsUser::find(trim(fgets(STDIN)));
 
         if ($user !== null) {
-            $user->port = Tools::getAvPort();
+            $user->port = Tools::getSsPort();
             if ($user->save()) {
                 echo 'reset successful!';
             }
@@ -203,7 +216,7 @@ EOL;
 
         foreach ($users as $user) {
             $origin_port = $user->port;
-            $user->port = Tools::getAvPort();
+            $user->port = Tools::getSsPort();
             echo '$origin_port=' . $origin_port . '&$user->port=' . $user->port . PHP_EOL;
             $user->save();
         }
@@ -248,7 +261,8 @@ EOL;
         $users = ModelsUser::all();
 
         foreach ($users as $user) {
-            $user->generateUUID();
+            $user->uuid = Uuid::uuid4();
+            $user->save();
         }
 
         echo 'generate UUID successful';
@@ -325,7 +339,7 @@ EOL;
             $user->passwd = Tools::genRandomChar(16);
             $user->uuid = Uuid::uuid4();
             $user->api_token = Uuid::uuid4();
-            $user->port = Tools::getAvPort();
+            $user->port = Tools::getSsPort();
             $user->u = 0;
             $user->d = 0;
             $user->transfer_enable = 0;
@@ -362,6 +376,7 @@ EOL;
         fwrite(STDOUT, 'Please enter a theme name to set: ');
         $theme = trim(fgets(STDIN));
         $users = ModelsUser::all();
+
         foreach ($users as $user) {
             $user->theme = $theme;
             $user->save();

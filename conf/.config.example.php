@@ -66,13 +66,6 @@ $_ENV['enable_change_email']        = true;         //allow users to change acco
 $_ENV['notify_limit_mode']          = false;         //false is closed, per is reminded according to percentage, mb is reminded according to fixed remaining traffic
 $_ENV['notify_limit_value']         = 500;           //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
 
-//log settings---------------------------------------------------------------------------------------
-$_ENV['trafficLog']               = false;                          //record the traffic used by users every hour
-$_ENV['trafficLog_keep_days']     = 7;                             //Number of days to keep usage traffic records per hour
-
-$_ENV['subscribeLog']               = false;                        //record user subscription logs
-$_ENV['subscribeLog_keep_days']     = 7;                            //Number of days to keep subscription records
-
 //subscription settings---------------------------------------------------------------------------------------
 $_ENV['Subscribe']                  = true;                         //Does this site provide a subscription function?
 $_ENV['subUrl']                     = $_ENV['baseUrl'];             //Subscription address, if it needs to be the same as the site name, please do not modify

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\Notification;
 use App\Utils\Tools;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 use voku\helper\AntiXSS;
 use function time;
 
@@ -29,23 +34,41 @@ final class SubscribeLog extends Model
     {
         try {
             return Tools::getIpLocation($this->request_ip);
-        } catch (InvalidDatabaseException $e) {
+        } catch (InvalidDatabaseException|Exception $e) {
             return 'ناشناخته';
         }
     }
 
     /**
      * 记录订阅日志
+     *
+     * @throws TelegramSDKException
+     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
-    public static function add(User $user, string $type, string $ua): void
+    public function add(User $user, string $type, string $ua): void
     {
-        $log = new SubscribeLog();
         $antiXss = new AntiXSS();
-        $log->user_id = $user->id;
-        $log->type = $antiXss->xss_clean($type);
-        $log->request_ip = $_SERVER['REMOTE_ADDR'];
-        $log->request_user_agent = $antiXss->xss_clean($ua);
-        $log->request_time = time();
-        $log->save();
+        $this->user_id = $user->id;
+        $this->type = $antiXss->xss_clean($type);
+        $this->request_ip = $_SERVER['REMOTE_ADDR'];
+        $this->request_user_agent = $antiXss->xss_clean($ua);
+        $this->request_time = time();
+
+        if (Setting::obtain('notify_new_subscribe') &&
+            SubscribeLog::where('user_id', $this->user_id)->where('request_ip', 'like', $this->request_ip)->count() === 0
+        ) {
+            try {
+                Notification::notifyUser(
+                    $user,
+                    $_ENV['appName'] . 'اطلاعیه اشتراک جدید',
+                    'حساب شما در تاریخ ' . date('Y-m-d H:i:s') . ' با آدرس ' . $this->request_ip . ' در یک گره جدید مشترک شد',
+                );
+            } catch (GuzzleException|ClientExceptionInterface|TelegramSDKException $e) {
+                echo $e->getMessage();
+            }
+        }
+
+        $this->save();
     }
 }

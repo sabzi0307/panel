@@ -255,20 +255,6 @@
                                                     کپی اشتراک سنتی（Trojan）
                                                 </a>
                                                 {/if}
-                                                <a {if $config['enable_r2_client_download']}
-                                                        href="/user/clients/v2rayN-Core.zip"
-                                                    {else}
-                                                        href="/clients/v2rayN-Core.zip"
-                                                    {/if} class="btn btn-azure">
-                                                    دانلود v2rayN（Windows）
-                                                </a>
-                                                <a {if $config['enable_r2_client_download']}
-                                                        href="/user/clients/v2rayNG.apk"
-                                                    {else}
-                                                        href="/clients/v2rayNG.apk"
-                                                    {/if} class="btn btn-azure">
-                                                    دانلود v2rayNG（Android）
-                                                </a>
                                             </div>
                                         </div>
                                     </div>

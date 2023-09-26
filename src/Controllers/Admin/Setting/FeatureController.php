@@ -7,17 +7,22 @@ namespace App\Controllers\Admin\Setting;
 use App\Controllers\BaseController;
 use App\Models\Setting;
 use Exception;
-use function json_encode;
 
 final class FeatureController extends BaseController
 {
-    public static array $update_field = [
+    private static array $update_field = [
         'shared_account',
         'display_media',
-        'display_subscribe_log',
         'display_detect_log',
         'display_docs',
         'display_docs_only_for_paid_user',
+        'traffic_log',
+        'traffic_log_retention_days',
+        'subscribe_log',
+        'subscribe_log_retention_days',
+        'notify_new_subscribe',
+        'login_log',
+        'notify_new_login',
     ];
 
     /**
@@ -25,16 +30,7 @@ final class FeatureController extends BaseController
      */
     public function feature($request, $response, $args)
     {
-        $settings = [];
-        $settings_raw = Setting::get(['item', 'value', 'type']);
-
-        foreach ($settings_raw as $setting) {
-            if ($setting->type === 'bool') {
-                $settings[$setting->item] = (bool) $setting->value;
-            } else {
-                $settings[$setting->item] = (string) $setting->value;
-            }
-        }
+        $settings = Setting::getClass('feature');
 
         return $response->write(
             $this->view()
@@ -46,21 +42,11 @@ final class FeatureController extends BaseController
 
     public function saveFeature($request, $response, $args)
     {
-        $list = self::$update_field;
-
-        foreach ($list as $item) {
-            $setting = Setting::where('item', '=', $item)->first();
-
-            if ($setting->type === 'array') {
-                $setting->value = json_encode($request->getParam($item));
-            } else {
-                $setting->value = $request->getParam($item);
-            }
-
-            if (! $setting->save()) {
+        foreach (self::$update_field as $item) {
+            if (! Setting::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "ذخیره {$item}  خطا در",
+                    'msg' => 'ذخیره ' . $item . '  خطا در',
                 ]);
             }
         }

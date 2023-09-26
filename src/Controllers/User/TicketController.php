@@ -30,6 +30,8 @@ use function time;
  */
 final class TicketController extends BaseController
 {
+    private static string $err_msg = 'درخواست ناموفق بود';
+
     /**
      * @throws Exception
      */
@@ -68,18 +70,14 @@ final class TicketController extends BaseController
 
         if (! Setting::obtain('enable_ticket') ||
             $this->user->is_shadow_banned ||
-            ! RateLimit::checkTicketLimit($this->user->id)
+            ! RateLimit::checkTicketLimit($this->user->id) ||
+            $title === '' ||
+            $comment === '' ||
+            $type === ''
         ) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'در حال حاضر امکان باز کردن تیکت جدید وجود ندارد، لطفاً بعداً دوباره امتحان کنید',
-            ]);
-        }
-
-        if ($title === '' || $comment === '' || $type === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'محتوای سفارش کار نمی‌تواند خالی باشد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -123,27 +121,16 @@ final class TicketController extends BaseController
      */
     public function ticketUpdate(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        if (! Setting::obtain('enable_ticket')) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'در حال حاضر نمی توان به تیکت پاسخ داد، لطفاً بعداً دوباره امتحان کنید',
-            ]);
-        }
-
         $id = $args['id'];
         $comment = $request->getParam('comment') ?? '';
 
-        if ($this->user->is_shadow_banned) {
+        if (! Setting::obtain('enable_ticket') ||
+            $this->user->is_shadow_banned ||
+            $comment === ''
+        ) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'در حال حاضر نمی توان به تیکت پاسخ داد، لطفاً بعداً دوباره امتحان کنید',
-            ]);
-        }
-
-        if ($comment === '') {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'پاسخ تیکت نمی تواند خالی باشد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -152,7 +139,7 @@ final class TicketController extends BaseController
         if ($ticket === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'تیکتی وجود ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 

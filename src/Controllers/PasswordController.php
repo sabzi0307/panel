@@ -54,6 +54,7 @@ final class PasswordController extends BaseController
     {
         if (Setting::obtain('enable_reset_password_captcha')) {
             $ret = Captcha::verify($request->getParams());
+
             if (! $ret) {
                 return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }

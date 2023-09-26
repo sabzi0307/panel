@@ -19,7 +19,7 @@ use function time;
 
 final class InvoiceController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'اقدام',
             'id' => 'شناسه صورتحساب',

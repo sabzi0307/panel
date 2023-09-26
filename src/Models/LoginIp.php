@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\Notification;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Telegram\Bot\Exceptions\TelegramSDKException;
+use function date;
+use function time;
+
 /**
  * Ip Model
  */
@@ -21,7 +28,7 @@ final class LoginIp extends Model
     }
 
     /**
-     * 登录用户
+     * 登录用户名
      */
     public function userName(): string
     {
@@ -34,5 +41,45 @@ final class LoginIp extends Model
     public function type(): string
     {
         return $this->type === 0 ? 'موفقیت' : 'شکست';
+    }
+
+    /**
+     * 记录登录 IP
+     *
+     * @param string $ip IP
+     * @param int $type 1 = failed, 0 = success
+     * @param int $user_id User ID
+     *
+     * @return void
+     *
+     * @throws GuzzleException
+     * @throws ClientExceptionInterface
+     * @throws TelegramSDKException
+     */
+    public function collectLoginIP(string $ip, int $type = 0, int $user_id = 0): void
+    {
+        if (Setting::obtain('login_log')) {
+            $this->ip = $ip;
+            $this->userid = $user_id;
+            $this->datetime = time();
+            $this->type = $type;
+
+            if (Setting::obtain('notify_new_login') &&
+                $user_id !== 0 &&
+                LoginIp::where('userid', $user_id)->where('ip', $this->ip)->count() === 0
+            ) {
+                try {
+                    Notification::notifyUser(
+                        User::where('id', $user_id)->first(),
+                        $_ENV['appName'] . '-اعلان ورود جدید به پنل کاربری',
+                        'حساب شما در تاریخ ' . date('Y-m-d H:i:s') . ' با آدرس ' . $this->ip . ' وارد پنل کاربری شده است',
+                    );
+                } catch (GuzzleException|ClientExceptionInterface|TelegramSDKException $e) {
+                    echo $e->getMessage();
+                }
+            }
+
+            $this->save();
+        }
     }
 }

@@ -141,6 +141,7 @@ final class UserController extends BaseController
     public function logout(ServerRequest $request, Response $response, array $args): Response
     {
         Auth::logout();
+
         return $response->withStatus(302)->withHeader('Location', '/');
     }
 
@@ -152,6 +153,7 @@ final class UserController extends BaseController
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $ret = Captcha::verify($request->getParams());
+
             if (! $ret) {
                 return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }

@@ -64,9 +64,9 @@ final class Cron
         SubscribeLog::where(
             'request_time',
             '<',
-            time() - 86400 * (int) $_ENV['subscribeLog_keep_days']
+            time() - 86400 * Setting::obtain('subscribe_log_retention_days')
         )->delete();
-        UserHourlyUsage::where('datetime', '<', time() - 86400 * (int) $_ENV['trafficLog_keep_days'])->delete();
+        UserHourlyUsage::where('datetime', '<', time() - 86400 * Setting::obtain('traffic_log_retention_days'))->delete();
         DetectLog::where('datetime', '<', time() - 86400 * 3)->delete();
         EmailQueue::where('time', '<', time() - 86400)->delete();
         OnlineLog::where('last_time', '<', time() - 86400)->delete();
@@ -608,8 +608,6 @@ final class Cron
      */
     public static function sendTelegramDiary(): void
     {
-        $analytics = new Analytics();
-
         (new Telegram())->send(
             0,
             str_replace(
@@ -618,8 +616,8 @@ final class Cron
                     '%lastday_total%',
                 ],
                 [
-                    $analytics->getTodayCheckinUser(),
-                    $analytics->getTodayTrafficUsage(),
+                    Analytics::getTodayCheckinUser(),
+                    Analytics::getTodayTrafficUsage(),
                 ],
                 Setting::obtain('telegram_diary_text')
             )
@@ -634,6 +632,7 @@ final class Cron
 
         foreach ($nodes as $node) {
             $server = $node->server;
+
             if (! Tools::isIPv4($server) && ! Tools::isIPv6($server)) {
                 $node->changeNodeIp($server);
                 $node->save();

@@ -19,7 +19,7 @@ use function trim;
 
 final class NodeController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه سرور',
@@ -36,7 +36,7 @@ final class NodeController extends BaseController
         ],
     ];
 
-    public static array $update_field = [
+    private static array $update_field = [
         'name',
         'server',
         'traffic_rate',

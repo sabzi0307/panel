@@ -15,7 +15,7 @@ use function time;
 
 final class GiftCardController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه کارت هدیه',

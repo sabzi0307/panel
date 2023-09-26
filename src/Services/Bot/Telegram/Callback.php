@@ -410,7 +410,7 @@ final class Callback
                 break;
             case 'subscribe_log':
                 // 订阅记录
-                if ($_ENV['subscribeLog']) {
+                if (Setting::obtain('subscribe_log')) {
                     $logs = SubscribeLog::orderBy('id', 'desc')->where('user_id', $this->user->id)->take(10)->get();
                     $text = '<strong>موارد زیر 10 آخرین سابقه اشتراک شما هستند：</strong>' . PHP_EOL . PHP_EOL;
 
@@ -877,7 +877,7 @@ final class Callback
             $paybacks_sum = 0;
         }
 
-        $invite = Setting::getClass('invite');
+        $invite = Setting::getClass('ref');
 
         $text = [
             '<strong>برای هر کاربری که دعوت به ثبت نام می کنید：</strong>',

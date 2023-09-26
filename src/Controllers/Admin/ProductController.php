@@ -17,7 +17,7 @@ use function time;
 
 final class ProductController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'عمل کنند',
             'id' => 'شناسه سرویس',
@@ -32,7 +32,7 @@ final class ProductController extends BaseController
         ],
     ];
 
-    public static array $update_field = [
+    private static array $update_field = [
         'type',
         'name',
         'price',
@@ -48,6 +48,8 @@ final class ProductController extends BaseController
         'class_required',
         'node_group_required',
     ];
+
+    private static string $invalid_data_msg = 'اطلاعات محصول نامعتبر است';
 
     /**
      * @throws Exception
@@ -127,29 +129,15 @@ final class ProductController extends BaseController
         if ($price < 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'قیمت محصول نامعتبر است',
+                'msg' => self::$invalid_data_msg,
             ]);
         }
 
         if ($type === 'tabp') {
-            if ($time <= 0) {
+            if ($time <= 0 || $class_time <= 0 || $bandwidth <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان سرویس نامعتبر است',
-                ]);
-            }
-
-            if ($class_time <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'مدت زمان سطح نامعتبر است',
-                ]);
-            }
-
-            if ($bandwidth <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'ترافیک بسته نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -163,17 +151,10 @@ final class ProductController extends BaseController
                 'ip_limit' => $ip_limit,
             ];
         } elseif ($type === 'time') {
-            if ($time <= 0) {
+            if ($time <= 0 || $class_time === '' || $class_time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان سرویس نامعتبر است',
-                ]);
-            }
-
-            if ($class_time === '' || $class_time <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'مدت زمان سطح نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -189,7 +170,7 @@ final class ProductController extends BaseController
             if ($bandwidth <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'ترافیک بسته نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -199,7 +180,7 @@ final class ProductController extends BaseController
         } else {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'نوع سرویس اشتباه وارد شده',
+                'msg' => self::$invalid_data_msg,
             ]);
         }
 
@@ -254,29 +235,15 @@ final class ProductController extends BaseController
         if ($price < 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'قیمت محصول نامعتبر است',
+                'msg' => self::$invalid_data_msg,
             ]);
         }
 
         if ($type === 'tabp') {
-            if ($time <= 0) {
+            if ($time <= 0 || $class_time <= 0 || $bandwidth <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان سرویس نامعتبر است',
-                ]);
-            }
-
-            if ($class_time <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'مدت زمان سطح نامعتبر است',
-                ]);
-            }
-
-            if ($bandwidth <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'ترافیک بسته نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -290,17 +257,10 @@ final class ProductController extends BaseController
                 'ip_limit' => $ip_limit,
             ];
         } elseif ($type === 'time') {
-            if ($time <= 0) {
+            if ($time <= 0 || $class_time <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'مدت زمان سرویس نامعتبر است',
-                ]);
-            }
-
-            if ($class_time <= 0) {
-                return $response->withJson([
-                    'ret' => 0,
-                    'msg' => 'مدت زمان سطح نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -316,7 +276,7 @@ final class ProductController extends BaseController
             if ($bandwidth <= 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'ترافیک بسته نامعتبر است',
+                    'msg' => self::$invalid_data_msg,
                 ]);
             }
 
@@ -326,7 +286,7 @@ final class ProductController extends BaseController
         } else {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'نوع سرویس اشتباه وارد شده',
+                'msg' => self::$invalid_data_msg,
             ]);
         }
 

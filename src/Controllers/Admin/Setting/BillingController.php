@@ -13,7 +13,7 @@ use function json_encode;
 
 final class BillingController extends BaseController
 {
-    public static array $update_field = [
+    private static array $update_field = [
         // 支付宝当面付
         'f2f_pay_app_id',
         'f2f_pay_pid',
@@ -51,16 +51,7 @@ final class BillingController extends BaseController
      */
     public function billing($request, $response, $args)
     {
-        $settings = [];
-        $settings_raw = Setting::get(['item', 'value', 'type']);
-
-        foreach ($settings_raw as $setting) {
-            if ($setting->type === 'bool') {
-                $settings[$setting->item] = (bool) $setting->value;
-            } else {
-                $settings[$setting->item] = (string) $setting->value;
-            }
-        }
+        $settings = Setting::getClass('billing');
 
         return $response->write(
             $this->view()
@@ -93,21 +84,11 @@ final class BillingController extends BaseController
             ]);
         }
 
-        $list = self::$update_field;
-
-        foreach ($list as $item) {
-            $setting = Setting::where('item', '=', $item)->first();
-
-            if ($setting->type === 'array') {
-                $setting->value = json_encode($request->getParam($item));
-            } else {
-                $setting->value = $request->getParam($item);
-            }
-
-            if (! $setting->save()) {
+        foreach (self::$update_field as $item) {
+            if (! Setting::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => "خطا در ذخیره {$item}",
+                    'msg' => 'خطا در ذخیره ' . $item ,
                 ]);
             }
         }

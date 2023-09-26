@@ -25,7 +25,7 @@ use function time;
 
 final class OrderController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'اقدام',
             'id' => 'شماره سفارش',
@@ -39,6 +39,8 @@ final class OrderController extends BaseController
             'update_time' => 'زمان به روز رسانی',
         ],
     ];
+
+    private static string $err_msg = 'ایجاد سفارش ناموفق بود';
 
     /**
      * @throws Exception
@@ -128,7 +130,7 @@ final class OrderController extends BaseController
         if ($product === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'محصولی وجود ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -138,7 +140,7 @@ final class OrderController extends BaseController
         if ($user->is_shadow_banned) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'مورد نامعتبر است',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -148,7 +150,7 @@ final class OrderController extends BaseController
             if ($coupon === null || $coupon->expire_time < time()) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'کد کوپن نامعتبر است',
+                    'msg' => self::$err_msg,
                 ]);
             }
 
@@ -157,14 +159,14 @@ final class OrderController extends BaseController
             if ((int) $coupon_limit->disabled === 1) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'کد کوپن نامعتبر است',
+                    'msg' => self::$err_msg,
                 ]);
             }
 
             if ($coupon_limit->product_id !== '' && ! in_array($product_id, explode(',', $coupon_limit->product_id))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'کد کوپن نامعتبر است',
+                    'msg' => self::$err_msg,
                 ]);
             }
 
@@ -175,7 +177,7 @@ final class OrderController extends BaseController
                 if ($user_use_count >= $coupon_use_limit) {
                     return $response->withJson([
                         'ret' => 0,
-                        'msg' => 'کد کوپن نامعتبر است',
+                        'msg' => self::$err_msg,
                     ]);
                 }
             }
@@ -189,7 +191,7 @@ final class OrderController extends BaseController
             if ($coupon_total_use_limit > 0 && $coupon->use_count >= $coupon_total_use_limit) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'کد کوپن نامعتبر است',
+                    'msg' => self::$err_msg,
                 ]);
             }
 
@@ -209,7 +211,7 @@ final class OrderController extends BaseController
         if ($product_limit->class_required !== '' && (int) $user->class < (int) $product_limit->class_required) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'اکانت شرایط خرید را ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -217,7 +219,7 @@ final class OrderController extends BaseController
             && (int) $user->node_group !== (int) $product_limit->node_group_required) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'اکانت شرایط خرید را ندارد',
+                'msg' => self::$err_msg,
             ]);
         }
 
@@ -226,7 +228,7 @@ final class OrderController extends BaseController
             if ($order_count > 0) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'اکانت شرایط خرید را ندارد',
+                    'msg' => self::$err_msg,
                 ]);
             }
         }

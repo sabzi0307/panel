@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use tronovav\GeoIP2Update\Client;
 use function array_diff;
 use function copy;
@@ -15,6 +16,7 @@ use function str_replace;
 use function strpos;
 use function substr;
 use const BASE_PATH;
+use const PHP_EOL;
 
 final class Update extends Command
 {
@@ -29,9 +31,9 @@ END;
         $copy_result = copy(BASE_PATH . '/conf/.config.php', BASE_PATH . '/conf/.config.php.bak');
 
         if ($copy_result) {
-            echo ".config.php File backup successful。\n";
+            echo '.config.php File backup successful。' . PHP_EOL;
         } else {
-            echo ".config.php File backup failed, migration terminated。\n";
+            echo '.config.php File backup failed, migration terminated。' . PHP_EOL;
         }
 
         $config_old = file_get_contents(BASE_PATH . '/conf/.config.php');
@@ -43,8 +45,9 @@ END;
             $regex = '/_ENV\[\'' . $key . '\'\].*?;/s';
             $matches_new = [];
             preg_match($regex, $config_new, $matches_new);
-            if (isset($matches_new[0]) === false) {
-                echo "Configuration item not found:" . $key . " Could not be found in new version .config.php file, may have been renamed or obsolete。\n";
+
+            if (! isset($matches_new[0])) {
+                echo 'Configuration item not found:' . $key . ' Could not be found in new version .config.php file, may have been renamed or obsolete。' . PHP_EOL;
                 continue;
             }
 
@@ -83,23 +86,30 @@ END;
             $difference = substr($difference, 15);
             $difference = substr($difference, 0, -2);
 
-            echo "New .config.php configuration item：" . $difference . ":" . $comment . " \n";
+            echo 'New .config.php configuration item：' . $difference . ':' . $comment . PHP_EOL;
         }
 
-        echo "هیچ مورد جدید پیکربندی .config.php برای افزودن وجود ندارد.\n";
+        echo 'هیچ مورد جدید پیکربندی .config.php برای افزودن وجود ندارد.' . PHP_EOL;
         file_put_contents(BASE_PATH . '/conf/.config.php', $config_new);
-        echo "مهاجرت کامل شد\n";
+        echo 'مهاجرت کامل شد' . PHP_EOL;
 
         // 更新 GeoLite2 数据库
         if ($_ENV['maxmind_license_key'] !== '' || $_ENV['maxmind_license_key'] !== 'local') {
-            echo "Updating GeoLite2 database...\n";
+            echo 'Updating GeoLite2 database...' . PHP_EOL;
+
             $client = new Client([
                 'license_key' => $_ENV['maxmind_license_key'],
                 'dir' => BASE_PATH . '/storage/',
                 'editions' => ['GeoLite2-City', "GeoLite2-Country"],
             ]);
-            $client->run();
-            echo "پایگاه داده GeoLite2 با موفقیت به روز شد.\n";
+
+            try {
+                $client->run();
+                echo 'Successfully updated GeoLite2 database.' . PHP_EOL;
+            } catch (Exception $e) {
+                echo 'Failed to update GeoLite2 database.' . PHP_EOL;
+                echo $e->getMessage() . PHP_EOL;
+            }
         }
     }
 }

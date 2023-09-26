@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Services\Cloudflare;
-use Exception;
+use App\Utils\Tools;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
@@ -26,19 +27,15 @@ use const PHP_EOL;
 final class ClientDownload extends Command
 {
     public string $description = '├─=: php xcat ClientDownload - regularly update the client' . PHP_EOL;
-
-    private $client;
-
-    /**
-     * 保存基本路径
-     */
+    private Client $client;
     private string $basePath = BASE_PATH . '/';
+    private array $version;
 
     /**
-     * 下载配置
+     * @return void
+     *
+     * @throws GuzzleException
      */
-    private $version;
-
     public function boot(): void
     {
         $this->client = new Client();
@@ -67,6 +64,12 @@ final class ClientDownload extends Command
 
     /**
      * 下载远程文件
+     *
+     * @param string $fileName
+     * @param string $savePath
+     * @param string $url
+     *
+     * @return bool
      */
     private function getSourceFile(string $fileName, string $savePath, string $url): bool
     {
@@ -81,14 +84,14 @@ final class ClientDownload extends Command
             echo '- download ' . $fileName . ' successful, saving...' . PHP_EOL;
             $result = file_put_contents($savePath . $fileName, $request->getBody()->getContents());
 
-            if ($result === false) {
+            if (! $result) {
                 echo '- keep ' . $fileName . ' to ' . $savePath . ' fail.' . PHP_EOL;
             } else {
                 echo '- keep ' . $fileName . ' to ' . $savePath . ' success.' . PHP_EOL;
             }
 
             return true;
-        } catch (Exception $e) {
+        } catch (GuzzleException $e) {
             echo '- download ' . $fileName . ' fail...' . PHP_EOL;
             echo $e->getMessage() . PHP_EOL;
 
@@ -98,6 +101,12 @@ final class ClientDownload extends Command
 
     /**
      * 获取 GitHub 常规 Release
+     *
+     * @param string $repo
+     *
+     * @return string
+     *
+     * @throws GuzzleException
      */
     private function getLatestReleaseTagName(string $repo): string
     {
@@ -105,7 +114,7 @@ final class ClientDownload extends Command
             ($_ENV['github_access_token'] !== '' ? '?access_token=' . $_ENV['github_access_token'] : '');
         $request = $this->client->get($url);
 
-        return (string) json_decode(
+        return json_decode(
             $request->getBody()->getContents(),
             true
         )['tag_name'];
@@ -113,6 +122,12 @@ final class ClientDownload extends Command
 
     /**
      * 获取 GitHub Pre-Release
+     *
+     * @param string $repo
+     *
+     * @return string
+     *
+     * @throws GuzzleException
      */
     private function getLatestPreReleaseTagName(string $repo): string
     {
@@ -124,15 +139,7 @@ final class ClientDownload extends Command
             true
         )[0];
 
-        return (string) $latest['tag_name'];
-    }
-
-    /**
-     * 判断是否 JSON
-     */
-    private function isJson(string $string): bool
-    {
-        return json_decode($string, true) !== false;
+        return $latest['tag_name'];
     }
 
     /**
@@ -147,6 +154,7 @@ final class ClientDownload extends Command
 
         if (! is_file($filePath)) {
             echo 'local software repository LocalClientVersion.json does not exist, create the file...' . PHP_EOL;
+
             $result = file_put_contents(
                 $filePath,
                 json_encode(
@@ -155,7 +163,8 @@ final class ClientDownload extends Command
                     ]
                 )
             );
-            if ($result === false) {
+
+            if (! $result) {
                 echo 'LocalClientVersion.json Creation failed, script aborted.' . PHP_EOL;
                 exit(0);
             }
@@ -163,7 +172,7 @@ final class ClientDownload extends Command
 
         $fileContent = file_get_contents($filePath);
 
-        if (! $this->isJson($fileContent)) {
+        if (! Tools::isJson($fileContent)) {
             echo 'LocalClientVersion.json File format exception, script aborted.' . PHP_EOL;
             exit(0);
         }
@@ -173,12 +182,17 @@ final class ClientDownload extends Command
 
     /**
      * 储存本地软体版本库
+     *
+     * @param array $versions
+     *
+     * @return void
      */
     private function setLocalVersions(array $versions): void
     {
         $fileName = 'LocalClientVersion.json';
         $filePath = BASE_PATH . '/storage/' . $fileName;
-        (bool) file_put_contents(
+
+        file_put_contents(
             $filePath,
             json_encode(
                 $versions
@@ -186,17 +200,46 @@ final class ClientDownload extends Command
         );
     }
 
+    /**
+     * @param $name
+     * @param $taskName
+     * @param $tagName
+     *
+     * @return array|string
+     */
+    private static function getNames($name, $taskName, $tagName): array|string
+    {
+        return str_replace(
+            [
+                '%taskName%',
+                '%tagName%',
+                '%tagName1%',
+            ],
+            [
+                $taskName,
+                $tagName,
+                substr($tagName, 1),
+            ],
+            $name
+        );
+    }
+
+    /**
+     * @param array $task
+     *
+     * @return void
+     *
+     * @throws GuzzleException
+     */
     private function getSoft(array $task): void
     {
         $savePath = $this->basePath . $task['savePath'];
         echo '====== ' . $task['name'] . ' start ======' . PHP_EOL;
 
-        $tagMethod = match ($task['tagMethod']) {
-            'github_pre_release' => 'getLatestPreReleaseTagName',
-            default => 'getLatestReleaseTagName',
+        $tagName = match ($task['tagMethod']) {
+            'github_pre_release' => self::getLatestPreReleaseTagName($task['gitRepo']),
+            default => self::getLatestReleaseTagName($task['gitRepo']),
         };
-
-        $tagName = $this->$tagMethod($task['gitRepo']);
 
         if (! isset($this->version[$task['name']])) {
             echo '- does not exist locally ' . $task['name'] . '，The current latest version detected is ' . $tagName . PHP_EOL;
@@ -211,33 +254,18 @@ final class ClientDownload extends Command
         }
 
         $this->version[$task['name']] = $tagName;
-        $nameFunction = static function ($name) use ($task, $tagName) {
-            return str_replace(
-                [
-                    '%taskName%',
-                    '%tagName%',
-                    '%tagName1%',
-                ],
-                [
-                    $task['name'],
-                    $tagName,
-                    substr($tagName, 1),
-                ],
-                $name
-            );
-        };
 
         foreach ($task['downloads'] as $download) {
-            $fileName = $nameFunction(($download['saveName'] !== '' ? $download['saveName'] : $download['sourceName']));
-            $sourceName = $nameFunction($download['sourceName']);
+            $fileName = $download['saveName'] !== '' ? $download['saveName'] : $download['sourceName'];
+            $fileName = self::getNames($fileName, $task['name'], $tagName);
+            $sourceName = self::getNames($download['sourceName'], $task['name'], $tagName);
             $filePath = $savePath . $fileName;
 
-            if (is_file($filePath)) {
-                echo '- Deleting old versions of files...' . PHP_EOL;
-                if (! unlink($filePath)) {
-                    echo '- فایل نسخه قدیمی حذف نشد، این کار نادیده گرفته شد، لطفاً مجوزها را بررسی کنید' . PHP_EOL;
-                    continue;
-                }
+            echo '- Deleting old versions of files...' . PHP_EOL;
+
+            if (file_exists($filePath) && ! unlink($filePath)) {
+                echo '- فایل نسخه قدیمی حذف نشد، این کار نادیده گرفته شد، لطفاً مجوزها را بررسی کنید' . PHP_EOL;
+                continue;
             }
 
             $downloadUrl = 'https://github.com/' . $task['gitRepo'] .

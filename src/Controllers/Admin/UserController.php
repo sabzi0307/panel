@@ -19,7 +19,7 @@ use const PHP_EOL;
 
 final class UserController extends BaseController
 {
-    public static array $details = [
+    private static array $details = [
         'field' => [
             'op' => 'شرح عملیات',
             'id' => 'شناسه کاربر',
@@ -64,7 +64,7 @@ final class UserController extends BaseController
         ],
     ];
 
-    public static array $update_field = [
+    private static array $update_field = [
         'email',
         'user_name',
         'remark',
