@@ -57,11 +57,21 @@ if [ "$INIT" = true ];then
         exit
     fi
 
+    if [ -z "$WebAPI" ];then
+        echo >&2 "webAPI not set!"
+        WebAPI=true
+    fi
+
     if [ -z "$muKey" ];then
         echo >&2 "muKey not set!"
         exit
     fi
 
+    if [ -z "$checkNodeIp" ];then
+        echo >&2 "checkNodeIp not set! using true "
+        checkNodeIp=true
+    fi
+    
     if [ -z "$db_host" ] && [ -z "$db_socket" ];then
         echo >&2 "db_host or DB_SOCKET not set!"
         exit
@@ -104,9 +114,64 @@ if [ "$INIT" = true ];then
         db_prefix=""
     fi
 
-    if [ -z "$mail_filter" ];then
-        echo >&2 "mail_filter not set!, using 0 (disable)"
-        mail_filter=0
+    if [ -z "$redis_host" ];then
+        echo >&2 "redis_host not set! using default"
+        redis_host='127.0.0.1'
+    fi
+
+    if [ -z "$redis_port" ];then
+        echo >&2 "redis_port not set! using default"
+        redis_port=6379
+    fi    
+
+    if [ -z "$redis_timeout" ];then
+        echo >&2 "redis_timeout not set!, using default 2"
+        redis_timeout=2
+    fi
+
+    if [ -z "$redis_username" ];then
+        echo >&2 "redis_username not set!"
+        redis_username=''
+    fi
+
+    if [ -z "$redis_password" ];then
+        echo >&2 "redis_password not set!"
+        redis_password=''
+    fi
+
+    if [ -z "$redis_ssl" ];then
+        echo >&2 "redis_ssl not set!"
+        redis_ssl= false
+    fi
+
+    if [ -z "$enable_rate_limit" ];then
+        echo >&2 "enable_rate_limit not set!"
+        enable_rate_limit= true
+    fi
+
+    if [ -z "$rate_limit_ip" ];then
+        echo >&2 "rate_limit_ip not set!"
+        rate_limit_ip = 120
+    fi
+
+    if [ -z "$rate_limit_sub" ];then
+        echo >&2 "rate_limit_sub not set!"
+        rate_limit_sub = 30
+    fi
+
+    if [ -z "$rate_limit_webapi" ];then
+        echo >&2 "rate_limit_webapi not set!"
+        rate_limit_webapi = 600
+    fi
+
+    if [ -z "$rate_limit_admin_api" ];then
+        echo >&2 "rate_limit_admin_api not set!"
+        rate_limit_admin_api = 60
+    fi
+
+    if [ -z "$rate_limit_user_api" ];then
+        echo >&2 "rate_limit_user_api not set!"
+        rate_limit_user_api = 60
     fi
 
     if [ -z "$mail_filter_list" ];then
@@ -128,34 +193,22 @@ if [ "$INIT" = true ];then
         echo >&2 "checkinMax not set!, using 50"
         checkinMax=50
     fi
-    if [ -z "$auto_clean_uncheck_days" ];then
-        echo >&2 "auto_clean_uncheck_days not set!, using -1 (disable)"
-        auto_clean_uncheck_days=-1
-    fi
-    if [ -z "$auto_clean_unused_days" ];then
-        echo >&2 "auto_clean_unused_days not set!, using -1 (disable)"
-        auto_clean_unused_days=-1
-    fi
-    if [ -z "$auto_clean_min_money" ];then
-        echo >&2 "auto_clean_min_money not set!, using 1 "
-        auto_clean_min_money=1
-    fi
+
     if [ -z "$class_expire_reset_traffic" ];then
         echo >&2 "class_expire_reset_traffic not set!, using 0 "
         class_expire_reset_traffic=0
     fi
-    if [ -z "$account_expire_delete_days" ];then
-        echo >&2 "account_expire_delete_days not set!, using -1 "
-        account_expire_delete_days=-1
-    fi
+
     if [ -z "$enable_kill" ];then
         echo >&2 "enable_kill not set!, using true "
         enable_kill=true
     fi
+
     if [ -z "$enable_change_email" ];then
         echo >&2 "enable_change_email not set!, using true "
         enable_change_email=true
     fi
+
     if [ -z "$notify_limit_mode" ];then
         echo >&2 "notify_limit_mode not set!, using false "
         notify_limit_mode=false
@@ -164,50 +217,32 @@ if [ "$INIT" = true ];then
         echo >&2 "notify_limit_value not set!, using 20 "
         notify_limit_value=20
     fi
-    if [ -z "$trafficLog" ];then
-        echo >&2 "trafficLog not set!, using false "
-        trafficLog=false
-    fi
-    if [ -z "$trafficLog_keep_days" ];then
-        echo >&2 "trafficLog_keep_days not set!, using 7 "
-        trafficLog_keep_days=7
-    fi
-    if [ -z "$subscribeLog" ];then
-        echo >&2 "subscribeLog not set!, using false "
-        subscribeLog=false
-    fi
-    if [ -z "$subscribeLog_keep_days" ];then
-        echo >&2 "subscribeLog_keep_days not set!, using 7 "
-        subscribeLog_keep_days=7
-    fi
+    
     if [ -z "$Subscribe" ];then
         echo >&2 "Subscribe not set!, using true "
         Subscribe=true
     fi
+
+    if [ -z "$sub_token_len" ];then
+        echo >&2 "sub_token_len not set! using default 16"
+        sub_token_len=16
+    fi
+
     if [ -z "$subUrl" ];then
         echo >&2 "subUrl not set!, using ${baseUrl} "
         subUrl=$baseUrl
     fi
-    if [ -z "$enable_auto_detect_ban" ];then
-        echo >&2 "enable_auto_detect_ban not set!, using false "
-        enable_auto_detect_ban=false
-    fi
-    if [ -z "$auto_detect_ban_numProcess" ];then
-        echo >&2 "auto_detect_ban_numProcess not set!, using 300 "
-        auto_detect_ban_numProcess=300
-    fi
+
     if [ -z "$auto_detect_ban_allow_admin" ];then
         echo >&2 "auto_detect_ban_allow_admin not set!, using true "
         auto_detect_ban_allow_admin=true
     fi
+
     if [ -z "$auto_detect_ban_allow_users" ];then
         echo >&2 "auto_detect_ban_allow_users not set!, using [] "
         auto_detect_ban_allow_users=[]
     fi
-    if [ -z "$auto_detect_ban_type" ];then
-        echo >&2 "auto_detect_ban_type not set!, using 1 "
-        auto_detect_ban_type=1
-    fi
+
     if [ -z "$auto_detect_ban_number" ];then
         echo >&2 "auto_detect_ban_number not set!, using 30 "
         auto_detect_ban_number=30
@@ -217,69 +252,21 @@ if [ "$INIT" = true ];then
         auto_detect_ban_time=60
     fi
 
-    if [ -z "$enable_telegram" ];then
-        echo >&2 "enable_telegram not set!, using false "
-        enable_telegram=false
-    fi
-    if [ "$enable_telegram" == true ];then
-        if [ -z "$telegram_token" ];then
-            echo >&2 "telegram_token not set! "
-            exit
-        fi
-        if [ -z "$telegram_chatid" ];then
-            echo >&2 "telegram_chatid not set! "
-            exit
-        fi
-        if [ -z "$telegram_bot" ];then
-            echo >&2 "telegram_bot not set! "
-            exit
-        fi
-        if [ -z "$telegram_request_token" ];then
-            echo >&2 "telegram_request_token not set! "
-            exit
-        fi
-    fi
-
-    if [ -z "$detect_gfw_interval" ];then
-        echo >&2 "detect_gfw_interval not set! using 3600 "
-        detect_gfw_interval=3600
-    fi
     if [ -z "$detect_gfw_port" ];then
         echo >&2 "detect_gfw_port not set! using 443 "
         detect_gfw_port=443
     fi
+
     if [ -z "$detect_gfw_url" ];then
         echo >&2 "detect_gfw_url not set! using 443 "
         detect_gfw_url=http://example.com:8080/tcping?ip={ip}&port={port}
     fi
-    if [ -z "$detect_gfw_count" ];then
-        echo >&2 "detect_gfw_count not set! using 3 "
-        detect_gfw_count=3
-    fi
+
     if [ -z "$enable_detect_offline" ];then
         echo >&2 "enable_detect_offline not set! using true "
         enable_detect_offline=true
     fi
-    if [ -z "$WebAPI" ];then
-        echo >&2 "WebAPI not set! using true "
-        WebAPI=true
-    fi
-    if [ -z "$authDriver" ];then
-        echo >&2 "authDriver not set! using cookie "
-        authDriver="cookie"
-    fi
-    if [ -z "$sessionDriver" ];then
-        echo >&2 "sessionDriver not set! using cookie "
-        sessionDriver="cookie"
-    fi
-    if [ -z "$cacheDriver" ];then
-        echo >&2 "cacheDriver not set! using cookie "
-        cacheDriver="cookie"
-    fi
-    if [ -z "$tokenDriver" ];then
-        echo >&2 "tokenDriver not set! using db "
-        cacheDriver="db"
-    fi
+
     if [ -z "$enable_login_bind_ip" ];then
         echo >&2 "enable_login_bind_ip not set! using false "
         enable_login_bind_ip=false
@@ -300,14 +287,72 @@ if [ "$INIT" = true ];then
         echo >&2 "jump_delay not set! using 1200 "
         jump_delay=1200
     fi
-    if [ -z "$checkNodeIp" ];then
-        echo >&2 "checkNodeIp not set! using true "
-        checkNodeIp=true
-    fi
+    
     if [ -z "$keep_connect" ];then
         echo >&2 "keep_connect not set! using false "
         keep_connect=false
     fi
+
+    if [ -z "$jsdelivr_url" ];then
+        echo >&2 "jsdelivr_url not set! using jsdelivr_url "
+        jsdelivr_url='fastly.jsdelivr.net'
+    fi
+
+    if [ -z "$sentry_dsn" ];then
+        echo >&2 "sentry_dsn not set! "
+        sentry_dsn=""
+    fi
+
+    if [ -z "$maxmind_license_key" ];then
+        echo >&2 "maxmind_license_key not set! "
+        maxmind_license_key="local"
+    fi
+
+    if [ -z "$geoip_locale" ];then
+        echo >&2 "geoip_locale not set! "
+        geoip_locale="en"
+    fi
+
+    if [ -z "$llm_backend" ];then
+        echo >&2 "llm_backend not set! "
+        llm_backend="openai"
+    fi
+
+    if [ -z "$openai_api_key" ];then
+        echo >&2 "openai_api_key not set! "
+        openai_api_key=""
+    fi
+
+    if [ -z "$ai_model" ];then
+        echo >&2 "ai_model not set! using gpt-3.5-turbo "
+        ai_model="gpt-3.5-turbo"
+    fi
+
+    if [ -z "$palm_api_key" ];then
+        echo >&2 "palm_api_key not set!"
+        palm_api_key=""
+    fi
+
+    if [ -z "$palm_text_model" ];then
+        echo >&2 "palm_text_model not set!"
+        palm_text_model="text-bison-001"
+    fi
+
+    if [ -z "$huggingface_api_key" ];then
+        echo >&2 "huggingface_api_key not set!"
+        huggingface_api_key=""
+    fi
+
+    if [ -z "$huggingface_endpoint_url" ];then
+        echo >&2 "huggingface_endpoint_url not set!"
+        huggingface_endpoint_url=""
+    fi
+
+    if [ -z "$github_access_token" ];then
+        echo >&2 "github_access_token not set! "
+        github_access_token=""
+    fi
+
     if [ -z "$cloudflare_enable" ];then
         echo >&2 "cloudflare_enable not set! using false "
         cloudflare_enable=false
@@ -329,37 +374,27 @@ if [ "$INIT" = true ];then
 
     fi
 
-    if [ -z "$enable_analytics_code" ];then
-        echo >&2 "enable_analytics_code not set! using false "
-        enable_analytics_code=false
-    fi
-    if [ -z "$sentry_dsn" ];then
-        echo >&2 "sentry_dsn not set! "
-        sentry_dsn=""
-    fi
-    if [ -z "$maxmind_license_key" ];then
-        echo >&2 "maxmind_license_key not set! "
-        maxmind_license_key=""
-    fi
-    if [ -z "$geoip_locale" ];then
-        echo >&2 "geoip_locale not set! "
-        geoip_locale="en"
-    fi
-    if [ -z "$openai_api_key" ];then
-        echo >&2 "openai_api_key not set! "
-        openai_api_key=""
-    fi
-    if [ -z "$ai_model" ];then
-        echo >&2 "ai_model not set! using gpt-3.5-turbo "
-        ai_model="gpt-3.5-turbo"
-    fi
-    if [ -z "$github_access_token" ];then
-        echo >&2 "github_access_token not set! "
-        github_access_token=""
-    fi
-    if [ -z "$php_user_group" ];then
-        echo >&2 "php_user_group not set! using nginx:nginx "
-        php_user_group="nginx:nginx"
+    if [ "$enable_r2_client_download" == true ];then
+        if [ -z "$r2_bucket_name" ];then
+            echo >&2 "r2_bucket_name not set! exit "
+            exit
+        fi
+        if [ -z "$r2_account_id" ];then
+            echo >&2 "r2_account_id not set! exit "
+            exit
+        fi
+        if [ -z "$r2_access_key_id" ];then
+            echo >&2 "r2_access_key_id not set! exit "
+            exit
+        fi
+        if [ -z "$r2_access_key_secret" ];then
+            echo >&2 "r2_access_key_secret not set! exit "
+            exit
+        fi
+        if [ -z "$r2_client_download_timeout" ];then
+            echo >&2 "r2_client_download_timeout not set! using default "
+            r2_client_download_timeout = 10
+        fi
     fi
 
 
@@ -395,14 +430,18 @@ cat <<EOF >/var/www/html/conf/.config.php
 <?php
 
 //basic settings--------------------------------------------------------------------------------------------
-\$_ENV['key']        = '$key';                      //Cookie encryption key, please be sure to modify this key to a random string
-\$_ENV['pwdMethod']  = '$pwdMethod';                //Password encryption optional md5, sha256, bcrypt, argon2i, argon2id
-\$_ENV['salt']       = '$salt';                     //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
+\$_ENV['key']           = '$key';                      //Cookie encryption key, please be sure to modify this key to a random string
+\$_ENV['pwdMethod']     = '$pwdMethod';                //Password encryption optional md5, sha256, bcrypt, argon2i, argon2id
+\$_ENV['salt']          = '$salt';                     //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
 
-\$_ENV['debug']      = $debug;                       //debug mode switch，The production environment should be kept as false
-\$_ENV['appName']    = '$appName';                   // Site name
-\$_ENV['baseUrl']    = '$baseUrl';                   // site address
-\$_ENV['muKey']      = '$muKey';                     //WebAPI Key, used for communication between the node server and the panel，请务必修改此key为随机字符串
+\$_ENV['debug']         = $debug;                       //debug mode switch，The production environment should be kept as false
+\$_ENV['appName']       = '$appName';                   // Site name
+\$_ENV['baseUrl']       = '$baseUrl';                   // site address
+
+\$_ENV['WebAPI']        = $WebAPI;                      // Whether to enable the WebAPI function
+\$_ENV['webAPIUrl']     = \$_ENV['baseUrl'];           //WebAPI地址，如需和站点名称相同，请不要修改
+\$_ENV['muKey']         = '$muKey';                     //WebAPI Key, used for communication between the node server and the panel，请务必修改此key为随机字符串
+\$_ENV['checkNodeIp']   = $checkNodeIp;                 //Whether webapi verifies node ip
 
 //database settings--------------------------------------------------------------------------------------------
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
@@ -420,6 +459,22 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['db_collation'] = '$db_collation';
 \$_ENV['db_prefix']    = '$db_prefix';
 
+//Redis settings-------------------------------------------------------------------------------------------
+\$_ENV['redis_host']     = '127.0.0.1';        //Redis address
+\$_ENV['redis_port']     = 6379;               //Redis port
+\$_ENV['redis_timeout']  = 2;                  //Redis connection timeout, in seconds
+\$_ENV['redis_username'] = '';                 //Redis username, leave it blank to connect without username
+\$_ENV['redis_password'] = '';                 //Redis password, leave blank to have no password
+\$_ENV['redis_ssl']      = false;              //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
+
+//Rate Limit setting--------------------------------------------------------------------------------------------
+\$_ENV['enable_rate_limit']    = true;            //Whether to enable request restriction
+\$_ENV['rate_limit_ip']        = 120;             //Global request limit per minute per IP
+\$_ENV['rate_limit_sub']       = 30;              //Subscription link request limit per user per minute
+\$_ENV['rate_limit_webapi']    = 600;             //WebAPI key request limit per minute per node
+\$_ENV['rate_limit_user_api']  = 60;              //API request limit per user per minute
+\$_ENV['rate_limit_admin_api'] = 60;              //API request limit per admin per minute
+
 //E-Mail settings--------------------------------------------------------------------------------------------
 \$_ENV['mail_filter']        = $mail_filter;            //0: off; 1: whitelist mode; 2; blacklist mode;
 \$_ENV['mail_filter_list']   = array($mail_filter_list);
@@ -430,14 +485,8 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['checkinMin']                 = $checkinMin;            // User sign-in minimum traffic unit MB
 \$_ENV['checkinMax']                 = $checkinMax;           // User check-in traffic with the most traffic
 
-\$_ENV['auto_clean_uncheck_days']    = $auto_clean_uncheck_days;           //Automatically clean up level 0 users who have not signed in for how many days, and close when less than or equal to 0
-\$_ENV['auto_clean_unused_days']     = $auto_clean_unused_days;           //How many days of unused level 0 users will be automatically cleared, and it will be turned off when it is less than or equal to 0
-\$_ENV['auto_clean_min_money']       = $auto_clean_min_money;            //Level 0 users whose balance is lower than a certain amount can be cleared
-
 #advanced
 \$_ENV['class_expire_reset_traffic'] = $class_expire_reset_traffic;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
-\$_ENV['account_expire_delete_days'] = $account_expire_delete_days;           //The account will be deleted a few days after the account expires, and it will not be deleted when it is less than 0
-
 \$_ENV['enable_kill']                = $enable_kill;         //Whether to allow users to log out of accounts
 \$_ENV['enable_change_email']        = $enable_change_email;         //Whether to allow users to change account email
 
@@ -445,16 +494,10 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['notify_limit_mode']          = $notify_limit_mode;         //false is closed, per is reminded according to percentage, mb is reminded according to fixed remaining flow
 \$_ENV['notify_limit_value']         = $notify_limit_value;           //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
 
-//log settings---------------------------------------------------------------------------------------
-\$_ENV['trafficLog']               = $trafficLog;                          //Whether to record the traffic used by users every hour
-\$_ENV['trafficLog_keep_days']     = $trafficLog_keep_days;                             //Number of days to keep usage traffic records per hour
-
-\$_ENV['subscribeLog']               = $subscribeLog;                        //Whether to record user subscription logs
-\$_ENV['subscribeLog_keep_days']     = $subscribeLog_keep_days;                            //Number of days to keep subscription records
-
 //subscription settings---------------------------------------------------------------------------------------
 \$_ENV['Subscribe']                  = $Subscribe;                         //Does this site provide a subscription function?
 \$_ENV['subUrl']                     = '$subUrl';             //Subscription address, if it needs to be the same as the site name, please do not modify
+\$_ENV['sub_token_len']              = '$sub_token_len';                           //订阅token长度
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 \$_ENV['enable_auto_detect_ban']      = $enable_auto_detect_ban;       // Audit Auto-Ban Switch
@@ -469,88 +512,22 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['auto_detect_ban_number']      = $auto_detect_ban_number;             // The number of procs needed to enforce a ban in mercy mode
 \$_ENV['auto_detect_ban_time']        = $auto_detect_ban_time;             // The duration of each ban in mercy mode (minutes)
 
-// crazy mode ladder
-// key is the number of triggers
-// - type: optional time delete numbers by time or kill
-// - time: time in minutes
-\$_ENV['auto_detect_ban'] = [
-    100 => [
-        'type' => 'time',
-        'time' => 120
-    ],
-    300 => [
-        'type' => 'time',
-        'time' => 720
-    ],
-    600 => [
-        'type' => 'time',
-        'time' => 4320
-    ],
-    1000 => [
-        'type' => 'kill',
-        'time' => 0
-    ]
-];
-
-//Bot set up--------------------------------------------------------------------------------------------
-# Telegram bot
-\$_ENV['enable_telegram']                    = $enable_telegram;        //whether to enable Telegram bot
-\$_ENV['telegram_token']                     = '$telegram_token';           //Telegram bot,bot of token ，with father bot Application
-\$_ENV['telegram_chatid']                    = '$telegram_chatid';         //Telegram bot,Group session ID, follow the robot after pulling it into the group /ping get it in one click
-\$_ENV['telegram_bot']                       = '$telegram_bot';       //Telegram bot account
-\$_ENV['telegram_request_token']             = '$telegram_request_token';           //Webhook key, after updating this parameter please php xcat Tool setTelegram, Telegram The robot requests Key, which can be set at will, consisting of uppercase and lowercase English and numbers. After updating this parameter, please php xcat Tool setTelegram
-
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
-\$_ENV['detect_gfw_interval']             = $detect_gfw_interval;                                                               //Detection interval, unit: second, if it is lower than the recommended value, it will explode
 \$_ENV['detect_gfw_port']                 = $detect_gfw_port;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
 \$_ENV['detect_gfw_url']                  = '$detect_gfw_url'; //The URL of the API that detects whether the node is blocked by gfw
-\$_ENV['detect_gfw_count']                = '$detect_gfw_count';                                                                //number of attempts
 
 #offline detection
 \$_ENV['enable_detect_offline']           = $enable_detect_offline;
 
-//All of the following are advanced settings (generally not used, do not need to change---------------------------------------------------------------------
-
-// Does the master site provide WebAPI
-// - For security, it is recommended to use the WebAPI mode to connect to the node and close the public network database connection.
-// - Can be set to false if all your nodes use database connections or if you have a separate WebAPI site or gRPC API.
-\$_ENV['WebAPI']     = $WebAPI;
-
-#Misc
-\$_ENV['authDriver']             = '$authDriver';            //optional: cookies
-\$_ENV['sessionDriver']          = '$sessionDriver';            //optional: cookie
-\$_ENV['cacheDriver']            = '$cacheDriver';            //optional: cookie
-\$_ENV['tokenDriver']            = '$tokenDriver';                //optional: db
-
 \$_ENV['enable_login_bind_ip']   = $enable_login_bind_ip;        //Whether to bind the login thread to the IP
 \$_ENV['rememberMeDuration']     = $rememberMeDuration;           //Remember the number of days of account duration when logging in
-
 \$_ENV['timeZone']               = '$timeZone';         //Requires a PHP-compatible timezone format
 \$_ENV['theme']                  = '$theme';              //Default Theme
 \$_ENV['jump_delay']             = $jump_delay;                  //Jump delay, in ms, it is not recommended to be too long
-
-\$_ENV['checkNodeIp']            = $checkNodeIp;                 //Whether webapi verifies node ip
 \$_ENV['keep_connect']           = $keep_connect;               // Speed limit to 1Mbps for traffic exhausted users
 
-#Cloudflare
-\$_ENV['cloudflare_enable']      = $cloudflare_enable;         //Whether to enable Cloudflare analysis
-\$_ENV['cloudflare_email']       = '$cloudflare_email';            //Cloudflare email address
-\$_ENV['cloudflare_key']         = '$cloudflare_key';            //Cloudflare API Key
-\$_ENV['cloudflare_name']        = '$cloudflare_name';            //domain name
-
-#Whether to include statistical codes, create an analytics.tpl under resources/views/{theme name}, and use literal delimiters if necessary
-\$_ENV['enable_analytics_code']  = $enable_analytics_code;
-
-#Obtain the user's real ip after setting up the CDN. If you don't know what this is, please don't mess around
-\$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
-foreach (\$_ENV['cdn_forwarded_ip'] as \$cdn_forwarded_ip) {
-    if (isset(\$_SERVER[\$cdn_forwarded_ip])) {
-        \$list = explode(',', \$_SERVER[\$cdn_forwarded_ip]);
-        \$_SERVER['REMOTE_ADDR'] = \$list[0];
-        break;
-    }
-}
+\$_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
 
 // https://sentry.io for production debugging
 \$_ENV['sentry_dsn'] = '$sentry_dsn';
@@ -559,21 +536,40 @@ foreach (\$_ENV['cdn_forwarded_ip'] as \$cdn_forwarded_ip) {
 \$_ENV['maxmind_license_key'] = '$maxmind_license_key';
 \$_ENV['geoip_locale'] = '$geoip_locale';
 
+// Large language model powered ticket reply and more
+\$_ENV['llm_backend'] = 'openai'; // openai/palm/huggingface
+
 // OpenAI API Key for GPT powered ticket reply and more
 \$_ENV['openai_api_key'] = '$openai_api_key';
 \$_ENV['ai_model'] = '$ai_model';
+// Google PaLM API
+\$_ENV['palm_api_key'] = '$palm_api_key';
+\$_ENV['palm_text_model'] = '$palm_text_model';
+// Hugging Face Inference API
+\$_ENV['huggingface_api_key'] = '$huggingface_api_key';
+\$_ENV['huggingface_endpoint_url'] = '$huggingface_endpoint_url';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 \$_ENV['github_access_token'] = '$github_access_token';
 
-\$_ENV['php_user_group'] = '$php_user_group';
+#Cloudflare
+\$_ENV['cloudflare_enable']      = $cloudflare_enable;         //Whether to enable Cloudflare analysis
+\$_ENV['cloudflare_email']       = '$cloudflare_email';            //Cloudflare email address
+\$_ENV['cloudflare_key']         = '$cloudflare_key';            //Cloudflare API Key
+\$_ENV['cloudflare_name']        = '$cloudflare_name';            //domain name
+
+// use Cloudflare R2 for clients download
+\$_ENV['enable_r2_client_download'] = '$enable_r2_client_download';
+\$_ENV['r2_bucket_name'] = '$r2_bucket_name';
+\$_ENV['r2_account_id'] = '$r2_account_id';
+\$_ENV['r2_access_key_id'] = '$r2_access_key_id';
+\$_ENV['r2_access_key_secret'] = '$r2_access_key_secret';
+\$_ENV['r2_client_download_timeout'] = $r2_client_download_timeout ;
 
 EOF
 
 
 fi
-
-
 
     WEBSITE_DIR="$WEBROOT"
     B2_CONF=b2_backup_config
@@ -589,6 +585,7 @@ fi
     db_host="$db_host"
     compress_method="$B2_COMPRESS_METHOD"
     website_dir="$WEBSITE_DIR"
+    
 EOT
     fi
 
@@ -673,16 +670,6 @@ fi
         fi
     fi
 # fi
-
-echo -n >&2 "\nChecking if client binaries exist..."
-
-if [ ! -d "public/clients" ]; then
-	echo >&2 "Not found"
-	echo -n >&2 "\nDownloading client binaries...\n\n"
-	php xcat ClientDownload
-else
-	echo >&2 "Found"
-fi
 
 current_dir=$(pwd)
 crontab -l > cron.tmp
