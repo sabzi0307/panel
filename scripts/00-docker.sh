@@ -146,7 +146,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$enable_rate_limit" ];then
         echo >&2 "enable_rate_limit not set!"
-        enable_rate_limit= true
+        enable_rate_limit= false
     fi
 
     if [ -z "$rate_limit_ip" ];then
@@ -174,8 +174,12 @@ if [ "$INIT" = true ];then
         rate_limit_user_api = 60
     fi
 
+    if [ -z "$mail_filter" ];then
+        echo >&2 "mail_filter not set!, using 0 (disable)"
+        mail_filter=0
+    fi
     if [ -z "$mail_filter_list" ];then
-        echo >&2 "mail_filter_list not set!, using 0 (disable)"
+        echo >&2 "mail_filter_list not set!, using ["qq.com", "vip.qq.com", "foxmail.com"]"
         mail_filter_list=["qq.com", "vip.qq.com", "foxmail.com"]
     fi
 
@@ -585,7 +589,7 @@ fi
     db_host="$db_host"
     compress_method="$B2_COMPRESS_METHOD"
     website_dir="$WEBSITE_DIR"
-    
+
 EOT
     fi
 
