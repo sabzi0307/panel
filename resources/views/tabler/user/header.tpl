@@ -180,6 +180,7 @@
                                         <i class="ti ti-barrier-block"></i>&nbsp;
                                         قوانین
                                     </a>
+                                    {if $public_setting['display_detect_log']}
                                     <a class="dropdown-item" href="/user/detect/log">
                                         <i class="ti ti-notes"></i>&nbsp;
                                         سوابق ممیزی

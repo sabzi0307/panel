@@ -501,7 +501,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 //subscription settings---------------------------------------------------------------------------------------
 \$_ENV['Subscribe']                  = $Subscribe;                         //Does this site provide a subscription function?
 \$_ENV['subUrl']                     = '$subUrl';             //Subscription address, if it needs to be the same as the site name, please do not modify
-\$_ENV['sub_token_len']              = '$sub_token_len';                           //订阅token长度
+\$_ENV['sub_token_len']              = $sub_token_len;                           //订阅token长度
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 \$_ENV['auto_detect_ban_allow_admin'] = $auto_detect_ban_allow_admin;        // Administrators are not subject to audit restrictions

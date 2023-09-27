@@ -7,6 +7,7 @@ namespace App\Controllers\Admin\Setting;
 use App\Controllers\BaseController;
 use App\Models\Setting;
 use Exception;
+use function json_encode;
 
 final class CronController extends BaseController
 {
@@ -29,7 +30,16 @@ final class CronController extends BaseController
      */
     public function cron($request, $response, $args)
     {
-        $settings = Setting::getClass('captcha');
+        $settings = [];
+        $settings_raw = Setting::get(['item', 'value', 'type']);
+
+        foreach ($settings_raw as $setting) {
+            if ($setting->type === 'bool') {
+                $settings[$setting->item] = (bool) $setting->value;
+            } else {
+                $settings[$setting->item] = (string) $setting->value;
+            }
+        }
 
         return $response->write(
             $this->view()
@@ -58,13 +68,20 @@ final class CronController extends BaseController
             ]);
         }
 
-        foreach (self::$update_field as $item) {
-            if ($item === 'daily_job_minute') {
-                Setting::set($item, $daily_job_minute - ($daily_job_minute % 5));
-                continue;
+        $list = self::$update_field;
+
+        foreach ($list as $item) {
+            $setting = Setting::where('item', '=', $item)->first();
+
+            if ($setting->type === 'array') {
+                $setting->value = json_encode($request->getParam($item));
+            } elseif ($setting->item === 'daily_job_minute') {
+                $setting->value = $daily_job_minute - ($daily_job_minute % 5);
+            } else {
+                $setting->value = $request->getParam($item);
             }
 
-            if (! Setting::set($item, $request->getParam($item))) {
+            if (! $setting->save()) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'خطا در ذخیره ' . $item ,
