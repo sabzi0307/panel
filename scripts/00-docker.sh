@@ -668,7 +668,7 @@ fi
     fi
 # fi
 
-sudo -u www-data php xcat ClientDownload
+php xcat ClientDownload
 current_dir=$(pwd)
 crontab -l > cron.tmp
 echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
