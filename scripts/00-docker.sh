@@ -561,7 +561,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['r2_account_id'] = '$r2_account_id';
 \$_ENV['r2_access_key_id'] = '$r2_access_key_id';
 \$_ENV['r2_access_key_secret'] = '$r2_access_key_secret';
-\$_ENV['r2_client_download_timeout'] = $r2_client_download_timeout ;
+\$_ENV['r2_client_download_timeout'] = '$r2_client_download_timeout' ;
 
 EOF
 

@@ -38,7 +38,7 @@ return new class() implements MigrationInterface {
         ALTER TABLE docs MODIFY COLUMN `content` longtext NOT NULL DEFAULT '' COMMENT 'Document Content';
         ALTER TABLE docs DROP COLUMN IF EXISTS `markdown`;
         ALTER TABLE email_queue MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
-        ALTER TABLE email_queue MODIFY COLUMN `to_email` varchar(255) NOT NULL DEFAULT '' COMMENT 'Recipient's mailbox';
+        ALTER TABLE email_queue MODIFY COLUMN `to_email` varchar(255) NOT NULL DEFAULT '' COMMENT 'Recipients mailbox';
         ALTER TABLE email_queue MODIFY COLUMN `subject` varchar(255) NOT NULL DEFAULT '' COMMENT 'Mail Title';
         ALTER TABLE email_queue MODIFY COLUMN `template` varchar(255) NOT NULL DEFAULT '' COMMENT 'email template';
         ALTER TABLE email_queue MODIFY COLUMN `array` longtext NOT NULL DEFAULT '{}' COMMENT 'template parameter' CHECK (json_valid(`array`));
@@ -142,11 +142,11 @@ return new class() implements MigrationInterface {
         ALTER TABLE stream_media MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
         ALTER TABLE stream_media MODIFY COLUMN `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID';
         ALTER TABLE stream_media MODIFY COLUMN `result` text NOT NULL DEFAULT '' COMMENT 'Detection result';
-        ALTER TABLE stream_media MODIFY COLUMN `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created_at`;
+        ALTER TABLE stream_media MODIFY COLUMN `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created_at';
         ALTER TABLE ticket MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'work order ID';
         ALTER TABLE ticket MODIFY COLUMN `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket title';
         ALTER TABLE ticket MODIFY COLUMN `content` longtext NOT NULL DEFAULT '{}' COMMENT 'Ticket content' CHECK (json_valid(`content`));
-        ALTER TABLE ticket MODIFY COLUMN `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'userid';
+        ALTER TABLE ticket MODIFY COLUMN `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'userid';        
         ALTER TABLE ticket MODIFY COLUMN `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Creation time';
         ALTER TABLE ticket MODIFY COLUMN `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket status';
         ALTER TABLE ticket MODIFY COLUMN `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket type';
@@ -169,7 +169,7 @@ return new class() implements MigrationInterface {
         ALTER TABLE user_invite_code MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
         ALTER TABLE user_invite_code MODIFY COLUMN `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'invite code';
         ALTER TABLE user_invite_code MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';
-        ALTER TABLE user_invite_code MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'created_at`;
+        ALTER TABLE user_invite_code MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'created_at';
         ALTER TABLE user_invite_code MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Updated time';
         ALTER TABLE user_money_log MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
         SET FOREIGN_KEY_CHECKS = 1;");
