@@ -504,15 +504,8 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['sub_token_len']              = '$sub_token_len';                           //订阅token长度
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
-\$_ENV['enable_auto_detect_ban']      = $enable_auto_detect_ban;       // Audit Auto-Ban Switch
-\$_ENV['auto_detect_ban_numProcess']  = $auto_detect_ban_numProcess;         // The number of audit records processed in a single scheduled task
 \$_ENV['auto_detect_ban_allow_admin'] = $auto_detect_ban_allow_admin;        // Administrators are not subject to audit restrictions
 \$_ENV['auto_detect_ban_allow_users'] = $auto_detect_ban_allow_users;          // Exception User IDs for Audit Bans
-
-// Judgment type of audit ban：
-//   - 1 = Benevolent mode, every touch how many times to ban
-//   - 2 = Crazy mode, the cumulative number of touches will be banned for different lengths of time according to the ladder
-\$_ENV['auto_detect_ban_type']        = $auto_detect_ban_type;
 \$_ENV['auto_detect_ban_number']      = $auto_detect_ban_number;             // The number of procs needed to enforce a ban in mercy mode
 \$_ENV['auto_detect_ban_time']        = $auto_detect_ban_time;             // The duration of each ban in mercy mode (minutes)
 
@@ -675,6 +668,7 @@ fi
     fi
 # fi
 
+sudo -u www-data php xcat ClientDownload
 current_dir=$(pwd)
 crontab -l > cron.tmp
 echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
@@ -683,10 +677,9 @@ rm cron.tmp
 crond -b
 
 echo -n >&2 "\nApplying permissions..."
-chown $php_user_group -R "$current_dir"/*
 chmod 755 -R $current_dir/*
-# chown www-data:www-data -R *
-# chmod -R 777 storage
+chown -R www-data:www-data *
+# chmod -R 755 storage
 
 echo >&2  "\nAll set, please enjoy!\n\n"
 

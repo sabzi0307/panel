@@ -19,10 +19,10 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '${REDIS_PORT}:6379'
+      - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass ${redis_password}
     volumes:
-      - cache:/data
+      - ./cache:/data
 
   ss_db:
     image: mariadb:10.6.14

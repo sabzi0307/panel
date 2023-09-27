@@ -1,14 +1,15 @@
 version: '2.1'
 
 services:
-  cache:
-    image: redis:6.2-alpine
+  redis:
+    image: redis:latest
     restart: always
+    container_name: redis
     ports:
-      - '${REDIS_PORT}:6379'
+      - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass ${redis_password}
     volumes:
-      - cache:/data
+      - ./cache:/data
   sspanel:
     image: ttracy/panel:latest
     container_name: sspanel
@@ -17,6 +18,7 @@ services:
       - ./:/var/www/html
     links:
       - "${db_host}"
+      - redis
     ports:
       - 80:80
       - 443:443
@@ -58,12 +60,12 @@ services:
     links:
       - ss_db:db
 
-  xrayr:
-    image: ghcr.io/xrayr-project/xrayr:latest
-    container_name: xrayr
-    volumes:
-      - ./conf/xrayr/:/etc/XrayR/
-    restart: always
-    network_mode: host
-    links:
-      - sspanel:sspanel
+  # xrayr:
+  #   image: ghcr.io/xrayr-project/xrayr:latest
+  #   container_name: xrayr
+  #   volumes:
+  #     - ./conf/xrayr/:/etc/XrayR/
+  #   restart: always
+  #   network_mode: host
+  #   links:
+  #     - sspanel:sspanel
