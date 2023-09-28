@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   redis:
-    image: redis:latest
+    image: 7.2-alpine
     restart: always
     container_name: redis
     ports:
@@ -30,7 +30,7 @@ services:
         condition: service_healthy
 
   ss_db:
-    image: mariadb:10.6.14
+    image: mariadb:11.1
     container_name: ss_db
     restart: always
     ports:
