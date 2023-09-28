@@ -41,6 +41,26 @@ final class UserController extends BaseController
             $captcha = Captcha::generate();
         }
 
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+
+        if (preg_match('/Linux/i', $agent))
+            $os = 'Linux';
+        elseif (preg_match('/Mac/i', $agent))
+            $os = 'Mac';
+        elseif (preg_match('/iPhone/i', $agent))
+            $os = 'iPhone';
+        elseif (preg_match('/iPad/i', $agent))
+            $os = 'iPad';
+        elseif (preg_match('/Droid/i', $agent))
+            $os = 'Droid';
+        elseif (preg_match('/Unix/i', $agent))
+            $os = 'Unix';
+        elseif (preg_match('/Windows/i', $agent))
+            $os = 'Windows';
+        else
+            $os = 'Unknown';
+
+
         return $response->write(
             $this->view()
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
@@ -48,6 +68,7 @@ final class UserController extends BaseController
                 ->assign('class_expire_days', $class_expire_days)
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
                 ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
+                ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
                 ->fetch('user/index.tpl')
         );
     }

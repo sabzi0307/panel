@@ -7,8 +7,10 @@ namespace App\Controllers;
 use App\Models\Link;
 use App\Models\Setting;
 use App\Models\SubscribeLog;
+use App\Models\SharedAccount;
 use App\Services\RateLimit;
 use App\Services\Subscribe;
+use App\Services\DB;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
@@ -182,5 +184,40 @@ final class SubController extends BaseController
         $token = Link::where('userid', $userid)->first();
 
         return $_ENV['subUrl'] . '/link/' . $token->token;
+    }
+
+    public static function getSharedAccounts($user): array
+    {
+        
+        $results = [];
+        $pdo = DB::getPdo();
+        $accounts = $pdo->query('SELECT DISTINCT account FROM shared_account');
+
+        foreach ($accounts as $user_id) {
+
+            $id = SharedAccount::where('account', $user_id)
+                ->where('updated_at', '>', time() - 1200) // 只获取最近一天内上报的数据
+                ->first();
+
+            if ($id !== null) {
+                $info = [];
+                $info = [
+                    'priority' => $id->priority,
+                    'status' => $id->status,
+                    'created_at' => $id->created_at,
+                    'updated_at' => $id->updated_at,
+                    'account' => $id->account,
+                    'password' => $id->password,
+                ];
+                $results[] = $info;
+            }
+        }
+
+        $node_names = array_column($results, 'updated_at');
+        array_multisort($node_names, SORT_ASC, $results);
+
+        // $userid = $user->id;
+        // $token = Link::where('userid', $userid)->first();
+        return $results;
     }
 }

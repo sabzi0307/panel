@@ -15,6 +15,7 @@ use App\Models\Paylist;
 use App\Models\Setting;
 use App\Models\SubscribeLog;
 use App\Models\User;
+use App\Models\SharedAccount;
 use App\Models\UserHourlyUsage;
 use App\Services\IM\Telegram;
 use App\Utils\Tools;
@@ -70,6 +71,7 @@ final class Cron
         DetectLog::where('datetime', '<', time() - 86400 * 3)->delete();
         EmailQueue::where('time', '<', time() - 86400)->delete();
         OnlineLog::where('last_time', '<', time() - 86400)->delete();
+        SharedAccount::where('updated_at', '<', time() - 1200)->delete();
 
         echo Tools::toDateTime(time()) . ' پاکسازی دیتابیس کامل شد' . PHP_EOL;
     }
