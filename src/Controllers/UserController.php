@@ -43,6 +43,8 @@ final class UserController extends BaseController
 
         $agent = $_SERVER['HTTP_USER_AGENT'];
 
+        $os = 'Unknown'; // مقدار پیش‌فرض
+
         if (preg_match('/Linux/i', $agent))
             $os = 'Linux';
         elseif (preg_match('/Mac/i', $agent))
@@ -57,9 +59,6 @@ final class UserController extends BaseController
             $os = 'Unix';
         elseif (preg_match('/Windows/i', $agent))
             $os = 'Windows';
-        else
-            $os = 'Unknown';
-
 
         return $response->write(
             $this->view()
@@ -69,6 +68,7 @@ final class UserController extends BaseController
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
                 ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
+                ->assign('os', $os)
                 ->fetch('user/index.tpl')
         );
     }
