@@ -259,7 +259,7 @@
                                         </div>
                                     </div>
                                 {/if}
-                                <div class="tab-pane" id="windows">
+                                <div  {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}}  id="windows">
                                     <div>
                                         <p>
                                             اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
@@ -284,7 +284,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="macos">
+                                <div {if $os eq "Mac"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="macos">
                                     <p>
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -326,7 +326,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="android">
+                                <div  {if $os eq "Droid"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="android">
                                     <p>
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -368,7 +368,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="ios">
+                                <div  {if $os eq "iPhone"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="ios">
                                     <p>
                                         اشتراک برای کلاینت های سازگار با کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -404,7 +404,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="linux">
+                                <div {if $os eq "Linux"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="linux">
                                     <p>
                                         اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
                                     </p>
@@ -426,7 +426,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="config">
+                                <div {if $os eq "Unix"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="config">
                                     <p>اطلاعات اتصال شما：</p>
                                     <div class="table-responsive">
                                         <table class="table table-vcenter card-table">
@@ -490,9 +490,9 @@
                             </div>
                             <p class="my-3">
                                 {if $user->class === 0}
-                                    برای خرید بسته به <a href="/user/product">فروشگاه</a> بروید
+                                    بسته شما منقضی شده است . لطفا جهت خرید بسته به <a href="/user/product">فروشگاه</a> مراجعه فرمایید.
                                 {else}
-                                    LV شما. حساب {$user->class} {$class_expire_days} روز دیگر منقضی می‌شود ({$user->class_expire})
+                                    LV شما حساب {$user->class} در {$class_expire_days} روز دیگر منقضی می‌شود ({$user->class_expire})
                                 {/if}
                             </p>
                         </div>
@@ -529,24 +529,24 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title">ورود روزانه</h3>
+                            <h3 class="card-title">ترافیک هدیه ورود روزانه</h3>
                             <p>
-                                برای دریافت وارد شوید
+                                جهت دریافت حجم هدیه کلیک کنید
                                 {if $config['checkinMin'] !== $config['checkinMax']}
-                                    &nbsp;<code>{$config['checkinMin']} MB</code> به <code>{$config['checkinMax']} MB</code>
-                                    ترافیک در محدوده
+                                    در محدوده
+                                    &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
                                 {else}
                                     <code>{$config['checkinMin']} MB</code>
                                 {/if}
                             </p>
                             <p>
-                                آخرین زمان استفاده：<code>{$user->lastCheckInTime()}</code>
+                                آخرین زمان استفاده：<code style="font-family: Yekan;">{$user->lastCheckInTime()}</code>
                             </p>
                         </div>
                         <div class="card-footer">
                             <div class="d-flex">
                                 {if ! $user->isAbleToCheckin()}
-                                <button id="check-in" class="btn btn-primary ms-auto" disabled>signed in</button>
+                                <button id="check-in" class="btn btn-primary ms-auto" disabled>بررسی</button>
                                 {else}
                                 {if $public_setting['enable_checkin_captcha']}
                                     {if $public_setting['captcha_provider'] === 'turnstile'}
@@ -562,7 +562,7 @@
                                         <div id="geetest"></div>
                                     {/if}
                                 {/if}
-                                <button id="check-in" class="btn btn-primary ms-auto">to sign in</button>
+                                <button id="check-in" class="btn btn-primary ms-auto">بررسی</button>
                                 {/if}
                             </div>
                         </div>
