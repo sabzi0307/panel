@@ -6,8 +6,8 @@ namespace App\Controllers\WebAPI;
 
 use App\Controllers\BaseController;
 use App\Models\Node;
-use App\Models\StreamMedia;
 use App\Models\SharedAccount;
+use App\Models\StreamMedia;
 use App\Utils\ResponseHelper;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -21,7 +21,7 @@ final class NodeController extends BaseController
     {
         $body = $request->getBody()->getContents();
         $details = json_decode($body, true);
-        foreach($details as $item) { //foreach element in $arr
+        foreach($details as $item) {
             $ids = new SharedAccount();
             $ids->priority = $item['priority'];
             $ids->status = $item['status'];
