@@ -60,13 +60,13 @@
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>
                                     <div class="col">
-                                        <select id="mail_driver" class="col form-select" value="{$settings['mail_driver']}">
-                                            <option value="none" {if $settings['mail_driver'] === "none"}selected{/if}>none</option>
-                                            <option value="smtp" {if $settings['mail_driver'] === "smtp"}selected{/if}>smtp</option>
-                                            <option value="sendgrid" {if $settings['mail_driver'] === "sendgrid"}selected{/if}>sendgrid</option>
-                                            <option value="mailgun" {if $settings['mail_driver'] === "mailgun"}selected{/if}>mailgun</option>
-                                            <option value="postal" {if $settings['mail_driver'] === "postal"}selected{/if}>postal</option>
-                                            <option value="ses" {if $settings['mail_driver'] === "ses"}selected{/if}>ses</option>
+                                        <select id="eemail_driver" class="col form-select" value="{$settings['email_driver']}">
+                                            <option value="none" {if $settings['email_driver'] === "none"}selected{/if}>none</option>
+                                            <option value="smtp" {if $settings['email_driver'] === "smtp"}selected{/if}>smtp</option>
+                                            <option value="sendgrid" {if $settings['email_driver'] === "sendgrid"}selected{/if}>sendgrid</option>
+                                            <option value="mailgun" {if $settings['email_driver'] === "mailgun"}selected{/if}>mailgun</option>
+                                            <option value="postal" {if $settings['email_driver'] === "postal"}selected{/if}>postal</option>
+                                            <option value="ses" {if $settings['email_driver'] === "ses"}selected{/if}>ses</option>
                                         </select>
                                     </div>
                                 </div>
@@ -162,8 +162,8 @@
                                     <label class="form-label col-3 col-form-label">استفاده کنید یا نه TLS/SSL</label>
                                     <div class="col">
                                     <select id="smtp_ssl" class="col form-select" value="{$settings['smtp_ssl']}">
-                                        <option value="1" {if $settings['smtp_ssl']}selected{/if}>استفاده کن</option>
-                                        <option value="0" {if $settings['smtp_ssl'] === false}selected{/if}>غیر فعال</option>
+                                        <option value="0" {if ! $settings['smtp_ssl']}selected{/if}>غیرفعال</option>
+                                        <option value="1" {if $settings['smtp_ssl']}selected{/if}>فعال</option>
                                     </select>
                                     </div>
                                 </div>
@@ -321,8 +321,8 @@
             },
             success: function(data) {
                 if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
+                     $('#success-noreload-message').text(data.msg);
+                    $('#success-noreload-dialog').modal('show');
                 } else {
                     $('#fail-message').text(data.msg);
                     $('#fail-dialog').modal('show');

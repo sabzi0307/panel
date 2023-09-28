@@ -19,6 +19,7 @@ final class SupportController extends BaseController
         // Ticket
         'enable_ticket',
         'mail_ticket',
+        'ticket_limit',
     ];
 
     /**

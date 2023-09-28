@@ -300,7 +300,6 @@ final class AuthController extends BaseController
         $user->reg_date = date('Y-m-d H:i:s');
         $user->reg_ip = $_SERVER['REMOTE_ADDR'];
         $user->theme = $_ENV['theme'];
-        $user->use_new_shop = 1;
         $random_group = Setting::obtain('random_group');
 
         if ($random_group === '') {
@@ -339,10 +338,6 @@ final class AuthController extends BaseController
     {
         if (Setting::obtain('reg_mode') === 'close') {
             return ResponseHelper::error($response, 'ثبت نام باز نیست');
-        }
-
-        if (Setting::obtain('reg_mode') === 'invite' && $request->getParam('code') === '') {
-            return ResponseHelper::error($response, 'برای ثبت نام باید کد دعوت نامه را پر کنید');
         }
 
         if (Setting::obtain('enable_reg_captcha')) {

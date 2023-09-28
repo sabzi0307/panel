@@ -59,7 +59,7 @@
                                     <label class="form-label col-3 col-form-label">الزام به تایید ایمیل</label>
                                     <div class="col">
                                         <select id="reg_email_verify" class="col form-select" value="{$settings['reg_email_verify']}">
-                                            <option value="0" {if $settings['reg_email_verify'] === false}selected{/if}>غیرفعال</option>
+                                            <option value="0" {if ! $settings['reg_email_verify']}selected{/if}>غیرفعال</option>
                                             <option value="1" {if $settings['reg_email_verify']}selected{/if}>فعال</option>
                                         </select>
                                     </div>

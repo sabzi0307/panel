@@ -500,7 +500,7 @@
                 </div>
                 <div class="col-lg-6 col-sm-12">
                     <div class="card">
-                        <div class="ribbon ribbon-top ribbon-start bg-yellow">
+                        <div class="ribbon ribbon-top bg-yellow">
                             <i class="ti ti-bell-ringing icon"></i>
                         </div>
                         <div class="card-body">

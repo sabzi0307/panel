@@ -88,10 +88,7 @@ final class Tools
     }
 
     /**
-     * 查询IP归属
-     *
-     * @throws AddressNotFoundException
-     * @throws InvalidDatabaseException
+     * 根据流量值自动转换单位输出
      *
      * @param $size
      * @param int $precision

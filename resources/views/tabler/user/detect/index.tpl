@@ -21,15 +21,6 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="m-0 my-2">
-                                <p>به منظور جلوگیری از سوء استفاده و اطمینان از عملکرد پایدار سایت، قوانین ممیزی زیر به طور ویژه تدوین شده است، هنگامی که از سرور ها برای انجام این اقدامات استفاده می کنید، ارتباط شما رهگیری می شود.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">
                                 <thead>

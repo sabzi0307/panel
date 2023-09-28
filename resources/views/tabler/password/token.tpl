@@ -30,9 +30,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="text-center text-secondary mt-3">
+            <div class="text-center text-secondary mt-3">
             از قبل حساب کاربری دارید؟ <a href="/auth/login" tabindex="-1">برای ورود کلیک کنید</a>
+            </div>
         </div>
     </div>
 

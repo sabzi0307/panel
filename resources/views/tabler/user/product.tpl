@@ -181,7 +181,8 @@
                                                         </div>
                                                         <div id="product-{$time->id}-price"
                                                              class="display-6 my-3"><p class="fw-bold">{$time->price}</p>
-                                                        </div>
+                                                             <i class="ti ti-coin"></i>
+                                                             </div>
                                                         <div class="list-group list-group-flush">
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">

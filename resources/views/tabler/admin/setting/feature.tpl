@@ -45,23 +45,23 @@
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">نمایش سوابق اشتراک کاربر</label>
                                     <div class="col">
-                                        <select id="display_subscribe_log" class="col form-select" value="{$settings['display_subscribe_log']}">
-                                            <option value="0" {if $settings['display_subscribe_log'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['display_subscribe_log']}selected{/if}>فعال</option>
+                                        <select id="display_detect_log" class="col form-select" value="{$settings['display_detect_log']}">
+                                            <option value="0" {if ! $settings['display_detect_log']}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_detect_log']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
                                     <label class="form-label col-3 col-form-label">نمایش سوابق ممیزی کاربران</label>
                                     <div class="col">
-                                        <select id="display_detect_log" class="col form-select" value="{$settings['display_detect_log']}">
-                                            <option value="0" {if $settings['display_detect_log'] === false}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['display_detect_log']}selected{/if}>فعال</option>
+                                        <select id="display_docs" class="col form-select" value="{$settings['display_docs']}">
+                                            <option value="0" {if ! $settings['display_docs']}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_docs']}selected{/if}>فعال</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اسناد فقط برای کاربران پولی قابل مشاهده است</label>
+                                    <label class="form-label col-3 col-form-label">اسناد فقط برای کاربران پولی قابل مشاهده باشد</label>
                                     <div class="col">
                                         <select id="display_docs_only_for_paid_user" class="col form-select" value="{$settings['display_docs_only_for_paid_user']}">
                                             <option value="0" {if ! $settings['display_docs_only_for_paid_user']}selected{/if}>غیرفعال</option>

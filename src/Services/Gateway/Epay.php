@@ -142,7 +142,6 @@ final class Epay extends AbstractPayment
 
     public function getReturnHTML($request, $response, $args): ResponseInterface
     {
-        $user = Auth::getUser();
 
         $money = $_GET['money'];
 

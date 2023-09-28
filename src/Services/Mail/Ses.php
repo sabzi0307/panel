@@ -27,7 +27,7 @@ final class Ses extends Base
         $this->ses = $ses;
     }
 
-    public function send($to, $subject, $text, $file): void
+    public function send($to, $subject, $text, $files): void
     {
         $ses = $this->ses;
         $char_set = 'UTF-8';

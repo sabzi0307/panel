@@ -184,8 +184,8 @@ final class Message
             'تعداد IP های آنلاین：' . ($user->node_iplimit !== 0 ? $user->onlineIpCount() .
                 ' / ' . $user->node_iplimit : $user->onlineIpCount() . ' / بدون محدودیت'),
             'سرعت درگاه：' . ($user->node_speedlimit > 0 ? $user->node_speedlimit . 'Mbps' : 'بدون محدودیت'),
-            '上次使用：' . $user->lastUseTime(),
-            '过期时间：' . $user->class_expire,
+            'آخرین استفاده:' . $user->lastUseTime(),
+            'انقضاء:' . $user->class_expire,
         ];
 
         return implode(PHP_EOL, $text);
