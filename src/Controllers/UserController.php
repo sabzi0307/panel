@@ -57,7 +57,7 @@ final class UserController extends BaseController
             $os = 'Droid';
         } elseif (preg_match('/Unix/i', $agent)) {
             $os = 'Unix';
-        } elseif (preg_match('/Windows/i', $agent)){
+        } elseif (preg_match('/Windows/i', $agent)) {
             $os = 'Windows';
         }
 

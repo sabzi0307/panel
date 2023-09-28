@@ -231,7 +231,7 @@ final class CouponController extends BaseController
         ]);
     }
 
-     /**
+    /**
      * 后台商品优惠码页面 AJAX
      */
     public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface

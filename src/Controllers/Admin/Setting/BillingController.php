@@ -88,7 +88,7 @@ final class BillingController extends BaseController
             if (! Setting::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'خطا در ذخیره ' . $item ,
+                    'msg' => 'خطا در ذخیره ' . $item,
                 ]);
             }
         }

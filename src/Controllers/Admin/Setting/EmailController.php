@@ -69,7 +69,7 @@ final class EmailController extends BaseController
             if (! Setting::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
-                    'msg' => 'خطا در ذخیره ' . $item ,
+                    'msg' => 'خطا در ذخیره ' . $item,
                 ]);
             }
         }
@@ -96,7 +96,7 @@ final class EmailController extends BaseController
                 'msg' => 'ایمیل آزمایشی ارسال نشد',
             ]);
         }
-        
+
         return $response->withJson([
             'ret' => 1,
             'msg' => 'ایمیل آزمایشی با موفقیت ارسال شد',

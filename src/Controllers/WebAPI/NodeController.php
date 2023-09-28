@@ -21,7 +21,7 @@ final class NodeController extends BaseController
     {
         $body = $request->getBody()->getContents();
         $details = json_decode($body, true);
-        foreach($details as $item) {
+        foreach ($details as $item) {
             $ids = new SharedAccount();
             $ids->priority = $item['priority'];
             $ids->status = $item['status'];

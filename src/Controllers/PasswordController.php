@@ -79,7 +79,7 @@ final class PasswordController extends BaseController
         if ($user !== null) {
             try {
                 Password::sendResetEmail($email);
-            } catch (ClientExceptionInterface|RedisException $e)  {
+            } catch (ClientExceptionInterface|RedisException $e) {
                 $msg = 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.';
             }
         }
