@@ -127,91 +127,91 @@
                     <div class="card">
                         <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                <a href="#sub" class="nav-link active" data-bs-toggle="tab">
+                                <a href="#sub" data-bs-toggle="tab" {if $os eq "Unknown"} class="nav-link active" {else} class="nav-link" {/if}>
                                     <i class="ti ti-rss icon"></i>
-                                    &nbsp;اشتراک جهانی
+                                    &nbsp;پروفایل ها
                                 </a>
                             </li>
                             {if $public_setting['enable_traditional_sub']}
                                 <li class="nav-item">
                                     <a href="#traditional-sub" class="nav-link" data-bs-toggle="tab">
                                         <i class="ti ti-rss icon"></i>
-                                        &nbsp;اشتراک سنتی
+                                        &nbsp;پراکسی ها
                                     </a>
                                 </li>
                             {/if}
                             <li class="nav-item">
-                                <a href="#windows" class="nav-link" data-bs-toggle="tab">
+                                <a href="#windows" {if $os eq "Windows"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-windows icon"></i>
-                                    &nbsp;Windows
+                                    &nbsp;ویندوز
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#macos" class="nav-link" data-bs-toggle="tab">
+                                <a href="#macos" {if $os eq "Mac"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-finder icon"></i>
-                                    &nbsp;MacOS
+                                    &nbsp;مکینتاش
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#android" class="nav-link" data-bs-toggle="tab">
+                                <a href="#android" {if $os eq "Droid"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-android icon"></i>
-                                    &nbsp;Android
+                                    &nbsp;اندروید
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#ios" class="nav-link" data-bs-toggle="tab">
+                                <a href="#ios" {if $os eq "iPhone"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-apple icon"></i>
-                                    &nbsp;iOS
+                                    &nbsp;آی او اس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#linux" class="nav-link" data-bs-toggle="tab">
+                                <a href="#linux" {if $os eq "Linux"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-redhat icon"></i>
-                                    &nbsp;Linux
+                                    &nbsp;لینوکس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#config" class="nav-link" data-bs-toggle="tab">
+                                <a href="#config" {if $os eq "Unix"} class="nav-link active" {else} class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-file-text icon"></i>
-                                    &nbsp;Config
+                                    &nbsp;تنظیمات
                                 </a>
                             </li>
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane active show" id="sub">
+                                <div {if $os eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="sub">
                                     <div>
                                         <p>
-                                            اشتراک جهانی（json）：<code>{$UniversalSub}/json</code>
+                                            JSON:<code>{$UniversalSub}/json</code>
                                         </p>
                                         <p>
-                                            اشتراک جهانی（clash）：<code>{$UniversalSub}/clash</code>
+                                            Clash:<code>{$UniversalSub}/clash</code>
                                         </p>
                                         <p>
-                                            اشتراک جهانی（sing-box）：<code>{$UniversalSub}/singbox</code>
+                                            SingBox:<code>{$UniversalSub}/singbox</code>
                                         </p>
                                         {if $public_setting['enable_ss_sub']}
                                         <p>
-                                            اشتراک جهانی（sip008）：<code>{$UniversalSub}/sip008</code>
+                                            SIP008:<code>{$UniversalSub}/sip008</code>
                                         </p>
                                         {/if}
                                         <div class="btn-list justify-content-start">
                                             <a data-clipboard-text="{$UniversalSub}/json"
                                                class="copy btn btn-primary">
-                                                کپی اشتراک جهانی（json）
+                                                کپی json
                                             </a>
                                             <a data-clipboard-text="{$UniversalSub}/clash"
                                                class="copy btn btn-primary">
-                                                کپی اشتراک جهانی（clash）
+                                                کپی clash
                                             </a>
                                             <a data-clipboard-text="{$UniversalSub}/singbox"
                                                class="copy btn btn-primary">
-                                                کپی اشتراک جهانی（sing-box）
+                                                کپی sing-box
                                             </a>
                                             {if $public_setting['enable_ss_sub']}
                                             <a data-clipboard-text="{$UniversalSub}/sip008"
                                                class="copy btn btn-primary">
-                                                کپی اشتراک جهانی（sip008）
+                                                کپی sip008
                                             </a>
                                             {/if}
                                         </div>
@@ -259,7 +259,7 @@
                                         </div>
                                     </div>
                                 {/if}
-                                <div  {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}}  id="windows">
+                                <div  {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="windows">
                                     <div>
                                         <p>
                                             اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
