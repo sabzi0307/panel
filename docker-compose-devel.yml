@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   redis:
-    image: 7.2-alpine
+    image: redis:7.2-alpine
     restart: always
     container_name: redis
     ports:
