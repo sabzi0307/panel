@@ -35,6 +35,8 @@ services:
     restart: always
     ports:
       - 3306:3306
+    environment:
+      - MARIADB_MYSQL_LOCALHOST_USER=1
     env_file:
       - .env
     command:
@@ -44,7 +46,7 @@ services:
         '--collation-server=utf8mb4_unicode_ci'
       ]
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [ "CMD", "healthcheck.sh", "--su=mysql", "--connect", "--innodb_initialized" ]
       timeout: 20s
       retries: 10
 
