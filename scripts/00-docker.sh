@@ -668,7 +668,7 @@ fi
     fi
 # fi
 
-sudo -u www-data php xcat ClientDownload
+
 current_dir=$(pwd)
 crontab -l > cron.tmp
 echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
@@ -679,6 +679,7 @@ crond -b
 echo -n >&2 "\nApplying permissions..."
 chmod 755 -R $current_dir/*
 chown -R www-data:www-data *
+sudo -u www-data php xcat ClientDownload
 # chmod -R 755 storage
 
 echo >&2  "\nAll set, please enjoy!\n\n"

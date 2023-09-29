@@ -39,12 +39,6 @@ services:
       - MARIADB_MYSQL_LOCALHOST_USER=1
     env_file:
       - .env
-    command:
-      [
-        'mariadb',
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_unicode_ci'
-      ]
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--su=mysql", "--connect", "--innodb_initialized" ]
       timeout: 20s
