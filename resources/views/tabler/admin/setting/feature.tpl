@@ -69,6 +69,15 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">اسناد فقط برای کاربران پولی قابل مشاهده باشد</label>
+                                    <div class="col">
+                                        <select id="display_media" class="col form-select" value="{$settings['display_media']}">
+                                            <option value="0" {if ! $settings['display_media']}selected{/if}>غیرفعال</option>
+                                            <option value="1" {if $settings['display_media']}selected{/if}>فعال</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="log">

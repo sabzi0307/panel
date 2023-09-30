@@ -30,6 +30,8 @@ return static function (Slim\App $app): void {
         $group->post('/checkin', App\Controllers\UserController::class . ':doCheckin');
         // 公告
         $group->get('/announcement', App\Controllers\UserController::class . ':announcement');
+        
+        $group->get('/media', App\Controllers\UserController::class . ':media');
         // 文档
         $group->get('/docs', App\Controllers\User\DocsController::class . ':index');
         $group->get('/docs/{id}/view', App\Controllers\User\DocsController::class . ':detail');
