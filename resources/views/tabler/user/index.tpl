@@ -784,7 +784,14 @@
                                                     style="background-color: green;">
                                                     آموزش نصب و استفاده از ShadowRocket
                                                 </a>
+                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEndSharedAccount" role="button"
+                                                    aria-controls="offcanvasEndSharedAccount"
+                                                    style="background-color: green;">
+                                                    آموزش استفاده از اکانت اشتراکی
+                                                </a>
                                                 {include file='user/knowledge/shadowRocket.tpl' ros="all"}
+                                                {include file='user/knowledge/SharedAccount.tpl' accounts=$SharedAccounts}
                                                 <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong></a><br>
