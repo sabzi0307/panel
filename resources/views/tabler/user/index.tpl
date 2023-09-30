@@ -192,7 +192,7 @@
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
-                                
+
                                 <div {if $os eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
                                     id="sub">
                                     <div style="direction: ltr;">
@@ -284,7 +284,8 @@
                                         </div>
                                     </div>
                                 {/if}
-                                <div {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="windows">
+                                <div {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                    id="windows">
                                     <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -304,51 +305,52 @@
                                                         style="background-color: green">
                                                         آموزش نصب و استفاده از iClash
                                                     </a>
-                                                    <br>
-                                                    <br>
-                                                    <strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
-                                                        سازگار با کلش متا:</strong>
-                                                    <br>
-                                                    ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
-                                                    لینک های
-                                                    زیر
-                                                    دانلود
-                                                    کنید.
-                                                    <br>
-                                                    <br>
-                                                    سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong>
-                                                    کلیک کنید و با مشاهده
-                                                    پنجره باز
-                                                    شده در
-                                                    مرورگر
-                                                    بر
-                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
-                                                    نرم
-                                                    افزار Clash
-                                                    افزوده شود.
-
-                                                    <br>
-                                                    <br>
-
+                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
+                                                    <br><br>
+                                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                            سازگار با کلش متا:</strong></a><br>
                                                     <p>
-                                                        لینک اشتراک کلش：<code>{$UniversalSub}/clash</code>
-                                                    </p>
-                                                    <div class="btn-list justify-content-start">
-                                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                                            class="copy btn btn-primary">
-                                                            کپی لینک اشتراک کلش
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
                                                         </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/Clash.Verge.exe" {else}
                                                             href="/clients/Clash.Verge.exe" {/if} class="btn btn-azure">
                                                             دانلود Clash Verge
                                                         </a>
-
-                                                        <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                                            class="btn btn-primary">
-                                                            افزودن خودکار به Clash
-                                                        </a>
                                                     </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و
+                                                        با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار Clash
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به Clash
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -368,35 +370,70 @@
                                                     {include file='user/knowledge/i2RayN.tpl'}
 
                                                     <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#i2rayNcanvasEnd" role="button"
-                                                        aria-controls="i2rayNcanvasEndLabel"
-                                                        style="background-color: green">
-                                                        آموزش نصب و استفاده از i2RayN
+                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
+                                                        style="background-color: green;">
+                                                        آموزش نصب و استفاده از iClash
                                                     </a>
+                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
+                                                    <br><br>
+                                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                            سازگار با کلش متا:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
                                                     <br>
-                                                    <br>
-                                                    <p><strong>جهت استفاده در کلاینت v2rayN:</strong></p>
-                                                    ابتدا نرم افزار i2RayN را با توجه به نوع سیستم عامل از لینک
-                                                    های
-                                                    زیر
-                                                    دانلود
-                                                    کنید.
-
-
-                                                    <div class="btn-list justify-content-start">
-                                                        <a href="/clients/v2rayN-Core.zip" class="btn btn-primary">
-                                                            دانلود v2rayN（Windows）
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/Clash.Verge_x64.dmg" {else}
+                                                            href="/clients/Clash.Verge_x64.dmg" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود (x86_64)
+                                                        </a>
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/Clash.Verge_aarch64.dmg" {else}
+                                                            href="/clients/Clash.Verge_aarch64.dmg" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود (aarch64)
                                                         </a>
                                                     </div>
                                                     <br>
-                                                    <p>
-
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و
+                                                        با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار Clash
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به Clash
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "Mac"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="macos">
+                                <div {if $os eq "Mac"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                    id="macos">
                                     <div class="accordion-item">
                                         <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-2">
@@ -474,8 +511,8 @@
                                                 </button>
                                             </h2>
                                             <div id="mac-1" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEnd"
-                                                    role="button" aria-controls="offcanvasEnd"
+                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
                                                     style="background-color: green;">
                                                     آموزش نصب و استفاده از iClash
                                                 </a>
@@ -506,12 +543,14 @@
                                                     </a>
                                                     <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/Clash.Verge_aarch64.dmg" {else}
-                                                        href="/clients/Clash.Verge_aarch64.dmg" {/if} class="btn btn-azure">
+                                                        href="/clients/Clash.Verge_aarch64.dmg" {/if}
+                                                        class="btn btn-azure">
                                                         دانلود (aarch64)
                                                     </a>
                                                 </div>
                                                 <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و با
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
                                                     مشاهده
                                                     پنجره باز
                                                     شده در
@@ -531,7 +570,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "Droid"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="android">
+                                <div {if $os eq "Droid"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                    id="android">
                                     <div class="accordion-item">
                                         <div class="accordion" id="droid-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -570,8 +610,9 @@
                                                     <br>
                                                     <div style="margin-top: 5px;"
                                                         class="btn-list justify-content-start">
-                                                        <a 
-                                                            {if $config['enable_r2_client_download']} href="/user/clients/SFA.apk" {else} href="/clients/SFA.apk" {/if} class="btn btn-azure">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/SFA.apk" {else} href="/clients/SFA.apk"
+                                                            {/if} class="btn btn-azure">
                                                             SFA دانلود
                                                         </a>
                                                     </div>
@@ -608,8 +649,8 @@
                                                 </button>
                                             </h2>
                                             <div id="droid-2" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEnd"
-                                                    role="button" aria-controls="offcanvasEnd"
+                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
                                                     style="background-color: green;">
                                                     آموزش نصب و استفاده از iClash
                                                 </a>
@@ -640,7 +681,8 @@
                                                     </a>
                                                 </div>
                                                 <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و با
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
                                                     مشاهده
                                                     پنجره باز
                                                     شده در
@@ -660,7 +702,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "iPhone"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="ios">
+                                <div {if $os eq "iPhone"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                    id="ios">
                                     <div class="accordion-item">
                                         <div class="accordion" id="ios-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -695,8 +738,10 @@
                                                         AppStore نصب
                                                         کنید.</a>
                                                     <br>
-                                                    <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                                        <a href="https://apps.apple.com/app/sing-box/id6451272673" target="_blank" class="btn btn-azure">
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a href="https://apps.apple.com/app/sing-box/id6451272673"
+                                                            target="_blank" class="btn btn-azure">
                                                             Sing-Box در AppStore
                                                         </a>
                                                     </div>
@@ -733,8 +778,9 @@
                                                 </button>
                                             </h2>
                                             <div id="ios-2" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEndShadowrocket"
-                                                    role="button" aria-controls="offcanvasEndShadowrocket"
+                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEndShadowrocket" role="button"
+                                                    aria-controls="offcanvasEndShadowrocket"
                                                     style="background-color: green;">
                                                     آموزش نصب و استفاده از ShadowRocket
                                                 </a>
@@ -752,16 +798,18 @@
                                                     </a>
                                                 </p>
                                                 <a>ابتدا نرم افزار ShadowRocket را از
-                                                        AppStore نصب
-                                                        کنید.</a>
-                                                    <br>
-                                                    <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                                        <a href="https://apps.apple.com/app/shadowrocket/id932747118" target="_blank" class="btn btn-azure">
-                                                            ShadowRocket در AppStore
-                                                        </a>
-                                                    </div>
+                                                    AppStore نصب
+                                                    کنید.</a>
                                                 <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و با
+                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
+                                                    <a href="https://apps.apple.com/app/shadowrocket/id932747118"
+                                                        target="_blank" class="btn btn-azure">
+                                                        ShadowRocket در AppStore
+                                                    </a>
+                                                </div>
+                                                <br>
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
                                                     مشاهده
                                                     پنجره باز
                                                     شده در
@@ -790,9 +838,9 @@
                                                 </button>
                                             </h2>
                                             <div id="ios-3" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEndStash"
-                                                    role="button" aria-controls="offcanvasEndStash"
-                                                    style="background-color: green;">
+                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEndStash" role="button"
+                                                    aria-controls="offcanvasEndStash" style="background-color: green;">
                                                     آموزش نصب و استفاده از Stash
                                                 </a>
                                                 {include file='user/knowledge/stash.tpl' ros="all"}
@@ -809,16 +857,18 @@
                                                     </a>
                                                 </p>
                                                 <a>ابتدا نرم افزار Stash را از
-                                                        AppStore نصب
-                                                        کنید.</a>
-                                                    <br>
-                                                    <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                                        <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank" class="btn btn-azure">
-                                                            Stash در AppStore
-                                                        </a>
-                                                    </div>
+                                                    AppStore نصب
+                                                    کنید.</a>
                                                 <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و با
+                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
+                                                    <a href="https://apps.apple.com/app/stash/id1596063349"
+                                                        target="_blank" class="btn btn-azure">
+                                                        Stash در AppStore
+                                                    </a>
+                                                </div>
+                                                <br>
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
                                                     مشاهده
                                                     پنجره باز
                                                     شده در
@@ -840,23 +890,55 @@
                                 </div>
                                 <div {if $os eq "Linux"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
                                     id="linux">
-                                    <p>
-                                        اشتراک برای کلش：<code>{$UniversalSub}/clash</code>
-                                    </p>
-                                    <div class="btn-list justify-content-start">
-                                        <a {if $config['enable_r2_client_download']}
-                                            href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
-                                            href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
-                                            دانلود Clash Verge
-                                        </a>
-                                        <a data-clipboard-text="{$UniversalSub}/clash" class="copy btn btn-primary">
-                                            لینک اشتراک کلش را کپی کنید
-                                        </a>
-                                        <a href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                            class="btn btn-indigo">
-                                            افزودن به Clash
-                                        </a>
-                                    </div>
+                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
+                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
+                                                    style="background-color: green;">
+                                                    آموزش نصب و استفاده از iClash
+                                                </a>
+                                                {include file='user/knowledge/iClash.tpl' ros="all"}
+                                                <br><br>
+                                                <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                        سازگار با کلش متا:</strong></a><br>
+                                                <p>
+                                                    <code class="copy btn-icon"
+                                                        data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                                    <a style="font-size: 90%;" class="copy btn-icon"
+                                                        data-clipboard-text="{$UniversalSub}/clash">
+                                                        کپی
+                                                        <i class="ti ti-copy"></i>
+                                                    </a>
+                                                </p>
+                                                <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                    لینک های
+                                                    زیر
+                                                    دانلود
+                                                    کنید.</a>
+                                                <br>
+                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
+                                                <a {if $config['enable_r2_client_download']}
+                                                    href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
+                                                    href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
+                                                    دانلود Clash Verge
+                                                </a>
+                                                </div>
+                                                <br>
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
+                                                    مشاهده
+                                                    پنجره باز
+                                                    شده در
+                                                    مرورگر
+                                                    بر
+                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                    نرم
+                                                    افزار Clash
+                                                    افزوده شود.</a>
+                                                <br>
+                                                <a style="margin-top: 5px;"
+                                                    href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                    class="btn btn-primary">
+                                                    افزودن خودکار به Clash
+                                                </a>
                                 </div>
                                 <div {if $os eq "Unix"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
                                     id="config">
