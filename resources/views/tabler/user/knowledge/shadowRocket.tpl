@@ -8,7 +8,7 @@
         --tblr-offcanvas-width: 720px;
     }
 </style>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEndShadowrocket" aria-labelledby="offcanvasEndLabel">
     <div class="offcanvas-header">
         <h2 class="offcanvas-title" id="offcanvasEndLabel">>آموزش کار با نرم‌افزار shadowrocket</h2>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
