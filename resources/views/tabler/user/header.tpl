@@ -9,7 +9,7 @@
     <meta name="referrer" content="never">
     <title>{$config['appName']}</title>
     <!-- CSS files -->
-    <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.rtl.min.css" rel="stylesheet" />
     <link href="//{$config['jsdelivr_url']}/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
     <link href="/assets/font/Yekan.css" rel="stylesheet">
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
