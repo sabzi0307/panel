@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اسناد فقط برای کاربران پولی قابل مشاهده باشد</label>
+                                    <label class="form-label col-3 col-form-label">نمایش استریم های مسدود</label>
                                     <div class="col">
                                         <select id="display_media" class="col form-select" value="{$settings['display_media']}">
                                             <option value="0" {if ! $settings['display_media']}selected{/if}>غیرفعال</option>

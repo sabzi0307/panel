@@ -130,7 +130,7 @@
                                     {if $public_setting['display_media']}
                                     <a class="dropdown-item" href="/user/media">
                                         <i class="ti ti-key"></i>&nbsp;
-                                        استریم های مسدود شده
+                                        استریم های مسدود
                                     </a>
                                     {/if}
                                 </div>
