@@ -143,6 +143,7 @@ return static function (Slim\App $app): void {
         $group->put('/node/{id}', App\Controllers\Admin\NodeController::class . ':update');
         $group->delete('/node/{id}', App\Controllers\Admin\NodeController::class . ':delete');
         $group->post('/node/ajax', App\Controllers\Admin\NodeController::class . ':ajax');
+        $group->get('/node/{id}/edit_node', App\Controllers\Admin\NodeController::class . ':editNode');
         // Ticket
         $group->get('/ticket', App\Controllers\Admin\TicketController::class . ':index');
         $group->post('/ticket', App\Controllers\Admin\TicketController::class . ':add');
