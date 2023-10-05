@@ -78,7 +78,7 @@ final class PayPal extends AbstractPayment
         if ($price <= 0) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => '非法的金额',
+                'msg' => 'مقدار غیرمجاز',
             ]);
         }
 

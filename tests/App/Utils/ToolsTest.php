@@ -15,7 +15,7 @@ class ToolsTest extends TestCase
     {
         $_ENV['maxmind_license_key'] = '';
         $msg = Tools::getIpLocation('8.8.8.8');
-        $this->assertEquals('GeoIP2 服务未配置', $msg);
+        $this->assertEquals('سرویس GeoIP2 پیکربندی نشده است', $msg);
     }
 
     /**
