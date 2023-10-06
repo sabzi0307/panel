@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\Config;
 use GeoIp2\Exception\AddressNotFoundException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
+use Morilog\Jalali\Jalalian;
 use function array_diff;
 use function array_flip;
 use function base64_encode;
@@ -239,7 +240,9 @@ final class Tools
 
     public static function toDateTime(int $time): string
     {
-        return date('Y-m-d H:i:s', $time);
+        // return date('Y-m-d H:i:s', $time);
+        $date = Jalalian::forge($time)->format('%A, %d %B %Y-H:i:s');
+        return \Morilog\Jalali\CalendarUtils::convertNumbers($date);
     }
 
     public static function getSsPort(): int

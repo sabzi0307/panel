@@ -26,6 +26,7 @@
         "lcobucci/jwt": "^5.0",
         "league/omnipay": "^3.2.1",
         "mailgun/mailgun-php": "^3",
+        "morilog/jalali": "3.*",
         "nikolaposa/rate-limit": "^3.0",
         "openai-php/client": "^0.7",
         "ozdemir/datatables": "^2",

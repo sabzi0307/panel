@@ -60,6 +60,9 @@ final class OrderController extends BaseController
         $order->update_time = Tools::toDateTime($order->update_time);
 
         $product_content = json_decode($order->product_content);
+        if (!property_exists($product_content, 'bandwidth')) {
+            $product_content->bandwidth = 0;
+        }
 
         $invoice = Invoice::where('order_id', $id)->first();
         $invoice->status = $invoice->status();
