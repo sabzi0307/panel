@@ -38,6 +38,8 @@ final class UserController extends BaseController
         $captcha = [];
         $class_expire_days = $this->user->class > 0 ?
             round((strtotime($this->user->class_expire) - time()) / 86400) : 0;
+        $class_expire = $this->user->class > 0 ?
+            (Tools::toDateTime(strtotime($this->user->class_expire))) : 0;
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $captcha = Captcha::generate();
@@ -68,6 +70,7 @@ final class UserController extends BaseController
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
                 ->assign('captcha', $captcha)
                 ->assign('class_expire_days', $class_expire_days)
+                ->assign('class_expire', $class_expire)
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
                 ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))

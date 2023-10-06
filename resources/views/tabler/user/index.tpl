@@ -1015,8 +1015,8 @@
                                     بسته شما منقضی شده است . لطفا جهت خرید بسته به <a href="/user/product">فروشگاه</a>
                                     مراجعه فرمایید.
                                 {else}
-                                    LV شما حساب {$user->class} در {$class_expire_days} روز دیگر منقضی می‌شود
-                                    ({$user->class_expire})
+                                    سطح حساب شما {$user->class} و تا {$class_expire_days} روز دیگر معتبر است.
+                                    ({$class_expire})
                                 {/if}
                             </p>
                         </div>
@@ -1070,7 +1070,7 @@
                             <div class="card-footer">
                                 <div class="d-flex">
                                     {if ! $user->isAbleToCheckin()}
-                                        <button id="check-in" class="btn btn-primary ms-auto" disabled>بررسی</button>
+                                        <button id="check-in" class="btn btn-primary ms-auto" disabled>امروز استفاده شده</button>
                                     {else}
                                         {if $public_setting['enable_checkin_captcha']}
                                             {if $public_setting['captcha_provider'] === 'turnstile'}

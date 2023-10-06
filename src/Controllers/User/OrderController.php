@@ -99,7 +99,7 @@ final class OrderController extends BaseController
         $order->status = $order->status();
         $order->create_time = Tools::toDateTime($order->create_time);
         $order->update_time = Tools::toDateTime($order->update_time);
- 
+
         $product_content = json_decode($order->product_content);
         if (! property_exists($product_content, 'bandwidth')) {
             $product_content->bandwidth = 0;
