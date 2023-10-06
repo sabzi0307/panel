@@ -39,7 +39,7 @@ final class UserController extends BaseController
         $class_expire_days = $this->user->class > 0 ?
             round((strtotime($this->user->class_expire) - time()) / 86400) : 0;
         $class_expire = $this->user->class > 0 ?
-            (Tools::toDateTime(strtotime($this->user->class_expire))) : 0;
+            Tools::toDateTime(strtotime($this->user->class_expire)) : 0;
 
         if (Setting::obtain('enable_checkin_captcha')) {
             $captcha = Captcha::generate();
