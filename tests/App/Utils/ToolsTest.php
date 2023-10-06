@@ -119,7 +119,7 @@ class ToolsTest extends TestCase
     public function testToDateTime()
     {
         $time = 1630512000; // September 1, 2021 16:00:00
-        $expected = '2021-09-01 16:00:00';
+        $expected = 'چهارشنبه, ۱۰ شهریور ۱۴۰۰-۱۶:۰۰:۰۰';
         $this->assertEquals($expected, Tools::toDateTime($time));
     }
 

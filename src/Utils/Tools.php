@@ -16,7 +16,6 @@ use function array_flip;
 use function base64_encode;
 use function bin2hex;
 use function closedir;
-use function date;
 use function explode;
 use function filter_var;
 use function floor;
