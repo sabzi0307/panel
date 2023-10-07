@@ -95,8 +95,7 @@ final class SingBox extends Base
                     $alter_id = $node_custom_config['alter_id'] ?? '0';
                     $security = $node_custom_config['security'] ?? 'auto';
                     $transport = ($node_custom_config['network'] ?? '') === 'tcp' ? '' : $node_custom_config['network'];
-                    $host = [];
-                    $host[] = $node_custom_config['header']['request']['headers']['Host'][0] ??
+                    $host = $node_custom_config['header']['request']['headers']['Host'][0] ??
                         $node_custom_config['host'] ?? '';
                     $path = $node_custom_config['header']['request']['path'][0] ?? $node_custom_config['path'] ?? '';
                     $headers = $node_custom_config['header']['request']['headers'] ?? [];
@@ -110,15 +109,18 @@ final class SingBox extends Base
                         'uuid' => $user->uuid,
                         'security' => $security,
                         'alter_id' => (int) $alter_id,
+                        'tls' => [
+                            'server_name' => $host,
+                        ],
                         'transport' => [
                             'type' => $transport,
-                            'host' => $host,
                             'path' => $path,
                             'headers' => $headers,
                             'service_name' => $service_name,
                         ],
                     ];
 
+                    $node['tls'] = array_filter($node['tls']);
                     $node['transport'] = array_filter($node['transport']);
 
                     break;
@@ -139,7 +141,6 @@ final class SingBox extends Base
                         'server_port' => (int) $trojan_port,
                         'password' => $user->uuid,
                         'tls' => [
-                            'enabled' => true,
                             'server_name' => $host,
                             'insecure' => (bool) $allow_insecure,
                         ],
