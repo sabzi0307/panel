@@ -89,6 +89,7 @@ $_ENV['enable_login_bind_ip']   = false;        //bind the login thread to the I
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 $_ENV['timeZone']               = 'Asia/Tehran';         //Requires a PHP-compatible timezone format
 $_ENV['theme']                  = 'tabler';              //Default Theme
+$_ENV['locale']                 = 'fa-IR';          //default language
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
 $_ENV['keep_connect']           = false;               // Speed limit to 1Mbps for traffic exhausted users
 
