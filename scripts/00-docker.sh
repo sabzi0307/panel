@@ -283,6 +283,10 @@ if [ "$INIT" = true ];then
         echo >&2 "timeZone not set! using Asia/Tehran "
         timeZone="Asia/Tehran"
     fi
+    if [ -z "$locale" ];then
+        echo >&2 "locale not set! using fa-IR "
+        locale="fa-IR"
+    fi
     if [ -z "$theme" ];then
         echo >&2 "theme not set! using Asia/Tehran "
         theme="tabler"
@@ -520,6 +524,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['enable_login_bind_ip']   = $enable_login_bind_ip;        //Whether to bind the login thread to the IP
 \$_ENV['rememberMeDuration']     = $rememberMeDuration;           //Remember the number of days of account duration when logging in
 \$_ENV['timeZone']               = '$timeZone';         //Requires a PHP-compatible timezone format
+\$_ENV['locale']                  = '$locale';              //Default language
 \$_ENV['theme']                  = '$theme';              //Default Theme
 \$_ENV['jump_delay']             = $jump_delay;                  //Jump delay, in ms, it is not recommended to be too long
 \$_ENV['keep_connect']           = $keep_connect;               // Speed limit to 1Mbps for traffic exhausted users

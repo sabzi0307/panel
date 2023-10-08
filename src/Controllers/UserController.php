@@ -14,7 +14,6 @@ use App\Models\Setting;
 use App\Models\StreamMedia;
 use App\Services\Auth;
 use App\Services\Captcha;
-use App\Services\DB;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use Exception;
@@ -135,13 +134,12 @@ final class UserController extends BaseController
     public function media(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $results = [];
-        $pdo = DB::getPdo();
-        $nodes = $pdo->query('SELECT DISTINCT node_id FROM stream_media');
+        $nodes = Node::all();
 
-        foreach ($nodes as $node_id) {
-            $node = Node::where('id', $node_id)->first();
+        foreach ($nodes as $node) {
+            $node = Node::where('id', $node)->first();
 
-            $unlock = StreamMedia::where('node_id', $node_id)
+            $unlock = StreamMedia::where('node_id', $node)
                 ->orderBy('id', 'desc')
                 ->where('created_at', '>', time() - 86400) // 只获取最近一天内上报的数据
                 ->first();
@@ -170,6 +168,23 @@ final class UserController extends BaseController
         return $response->write($this->view()
             ->assign('results', $results)
             ->fetch('user/media.tpl'));
+    }
+    
+    /**
+     * @throws Exception
+     */
+    public function dns(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $results = [];
+        $ips = SmartDns::where('userid', $this->user->id);
+
+        foreach ($ips as $ip) {
+
+        }
+
+        return $response->write($this->view()
+            ->assign('results', $results)
+            ->fetch('user/smart_dns.tpl'));
     }
 
     /**

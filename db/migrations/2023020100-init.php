@@ -308,7 +308,8 @@ return new class() implements MigrationInterface {
                 `api_token` char(36) NOT NULL DEFAULT '' COMMENT 'API key',
                 `is_dark_mode` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否启用暗黑模式',
                 `is_inactive` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否处于闲置状态',
-                `locale` varchar(16) NOT NULL DEFAULT 'zh-TW' COMMENT 'display language',
+                `locale` varchar(16) NOT NULL DEFAULT 'fa-IR' COMMENT 'display language',
+                `smart_dns` smallint(5) unsigned NOT NULL DEFAULT 0 COMMENT 'smart dns ip count',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `uuid` (`uuid`),
                 UNIQUE KEY `email` (`email`),
@@ -366,26 +367,37 @@ return new class() implements MigrationInterface {
                 KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-        CREATE TABLE `stream_media` (
-            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-            `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID',
-            `result` text NOT NULL DEFAULT '' COMMENT 'Test results',
-            `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            CREATE TABLE `stream_media` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID',
+                `result` text unsigned NOT NULL DEFAULT '' COMMENT 'Test results',
+                `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
+                PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-        CREATE TABLE `shared_account` (
-            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-            `priority` int(11) DEFAULT NULL COMMENT 'node id',
-            `status` int(11) DEFAULT NULL COMMENT 'Test results',
-            `created_at` int(11) DEFAULT NULL COMMENT 'created time',
-            `updated_at` int(11) DEFAULT NULL COMMENT 'updated time',
-            `account` varchar(255) DEFAULT NULL COMMENT 'user name',
-            `password` varchar(255) DEFAULT NULL COMMENT 'account password',
-            `country` varchar(255) DEFAULT NULL COMMENT 'account registerd country',
-            UNIQUE KEY (`account`),
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
+            CREATE TABLE `shared_account` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `priority` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'node id',
+                `status` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Test results',
+                `create_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
+                `update_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'update time',
+                `account` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'user name',
+                `password` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'account password',
+                `country` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'account registerd country',
+                UNIQUE KEY (`account`),
+                PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            CREATE TABLE `smart_dns` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user ID',
+                `ip` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'dns Login IP',
+                `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
+                `updated_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'updated time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY (`ip`),
+                KEY `userid` (`userid`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
         );
 
         return 2023020100;

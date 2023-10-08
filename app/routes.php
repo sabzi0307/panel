@@ -31,6 +31,7 @@ return static function (Slim\App $app): void {
         // 公告
         $group->get('/announcement', App\Controllers\UserController::class . ':announcement');
 
+        $group->get('/dns', App\Controllers\UserController::class . ':dns');
         $group->get('/media', App\Controllers\UserController::class . ':media');
         // 文档
         $group->get('/docs', App\Controllers\User\DocsController::class . ':index');
