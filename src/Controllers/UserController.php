@@ -11,6 +11,7 @@ use App\Models\Node;
 use App\Models\OnlineLog;
 use App\Models\Payback;
 use App\Models\Setting;
+use App\Models\SmartDns;
 use App\Models\StreamMedia;
 use App\Services\Auth;
 use App\Services\Captcha;
@@ -168,23 +169,6 @@ final class UserController extends BaseController
         return $response->write($this->view()
             ->assign('results', $results)
             ->fetch('user/media.tpl'));
-    }
-    
-    /**
-     * @throws Exception
-     */
-    public function dns(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
-    {
-        $results = [];
-        $ips = SmartDns::where('userid', $this->user->id);
-
-        foreach ($ips as $ip) {
-
-        }
-
-        return $response->write($this->view()
-            ->assign('results', $results)
-            ->fetch('user/smart_dns.tpl'));
     }
 
     /**

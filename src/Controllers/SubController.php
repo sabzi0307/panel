@@ -8,7 +8,6 @@ use App\Models\Link;
 use App\Models\Setting;
 use App\Models\SharedAccount;
 use App\Models\SubscribeLog;
-use App\Services\DB;
 use App\Services\RateLimit;
 use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
@@ -189,13 +188,12 @@ final class SubController extends BaseController
     public static function getSharedAccounts($user): array
     {
         $results = [];
-        $pdo = DB::getPdo();
-        $accounts = $pdo->query('SELECT DISTINCT account FROM shared_account');
+        $accounts = SharedAccount::where('updated_at', '>', time() - 1200);
 
-        foreach ($accounts as $user_id) {
-            $id = SharedAccount::where('account', $user_id)
-                ->where('updated_at', '>', time() - 1200) // 只获取最近一天内上报的数据
-                ->first();
+        foreach ($accounts as $id) {
+            // $id = SharedAccount::where('account', $user_id)
+            //     ->where('updated_at', '>', time() - 1200) // 只获取最近一天内上报的数据
+            //     ->first();
 
             if ($id !== null) {
                 $info = [];

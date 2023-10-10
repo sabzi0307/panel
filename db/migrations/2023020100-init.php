@@ -370,7 +370,7 @@ return new class() implements MigrationInterface {
             CREATE TABLE `stream_media` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `node_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node ID',
-                `result` text unsigned NOT NULL DEFAULT '' COMMENT 'Test results',
+                `result` text NOT NULL DEFAULT '' COMMENT 'Test results',
                 `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -381,9 +381,9 @@ return new class() implements MigrationInterface {
                 `status` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Test results',
                 `create_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 `update_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'update time',
-                `account` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'user name',
-                `password` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'account password',
-                `country` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'account registerd country',
+                `account` varchar(255) NOT NULL DEFAULT '' COMMENT 'user name',
+                `password` varchar(255) NOT NULL DEFAULT '' COMMENT 'account password',
+                `country` varchar(255) NOT NULL DEFAULT '' COMMENT 'account registerd country',
                 UNIQUE KEY (`account`),
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -391,7 +391,7 @@ return new class() implements MigrationInterface {
             CREATE TABLE `smart_dns` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user ID',
-                `ip` varchar(255) unsigned NOT NULL DEFAULT '' COMMENT 'dns Login IP',
+                `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'dns Login IP',
                 `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
                 `updated_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'updated time',
                 PRIMARY KEY (`id`),
