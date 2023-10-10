@@ -31,7 +31,13 @@ return static function (Slim\App $app): void {
         // 公告
         $group->get('/announcement', App\Controllers\UserController::class . ':announcement');
 
-        $group->get('/dns', App\Controllers\UserController::class . ':dns');
+        $group->get('/dns', App\Controllers\User\SmartDnsController::class . ':index');
+        $group->post('/dns', App\Controllers\User\SmartDnsController::class . ':add');
+        $group->put('/dns/{id}', App\Controllers\User\SmartDnsController::class . ':update');
+        $group->delete('/dns/{id}', App\Controllers\User\SmartDnsController::class . ':delete');
+        $group->post('/dns/ajax', App\Controllers\User\SmartDnsController::class . ':ajax');
+        
+
         $group->get('/media', App\Controllers\UserController::class . ':media');
         // 文档
         $group->get('/docs', App\Controllers\User\DocsController::class . ':index');

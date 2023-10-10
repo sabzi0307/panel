@@ -392,6 +392,7 @@ return new class() implements MigrationInterface {
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user ID',
                 `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'dns Login IP',
+                `mark` varchar(255) NOT NULL DEFAULT '' COMMENT 'Remark',
                 `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
                 `updated_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'updated time',
                 PRIMARY KEY (`id`),
