@@ -620,10 +620,11 @@ fi
             then
                 echo "Table has records ..."
             else
-                echo "Table is empty ..."
-                echo >&2 "Importing config to database..."
+                echo "Install Composer ..."
                 composer install --no-dev
                 composer selfupdate
+                echo "Table is empty ..."
+                echo >&2 "Importing config to database..."
                 php xcat Migration new
                 php xcat Tool importAllSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
@@ -652,10 +653,11 @@ fi
             then
                 echo "Table has records ..."
             else
-                echo "Table is empty ..."
-                echo >&2 "Importing config to database..."
+                echo "Install Composer ..."
                 composer install --no-dev
                 composer selfupdate
+                echo "Table is empty ..."
+                echo >&2 "Importing config to database..."
                 php xcat Migration new
                 php xcat Tool importAllSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
