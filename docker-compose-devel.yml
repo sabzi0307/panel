@@ -14,8 +14,6 @@ services:
     image: ttracy/panel:latest
     container_name: sspanel
     restart: always
-    environment:
-      - ENABLE_XDEBUG=1
     volumes:
       - ./:/var/www/html
     links:
@@ -23,7 +21,6 @@ services:
       - redis
     ports:
       - 80:80
-      - 443:443
       - 9003:9003
     env_file:
       - .env
