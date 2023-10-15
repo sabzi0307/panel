@@ -1,6 +1,126 @@
 [
     {
         "id": null,
+        "item": "nowpayments_url",
+        "value": "https://api.nowpayments.io/v1/",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "https://api.nowpayments.io/v1/",
+        "mark": "NowPayments Base Url"
+    },
+    {
+        "id": null,
+        "item": "nowpayments_api_key",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "NowPayments Api Key"
+    },
+    {
+        "id": null,
+        "item": "nowpayments_ipn_secret",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "NowPayments ipn Secret"
+    },
+    {
+        "id": null,
+        "item": "nowpayments_price_currency",
+        "value": "usd",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "usd",
+        "mark": "NowPayments Price Currency"
+    },
+    {
+        "id": null,
+        "item": "nowpayments_pay_currency",
+        "value": "usdt",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "usdt",
+        "mark": "NowPayments Pay Currency"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_url",
+        "value": "https://perfectmoney.is/acct/",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "https://perfectmoney.is/acct/",
+        "mark": "Perfect Money Base Url"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_account_id",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Account ID"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_payee_account",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Payee Account"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_pass_phrase",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Pass Phrase"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_alter_pass_phrase",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Alternate Pass Phrase"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney_currency",
+        "value": "USD",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "USD",
+        "mark": "Perfect Money currency"
+    },
+    {
+        "id": null,
+        "item": "perfectmoney",
+        "value": "1",
+        "class": "billing",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Perfect Money"
+    },
+    {
+        "id": null,
         "item": "payment_gateway",
         "value": "[]",
         "class": "billing",
@@ -59,7 +179,7 @@
         "default": "",
         "mark": "Personal payment custom callback address"
     },
-        {
+    {
         "id": null,
         "item": "stripe_currency",
         "value": "USD",
