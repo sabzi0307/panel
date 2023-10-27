@@ -149,3 +149,16 @@ html, body, h1, h2 {
 table.dataTable thead th,table.dataTable thead td,table.dataTable tfoot th,table.dataTable tfoot td {
   text-align: unset !important;
 }
+
+table.dataTable td.dt-control:before {
+  transform: scaleX(-1);
+}
+
+div.DTE div.DTE_Header {
+  font-size: 1.1em;
+}
+
+div.DTE div.DTE_Header {
+  right: unset;
+  left: 0;
+}

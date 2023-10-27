@@ -62,7 +62,8 @@ final class UserController extends BaseController
                 user.port,
                 user.passwd,
                 user.uuid,
-                IF(online_log.count IS NULL, 0, online_log.count) AS alive_ip
+                IF(online_log.count IS NULL, 0, online_log.count) AS alive_ip,
+                smart_dns.ip AS dns_ip
             FROM
                 user LEFT JOIN (
                     SELECT
@@ -74,6 +75,13 @@ final class UserController extends BaseController
                     GROUP BY
                         user_id
                 ) AS online_log ON online_log.user_id = user.id
+                LEFT JOIN (
+                    SELECT
+                        userid,
+                        ip
+                    FROM
+                        smart_dns
+                ) AS smart_dns ON smart_dns.userid = user.id
             WHERE
                 user.is_banned = 0
                 AND user.class_expire > CURRENT_TIMESTAMP()
@@ -86,10 +94,11 @@ final class UserController extends BaseController
         ', [$node->node_class, $node->node_group, $node->node_group]);
 
         $keys_unset = match ((int) $node->sort) {
-            14, 11 => ['u', 'd', 'transfer_enable', 'method', 'port', 'passwd'],
-            2 => ['u', 'd', 'transfer_enable', 'method', 'port'],
-            1 => ['u', 'd', 'transfer_enable', 'method', 'port', 'uuid'],
-            default => ['u', 'd', 'transfer_enable', 'uuid']
+            14, 11 => ['u', 'd', 'transfer_enable', 'method', 'port', 'passwd', 'dns_ip'],
+            3 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip', 'uuid'],
+            2 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip'],
+            1 => ['u', 'd', 'transfer_enable', 'method', 'port', 'uuid', 'dns_ip'],
+            default => ['u', 'd', 'transfer_enable', 'uuid', 'dns_ip']
         };
 
         $users = [];
@@ -113,6 +122,22 @@ final class UserController extends BaseController
                 };
 
                 $user_raw->passwd = Tools::genSs2022UserPk($user_raw->passwd, $pk_len);
+            }
+
+            if ($node->sort === 3) {
+                // $user_raw->passwd = $user_raw->dns_ip ?: "";
+                $dns_ips = [];
+        
+                // حلقه بر روی تمام dns_ip های کاربر
+                foreach ($users_raw as $user) {
+                    $dns_ip = $user->dns_ip;
+                    if (!empty($dns_ip)) {
+                        $dns_ips[] = $dns_ip;
+                    }
+                }
+                
+                // تبدیل آدرس‌های IP به یک رشته جداشده توسط ویرگول
+                $user_raw->passwd = implode(", ", $dns_ips);
             }
 
             $user_raw->node_connector = 0;

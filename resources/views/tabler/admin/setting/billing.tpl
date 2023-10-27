@@ -45,6 +45,12 @@
                         <li class="nav-item">
                             <a href="#paypal" class="nav-link" data-bs-toggle="tab">PayPal</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#perfectmoney" class="nav-link" data-bs-toggle="tab">PerfectMoney</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#nowpayments" class="nav-link" data-bs-toggle="tab">NowPayments</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -254,6 +260,80 @@
                                     <label class="form-label col-3 col-form-label">زبان پی پال</label>
                                     <div class="col">
                                         <input id="paypal_locale" type="text" class="form-control" value="{$settings['paypal_locale']}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="perfectmoney">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">آدرس Api درگاه</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_url" type="text" class="form-control" value="{$settings['perfectmoney_url']}" style="direction: ltr;">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">شناسه مشتری</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_account_id" type="text" class="form-control" value="{$settings['perfectmoney_account_id']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Payee Account</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_payee_account" type="text" class="form-control" value="{$settings['perfectmoney_payee_account']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Pass Phrase</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_pass_phrase" type="text" class="form-control" value="{$settings['perfectmoney_pass_phrase']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Pass Alternate Phrase</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_alter_pass_phrase" type="text" class="form-control" value="{$settings['perfectmoney_alter_pass_phrase']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Currency</label>
+                                    <div class="col">
+                                        <input id="perfectmoney_currency" type="text" class="form-control" value="{$settings['perfectmoney_currency']}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="nowpayments">
+                            <div class="card-body">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">آدرس Api درگاه</label>
+                                    <div class="col">
+                                        <input id="nowpayments_url" type="text" class="form-control" value="{$settings['nowpayments_url']}" style="direction: ltr;">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Api Key</label>
+                                    <div class="col">
+                                        <input id="nowpayments_api_key" type="text" class="form-control" value="{$settings['nowpayments_api_key']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">IPN Secret</label>
+                                    <div class="col">
+                                        <input id="nowpayments_ipn_secret" type="text" class="form-control" value="{$settings['nowpayments_ipn_secret']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Price Currency</label>
+                                    <div class="col">
+                                        <input id="nowpayments_price_currency" type="text" class="form-control" value="{$settings['nowpayments_price_currency']}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">PayCurrency</label>
+                                    <div class="col">
+                                        <input id="nowpayments_pay_currency" type="text" class="form-control" value="{$settings['nowpayments_pay_currency']}">
                                     </div>
                                 </div>
                             </div>

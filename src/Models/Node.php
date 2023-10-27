@@ -39,7 +39,7 @@ final class Node extends Model
      */
     public function type(): string
     {
-        return $this->type ? 'نشان دادن' : 'پنهان شدن';
+        return $this->type ? 'نشان دادن' : 'عدم نمایش';
     }
 
     /**
@@ -51,6 +51,7 @@ final class Node extends Model
             0 => 'Shadowsocks',
             1 => 'Shadowsocks2022',
             2 => 'TUIC',
+            3 => 'Http',
             11 => 'V2Ray',
             14 => 'Trojan',
             default => 'ناشناخته',

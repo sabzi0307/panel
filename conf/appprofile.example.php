@@ -2,6 +2,95 @@
 
 declare(strict_types=1);
 
+#Cloudflare
+$_ENV['Internet_Service_Providers'] = array(
+    array(
+        'AsName' => "Mobin Net Communication Company",
+        'AsNum' => array("47330", "50810"),
+        "Name" => "مبین‌نت",
+    ),
+    array(
+        'AsName' => "Andishe SABZ Khazar Co P.j.s",
+        'AsNum' => array("39308"),
+        "Name" => "اندیشه‌سبز",
+    ),
+    array(
+        'AsName' => "Mobile Communication Company of Iran PLC",
+        'AsNum' => array("197207"),
+        "Name" => "همراه‌اول",
+    ),
+    array(
+        'AsName' => "Iran Cell Service and Communication Company",
+        'AsNum' => array("44244"),
+        "Name" => "ایرانسل",
+    ),
+    array(
+        'AsName' => "Iran Telecommunication Company PJS",
+        'AsNum' => array("58224"),
+        "Name" => "مخابرات",
+    ),
+    array(
+        'AsName' => "Rightel Communication Service Company PJS",
+        'AsNum' => array("197206", "57218"),
+        "Name" => "رایتل",
+    ),
+    array(
+        'AsName' => "Aria Shatel Company Ltd",
+        'AsNum' => array("31549"),
+        "Name" => "شاتل",
+    ),
+    array(
+        'AsName' => "Pars Online PJS",
+        'AsNum' => array("16322", "60976"),
+        "Name" => "پارس‌آنلاین",
+    ),
+    array(
+        'AsName' => "Asiatech Data Transmission company",
+        'AsNum' => array("43754", "51433", "211421"),
+        "Name" => "آسیاتک",
+    ),
+    array(
+        'AsName' => "Afranet",
+        'AsNum' => array("25184"),
+        "Name" => "افرانت",
+    ),
+    array(
+        'AsName' => "Respina Networks & Beyond PJSC",
+        'AsNum' => array("42337", "205207"),
+        "Name" => "رسپینا",
+    ),
+    array(
+        'AsName' => "Rayaneh Danesh Golestan Complex P.J.S. Co.",
+        'AsNum' => array("42440"),
+        "Name" => "های‌وب",
+    ),
+    array(
+        'AsName' => "Pishgaman Toseeh Ertebatat Company",
+        'AsNum' => array("3263", "34918", "49100", "56660", "57755", "57831", "58216", "59481", "208828"),
+        "Name" => "پیشگامان",
+    ),
+    array(
+        'AsName' => "Farabord Dadeh Haye Iranian Co.",
+        'AsNum' => array("206065"),
+        "Name" => "زیتل",
+    ),
+    array(
+        'AsName' => "Tose'h Fanavari Ertebabat Pasargad Arian Co. PJS",
+        'AsNum' => array("24631", "43343", "203558"),
+        "Name" => "آراکس",
+    ),
+    array(
+        'AsName' => "Kish Cell Pars Co. (PJS)",
+        'AsNum' => array("209596"),
+        "Name" => "سامانتل",
+    ),
+    array(
+        'AsName' => "Fanava Group",
+        'AsNum' => array("41881", "60637"),
+        "Name" => "فن‌آوا",
+    )
+);
+
 $_ENV['SingBox_Config'] = [
     'log' => [
         'level' => 'error',

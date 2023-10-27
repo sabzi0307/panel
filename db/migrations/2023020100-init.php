@@ -309,7 +309,7 @@ return new class() implements MigrationInterface {
                 `is_dark_mode` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否启用暗黑模式',
                 `is_inactive` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否处于闲置状态',
                 `locale` varchar(16) NOT NULL DEFAULT 'fa-IR' COMMENT 'display language',
-                `smart_dns` smallint(5) unsigned NOT NULL DEFAULT -1 COMMENT 'smart dns ip count',
+                `smart_dns` smallint(5) unsigned DEFAULT NULL COMMENT 'smart dns ip count',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `uuid` (`uuid`),
                 UNIQUE KEY `email` (`email`),

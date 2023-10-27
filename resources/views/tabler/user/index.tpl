@@ -127,9 +127,9 @@
                     <div class="card">
                         <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                <a href="#sub" data-bs-toggle="tab" {if $os eq "Unknown"} class="nav-link active" 
-                                {else}
-                                    class="nav-link" {/if}>
+                                <a href="#sub" data-bs-toggle="tab" {if $osFamily eq "Unknown"} class="nav-link active"
+                                    {else} class="nav-link" 
+                                    {/if}>
                                     <i class="ti ti-rss icon"></i>
                                     &nbsp;پروفایل ها
                                 </a>
@@ -143,58 +143,68 @@
                                 </li>
                             {/if}
                             <li class="nav-item">
-                                <a href="#windows" {if $os eq "Windows"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
+                                <a href="#windows" {if $osFamily eq "Windows"} class="nav-link active" 
+                                {else}
+                                    class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-windows icon"></i>
                                     &nbsp;ویندوز
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#macos" {if $os eq "Mac"} class="nav-link active" {else} class="nav-link" {/if}
-                                    data-bs-toggle="tab">
+                                <a href="#macos" {if $osFamily eq "Mac"} class="nav-link active" 
+                                {else} class="nav-link"
+                                    {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-finder icon"></i>
                                     &nbsp;مکینتاش
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#android" {if $os eq "Droid"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
+                                <a href="#android" {if $osFamily eq "Droid"} class="nav-link active" 
+                                {else}
+                                    class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-android icon"></i>
                                     &nbsp;اندروید
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#ios" {if $os eq "iPhone"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
+                                <a href="#ios" {if $osFamily eq "iPhone"} class="nav-link active" 
+                                {else}
+                                    class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-apple icon"></i>
                                     &nbsp;آی او اس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#linux" {if $os eq "Linux"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
+                                <a href="#linux" {if $osFamily eq "Linux"} class="nav-link active" 
+                                {else}
+                                    class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-brand-redhat icon"></i>
                                     &nbsp;لینوکس
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#config" {if $os eq "Unix"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
+                                <a href="#config" {if $osFamily eq "Unix"} class="nav-link active" 
+                                {else}
+                                    class="nav-link" {/if} data-bs-toggle="tab">
                                     <i class="ti ti-file-text icon"></i>
                                     &nbsp;تنظیمات
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#dns" {if $osFamily eq "TV"} class="nav-link active" 
+                                {else} class="nav-link"
+                                    {/if} data-bs-toggle="tab">
+                                    <i class="ti ti-device-tv-old icon"></i>
+                                    &nbsp;SmartDNS
                                 </a>
                             </li>
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
 
-                                <div {if $os eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="sub">
+                                <div {if $osFamily eq "Unknown"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="sub">
                                     <div style="direction: ltr;">
                                         <p>
                                             JSON: <code class="copy btn-icon"
@@ -284,8 +294,9 @@
                                         </div>
                                     </div>
                                 {/if}
-                                <div {if $os eq "Windows"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="windows">
+                                <div {if $osFamily eq "Windows"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="windows">
                                     <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -432,8 +443,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "Mac"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="macos">
+                                <div {if $osFamily eq "Mac"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="macos">
                                     <div class="accordion-item">
                                         <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-2">
@@ -570,8 +582,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "Droid"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="android">
+                                <div {if $osFamily eq "Droid"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="android">
                                     <div class="accordion-item">
                                         <div class="accordion" id="droid-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -702,8 +715,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "iPhone"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="ios">
+                                <div {if $osFamily eq "iPhone"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="ios">
                                     <div class="accordion-item">
                                         <div class="accordion" id="ios-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -895,60 +909,61 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div {if $os eq "Linux"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="linux">
-                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                    style="background-color: green;">
-                                                    آموزش نصب و استفاده از iClash
-                                                </a>
-                                                {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                <br><br>
-                                                <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
-                                                        سازگار با کلش متا:</strong></a><br>
-                                                <p>
-                                                    <code class="copy btn-icon"
-                                                        data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$UniversalSub}/clash">
-                                                        کپی
-                                                        <i class="ti ti-copy"></i>
-                                                    </a>
-                                                </p>
-                                                <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
-                                                    لینک های
-                                                    زیر
-                                                    دانلود
-                                                    کنید.</a>
-                                                <br>
-                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                                <a {if $config['enable_r2_client_download']}
-                                                    href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
-                                                    href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
-                                                    دانلود Clash Verge
-                                                </a>
-                                                </div>
-                                                <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
-                                                    با
-                                                    مشاهده
-                                                    پنجره باز
-                                                    شده در
-                                                    مرورگر
-                                                    بر
-                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
-                                                    نرم
-                                                    افزار Clash
-                                                    افزوده شود.</a>
-                                                <br>
-                                                <a style="margin-top: 5px;"
-                                                    href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                                    class="btn btn-primary">
-                                                    افزودن خودکار به Clash
-                                                </a>
+                                <div {if $osFamily eq "Linux"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="linux">
+                                    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEnd"
+                                        role="button" aria-controls="offcanvasEnd" style="background-color: green;">
+                                        آموزش نصب و استفاده از iClash
+                                    </a>
+                                    {include file='user/knowledge/iClash.tpl' ros="all"}
+                                    <br><br>
+                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                            سازگار با کلش متا:</strong></a><br>
+                                    <p>
+                                        <code class="copy btn-icon"
+                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                            data-clipboard-text="{$UniversalSub}/clash">
+                                            کپی
+                                            <i class="ti ti-copy"></i>
+                                        </a>
+                                    </p>
+                                    <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                        لینک های
+                                        زیر
+                                        دانلود
+                                        کنید.</a>
+                                    <br>
+                                    <div style="margin-top: 5px;" class="btn-list justify-content-start">
+                                        <a {if $config['enable_r2_client_download']}
+                                            href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
+                                            href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
+                                            دانلود Clash Verge
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                        با
+                                        مشاهده
+                                        پنجره باز
+                                        شده در
+                                        مرورگر
+                                        بر
+                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                        نرم
+                                        افزار Clash
+                                        افزوده شود.</a>
+                                    <br>
+                                    <a style="margin-top: 5px;"
+                                        href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                        class="btn btn-primary">
+                                        افزودن خودکار به Clash
+                                    </a>
                                 </div>
-                                <div {if $os eq "Unix"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="config">
+                                <div {if $osFamily eq "Unix"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="config">
                                     <p>اطلاعات اتصال شما：</p>
                                     <div class="table-responsive">
                                         <table class="table table-vcenter card-table">
@@ -971,6 +986,30 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                                <div {if $osFamily eq "TV"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                    id="dns">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{$ip}</h3>
+                                        </div>
+                                        <div class="card-body p-0" style="margin: 30px;">
+                                            <div class="table-responsive">
+                                                <table id="data_table" class="table table-vcenter card-table"
+                                                    cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            {foreach $details['field'] as $key => $value}
+                                                                <th style="width: unset;">{$value}</th>
+                                                            {/foreach}
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1070,7 +1109,8 @@
                             <div class="card-footer">
                                 <div class="d-flex">
                                     {if ! $user->isAbleToCheckin()}
-                                        <button id="check-in" class="btn btn-primary ms-auto" disabled>امروز استفاده شده</button>
+                                        <button id="check-in" class="btn btn-primary ms-auto" disabled>امروز استفاده
+                                            شده</button>
                                     {else}
                                         {if $public_setting['enable_checkin_captcha']}
                                             {if $public_setting['captcha_provider'] === 'turnstile'}
@@ -1127,6 +1167,214 @@
                 }
             })
         });
+
+        $.fn.dataTable.ext.errMode = 'none';
+        var editor = new $.fn.dataTable.Editor({
+            ajax: {
+                create: {
+                    type: 'POST',
+                    url: '/user/dns'
+                },
+                edit: {
+                    type: 'PUT',
+                    url: '/user/dns/_id_'
+                },
+                remove: {
+                    type: 'DELETE',
+                    url: '/user/dns/_id_'
+                }
+            },
+            table: '#data_table',
+            idSrc: 'id',
+            fields: [
+                { label: 'آدرس IP', name: 'ip' }
+            ],
+            i18n: {
+                create: {
+                    button: "افزودن",
+                    title: "افزودن IP جدید",
+                    submit: "ثبت"
+                },
+                edit: {
+                    button: "ویرایش",
+                    title: "ویرایش آدرس IP",
+                    submit: "ثبت"
+                },
+                remove: {
+                    button: "حذف",
+                    title: "حذف IP",
+                    submit: "حذف",
+                    confirm: {
+                        _: "شما در حال حذف %d گزینه هستید. آیا تایید میفرمایید؟",
+                        1: "شما در حال حذف یک گزینه هستید. آیا تایید میفرمایید؟",
+                    }
+                },
+                error: {
+                    system: "خطا در سرور! لطفا با پشتیبانی مطرح فرمایید."
+                },
+            }
+        });
+
+        var table = $('#data_table')
+            .DataTable({
+                ajax: {
+                    url: "/user/dns/ajax",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    error: function(xhr, error, thrown) {
+                        if (xhr.responseJSON.ret !== null && xhr.responseJSON.ret === 0) {
+                            if (xhr.responseJSON.msg !== "") {
+                                alert("خطا " + xhr.status + " :" + xhr.responseJSON.msg);
+                            } else {
+                                alert("خطا " + xhr.status + " :" + thrown);
+                            }
+                        } else {
+                            alert(error + xhr.status + " : " + thrown);
+                        }
+                    }
+                },
+                columnDefs: [
+                    //default content for all columns in case of empty or data not found
+                    { targets: "_all", defaultContent: "<b>بدون داده</b>" },
+                ],
+                dom: 'Brtip',
+                // data: data,
+                // rowCallback: function(row, data, index) {
+                //     $('td:first-child', row).attr('title', 'Click to edit');
+                // },
+                serverSide: false,
+                processing: false,
+                columns: [
+                    { data: 'ip', className: 'dt-body-right', orderable: false },
+                    { data: 'mark', className: 'dt-body-right', orderable: false },
+                    { data: 'updated_at', className: 'dt-body-right', orderable: false },
+                    {
+                        data: null,
+                        className: 'center',
+                        defaultContent: '<a href="" class="editor_edit_to">ویرایش به آدرس فعلی</a> / <a href="" class="editor_edit">ویرایش</a> / <a href="" class="editor_remove">حذف</a>'
+                    }
+                ],
+                select: {
+                    style: 'single',
+                },
+                buttons: [
+                    { extend: 'create', editor: editor },
+                    { extend: 'edit', editor: editor },
+                    {
+                        extend: 'selectedSingle',
+                        text: 'تغییر به IP فعلی',
+                        action: function(e, dt, node, config) {
+                            editor
+                                .edit(table.row({ selected: true }).index(), false)
+                                .set('ip', "127.0.0.1")
+                                .submit();
+                        }
+                    },
+                    { extend: 'remove', editor: editor },
+                ],
+            });
+
+        // Activate an inline edit on click of a table cell
+        $('#data_table')
+            // .on('click', 'tbody td:first-child', function(e) {
+            //     // editor.inline(this, {
+            //     //     buttons: { label: 'به روزرسانی', fn: function() { this.submit(); } }
+            //     // });
+            //     editor.bubble(this, );
+            // })
+
+            .on('click', 'tbody td:first-child', function() {
+                var value = $(this).text();
+                if ($value != "No data available in table") {
+
+                
+                editor.bubble(this, ['ip', 'id'], {
+                    buttons: [{
+                            label: 'ثبت',
+                            fn: function() {
+                                editor.submit();
+                            }
+                        },
+                        {
+                            text: 'ثبت آدرس ‌IP فعلی',
+                            action: function() {
+                                editor
+                                    // .field('ip').val('127.0.01')
+                                    .set('ip', "127.0.0.1")
+                                    .submit();
+                            }
+                        }
+                    ]
+                });
+                }
+            })
+
+            // Edit record
+            .on('click', 'a.editor_edit', function(e) {
+                e.preventDefault();
+
+                editor
+                    .title('Edit record')
+                    .buttons({
+                        label: 'Update',
+                        fn: function() {
+                            editor.submit();
+                        }
+                    })
+                    .edit($(this).closest('tr'));
+            })
+
+            // Edit record
+            .on('click', 'a.editor_edit_to', function(e) {
+                // e.preventDefault();
+
+                editor
+                    .edit($(this).closest('tr'))
+                    .set('ip', "127.0.0.1")
+                    .submit();
+            })
+
+            // Delete a record
+            .on('click', 'a.editor_remove', function(e) {
+                e.preventDefault();
+
+                editor
+                    .title('حذف گزینه')
+                    .message('آیا از حذف این گزینه اطمینان دارید ؟')
+                    .buttons({
+                        label: 'حذف',
+                        fn: function() {
+                            editor.submit();
+                        }
+                    })
+                    .remove($(this).closest('tr'));
+            })
+
+            .on('error.dt', function(e, settings, techNote, message) {
+                alert('خطا: ' + settings.jqXHR.responseJSON.error);
+                console.log('خطا: ' + settings.jqXHR.responseJSON.error);
+            })
+            .DataTable();
+
+        var openVals;
+        editor
+            .on('open', function(e, type) {
+                openVals = JSON.stringify(editor.get());
+            })
+            .on('preBlur', function(e) {
+                if (openVals !== JSON.stringify(editor.get())) {
+                    return confirm('شما یک تغییر ذخیره نشده دارید! آیا از خروج اطمینان دارید؟');
+                }
+            })
+            // .on('submitSuccess', function() {
+            //     table.ajax.reload();
+            //     alert('تغییرات با موفقیت ذخیره شد.');
+            // })
+            .on('submitError', function() {
+                alert('متاسفانه خطایی رخ داده! لطفا مجددا تلاش کنید و یا به پشتیبانی گزارش دهید.');
+                table.ajax.reload();
+            });
     </script>
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
@@ -1140,7 +1388,7 @@
                 initGeetest4({
                     captchaId: '{$captcha['geetest_id']}',
                     product: 'float',
-                    language: "zho",
+                    language: "en",
                     riskType: 'slide'
                 }, function(geetest) {
                     geetest.appendTo("#geetest");

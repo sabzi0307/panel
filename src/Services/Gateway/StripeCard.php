@@ -19,6 +19,7 @@ use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\StripeClient;
+use voku\helper\AntiXSS;
 
 final class StripeCard extends AbstractPayment
 {
@@ -43,14 +44,18 @@ final class StripeCard extends AbstractPayment
      */
     public function purchase(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
+        $antiXss = new AntiXSS();
         $user = Auth::getUser();
         $configs = Setting::getClass('billing');
-        $price = $request->getParam('price');
+        $price = $antiXss->xss_clean($request->getParam('price'));
+        $invoice_id = $antiXss->xss_clean($request->getParam('invoice_id'));
         $trade_no = self::generateGuid();
 
         $pl = new Paylist();
         $pl->userid = $user->id;
         $pl->total = $price;
+        $pl->invoice_id = $invoice_id;
+        $pl->gateway = self::_readableName();
         $pl->tradeno = $trade_no;
         $pl->save();
 

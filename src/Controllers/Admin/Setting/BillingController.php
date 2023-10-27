@@ -44,6 +44,20 @@ final class BillingController extends BaseController
         'paypal_client_secret',
         'paypal_currency',
         'paypal_locale',
+        // Perfect Money
+        'perfectmoney_url',
+        'perfectmoney_account_id',
+        'perfectmoney_payee_account',
+        'perfectmoney_pass_phrase',
+        'perfectmoney_alter_pass_phrase',
+        'perfectmoney_currency',
+        // NowPayments
+        'nowpayments_url',
+        'nowpayments_api_key',
+        'nowpayments_ipn_secret',
+        'nowpayments_price_currency',
+        'nowpayments_pay_currency',
+
     ];
 
     /**

@@ -16,6 +16,7 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use stdClass;
 use voku\helper\AntiXSS;
 use function trim;
 
@@ -276,12 +277,14 @@ final class SmartDnsController extends BaseController
         $order = self::order($request, $columns);
         if (!empty($order)) {
             $query->orderBy($order);
-        };
+        }
+        ;
 
         $where = self::filter($request, $columns, $bindings);
         if (!empty($where)) {
             $query->where($where);
-        };
+        }
+        ;
 
         if (isset($request['start']) && $request['length'] != -1) {
             $query->offset(intval($request['start']))->limit(intval($request['length']));
@@ -343,53 +346,73 @@ final class SmartDnsController extends BaseController
         $antiXss = new AntiXSS();
         $data = $antiXss->xss_clean($request->getParam('data'));
 
-        if (count($data) === 1) {
-            $ip = $antiXss->xss_clean($data[0]['ip']);
-            $remark = $antiXss->xss_clean($data[0]['mark']);
-            if (empty($remark)) {
-                $remark = $_SERVER['REMOTE_ADDR'];
-            }
-        }
-
-        if (!Tools::isIPv4($ip) || !Tools::isIPv6($ip)) {
+        if (count($data) > 1) {
             return $response->withStatus(400)
                 ->withJson([
                     'ret' => 0,
-                    'msg' => 'مقدار IP صحیح نیست.',
+                    'msg' => 'فقط یک گزینه را انتخاب کنید.',
+                    'error' => 'فقط یک گزینه را انتخاب کنید.'
                 ]);
         }
 
+        $ip = $antiXss->xss_clean(trim($data[0]['ip']));
+        if (!(Tools::isIPv4($ip) || Tools::isIPv6($ip))) {
+            return $response->withStatus(200)
+                ->withJson([
+                    'ret' => 0,
+                    'error' => 'مقدار IP صحیح نیست.'
+                ]);
+        }
+
+
         $user = $this->user;
         $count = SmartDns::where('userid', $user->id)->count();
-        
-        if ($user->smart_dns !== 0 && $count >= $user->smart_dns) {
-            return $response->withStatus(400)
-            ->withJson([
-                'ret' => 0,
-                'msg' => 'در حال حاضر شما از حداکثر میزان مجاز تعداد آدرس استفاده کرده اید. ابتدا یک مورد را حذف و یا با زدن دکمه ؛تغییر با فعلی؛ با یکی از موارد جایگزین فرمایید',
-            ]);
+
+        if ($user->smart_dns === null) {
+            return $response->withStatus(200)
+                ->withJson([
+                    'ret' => 0,
+                    'error' => 'دسترسی به این سرویس برای شما فعال نیست',
+                ]);
+        }
+
+        $dupplicate = SmartDns::where('ip', $ip)->count();
+        if ($dupplicate !== 0) {
+            return $response->withStatus(200)
+                ->withJson([
+                    'ret' => 0,
+                    'error' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
+                ]);
+        }
+
+        if ($user->smart_dns !== 0 && ($count === $user->smart_dns || $count > $user->smart_dns)) {
+            return $response->withStatus(200)
+                ->withJson([
+                    'ret' => 0,
+                    'error' => 'در حال حاضر شما از حداکثر میزان مجاز تعداد آدرس استفاده کرده اید.',
+                ]);
         }
 
         $dns = new SmartDns();
         $dns->ip = $ip;
         $dns->created_at = time();
         $dns->updated_at = time();
-        $dns->mark = $remark;
+        $dns->mark = Tools::getIpLocation($ip);
         $dns->userid = $user->id;
 
         if (!$dns->save()) {
             return $response->withStatus(500)
-            ->withJson([
-                'ret' => 0,
-                'msg' => 'گره اضافه نشد',
-            ]);
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'گره اضافه نشد',
+                ]);
         }
 
         return $response->withStatus(200)
-        ->withJson([
-            'ret' => 1,
-            'msg' => 'سرور با موفقیت اضافه شد'
-        ]);
+            ->withJson([
+                'ret' => 1,
+                'msg' => 'سرور با موفقیت اضافه شد'
+            ]);
     }
 
     /**
@@ -398,67 +421,57 @@ final class SmartDnsController extends BaseController
     public function update(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $id = $args['id'];
-        $node = Node::find($id);
+        $dns = SmartDns::find($id);
 
-        $custom_config = $request->getParam('custom_config') ?? '{}';
+        $antiXss = new AntiXSS();
+        $data = $antiXss->xss_clean($request->getParam('data'));
 
-        $node->name = $request->getParam('name');
-        $node->node_group = $request->getParam('node_group');
-        $node->server = trim($request->getParam('server'));
-        $node->traffic_rate = $request->getParam('traffic_rate');
-        $node->info = $request->getParam('info');
-        $node->node_speedlimit = $request->getParam('node_speedlimit');
-        $node->type = $request->getParam('type') === 'true' ? 1 : 0;
-        $node->sort = $request->getParam('sort');
-
-        if ($custom_config !== '') {
-            $node->custom_config = $custom_config;
-        } else {
-            $node->custom_config = '{}';
-        }
-
-        $req_node_ip = trim($request->getParam('node_ip'));
-
-        if (Tools::isIPv4($req_node_ip) || Tools::isIPv6($req_node_ip)) {
-            $node->changeNodeIp($req_node_ip);
-        } else {
-            $node->changeNodeIp($node->server);
-        }
-
-        $node->status = '';
-        $node->node_class = $request->getParam('node_class');
-        $node->node_bandwidth_limit = $request->getParam('node_bandwidth_limit') * 1024 * 1024 * 1024;
-        $node->bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday');
-
-        if (!$node->save()) {
-            return $response->withJson([
-                'ret' => 0,
-                'msg' => 'ویرایش موفقیت آمیز نبود',
-            ]);
-        }
-
-        if (Setting::obtain('telegram_update_node')) {
-            try {
-                (new Telegram())->send(
-                    0,
-                    str_replace(
-                        '%node_name%',
-                        $request->getParam('name'),
-                        Setting::obtain('telegram_update_node_text')
-                    )
-                );
-            } catch (Exception $e) {
-                return $response->withJson([
-                    'ret' => 1,
-                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+        if (count($data) > 1) {
+            return $response->withStatus(400)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'فقط یک گزینه را انتخاب کنید.',
+                    'error' => 'فقط یک گزینه را انتخاب کنید.'
                 ]);
-            }
+        }
+        $ip = $antiXss->xss_clean(trim($data[$id]['ip']));
+
+        $dupplicate = SmartDns::where('ip', $ip)->count();
+        if ($dupplicate !== 0) {
+            return $response->withStatus(400)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
+                    'error' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
+                ]);
         }
 
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'با موفقیت اصلاح شد',
-        ]);
+        $mark = Tools::getIpLocation($ip);
+        $dns->ip = $ip;
+        $update = time();
+        $dns->updated_at = $update;
+        $dns->mark = $mark;
+
+
+        if (!$dns->save()) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'خطا در اصلاح اطلاعات',
+                    'error' => 'خطا در اصلاح اطلاعات',
+                ]);
+        }
+        $ret = new stdClass();
+        $ret->updated_at = Tools::toDateTime($update);
+        $ret->ip = $ip;
+        $ret->mark = $mark;
+
+        return $response->withStatus(200)
+            ->withJson([
+                $id => $ret,
+                'ret' => 1,
+                'msg' => 'با موفقیت اصلاح شد',
+            ]);
     }
 
     /**
@@ -467,34 +480,18 @@ final class SmartDnsController extends BaseController
     public function delete(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $id = $args['id'];
-        $node = Node::find($id);
+        $dns = SmartDns::find($id);
 
-        if (!$node->delete()) {
+        if (!$dns->delete()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'حذف نشد',
+                'error' => 'حذف نشد',
             ]);
         }
 
-        if (Setting::obtain('telegram_delete_node')) {
-            try {
-                (new Telegram())->send(
-                    0,
-                    str_replace(
-                        '%node_name%',
-                        $node->name,
-                        Setting::obtain('telegram_delete_node_text')
-                    )
-                );
-            } catch (Exception $e) {
-                return $response->withJson([
-                    'ret' => 1,
-                    'msg' => 'حذف با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
-                ]);
-            }
-        }
-
         return $response->withJson([
+            'data' => [],
             'ret' => 1,
             'msg' => 'با موفقیت حذف شد',
         ]);
@@ -508,7 +505,7 @@ final class SmartDnsController extends BaseController
 
         // $antiXss = new AntiXSS();
         // $clientName = $antiXss->xss_clean($args['name']);
-        
+
         $user = $this->user;
         $smartdnss = SmartDns::where('userid', $user->id)->orderBy('id', 'desc')->get();
 
@@ -522,11 +519,11 @@ final class SmartDnsController extends BaseController
         // $smartdnss_count = $smartdnss->count();
 
         return $response->withStatus(200)
-                ->withJson([
-                    'data' => $smartdnss,
-                    'ret' => 1,
-                    'msg' => 'success'
-                ]);
+            ->withJson([
+                'data' => $smartdnss,
+                'ret' => 1,
+                'msg' => 'success'
+            ]);
     }
 
     /**
@@ -549,19 +546,17 @@ final class SmartDnsController extends BaseController
         );
 
 
-        $da = $request->getBody()->getContents();
-        parse_str($da, $output);
+        // $da = $request->getBody()->getContents();
+        // parse_str($da, $output);
 
-        $res = self::simple($output, $primaryKey, $columns);
-        $res["error"] = "ye alam error";
+        $res = self::simple(array(), $primaryKey, $columns);
+        // $res["error"] = "ye alam error";
         $datas = $res["data"];
-        foreach ($datas as $data) {
-            $update = Tools::toDateTime($data["updated_at"]);
-            // $res["data"][$data]["updated_at"] = $update;
-            // Tools::getIpLocation("");
+        foreach ($datas as &$data) {
+            $data["updated_at"] = Tools::toDateTime($data["updated_at"]);
         }
-        // $res["data"]= $datas;
+        $res["data"] = $datas;
         return $response->withStatus(200)
-                ->withJson($res);
+            ->withJson($res);
     }
 }

@@ -71,7 +71,7 @@ final class Cron
         DetectLog::where('datetime', '<', time() - 86400 * 3)->delete();
         EmailQueue::where('time', '<', time() - 86400)->delete();
         OnlineLog::where('last_time', '<', time() - 86400)->delete();
-        SharedAccount::where('updated_at', '<', time() - 1200)->delete();
+        SharedAccount::where('update_time', '<', time() - 1200)->delete();
 
         echo Tools::toDateTime(time()) . ' پاکسازی دیتابیس کامل شد' . PHP_EOL;
     }

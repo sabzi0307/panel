@@ -446,7 +446,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['appName']       = '$appName';                   // Site name
 \$_ENV['baseUrl']       = '$baseUrl';                   // site address
 
-\$_ENV['WebAPI']        = $WebAPI;                      // Whether to enable the WebAPI function
+\$_ENV['webAPI']        = $WebAPI;                      // Whether to enable the WebAPI function
 \$_ENV['webAPIUrl']     = \$_ENV['baseUrl'];           //WebAPI地址，如需和站点名称相同，请不要修改
 \$_ENV['muKey']         = '$muKey';                     //WebAPI Key, used for communication between the node server and the panel，请务必修改此key为随机字符串
 \$_ENV['checkNodeIp']   = $checkNodeIp;                 //Whether webapi verifies node ip

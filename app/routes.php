@@ -31,7 +31,6 @@ return static function (Slim\App $app): void {
         // 公告
         $group->get('/announcement', App\Controllers\UserController::class . ':announcement');
 
-        $group->get('/dns', App\Controllers\User\SmartDnsController::class . ':index');
         $group->post('/dns', App\Controllers\User\SmartDnsController::class . ':add');
         $group->put('/dns/{id}', App\Controllers\User\SmartDnsController::class . ':update');
         $group->delete('/dns/{id}', App\Controllers\User\SmartDnsController::class . ':delete');
@@ -89,6 +88,7 @@ return static function (Slim\App $app): void {
         $group->get('/money', App\Controllers\User\MoneyController::class . ':money');
         // 礼品卡兑换
         $group->post('/giftcard', App\Controllers\User\MoneyController::class . ':applyGiftCard');
+        $group->post('/perfectvoucher', App\Controllers\User\MoneyController::class . ':activatePerfectMoneyVoucher');
         // 产品页面
         $group->get('/product', App\Controllers\User\ProductController::class . ':product');
         // 订单页面

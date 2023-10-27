@@ -43,7 +43,7 @@ use const FILTER_VALIDATE_INT;
 use const FILTER_VALIDATE_IP;
 
 final class Tools
-{
+{    
     /**
      * 查询IP归属
      *
@@ -75,17 +75,52 @@ final class Tools
             } catch (AddressNotFoundException $e) {
                 $country = 'کشور ناشناخته';
             }
+
+            try {
+                $asn = $geoip->getAsn($ip);
+            } catch (AddressNotFoundException $e) {
+                $asn = 'اپراتور ناشناخته';
+            }
+
+            $res = "";
+            if ($asn !== null) {
+                $provider = Tools::getServerAddr($asn->autonomousSystemNumber);
+                if ($provider != "") {
+                    $res = $provider . ', ';
+                } else {
+                    $res = $asn->autonomousSystemOrganization . ', ';
+                }
+                // return $city . ', ' . $country;
+            }
+
+            if ($city !== null) {
+                $res = $res . $city . ', ';
+                // return $city . ', ' . $country;
+            }
+
+            if ($country !== null) {
+                $res = $res . $country . ', ';
+                // return $country;
+            }
+            return $res;
         }
 
-        if ($city !== null) {
-            return $city . ', ' . $country;
-        }
 
-        if ($country !== null) {
-            return $country;
-        }
 
         return $err_msg;
+    }
+
+    public static function getServerAddr($asn): string
+    {
+        $server = "";
+        if (isset($_ENV['Internet_Service_Providers'])) {
+            foreach ($_ENV['Internet_Service_Providers'] as $provider) {
+                if (in_array($asn, $provider['AsNum']))
+                    $server = $provider['AsName'];
+                    break;
+            }
+        }
+        return $server;
     }
 
     /**
@@ -250,7 +285,8 @@ final class Tools
 
     public static function getSsPort(): int
     {
-        if (Setting::obtain('min_port') > 65535
+        if (
+            Setting::obtain('min_port') > 65535
             || Setting::obtain('min_port') <= 0
             || Setting::obtain('max_port') > 65535
             || Setting::obtain('max_port') <= 0
@@ -279,7 +315,7 @@ final class Tools
             $i = 0;
 
             while (($file = readdir($handle)) !== false) {
-                if ($file !== '.' && $file !== '..' && ! strpos($file, '.')) {
+                if ($file !== '.' && $file !== '..' && !strpos($file, '.')) {
                     $dirArray[$i] = $file;
                     $i++;
                 }
@@ -318,7 +354,7 @@ final class Tools
         $res = [];
         $res['ret'] = 0;
 
-        if (! self::isEmail($email)) {
+        if (!self::isEmail($email)) {
             $res['msg'] = 'ایمیل استاندارد نیست';
             return $res;
         }
@@ -338,7 +374,7 @@ final class Tools
                 return $res;
             case 2:
                 // 黑名单
-                if (! in_array($mail_suffix, $mail_filter_list)) {
+                if (!in_array($mail_suffix, $mail_filter_list)) {
                     $res['ret'] = 1;
                 } else {
                     $res['msg'] = 'نام دامنه ایمیل ' . $mail_suffix . ' نامعتبر است، لطفا آدرس ایمیل را تغییر دهید';
@@ -358,7 +394,7 @@ final class Tools
      */
     public static function isEmail($input): bool
     {
-        if (! filter_var($input, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($input, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
 
@@ -372,7 +408,7 @@ final class Tools
      */
     public static function isIPv4($input): bool
     {
-        if (! filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        if (!filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return false;
         }
 
@@ -386,7 +422,7 @@ final class Tools
      */
     public static function isIPv6($input): bool
     {
-        if (! filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (!filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return false;
         }
 
@@ -400,7 +436,7 @@ final class Tools
      */
     public static function isInt($input): bool
     {
-        if (! filter_var($input, FILTER_VALIDATE_INT)) {
+        if (!filter_var($input, FILTER_VALIDATE_INT)) {
             return false;
         }
 
@@ -416,7 +452,7 @@ final class Tools
      */
     public static function isJson(string $string): bool
     {
-        if (! json_decode($string)) {
+        if (!json_decode($string)) {
             return false;
         }
 

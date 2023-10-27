@@ -17,6 +17,8 @@ use App\Services\Auth;
 use App\Services\Captcha;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
+use DeviceDetector\DeviceDetector;
+use DeviceDetector\Parser\OperatingSystem;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -30,6 +32,28 @@ use function time;
  */
 final class UserController extends BaseController
 {
+    private static array $details = [
+        'field' => [
+            'ip' => 'آدرس IP',
+            'details' => 'مشخصات IP',
+            'updated_at' => 'زمان به روز رسانی',
+        ],
+    ];
+
+    private static array $update_field = [
+        'name',
+        'server',
+        'traffic_rate',
+        'info',
+        'node_group',
+        'node_speedlimit',
+        'sort',
+        'node_ip',
+        'node_class',
+        'node_bandwidth_limit',
+        'bandwidthlimit_resetday',
+    ];
+
     /**
      * @throws Exception
      */
@@ -45,24 +69,13 @@ final class UserController extends BaseController
             $captcha = Captcha::generate();
         }
 
-        $agent = $_SERVER['HTTP_USER_AGENT'];
-
-        $os = 'Unknown'; // مقدار پیش‌فرض
-
-        if (preg_match('/Linux/i', $agent)) {
-            $os = 'Linux';
-        } elseif (preg_match('/Mac/i', $agent)) {
-            $os = 'Mac';
-        } elseif (preg_match('/iPhone/i', $agent)) {
-            $os = 'iPhone';
-        } elseif (preg_match('/iPad/i', $agent)) {
-            $os = 'iPad';
-        } elseif (preg_match('/Droid/i', $agent)) {
-            $os = 'Droid';
-        } elseif (preg_match('/Unix/i', $agent)) {
-            $os = 'Unix';
-        } elseif (preg_match('/Windows/i', $agent)) {
-            $os = 'Windows';
+        $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']); // change this to the useragent you want to parse
+        $dd->skipBotDetection();
+        $dd->parse();
+        $tv = $dd->isTV();
+        $osFamily = OperatingSystem::getOsFamily($dd->getOs('name'));
+        if ($dd->isTV()) {
+            $osFamily = "TV";
         }
 
         return $response->write(
@@ -74,7 +87,10 @@ final class UserController extends BaseController
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
                 ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
-                ->assign('os', $os)
+                ->assign('osFamily', $osFamily)
+                ->assign('details', self::$details)
+                ->assign('update_field', self::$update_field)
+                ->assign('ip', $_SERVER['REMOTE_ADDR'])
                 ->fetch('user/index.tpl')
         );
     }

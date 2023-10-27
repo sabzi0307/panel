@@ -34,10 +34,41 @@ final class Exchange
             $client = new Client();
             $response = $client->get('https://cdn.moneyconvert.net/api/latest.json');
             $data = json_decode($response->getBody()->getContents(), true);
-            $rate = $data['rates'][$to] / $data['rates'][$from];
+            $fromVal = $data['rates'][strtoupper($from)];
+            $toVal = $data['rates'][strtoupper($to)];
+
+            if (empty($fromVal) || strtoupper($from) == "IRR") {
+                if (strtoupper($from) == "IRR") {
+                    $from = "USDT";
+                };
+                $response = $client->get('https://api.bitpin.ir/v1/mkt/currencies/');
+                $data = json_decode($response->getBody()->getContents(), true);
+                foreach ($data['results'] as $item) {
+                    if ($item['code'] == strtoupper($from)) {
+                        $fromVal = $item['price_info']['price'];
+                        break;
+                    }
+                }
+            }
+
+            if (empty($toVal) || strtoupper($to) == "IRR") {
+                if (strtoupper($to) == "IRR") {
+                    $to = "USDT";
+                };
+                $response = $client->get('https://api.bitpin.ir/v1/mkt/currencies/');
+                $data = json_decode($response->getBody()->getContents(), true);
+                foreach ($data as $item) {
+                    if ($item['code'] == strtoupper($to)) {
+                        $toVal = $item['price_info']['price'];
+                        break;
+                    }
+                }
+            }
+
+            $rate = $toVal / $fromVal;
             $redis->setex('exchange_rate:' . $from . '_' . $to, 3600, $rate);
         }
 
-        return $rate;
+        return (float)$rate;
     }
 }

@@ -20,6 +20,15 @@
                             از کارت هدیه استفاده کنید
                         </a>
                     </div>
+                    {if $perfectMoney}
+                    <div class="btn-list">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                           data-bs-target="#active-perfectvoucher-dialog">
+                            <i class="icon ti ti-cash-banknote"></i>
+                            استفاده از وچر پرفکت مانی
+                        </a>
+                    </div>
+                    {/if}
                 </div>
             </div>
         </div>
@@ -84,6 +93,31 @@
         </div>
     </div>
 
+    <div class="modal modal-blur fade" id="active-perfectvoucher-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">استفاده از وچر پرفکت مانی</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3 row">
+                        <a>"کد وچر و کد فعال ساز را وارد و روی اعمال کلیک کنید"</a>
+                        <div class="col">
+                            <input id="ev_number" type="text" class="form-control" placeholder="کد وچر را وارد کنید">
+                            <input id="ev_code" type="text" class="form-control" placeholder=" کد فعال ساز را وارد کنید">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
+                    <button id="active-voucher"
+                            type="button" class="btn btn-primary" data-bs-dismiss="modal">اعمال</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $("#apply-giftcard").click(function() {
             $.ajax({
@@ -92,6 +126,26 @@
                 dataType: "json",
                 data: {
                     giftcard: $('#giftcard').val(),
+                },
+                success: function(data) {
+                    if (data.ret === 1) {
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                    } else {
+                        $('#fail-message').text(data.msg);
+                        $('#fail-dialog').modal('show');
+                    }
+                }
+            })
+        });
+        $("#active-voucher").click(function() {
+            $.ajax({
+                url: '/user/perfectvoucher',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    giftcard: $('#ev_number').val(),
+                    giftcard: $('#ev_code').val(),
                 },
                 success: function(data) {
                     if (data.ret === 1) {

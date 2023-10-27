@@ -31,9 +31,9 @@ final class EpayTool
         foreach ($para as $key => $val) {
             $arg .= $key . '=' . $val . '&';
         }
-        //去掉最后一个&字符
+        //Remove the last & character
         $arg = substr($arg, 0, strlen($arg) - 1);
-        //如果存在转义字符，那么去掉转义
+        //If escape characters exist, remove the escape characters
         return stripslashes($arg);
     }
 

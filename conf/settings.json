@@ -11,6 +11,16 @@
     },
     {
         "id": null,
+        "item": "nowpayments",
+        "value": "0",
+        "class": "billing",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable NowPayments"
+    },
+    {
+        "id": null,
         "item": "nowpayments_api_key",
         "value": "",
         "class": "billing",
@@ -112,7 +122,7 @@
     {
         "id": null,
         "item": "perfectmoney",
-        "value": "1",
+        "value": "0",
         "class": "billing",
         "is_public": 1,
         "type": "bool",
