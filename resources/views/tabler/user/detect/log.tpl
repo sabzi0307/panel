@@ -23,17 +23,17 @@
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">
                                 <thead>
-                                    <tr>
-                                        <th>شناسه رویداد</th>
-                                        <th>شناسه سرور</th>
-                                        <th>نام سرور</th>
-                                        <th>شناسه قانون</th>
-                                        <th>نام</th>
-                                        <th>شرح</th>
-                                        <th>regular expression</th>
-                                        <th>انواع</th>
-                                        <th>زمان</th>
-                                    </tr>
+                                <tr>
+                                    <th>شناسه رویداد</th>
+                                    <th>شناسه سرور</th>
+                                    <th>نام سرور</th>
+                                    <th>شناسه قانون</th>
+                                    <th>نام</th>
+                                    <th>شرح</th>
+                                    <th>regular expression</th>
+                                    <th>انواع</th>
+                                    <th>زمان</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {foreach $logs as $log}
@@ -58,4 +58,4 @@
         </div>
     </div>
 
-{include file='user/footer.tpl'}
+    {include file='user/footer.tpl'}

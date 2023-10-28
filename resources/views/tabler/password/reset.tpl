@@ -22,82 +22,83 @@
                         {if $public_setting['captcha_provider'] === 'turnstile'}
                         <div class="mb-3">
                             <div class="input-group mb-3">
-                                <div id="cf-turnstile" class="cf-turnstile" data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
+                                <div id="cf-turnstile" class="cf-turnstile"
+                                     data-sitekey="{$captcha['turnstile_sitekey']}" data-theme="light"></div>
                             </div>
                         </div>
-                        {/if}
-                        {if $public_setting['captcha_provider'] === 'geetest'}
+                    {/if}
+                    {if $public_setting['captcha_provider'] === 'geetest'}
                         <div class="mb-3">
                             <div class="input-group mb-3">
                                 <div id="geetest"></div>
                             </div>
                         </div>
-                        {/if}
                     {/if}
-                    <div class="form-footer">
-                        <button id="send" class="btn btn-primary w-100">
-                            <i class="ti ti-brand-telegram icon"></i>
-                            ایمیل بفرست
-                        </button>
-                    </div>
+                {/if}
+                <div class="form-footer">
+                    <button id="send" class="btn btn-primary w-100">
+                        <i class="ti ti-brand-telegram icon"></i>
+                        ایمیل بفرست
+                    </button>
                 </div>
             </div>
-            <div class="text-center text-secondary mt-3">
-                از قبل حساب کاربری دارید؟ <a href="/auth/login" tabindex="-1">برای ورود کلیک کنید</a>
-            </div>
+        </div>
+        <div class="text-center text-secondary mt-3">
+            از قبل حساب کاربری دارید؟ <a href="/auth/login" tabindex="-1">برای ورود کلیک کنید</a>
         </div>
     </div>
+</div>
 
-    <script>
-        $("#send").click(function() {
-            $.ajax({
-                type: 'POST',
-                url: '/password/reset',
-                dataType: "json",
-                data: {
-                    email: $('#email').val(),
-                    {if $public_setting['enable_reset_password_captcha']}
-                        {if $public_setting['captcha_provider'] === 'turnstile'}
-                            turnstile: $('input[name=cf-turnstile-response]').val(),
-                        {/if}
-                        {if $public_setting['captcha_provider'] === 'geetest'}
-                            geetest: geetest_result,
-                        {/if}
-                    {/if}
-                },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
+<script>
+    $("#send").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/password/reset',
+            dataType: "json",
+            data: {
+                email: $('#email').val(),
+                {if $public_setting['enable_reset_password_captcha']}
+                {if $public_setting['captcha_provider'] === 'turnstile'}
+                turnstile: $('input[name=cf-turnstile-response]').val(),
+                {/if}
+                {if $public_setting['captcha_provider'] === 'geetest'}
+                geetest: geetest_result,
+                {/if}
+                {/if}
+            },
+            success: function (data) {
+                if (data.ret === 1) {
+                    $('#success-message').text(data.msg);
+                    $('#success-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
                 }
-            })
+            }
+        })
+    });
+</script>
+
+{if $public_setting['enable_reset_password_captcha']}
+{if $public_setting['captcha_provider'] === 'turnstile'}
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{/if}
+{if $public_setting['captcha_provider'] === 'geetest'}
+    <script src="https://static.geetest.com/v4/gt4.js"></script>
+    <script>
+        var geetest_result = '';
+        initGeetest4({
+            captchaId: '{$captcha['geetest_id']}',
+            product: 'float',
+            language: "en",
+            riskType: 'slide'
+        }, function (geetest) {
+            geetest.appendTo("#geetest");
+            geetest.onSuccess(function () {
+                geetest_result = geetest.getValidate();
+            });
         });
     </script>
-
-    {if $public_setting['enable_reset_password_captcha']}
-        {if $public_setting['captcha_provider'] === 'turnstile'}
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-        {/if}
-        {if $public_setting['captcha_provider'] === 'geetest'}
-            <script src="https://static.geetest.com/v4/gt4.js"></script>
-            <script>
-                var geetest_result = '';
-                initGeetest4({
-                    captchaId: '{$captcha['geetest_id']}',
-                    product: 'float',
-                    language: "zho",
-                    riskType:'slide'
-                }, function (geetest) {
-                    geetest.appendTo("#geetest");
-                    geetest.onSuccess(function() {
-                        geetest_result = geetest.getValidate();
-                    });
-                });
-            </script>
-        {/if}
-    {/if}
+{/if}
+{/if}
 {include file='footer.tpl'}

@@ -57,7 +57,7 @@
                                 <label class="form-label col-3 col-form-label required">سرعت ترافیک</label>
                                 <div class="col">
                                     <input id="traffic_rate" type="text" class="form-control"
-                                        value="">
+                                           value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -79,23 +79,55 @@
                                 <label class="form-label col-form-label">
                                      جهت افزودن پیکربندی سفارشی به
                                     <a href="//wiki.sspanel.org/#/custom-config" target="_blank">wiki.sspanel.org/#/custom-config</a>
+                                   
                                      مراجعه فرمایید
                                 </label>
                             </div>
-                            <div class="mb-3">
-                                <div class="divide-y">
-                                    <div>
-                                        <label class="row">
-                                            <span class="col">نمایش سرور</span>
-                                            <span class="col-auto">
-                                                <label class="form-check form-check-single form-switch">
-                                                    <input id="type" class="form-check-input" type="checkbox"
-                                                        checked="">
-                                                </label>
-                                            </span>
-                                        </label>
-                                    </div>
+                            <div class="form-group mb-3 row">
+                                <span class="col">نمایش سرور</span>
+                                <span class="col-auto">
+                                      <label class="form-check form-check-single form-switch">
+                                          <input id="type" class="form-check-input" type="checkbox" {if $node->type}checked="" {/if}>
+                                      </label>
+                                  </span>
+                            </div>
+                            <div class="hr-text">
+                                <span>نسبت دینامیکی</span>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <span class="col">فعال کردن ضریب ترافیک پویا</span>
+                                <span class="col-auto">
+                                      <label class="form-check form-check-single form-switch">
+                                          <input id="is_dynamic_rate" class="form-check-input" type="checkbox" {if $node->is_dynamic_rate}checked="" {/if}>
+                                      </label>
+                                  </span>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Maximum ratio</label>
+                                <div class="col">
+                                    <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
                                 </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
+                                <div class="col">
+                                    <input id="max_rate_time" type="text" class="form-control" value="{$node->max_rate_time}">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Minimum ratio</label>
+                                <div class="col">
+                                    <input id="min_rate" type="text" class="form-control" value="{$node->min_rate}">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
+                                <div class="col">
+                                    <input id="min_rate_time" type="text" class="form-control" value="{$node->min_rate_time}">
+                                </div>
+                                <label class="form-label col-form-label">
+                                حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -131,21 +163,21 @@
                                 <label class="form-label col-3 col-form-label required">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="node_bandwidth_limit" type="text" class="form-control"
-                                        value="">
+                                           value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">تاریخ تنظیم مجدد ترافیک</label>
                                 <div class="col">
                                     <input id="bandwidthlimit_resetday" type="text" class="form-control"
-                                        value="">
+                                           value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت نرخ داده (Mbps)</label>
                                 <div class="col">
                                     <input id="node_speedlimit" type="text" class="form-control"
-                                        value="">
+                                           value="">
                                 </div>
                             </div>
                         </div>
@@ -163,7 +195,7 @@
     };
     const editor = new JSONEditor(container, options);
 
-    $("#create-node").click(function() {
+    $("#create-node").click(function () {
         $.ajax({
             url: '/admin/node',
             type: 'POST',
@@ -175,7 +207,7 @@
                 type: $("#type").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');

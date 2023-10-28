@@ -25,11 +25,11 @@
                                 <i class="ti ti-circle-x icon mb-2 text-danger icon-lg" style="font-size:3.5rem;"></i>
                             </div>
                             {if $banned_reason === 'DetectBan'}
-                            <p class="empty-title">ممنوعیت فیلترینگ</p>
-                            <p class="empty-subtitle text-secondary">حساب شما به‌طور خودکار توسط سیستم مسدود می‌شود، زیرا شامل قوانین فیلترینگ شده اید.</p>
+                                <p class="empty-title">ممنوعیت فیلترینگ</p>
+                                <p class="empty-subtitle text-secondary">حساب شما به‌طور خودکار توسط سیستم مسدود می‌شود، زیرا شامل قوانین فیلترینگ شده اید.</p>
                             {else}
-                            <p class="empty-title">این دلیل ممنوعیت شماست</p>
-                            <p class="empty-subtitle text-secondary">{$banned_reason}</p>
+                                <p class="empty-title">این دلیل ممنوعیت شماست</p>
+                                <p class="empty-subtitle text-secondary">{$banned_reason}</p>
                             {/if}
                         </div>
                     </div>
@@ -37,5 +37,5 @@
             </div>
         </div>
     </div>
-    
+
 {include file='user/footer.tpl'}

@@ -23,11 +23,11 @@
                             صورتحساب های مرتبط را مشاهده کنید
                         </a>
                         {if $order->status === 'pending_payment'}
-                        <button href="#" class="btn btn-red" data-bs-toggle="modal"
-                            data-bs-target="#cancel_order_confirm_dialog">
-                            <i class="icon ti ti-x"></i>
-                            لغو سفارش
-                        </button>
+                            <button href="#" class="btn btn-red" data-bs-toggle="modal"
+                                    data-bs-target="#cancel_order_confirm_dialog">
+                                <i class="icon ti ti-x"></i>
+                                لغو سفارش
+                            </button>
                         {/if}
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">نوع سرویس</div>
-                            <div class="datagrid-content">{$order->product_type}</div>
+                            <div class="datagrid-content">{$order->product_type_text}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">نام سرویس</div>
@@ -87,46 +87,52 @@
                 </div>
                 <div class="card-body">
                     <div class="datagrid">
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان سرویس (روز)</div>
-                            <div class="datagrid-content">{$product_content->time}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title"> پهنای باند موجود (GB)</div>
-                            <div class="datagrid-content">{$product_content->bandwidth}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">سطح</div>
-                            <div class="datagrid-content">{$product_content->class}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان سطح (روز)</div>
-                            <div class="datagrid-content">{$product_content->class_time}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">گروه کاربران</div>
-                            <div class="datagrid-content">{$product_content->node_group}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">محدودیت سرعت (Mbps)</div>
-                            <div class="datagrid-content">
-                            {if $product_content->ip_limit === '0'}
-                            بدون محدودیت
-                            {else}
-                            {$product_content->speed_limit}
-                            {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'time'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">مدت زمان محصول (روز)</div>
+                                <div class="datagrid-content">{$order->content->time}</div>
                             </div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
-                            <div class="datagrid-content">
-                            {if $product_content->ip_limit === '0'}
-                            بدون محدودیت
-                            {else}
-                            {$product_content->ip_limit}
-                            {/if}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">مدت زمان سطح کاربری (روز)</div>
+                                <div class="datagrid-content">{$order->content->class_time}</div>
                             </div>
-                        </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">سطح کاربری</div>
+                                <div class="datagrid-content">{$order->content->class}</div>
+                            </div>
+                        {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'bandwidth'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">ترافیک باقیمانده (GB)</div>
+                                <div class="datagrid-content">{$order->content->bandwidth}</div>
+                            </div>
+                        {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'time'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">گروه کاربران</div>
+                                <div class="datagrid-content">{$order->content->node_group}</div>
+                            </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">محدودیت سرعت (Mbps)</div>
+                                <div class="datagrid-content">
+                                    {if $order->content->ip_limit === '0'}
+                                        بدون محدودیت
+                                    {else}
+                                        {$order->content->speed_limit}
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
+                                <div class="datagrid-content">
+                                    {if $order->content->ip_limit === '0'}
+                                        بدون محدودیت
+                                    {else}
+                                        {$order->content->ip_limit}
+                                    {/if}
+                                </div>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -142,18 +148,18 @@
                                 <div class="table-responsive">
                                     <table id="invoice_content_table" class="table table-vcenter card-table">
                                         <thead>
-                                            <tr>
-                                                <th>نام</th>
-                                                <th>قیمت</th>
-                                            </tr>
+                                        <tr>
+                                            <th>نام</th>
+                                            <th>قیمت</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {foreach $invoice_content as $invoice_content_detail}
+                                        {foreach $invoice->content as $invoice_content}
                                             <tr>
-                                                <td>{$invoice_content_detail->name}</td>
-                                                <td>{$invoice_content_detail->price}</td>
+                                                <td>{$invoice_content->name}</td>
+                                                <td>{$invoice_content->price}</td>
                                             </tr>
-                                            {/foreach}
+                                        {/foreach}
                                         </tbody>
                                     </table>
                                 </div>
@@ -201,19 +207,20 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">خیر</button>
-                    <button id="confirm_cancel" type="button" class="btn btn-primary" data-bs-dismiss="modal">تایید</button>
+                    <button id="confirm_cancel" type="button" class="btn btn-primary" data-bs-dismiss="modal">تایید
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        $("#confirm_cancel").click(function() {
+        $("#confirm_cancel").click(function () {
             $.ajax({
                 url: "/admin/order/{$order->id}/cancel",
                 type: 'POST',
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data.ret === 1) {
                         $('#success-message').text(data.msg);
                         $('#success-dialog').modal('show');
@@ -225,5 +232,4 @@
             })
         });
     </script>
-
-{include file='admin/footer.tpl'}
+    {include file='admin/footer.tpl'}

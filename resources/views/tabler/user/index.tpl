@@ -1,5 +1,7 @@
 {include file='user/header.tpl'}
 
+<script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
+
 <div class="page-wrapper">
     <div class="container-xl">
         <div class="page-header d-print-none text-white">
@@ -111,7 +113,8 @@
                                             </div>
                                             <div class="text-secondary">
                                                 {if $user->node_speedlimit !== 0.0}
-                                                    <code>{$user->node_speedlimit}</code> Mbps
+                                                    <code>{$user->node_speedlimit}</code>
+                                                    Mbps
                                                 {else}
                                                     بدون محدودیت
                                                 {/if}
@@ -202,9 +205,7 @@
                         <div class="card-body">
                             <div class="tab-content">
 
-                                <div {if $osFamily eq "Unknown"} class="tab-pane active show" 
-                                {else} class="tab-pane"
-                                    {{/if}} id="sub">
+                                <div {if $osFamily eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="sub">
                                     <div style="direction: ltr;">
                                         <p>
                                             JSON: <code class="copy btn-icon"
@@ -1025,14 +1026,14 @@
                                     <div class="progress-bar bg-primary" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-primary" role="progressbar"
-                                        style="width: {$user->LastusedTrafficPercent()}%">
+                                         style="width: {$user->LastusedTrafficPercent()}%">
                                     </div>
                                 {/if}
                                 {if $user->TodayusedTrafficPercent() < '1'}
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-success" role="progressbar"
-                                        style="width: {$user->TodayusedTrafficPercent()}%"></div>
+                                         style="width: {$user->TodayusedTrafficPercent()}%"></div>
                                 {/if}
                             </div>
                             <div class="row">
@@ -1051,7 +1052,9 @@
                             </div>
                             <p class="my-3">
                                 {if $user->class === 0}
-                                    بسته شما منقضی شده است . لطفا جهت خرید بسته به <a href="/user/product">فروشگاه</a>
+                                    بسته شما منقضی شده است . لطفا جهت خرید بسته به
+                                    <a href="/user/product">فروشگاه</a>
+                                   
                                     مراجعه فرمایید.
                                 {else}
                                     سطح حساب شما {$user->class} و تا {$class_expire_days} روز دیگر معتبر است.
@@ -1074,11 +1077,11 @@
                                 {/if}
                             </h3>
                             <p class="text-secondary">
-                                {if $ann !== null}
-                                    {$ann->content}
-                                {else}
-                                    هنوز اطلاعیه ای وجود ندارد
-                                {/if}
+                                    {if $ann !== null}
+                                        {$ann->content}
+                                    {else}
+                                        هنوز اطلاعیه ای وجود ندارد
+                                    {/if}
                             </p>
                         </div>
                     </div>
@@ -1123,7 +1126,16 @@
                                                 <div id="geetest"></div>
                                             {/if}
                                         {/if}
-                                        <button id="check-in" class="btn btn-primary ms-auto">بررسی</button>
+                                        <button id="check-in" class="btn btn-primary ms-auto"
+                                                hx-post="/user/checkin" hx-swap="none"
+                                                {if $public_setting['captcha_provider'] === 'turnstile'}
+                                                    hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
+                                                {/if}
+                                                {if $public_setting['captcha_provider'] === 'geetest'}
+                                                    hx-vals='js:{ geetest: geetest_result }'
+                                                {/if}>
+                                            بررسی
+                                        </button>
                                     {/if}
                                 </div>
                             </div>
@@ -1139,33 +1151,6 @@
         clipboard.on('success', function(e) {
             $('#success-noreload-message').text('در کلیپ بورد کپی شد');
             $('#success-noreload-dialog').modal('show');
-        });
-
-        $("#check-in").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "/user/checkin",
-                dataType: "json",
-                data: {
-                    {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
-                        {if $public_setting['captcha_provider'] === 'turnstile'}
-                            turnstile: $('input[name=cf-turnstile-response]').val(),
-                        {/if}
-                        {if $public_setting['captcha_provider'] === 'geetest'}
-                            geetest: geetest_result,
-                        {/if}
-                    {/if}
-                },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
         });
 
         $.fn.dataTable.ext.errMode = 'none';
@@ -1378,25 +1363,25 @@
     </script>
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
-        {if $public_setting['captcha_provider'] === 'turnstile'}
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-        {/if}
-        {if $public_setting['captcha_provider'] === 'geetest'}
-            <script src="https://static.geetest.com/v4/gt4.js"></script>
-            <script>
-                var geetest_result = '';
-                initGeetest4({
-                    captchaId: '{$captcha['geetest_id']}',
-                    product: 'float',
-                    language: "en",
-                    riskType: 'slide'
-                }, function(geetest) {
-                    geetest.appendTo("#geetest");
-                    geetest.onSuccess(function() {
-                        geetest_result = geetest.getValidate();
-                    });
-                });
-            </script>
-        {/if}
+    {if $public_setting['captcha_provider'] === 'turnstile'}
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     {/if}
-{include file='user/footer.tpl'}
+    {if $public_setting['captcha_provider'] === 'geetest'}
+        <script src="https://static.geetest.com/v4/gt4.js"></script>
+        <script>
+            let geetest_result = '';
+            initGeetest4({
+                captchaId: '{$captcha['geetest_id']}',
+                product: 'float',
+                language: "en",
+                riskType:  'slide'
+            }, function(geetest) {
+                geetest.appendTo("#geetest");
+                geetest.onSuccess(function () {
+                    geetest_result = geetest.getValidate();
+                });
+            });
+        </script>
+    {/if}
+    {/if}
+    {include file='user/footer.tpl'}

@@ -1,44 +1,49 @@
 {include file='header.tpl'}
 
 <body style="background-color:#EEEEEE;">
-    <div style="text-align: center">
-        <div border="0" cellpadding="0" cellspacing="0" width="100%" style="padding-top:30px;table-layout:fixed;background-color:#EEEEEE;" id="bodyTable">
-            <div align="center" valign="top" style="padding-right:10px;padding-left:10px;" id="bodyCell">
-                <div border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;max-width:600px;text-align: center" width="100%" class="wrapperTable">
-                    <div align="center" valign="top">
-                        <div border="0" cellpadding="0" cellspacing="0" width="100%" class="logoTable">
-                            <div align="center" valign="middle" style="padding-top:60px;padding-bottom:60px">
-                                <h2 class="bigTitle">
-                                    گزارش ترافیک روزانه
-                                </h2>
-                            </div>
+<div style="text-align: center">
+    <div border="0" cellpadding="0" cellspacing="0" width="100%"
+         style="padding-top:30px;table-layout:fixed;background-color:#EEEEEE;" id="bodyTable">
+        <div align="center" valign="top" style="padding-right:10px;padding-left:10px;" id="bodyCell">
+            <div border="0" cellpadding="0" cellspacing="0"
+                 style="background-color:#FFFFFF;max-width:600px;text-align: center" width="100%" class="wrapperTable">
+                <div align="center" valign="top">
+                    <div border="0" cellpadding="0" cellspacing="0" width="100%" class="logoTable">
+                        <div align="center" valign="middle" style="padding-top:60px;padding-bottom:60px">
+                            <h2 class="bigTitle">
+                                گزارش ترافیک روزانه
+                            </h2>
                         </div>
                     </div>
                 </div>
-                <div border="0" cellpadding="0" cellspacing="0" style="max-width:600px;text-align: center" width="100%" class="wrapperTable">
-                    <div align="center" valign="top">
-                        <div border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF" width="100%" class="oneColumn">
-                            <div align="center" valign="top" style="padding-bottom:60px;padding-left:20px;padding-right:20px;" class="description">
-                                <p class="midText">
-                                    نام کاربری: {$user->user_name}
-                                    <br>
-                                    Email: {$user->email}
-                                    <br><br>
-                                    ترافیک کل: {$enable_traffic}
-                                    <br>
-                                    ترافیک استفاده شده: {$used_traffic}
-                                    <br>
-                                    ترافیک باقیمانده: {$unused_traffic}
-                                    <br>
-                                    ترافیک مصرف شده امروز: {$lastday_traffic}
-                                    <br><br>
-                                </p>
-                                <p class="midText">
-                                    {$text}
-                                </p>
-                            </div>
+            </div>
+            <div border="0" cellpadding="0" cellspacing="0" style="max-width:600px;text-align: center" width="100%"
+                 class="wrapperTable">
+                <div align="center" valign="top">
+                    <div border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF" width="100%"
+                         class="oneColumn">
+                        <div align="center" valign="top"
+                             style="padding-bottom:60px;padding-left:20px;padding-right:20px;" class="description">
+                            <p class="midText">
+                                نام کاربری: {$user->user_name}
+                                <br>
+                                Email: {$user->email}
+                                <br><br>
+                                ترافیک کل: {$enable_traffic}
+                                <br>
+                                ترافیک استفاده شده: {$used_traffic}
+                                <br>
+                                ترافیک باقیمانده: {$unused_traffic}
+                                <br>
+                                ترافیک مصرف شده امروز: {$lastday_traffic}
+                                <br><br>
+                            </p>
+                            <p class="midText">
+                                {$text}
+                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-{include file='footer.tpl'}
+            {include file='footer.tpl'}

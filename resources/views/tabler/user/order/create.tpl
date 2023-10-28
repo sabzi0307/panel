@@ -34,52 +34,46 @@
                                     <td class="text-end">{$product->name}</td>
                                 </tr>
                                 <tr>
-                                    <td>نوع سرویس</td>
-                                    {if $product->type === 'tabp'}
-                                        <td class="text-end">بسته ترافیک زمانی</td>
-                                    {elseif $product->type === 'time'}
-                                        <td class="text-end">بسته زمانی</td>
-                                    {elseif $product->type === 'bandwidth'}
-                                        <td class="text-end">بسته ترافیک</td>
-                                    {/if}
+                                    <td>انواع خدمات</td>
+                                    <td class="text-end">{$product->type_text}</td>
                                 </tr>
                                 {if $product->type === 'tabp' || $product->type === 'time'}
-                                <tr>
-                                    <td>مدت زمان سرویس</td>
-                                    <td class="text-end">{$product->content->time} روز</td>
-                                </tr>
-                                <tr>
-                                    <td>مدت زمان سطح</td>
-                                    <td class="text-end">{$product->content->class_time} روز</td>
-                                </tr>
-                                <tr>
-                                    <td>سطح</td>
-                                    <td class="text-end">Lv. {$product->content->class}</td>
-                                </tr>
+                                    <tr>
+                                        <td>مدت زمان سرویس</td>
+                                        <td class="text-end">{$product->content->time} روز</td>
+                                    </tr>
+                                    <tr>
+                                        <td>مدت زمان سطح</td>
+                                        <td class="text-end">{$product->content->class_time} روز</td>
+                                    </tr>
+                                    <tr>
+                                        <td>سطح</td>
+                                        <td class="text-end">Lv. {$product->content->class}</td>
+                                    </tr>
                                 {/if}
                                 {if $product->type === 'tabp' || $product->type === 'bandwidth'}
-                                <tr>
-                                    <td>ترافیک موجود</td>
-                                    <td class="text-end">{$product->content->bandwidth} GB</td>
-                                </tr>
+                                    <tr>
+                                        <td>ترافیک موجود</td>
+                                        <td class="text-end">{$product->content->bandwidth} GB</td>
+                                    </tr>
                                 {/if}
                                 {if $product->type === 'tabp' || $product->type === 'time'}
-                                <tr>
-                                    <td>محدودیت نرخ داده</td>
-                                    {if $product->content->speed_limit === '0'}
-                                    <td class="text-end">بدون محدودیت</td>
-                                    {else}
-                                    <td class="text-end">{$product->content->speed_limit} Mbps</td>
-                                    {/if}
-                                </tr>
-                                <tr>
-                                    <td>محدودیت اتصال همزمان IP</td>
-                                    {if $product->content->ip_limit === '0'}
-                                    <td class="text-end">بدون محدودیت</td>
-                                    {else}
-                                    <td class="text-end">{$product->content->ip_limit}</td>
-                                    {/if}
-                                </tr>
+                                    <tr>
+                                        <td>محدودیت نرخ داده</td>
+                                        {if $product->content->speed_limit === '0'}
+                                            <td class="text-end">بدون محدودیت</td>
+                                        {else}
+                                            <td class="text-end">{$product->content->speed_limit} Mbps</td>
+                                        {/if}
+                                    </tr>
+                                    <tr>
+                                        <td>محدودیت اتصال همزمان IP</td>
+                                        {if $product->content->ip_limit === '0'}
+                                            <td class="text-end">بدون محدودیت</td>
+                                        {else}
+                                            <td class="text-end">{$product->content->ip_limit}</td>
+                                        {/if}
+                                    </tr>
                                 {/if}
                             </table>
                         </div>
@@ -118,7 +112,8 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <div class="input-group mb-2">
-                                    <input id="coupon" type="text" class="form-control" placeholder="اگرندارید، خالی بگذارید" style="font-size: small;">
+                                    <input id="coupon" type="text" class="form-control"
+                                           placeholder="اگرندارید، خالی بگذارید" style="font-size: small;">
                                     <button id="verify-coupon" class="btn" type="button">بررسی کدتخفیف</button>
                                 </div>
                             </div>
@@ -127,7 +122,8 @@
                     <div class="card my-3">
                         <div class="card-body">
                             <button id="create-order" href=""
-                            class="btn btn-primary w-100 my-3">ایجاد سفارش</button>
+                                    class="btn btn-primary w-100 my-3">ایجاد سفارش
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -136,7 +132,7 @@
     </div>
 
     <script>
-        $("#verify-coupon").click(function() {
+        $("#verify-coupon").click(function () {
             $.ajax({
                 url: '/user/coupon',
                 type: 'POST',
@@ -145,7 +141,7 @@
                     coupon: $('#coupon').val(),
                     product_id: {$product->id},
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data.ret === 1) {
                         $('#coupon-code').text($('#coupon').val());
                         $('#product-buy-discount').text(data.discount);
@@ -158,7 +154,7 @@
             })
         });
 
-        $("#create-order").click(function() {
+        $("#create-order").click(function () {
             $.ajax({
                 url: '/user/order/create',
                 type: 'POST',
@@ -167,13 +163,13 @@
                     coupon: $('#coupon').val(),
                     product_id: {$product->id},
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data.ret === 1) {
-                        $('#success-noreload-message').text(data.msg);
-                        $('#success-noreload-dialog').modal('show');
-                        setTimeout(function() {
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                        setTimeout(function () {
                             $(location).attr('href', '/user/invoice/' + data.invoice_id + '/view');
-                        }, 1500);
+                        }, $config['jump_delay']);
                     } else {
                         $('#fail-message').text(data.msg);
                         $('#fail-dialog').modal('show');
@@ -183,4 +179,4 @@
         });
     </script>
 
-{include file='user/footer.tpl'}
+    {include file='user/footer.tpl'}

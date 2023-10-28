@@ -1,10 +1,10 @@
 {include file='user/header.tpl'}
 
 <div class="page-wrapper">
-    <div class="container-xl">  
+    <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
-                <div class="col">                    
+                <div class="col">
                     <h2 class="page-title">
                         <span class="home-title">سابقه اشتراک</span>
                     </h2>
@@ -23,17 +23,17 @@
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">
                                 <thead>
-                                    <tr>
-                                        <th>شناسه رویداد</th>
-                                        <th>نوع</th>
-                                        <th>IP</th>
-                                        <th>انتساب</th>
-                                        <th>زمان</th>
-                                        <th>لوگو</th>
-                                    </tr>
+                                <tr>
+                                    <th>شناسه رویداد</th>
+                                    <th>نوع</th>
+                                    <th>IP</th>
+                                    <th>انتساب</th>
+                                    <th>زمان</th>
+                                    <th>لوگو</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {foreach $logs as $log}
+                                {foreach $logs as $log}
                                     <tr>
                                         <td>#{$log->id}</td>
                                         <td>{$log->type}</td>
@@ -42,7 +42,7 @@
                                         <td>{$log->request_time}</td>
                                         <td>{$log->request_user_agent}</td>
                                     </tr>
-                                    {/foreach}
+                                {/foreach}
                                 </tbody>
                             </table>
                         </div>

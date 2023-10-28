@@ -42,28 +42,28 @@
                                 <label class="form-label col-3 col-form-label">نام کاربری</label>
                                 <div class="col">
                                     <input id="user_name" type="text" class="form-control"
-                                        value="{$edit_user->user_name}">
+                                           value="{$edit_user->user_name}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">ریمارک</label>
                                 <div class="col">
                                     <input id="remark" type="text" class="form-control" value="{$edit_user->remark}"
-                                        placeholder="فقط برای مدیران قابل مشاهده است">
+                                           placeholder="فقط برای مدیران قابل مشاهده است">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">رمز عبور حساب کاربری</label>
                                 <div class="col">
                                     <input id="pass" type="text" class="form-control"
-                                        placeholder="برای بازنشانی رمز عبور این کاربر، این قسمت را پر کنید">
+                                           placeholder="برای بازنشانی رمز عبور این کاربر، این قسمت را پر کنید">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">موجودی حساب</label>
                                 <div class="col">
                                     <input id="money" type="number" step="0.1" class="form-control"
-                                        value="{$edit_user->money}">
+                                           value="{$edit_user->money}">
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -73,23 +73,23 @@
                                 <label class="form-label col-4 col-form-label">زمان انقضای سطح</label>
                                 <div class="col">
                                     <input id="class_expire" type="text" class="form-control"
-                                        value="{$edit_user->class_expire}">
+                                           value="{$edit_user->class_expire}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">روز ریست ترافیک رایگان کاربر</label>
                                 <div class="col">
                                     <input id="auto_reset_day" type="text" class="form-control"
-                                        value="{$edit_user->auto_reset_day}">
+                                           value="{$edit_user->auto_reset_day}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">
-                                ریست ترافیک رایگان(GB)
+                                    ریست ترافیک رایگان(GB)
                                 </label>
                                 <div class="col">
                                     <input id="auto_reset_bandwidth" type="text" class="form-control"
-                                        value="{$edit_user->auto_reset_bandwidth}">
+                                           value="{$edit_user->auto_reset_bandwidth}">
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -100,7 +100,7 @@
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="is_admin" class="form-check-input" type="checkbox"
-                                            {if $edit_user->is_admin}checked="" {/if}>
+                                               {if $edit_user->is_admin}checked="" {/if}>
                                     </label>
                                 </span>
                             </div>
@@ -109,7 +109,7 @@
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="ga_enable" class="form-check-input" type="checkbox"
-                                            {if $edit_user->ga_enable}checked="" {/if}>
+                                               {if $edit_user->ga_enable}checked="" {/if}>
                                     </label>
                                 </span>
                             </div>
@@ -117,7 +117,7 @@
                                 <span class="col">وضعیت غیر عادی حساب</span>
                                 <span class="col-auto form-check-single form-switch">
                                     <input id="is_shadow_banned" class="form-check-input" type="checkbox"
-                                            {if $edit_user->is_shadow_banned}checked=""{/if}>
+                                           {if $edit_user->is_shadow_banned}checked=""{/if}>
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
@@ -125,7 +125,7 @@
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="is_banned" class="form-check-input" type="checkbox"
-                                            {if $edit_user->is_banned}checked=""{/if}>
+                                               {if $edit_user->is_banned}checked=""{/if}>
                                     </label>
                                 </span>
                             </div>
@@ -133,7 +133,7 @@
                                 <span class="col">علت ممنوعیت دستی</span>
                                 <span class="col-auto">
                                     <input id="banned_reason" type="text" class="form-control"
-                                        value="{$edit_user->banned_reason}">
+                                           value="{$edit_user->banned_reason}">
                                 </span>
                             </div>
                         </div>
@@ -149,21 +149,21 @@
                                 <label class="form-label col-4 col-form-label">محدودیت های ترافیکی</label>
                                 <div class="col">
                                     <input id="transfer_enable" type="text" class="form-control"
-                                        value="{$edit_user->enableTraffic()}">
+                                           value="{$edit_user->enableTraffic()}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">مصرف کنونی</label>
                                 <div class="col">
                                     <input id="usedTraffic" type="text" class="form-control"
-                                        value="{$edit_user->usedTraffic()}" disabled />
+                                           value="{$edit_user->usedTraffic()}" disabled/>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">استفاده کل</label>
                                 <div class="col">
                                     <input id="usedTraffic" type="text" class="form-control"
-                                           value="{$edit_user->totalTraffic()}" disabled />
+                                           value="{$edit_user->totalTraffic()}" disabled/>
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -173,7 +173,7 @@
                                 <label class="form-label col-4 col-form-label">تعداد دعوت نامه های موجود</label>
                                 <div class="col">
                                     <input id="invite_num" type="text" class="form-control"
-                                        value="{$edit_user->invite_num}">
+                                           value="{$edit_user->invite_num}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -186,32 +186,32 @@
                                 <span>محدودیت های تخصیص و استفاده</span>
                             </div>
                             <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">گروه سرور</label>
-                                    <div class="col">
-                                        <input id="node_group" type="text" class="form-control"
-                                            value="{$edit_user->node_group}">
-                                    </div>
+                                <label class="form-label col-12 col-form-label">گروه سرور</label>
+                                <div class="col">
+                                    <input id="node_group" type="text" class="form-control"
+                                           value="{$edit_user->node_group}">
                                 </div>
-                                <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">سطح حساب</label>
-                                    <div class="col">
-                                        <input id="class" type="text" class="form-control" value="{$edit_user->class}">
-                                    </div>
+                            </div>
+                            <div class="form-group mb-3 col-12">
+                                <label class="form-label col-12 col-form-label">سطح حساب</label>
+                                <div class="col">
+                                    <input id="class" type="text" class="form-control" value="{$edit_user->class}">
                                 </div>
-                                <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">محدودیت سرعت (Mbps)</label>
-                                    <div class="col">
-                                        <input id="node_speedlimit" type="text" class="form-control"
-                                            value="{$edit_user->node_speedlimit}">
-                                    </div>
+                            </div>
+                            <div class="form-group mb-3 col-12">
+                                <label class="form-label col-12 col-form-label">محدودیت سرعت (Mbps)</label>
+                                <div class="col">
+                                    <input id="node_speedlimit" type="text" class="form-control"
+                                           value="{$edit_user->node_speedlimit}">
                                 </div>
-                                <div class="form-group mb-3 col-12">
-                                    <label class="form-label col-12 col-form-label">محدودیت اتصال همزمان IP</label>
-                                    <div class="col">
-                                        <input id="node_iplimit" type="text" class="form-control"
-                                            value="{$edit_user->node_iplimit}">
-                                    </div>
+                            </div>
+                            <div class="form-group mb-3 col-12">
+                                <label class="form-label col-12 col-form-label">محدودیت اتصال همزمان IP</label>
+                                <div class="col">
+                                    <input id="node_iplimit" type="text" class="form-control"
+                                           value="{$edit_user->node_iplimit}">
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -246,14 +246,14 @@
                                 <label class="form-label col-3 col-form-label">IP / CIDR</label>
                                 <div class="col">
                                     <textarea id="forbidden_ip" class="col form-control"
-                                        rows="2">{$edit_user->forbidden_ip}</textarea>
+                                              rows="2">{$edit_user->forbidden_ip}</textarea>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">PORT</label>
                                 <div class="col">
                                     <textarea id="forbidden_port" class="col form-control"
-                                        rows="2">{$edit_user->forbidden_port}</textarea>
+                                              rows="2">{$edit_user->forbidden_port}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -265,7 +265,7 @@
 </div>
 
 <script>
-    $("#save_changes").click(function() {
+    $("#save_changes").click(function () {
         $.ajax({
             url: '/admin/user/{$edit_user->id}',
             type: 'PUT',
@@ -279,7 +279,7 @@
                 ga_enable: $("#ga_enable").is(":checked"),
                 is_shadow_banned: $("#is_shadow_banned").is(":checked"),
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');

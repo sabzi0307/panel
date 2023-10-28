@@ -33,7 +33,7 @@
                     <div class="datagrid">
                         <div class="datagrid-item">
                             <div class="datagrid-title">نوع سرویس</div>
-                            <div class="datagrid-content">{$order->product_type}</div>
+                            <div class="datagrid-content">{$order->product_type_text}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">نام سرویس</div>
@@ -68,42 +68,48 @@
                 </div>
                 <div class="card-body">
                     <div class="datagrid">
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان سرویس (روز)</div>
-                            <div class="datagrid-content">{$product_content->time}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">ترافیک موجود (GB)</div>
-                            <div class="datagrid-content">{$product_content->bandwidth}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">سطح</div>
-                            <div class="datagrid-content">{$product_content->class}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">مدت زمان سطح (روزها)</div>
-                            <div class="datagrid-content">{$product_content->class_time}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">محدودیت سرعت (Mbps)</div>
-                            <div class="datagrid-content">
-                            {if $product_content->ip_limit === '0'}
-                            بدون محدودیت
-                            {else}
-                            {$product_content->speed_limit}
-                            {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'time'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">مدت زمان سرویس (روز)</div>
+                                <div class="datagrid-content">{$order->content->time}</div>
                             </div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">محدودیت اتصال همزمان IP</div>
-                            <div class="datagrid-content">
-                            {if $product_content->ip_limit === '0'}
-                            بدون محدودیت
-                            {else}
-                            {$product_content->ip_limit}
-                            {/if}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">مدت زمان سطح (روز)</div>
+                                <div class="datagrid-content">{$order->content->class_time}</div>
                             </div>
-                        </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">سطح کاربری</div>
+                                <div class="datagrid-content">{$order->content->class}</div>
+                            </div>
+                        {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'bandwidth'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">ترافیک موجود (GB)</div>
+                                <div class="datagrid-content">{$order->content->bandwidth}</div>
+                            </div>
+                        {/if}
+                        {if $order->product_type === 'tabp' || $order->product_type === 'time'}
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">محدودیت نرخ (Mbps)</div>
+                                <div class="datagrid-content">
+                                    {if $order->content->ip_limit === '0'}
+                                        بدون محدودیت
+                                    {else}
+                                        {$order->content->speed_limit}
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">محدودیت IP اتصال همزمان</div>
+                                <div class="datagrid-content">
+                                    {if $order->content->ip_limit === '0'}
+                                        بدون محدودیت
+                                    {else}
+                                        {$order->content->ip_limit}
+                                    {/if}
+                                </div>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -119,18 +125,18 @@
                                 <div class="table-responsive">
                                     <table id="invoice_content_table" class="table table-vcenter card-table">
                                         <thead>
-                                            <tr>
-                                                <th>نام</th>
-                                                <th>قیمت</th>
-                                            </tr>
+                                        <tr>
+                                            <th>نام</th>
+                                            <th>قیمت</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {foreach $invoice_content as $invoice_content_detail}
+                                        {foreach $invoice->content as $invoice_content}
                                             <tr>
-                                                <td>{$invoice_content_detail->name}</td>
-                                                <td>{$invoice_content_detail->price}</td>
+                                                <td>{$invoice_content->name}</td>
+                                                <td>{$invoice_content->price}</td>
                                             </tr>
-                                            {/foreach}
+                                        {/foreach}
                                         </tbody>
                                     </table>
                                 </div>
@@ -161,5 +167,4 @@
             </div>
         </div>
     </div>
-
-{include file='user/footer.tpl'}
+    {include file='user/footer.tpl'}

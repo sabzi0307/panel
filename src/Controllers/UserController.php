@@ -223,14 +223,7 @@ final class UserController extends BaseController
             ->fetch('user/invite.tpl'));
     }
 
-    public function logout(ServerRequest $request, Response $response, array $args): Response
-    {
-        Auth::logout();
-
-        return $response->withStatus(302)->withHeader('Location', '/');
-    }
-
-    public function doCheckIn(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    public function checkin(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         if (! $_ENV['enable_checkin']) {
             return ResponseHelper::error($response, 'هنوز امکان ورود به سیستم وجود ندارد');
@@ -250,16 +243,24 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, (string) $checkin['msg']);
         }
 
-        return $response->withJson([
+        return $response->withHeader('HX-Refresh', 'true')->withJson([
             'ret' => 1,
-            'trafficInfo' => [
-                'todayUsedTraffic' => $this->user->todayUsedTraffic(),
-                'lastUsedTraffic' => $this->user->lastUsedTraffic(),
-                'unUsedTraffic' => $this->user->unusedTraffic(),
-            ],
-            'traffic' => Tools::autoBytes($this->user->transfer_enable),
-            'unflowtraffic' => $this->user->transfer_enable,
             'msg' => $checkin['msg'],
+        ]);
+    }
+
+    public function switchThemeMode(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $user = $this->user;
+        $user->is_dark_mode = $user->is_dark_mode === 1 ? 0 : 1;
+
+        if (! $user->save()) {
+            return ResponseHelper::error($response, 'سوئیچ ناموفق بود');
+        }
+
+        return $response->withHeader('HX-Refresh', 'true')->withJson([
+            'ret' => 1,
+            'msg' => 'سوئیچ با موفقیت انجام شد',
         ]);
     }
 
@@ -275,15 +276,10 @@ final class UserController extends BaseController
             ->fetch('user/banned.tpl'));
     }
 
-    public function switchThemeMode(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    public function logout(ServerRequest $request, Response $response, array $args): Response
     {
-        $user = $this->user;
-        $user->is_dark_mode = $user->is_dark_mode === 1 ? 0 : 1;
+        Auth::logout();
 
-        if (! $user->save()) {
-            return ResponseHelper::error($response, 'سوئیچ ناموفق بود');
-        }
-
-        return ResponseHelper::success($response, 'با موفقیت تغییر دهید');
+        return $response->withStatus(302)->withHeader('Location', '/');
     }
 }

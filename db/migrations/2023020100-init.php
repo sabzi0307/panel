@@ -142,6 +142,8 @@ return new class() implements MigrationInterface {
                 `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'node status',
                 `sort` tinyint(2) unsigned NOT NULL DEFAULT 14 COMMENT 'node type',
                 `traffic_rate` float unsigned NOT NULL DEFAULT 1 COMMENT 'Flow rate',
+                `is_dynamic_rate` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable dynamic traffic ratio',
+                `dynamic_rate_config` longtext NOT NULL DEFAULT '{}' COMMENT 'Dynamic traffic ratio configuration' CHECK (json_valid(`custom_config`)),
                 `node_class` smallint(5) unsigned NOT NULL DEFAULT 0 COMMENT 'node level',
                 `node_speedlimit` double unsigned NOT NULL DEFAULT 0 COMMENT 'Node speed limit',
                 `node_bandwidth` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'node level',

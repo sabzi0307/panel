@@ -1,7 +1,7 @@
 {include file='user/header.tpl'}
 
 <div class="page-wrapper">
-    <div class="container-xl">       
+    <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
                 <div class="col">
@@ -41,14 +41,14 @@
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
-                                    <tr>
-                                        <th>شناسه رویداد</th>
-                                        <th>موجودی قبل از تغییر</th>
-                                        <th>موجودی پس از تغییر</th>
-                                        <th>میزان تغییر</th>
-                                        <th>ریمارک</th>
-                                        <th>زمان تغییر</th>
-                                    </tr>
+                                <tr>
+                                    <th>شناسه رویداد</th>
+                                    <th>موجودی قبل از تغییر</th>
+                                    <th>موجودی پس از تغییر</th>
+                                    <th>میزان تغییر</th>
+                                    <th>ریمارک</th>
+                                    <th>زمان تغییر</th>
+                                </tr>
                                     </thead>
                                     <tbody>
                                     {foreach $moneylogs as $moneylog}
@@ -80,14 +80,17 @@
                 <div class="modal-body">
                     <div class="form-group mb-3 row">
                         <div class="col">
-                            <input id="giftcard" type="text" class="form-control" placeholder="شماره کارت هدیه را وارد کنید و روی اعمال کلیک کنید">
+                            <input id="giftcard" type="text" class="form-control"
+                                   placeholder="شماره کارت هدیه را وارد کنید و روی اعمال کلیک کنید">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
-                    <button id="apply-giftcard"
-                            type="button" class="btn btn-primary" data-bs-dismiss="modal">اعمال</button>
+                    <button id="apply-giftcard" class="btn btn-primary" data-bs-dismiss="modal"
+                            hx-post="/user/giftcard" hx-swap="none"
+                            hx-vals='js:{ giftcard: document.getElementById("giftcard").value }'>
+                        اعمال</button>
                 </div>
             </div>
         </div>
@@ -111,53 +114,16 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
-                    <button id="active-voucher"
-                            type="button" class="btn btn-primary" data-bs-dismiss="modal">اعمال</button>
+                    <button id="apply-giftcard" class="btn btn-primary" data-bs-dismiss="modal"
+                            hx-post="/user/perfectvoucher" hx-swap="none"
+                            hx-vals='js:{
+                                ev_number: document.getElementById("ev_number").value,
+                                ev_code: document.getElementById("ev_code").value
+                            }'>
+                        اعمال</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        $("#apply-giftcard").click(function() {
-            $.ajax({
-                url: '/user/giftcard',
-                type: 'POST',
-                dataType: "json",
-                data: {
-                    giftcard: $('#giftcard').val(),
-                },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
-        });
-        $("#active-voucher").click(function() {
-            $.ajax({
-                url: '/user/perfectvoucher',
-                type: 'POST',
-                dataType: "json",
-                data: {
-                    giftcard: $('#ev_number').val(),
-                    giftcard: $('#ev_code').val(),
-                },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
-        });
-    </script>
 
 {include file='user/footer.tpl'}

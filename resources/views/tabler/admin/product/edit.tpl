@@ -36,21 +36,21 @@
                                 <label class="form-label col-3 col-form-label required">نام</label>
                                 <div class="col">
                                     <input id="name" type="text" class="form-control"
-                                        value="{$product->name}">
+                                           value="{$product->name}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">قیمت</label>
                                 <div class="col">
                                     <input id="price" type="text" class="form-control"
-                                        value="{$product->price}">
+                                           value="{$product->price}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">موجودی (نامحدود زمانی که کمتر از 0 باشد)</label>
                                 <div class="col">
                                     <input id="stock" type="text" class="form-control"
-                                        value="{$product->stock}">
+                                           value="{$product->stock}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -66,9 +66,12 @@
                                 <label class="form-label col-3 col-form-label">نوع</label>
                                 <div class="col">
                                     <select id="type" class="col form-select">
-                                        <option value="tabp" {if $product->type === "tabp"}selected{/if}>ترافیک زمان دار</option>
+                                        <option value="tabp" {if $product->type === "tabp"}selected{/if}>ترافیک زمان دار
+                                        </option>
                                         <option value="time" {if $product->type === "time"}selected{/if}>بسته زمانی</option>
-                                        <option value="bandwidth" {if $product->type === "bandwidth"}selected{/if}>ترافیک</option>
+                                        <option value="bandwidth" {if $product->type === "bandwidth"}selected{/if}>
+                                            ترافیک
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -85,49 +88,49 @@
                                 <label class="form-label col-3 col-form-label required">مدت زمان سرویس (روز)</label>
                                 <div class="col">
                                     <input id="time" type="text" class="form-control"
-                                        value="{$content->time}">
+                                           value="{$content->time}">
                                 </div>
                             </div>
                             <div id="class_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">
                                     <input id="class" type="text" class="form-control"
-                                        value="{$content->class}">
+                                           value="{$content->class}">
                                 </div>
                             </div>
                             <div id="class_time_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">مدت زمان سطح (روز)</label>
                                 <div class="col">
                                     <input id="class_time" type="text" class="form-control"
-                                        value="{$content->class_time}">
+                                           value="{$content->class_time}">
                                 </div>
                             </div>
                             <div id="bandwidth_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">ترافیک موجود (GB)</label>
                                 <div class="col">
                                     <input id="bandwidth" type="text" class="form-control"
-                                        value="{$content->bandwidth}">
+                                           value="{$content->bandwidth}">
                                 </div>
                             </div>
                             <div id="node_group_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">گروه کاربران</label>
                                 <div class="col">
                                     <input id="node_group" type="text" class="form-control"
-                                        value="{$content->node_group}">
+                                           value="{$content->node_group}">
                                 </div>
                             </div>
                             <div id="speed_limit_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت سرعت (Mbps)</label>
                                 <div class="col">
                                     <input id="speed_limit" type="text" class="form-control"
-                                        value="{$content->speed_limit}">
+                                           value="{$content->speed_limit}">
                                 </div>
                             </div>
                             <div id="ip_limit_option" class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت اتصال همزمان IP</label>
                                 <div class="col">
                                     <input id="ip_limit" type="text" class="form-control"
-                                        value="{$content->ip_limit}">
+                                           value="{$content->ip_limit}">
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -137,14 +140,14 @@
                                 <label class="form-label col-3 col-form-label">نیازهای سطح کاربر</label>
                                 <div class="col">
                                     <input id="class_required" type="text" class="form-control"
-                                        value="{$limit->class_required}">
+                                           value="{$limit->class_required}">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">گروه سروری که کاربر در آن قرار دارد</label>
                                 <div class="col">
                                     <input id="node_group_required" type="text" class="form-control"
-                                        value="{$limit->node_group_required}">
+                                           value="{$limit->node_group_required}">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -153,7 +156,7 @@
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
                                             <input id="new_user_requried" class="form-check-input" type="checkbox"
-                                                {if $limit->new_user_required === 1}checked="" {/if}>
+                                                   {if $limit->new_user_required === 1}checked="" {/if}>
                                         </label>
                                     </span>
                                 </label>
@@ -171,9 +174,8 @@
         $("#type").change();
     });
 
-    $("#type").on("change", function() {
-        if (this.value === "bandwidth")
-        {
+    $("#type").on("change", function () {
+        if (this.value === "bandwidth") {
             $("#time_option").hide();
             $("#class_option").hide();
             $("#class_time_option").hide();
@@ -181,16 +183,14 @@
             $("#node_group_option").hide();
             $("#speed_limit_option").hide();
             $("#ip_limit_option").hide();
-            $("#time").prop("required",false);
-            $("#class").prop("required",false);
-            $("#class_time").prop("required",false);
-            $("#bandwidth").prop("required",true);
-            $("#node_group").prop("required",false);
-            $("#speed_limit").prop("required",false);
-            $("#ip_limit").prop("required",false);
-        }
-        else if (this.value === "time")
-        {
+            $("#time").prop("required", false);
+            $("#class").prop("required", false);
+            $("#class_time").prop("required", false);
+            $("#bandwidth").prop("required", true);
+            $("#node_group").prop("required", false);
+            $("#speed_limit").prop("required", false);
+            $("#ip_limit").prop("required", false);
+        } else if (this.value === "time") {
             $("#time_option").show();
             $("#class_option").show();
             $("#class_time_option").show();
@@ -198,16 +198,14 @@
             $("#node_group_option").show();
             $("#speed_limit_option").show();
             $("#ip_limit_option").show();
-            $("#time").prop("required",true);
-            $("#class").prop("required",true);
-            $("#class_time").prop("required",true);
-            $("#bandwidth").prop("required",false);
-            $("#node_group").prop("required",true);
-            $("#speed_limit").prop("required",true);
-            $("#ip_limit").prop("required",true);
-        }
-        else
-        {
+            $("#time").prop("required", true);
+            $("#class").prop("required", true);
+            $("#class_time").prop("required", true);
+            $("#bandwidth").prop("required", false);
+            $("#node_group").prop("required", true);
+            $("#speed_limit").prop("required", true);
+            $("#ip_limit").prop("required", true);
+        } else {
             $("#time_option").show();
             $("#class_option").show();
             $("#class_time_option").show();
@@ -215,18 +213,18 @@
             $("#node_group_option").show();
             $("#speed_limit_option").show();
             $("#ip_limit_option").show();
-            $("#time").prop("required",true);
-            $("#class").prop("required",true);
-            $("#class_time").prop("required",true);
-            $("#bandwidth").prop("required",true);
-            $("#node_group").prop("required",true);
-            $("#speed_limit").prop("required",true);
-            $("#ip_limit").prop("required",true);
+            $("#time").prop("required", true);
+            $("#class").prop("required", true);
+            $("#class_time").prop("required", true);
+            $("#bandwidth").prop("required", true);
+            $("#node_group").prop("required", true);
+            $("#speed_limit").prop("required", true);
+            $("#ip_limit").prop("required", true);
         }
     });
 
-    $("#save-product").click(function() {
-        var emptyFields = $('input[required]').filter(function() {
+    $("#save-product").click(function () {
+        var emptyFields = $('input[required]').filter(function () {
             return $(this).val() === '';
         });
 

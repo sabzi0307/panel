@@ -61,24 +61,35 @@
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">Lv. {$tabp->content->class}</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">سطح</div>
+                                                                        <div class="text-reset d-block">
+                                                                            Lv. {$tabp->content->class}</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                            سطح کاربری
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">{$tabp->content->class_time} روز</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">مدت زمان سطح</div>
+                                                                        <div class="text-reset d-block">{$tabp->content->class_time}
+                                                                            روز
+                                                                        </div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        مدت زمان سطح
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">{$tabp->content->bandwidth} GB</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">ترافیک باقیمانده</div>
+                                                                        <div class="text-reset d-block">{$tabp->content->bandwidth}
+                                                                            GB
+                                                                        </div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        ترافیک موجود
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -88,9 +99,13 @@
                                                                         {if $tabp->content->speed_limit === '0'}
                                                                             <div class="text-reset d-block">بدون محدودیت</div>
                                                                         {else}
-                                                                            <div class="text-reset d-block">{$tabp->content->speed_limit} Mbps</div>
+                                                                            <div class="text-reset d-block">{$tabp->content->speed_limit}
+                                                                                Mbps
+                                                                            </div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">سرعت اتصال</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        سرعت اتصال
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -102,7 +117,9 @@
                                                                         {else}
                                                                             <div class="text-reset d-block">{$tabp->content->ip_limit}</div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1" style="font-size: small;">IP های متصل به طور همزمان</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        تعداد IP های متصل به طور همزمان
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -144,8 +161,12 @@
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">{$bandwidth->content->bandwidth} GB</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">ترافیک باقیمانده</div>
+                                                                        <div class="text-reset d-block">{$bandwidth->content->bandwidth}
+                                                                            GB
+                                                                        </div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        ترافیک موجود
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -180,23 +201,31 @@
                                                             {$time->name}
                                                         </div>
                                                         <div id="product-{$time->id}-price"
-                                                             class="display-6 my-3"><p class="fw-bold">{$time->price}</p>
+                                                             class="display-6 my-3"><p
+                                                                    class="fw-bold">{$time->price}</p>
                                                              <i class="ti ti-coin"></i>
                                                              </div>
                                                         <div class="list-group list-group-flush">
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">Lv. {$time->content->class}</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">سطح</div>
+                                                                        <div class="text-reset d-block">
+                                                                            Lv. {$time->content->class}</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                            سطح کاربری
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="list-group-item">
                                                                 <div class="row align-items-center">
                                                                     <div class="col text-truncate">
-                                                                        <div class="text-reset d-block">{$time->content->class_time} روز</div>
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">مدت زمان سطح</div>
+                                                                        <div class="text-reset d-block">{$time->content->class_time}
+                                                                            روز
+                                                                        </div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        مدت زمان سطح
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -206,9 +235,13 @@
                                                                         {if $time->content->speed_limit === '0'}
                                                                             <div class="text-reset d-block">بدون محدودیت</div>
                                                                         {else}
-                                                                            <div class="text-reset d-block">{$time->content->speed_limit} Mbps</div>
+                                                                            <div class="text-reset d-block">{$time->content->speed_limit}
+                                                                                Mbps
+                                                                            </div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">سرعت اتصال</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        سرعت اتصال
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -220,7 +253,9 @@
                                                                         {else}
                                                                             <div class="text-reset d-block">{$time->content->ip_limit}</div>
                                                                         {/if}
-                                                                        <div class="d-block text-secondary text-truncate mt-n1">IP های متصل به طور همزمان</div>
+                                                                        <div class="d-block text-secondary text-truncate mt-n1">
+                                                                        تعداد IP های متصل به طور همزمان
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -252,4 +287,4 @@
         </div>
     </div>
 
-{include file='user/footer.tpl'}
+    {include file='user/footer.tpl'}

@@ -378,88 +378,88 @@
     </div>
 </div>
 
-<script>
-    $("#save-setting").click(function() {
-        $.ajax({
-            url: '/admin/setting/im',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                {foreach $update_field as $key}
-                {$key}: $('#{$key}').val(),
-                {/foreach}
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
+        <script>
+            $("#save-setting").click(function () {
+                $.ajax({
+                    url: '/admin/setting/im',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        {foreach $update_field as $key}
+                        {$key}: $('#{$key}').val(),
+                        {/foreach}
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                            $('#success-message').text(data.msg);
+                            $('#success-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
 
-    $("#test-telegram").click(function() {
-        $.ajax({
-            url: '/admin/setting/test_telegram',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                telegram_user_id: $('#telegram_user_id').val(),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-noreload-message').text(data.msg);
-                    $('#success-noreload-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
+            $("#test-telegram").click(function () {
+                $.ajax({
+                    url: '/admin/setting/test_telegram',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        telegram_user_id: $('#telegram_user_id').val(),
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                            $('#success-noreload-message').text(data.msg);
+                            $('#success-noreload-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
 
-    $("#test-discord").click(function() {
-        $.ajax({
-            url: '/admin/setting/test_discord',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                discord_user_id: $('#discord_user_id').val(),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-noreload-message').text(data.msg);
-                    $('#success-noreload-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
+            $("#test-discord").click(function () {
+                $.ajax({
+                    url: '/admin/setting/test_discord',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        discord_user_id: $('#discord_user_id').val(),
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                            $('#success-noreload-message').text(data.msg);
+                            $('#success-noreload-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
 
-    $("#test-slack").click(function() {
-        $.ajax({
-            url: '/admin/setting/test_slack',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                slack_user_id: $('#slack_user_id').val(),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-noreload-message').text(data.msg);
-                    $('#success-noreload-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
-</script>
+            $("#test-slack").click(function () {
+                $.ajax({
+                    url: '/admin/setting/test_slack',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        slack_user_id: $('#slack_user_id').val(),
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                            $('#success-noreload-message').text(data.msg);
+                            $('#success-noreload-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
+        </script>
 
-{include file='admin/footer.tpl'}
+        {include file='admin/footer.tpl'}

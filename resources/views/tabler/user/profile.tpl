@@ -1,10 +1,10 @@
 {include file='user/header.tpl'}
 
 <div class="page-wrapper">
-    <div class="container-xl">  
+    <div class="container-xl">
         <div class="page-header d-print-none text-white">
             <div class="row align-items-center">
-                <div class="col">     
+                <div class="col">
                     <h2 class="page-title">
                         <span class="home-title">اطلاعات حساب</span>
                     </h2>
@@ -68,20 +68,20 @@
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap card-table">
                                 <thead>
-                                    <tr>
-                                        <th>IP</th>
-                                        <th>زمان</th>
-                                        <th>منتسب IP</th>
-                                    </tr>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>زمان</th>
+                                    <th>منتسب IP</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {foreach $logins as $login}
+                                {foreach $logins as $login}
                                     <tr>
                                         <td>{$login->ip}</td>
                                         <td>{$login->datetime}</td>
                                         <td>{$login->location}</td>
                                     </tr>
-                                    {/foreach}
+                                {/foreach}
                                 </tbody>
                             </table>
                         </div>
@@ -119,5 +119,5 @@
             </div>
         </div>
     </div>
-    
+
 {include file='user/footer.tpl'}

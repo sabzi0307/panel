@@ -24,16 +24,16 @@
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">
                                 <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>نام</th>
-                                        <th>شرح</th>
-                                        <th>regular expression</th>
-                                        <th>نوع</th>
-                                    </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>نام</th>
+                                    <th>شرح</th>
+                                    <th>regular expression</th>
+                                    <th>نوع</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {foreach $rules as $rule}
+                                {foreach $rules as $rule}
                                          <tr>
                                         <td>#{$rule->id}</td>
                                         <td>{$rule->name}</td>
@@ -46,7 +46,7 @@
                                             <td>بسته داده hex همخوانی داشتن</td>
                                         {/if}
                                     </tr>
-                                    {/foreach}
+                                {/foreach}
                                 </tbody>
                             </table>
                         </div>
@@ -55,5 +55,5 @@
             </div>
         </div>
     </div>
-    
-{include file='user/footer.tpl'}
+
+    {include file='user/footer.tpl'}

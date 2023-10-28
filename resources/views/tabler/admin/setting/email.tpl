@@ -28,255 +28,311 @@
             <div class="row row-deck row-cards">
                 <div class="col-md-12">
                     <div class="card">
-                    <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
-                        <li class="nav-item">
-                            <a href="#email" class="nav-link active" data-bs-toggle="tab">تنظیمات ایمیل</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#limit" class="nav-link" data-bs-toggle="tab">محدودیت ارسال</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#smtp" class="nav-link" data-bs-toggle="tab">SMTP</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sendgrid" class="nav-link" data-bs-toggle="tab">Sendgrid</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#mailgun" class="nav-link" data-bs-toggle="tab">Mailgun</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#postal" class="nav-link" data-bs-toggle="tab">Postal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#ses" class="nav-link" data-bs-toggle="tab">AWS SES</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content">
-                        <div class="tab-pane active show" id="email">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>
-                                    <div class="col">
-                                        <select id="eemail_driver" class="col form-select" value="{$settings['email_driver']}">
-                                            <option value="none" {if $settings['email_driver'] === "none"}selected{/if}>none</option>
-                                            <option value="smtp" {if $settings['email_driver'] === "smtp"}selected{/if}>smtp</option>
-                                            <option value="sendgrid" {if $settings['email_driver'] === "sendgrid"}selected{/if}>sendgrid</option>
-                                            <option value="mailgun" {if $settings['email_driver'] === "mailgun"}selected{/if}>mailgun</option>
-                                            <option value="postal" {if $settings['email_driver'] === "postal"}selected{/if}>postal</option>
-                                            <option value="ses" {if $settings['email_driver'] === "ses"}selected{/if}>ses</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس دریافت نامه آزمایشی</label>
-                                    <input type="text" class="form-control" id="recipient" value="">
-                                    <div class="row my-3">
-                                        <div class="col">
-                                            <button id="test-email" class="btn btn-primary">ارسال ایمیل آزمایشی</button>
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                                <li class="nav-item">
+                                    <a href="#email" class="nav-link active" data-bs-toggle="tab">تنظیمات ایمیل</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#limit" class="nav-link" data-bs-toggle="tab">محدودیت ارسال</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#smtp" class="nav-link" data-bs-toggle="tab">SMTP</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#sendgrid" class="nav-link" data-bs-toggle="tab">Sendgrid</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#mailgun" class="nav-link" data-bs-toggle="tab">Mailgun</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#postal" class="nav-link" data-bs-toggle="tab">Postal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#ses" class="nav-link" data-bs-toggle="tab">AWS SES</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show" id="email">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>
+                                            <div class="col">
+                                                <select id="eemail_driver" class="col form-select"
+                                                        value="{$settings['email_driver']}">
+                                                    <option value="none"
+                                                            {if $settings['email_driver'] === "none"}selected{/if}>none
+                                                    </option>
+                                                    <option value="smtp"
+                                                            {if $settings['email_driver'] === "smtp"}selected{/if}>smtp
+                                                    </option>
+                                                    <option value="sendgrid"
+                                                            {if $settings['email_driver'] === "sendgrid"}selected{/if}>
+                                                        sendgrid
+                                                    </option>
+                                                    <option value="mailgun"
+                                                            {if $settings['email_driver'] === "mailgun"}selected{/if}>
+                                                        mailgun
+                                                    </option>
+                                                    <option value="postal"
+                                                            {if $settings['email_driver'] === "postal"}selected{/if}>
+                                                        postal
+                                                    </option>
+                                                    <option value="ses"
+                                                            {if $settings['email_driver'] === "ses"}selected{/if}>ses
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">آدرس دریافت نامه آزمایشی</label>
+                                            <input type="text" class="form-control" id="recipient" value="">
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <button id="test-email" class="btn btn-primary">ارسال ایمیل آزمایشی
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="limit">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">مدت اعتبار کد تأیید ایمیل (ثانیه)</label>
-                                    <div class="col">
-                                        <input id="email_verify_code_ttl" type="text" class="form-control"
-                                               value="{$settings['email_verify_code_ttl']}">
+                                <div class="tab-pane" id="limit">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">مدت اعتبار کد تأیید ایمیل (ثانیه)</label>
+                                            <div class="col">
+                                                <input id="email_verify_code_ttl" type="text" class="form-control"
+                                                       value="{$settings['email_verify_code_ttl']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">بازنشانی ایمیل دوره اعتبار لینک رمز عبور (ثانیه)</label>
+                                            <div class="col">
+                                                <input id="email_password_reset_ttl" type="text" class="form-control"
+                                                       value="{$settings['email_password_reset_ttl']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک IP می تواند درخواست ارسال نامه در ساعت کند</label>
+                                            <div class="col">
+                                                <input id="email_request_ip_limit" type="text" class="form-control"
+                                                       value="{$settings['email_request_ip_limit']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">تعداد ایمیل هایی که می توان در هر ساعت برای یک آدرس ایمیل درخواست کرد</label>
+                                            <div class="col">
+                                                <input id="email_request_address_limit" type="text" class="form-control"
+                                                       value="{$settings['email_request_address_limit']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">بازنشانی ایمیل دوره اعتبار لینک رمز عبور (ثانیه)</label>
-                                    <div class="col">
-                                        <input id="email_password_reset_ttl" type="text" class="form-control"
-                                               value="{$settings['email_password_reset_ttl']}">
+                                <div class="tab-pane" id="smtp">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">آدرس میزبان SMTP</label>
+                                            <div class="col">
+                                                <input id="smtp_host" type="text" class="form-control"
+                                                       value="{$settings['smtp_host']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">نام کاربری SMTP</label>
+                                            <div class="col">
+                                                <input id="smtp_username" type="text" class="form-control"
+                                                       value="{$settings['smtp_username']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">رمز عبور SMTP</label>
+                                            <div class="col">
+                                                <input id="smtp_password" type="text" class="form-control"
+                                                       value="{$settings['smtp_password']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">پورت SMTP</label>
+                                            <div class="col">
+                                                <select id="smtp_port" class="col form-select"
+                                                        value="{$settings['smtp_port']}">
+                                                    <option value="465"
+                                                            {if $settings['smtp_port'] === "465"}selected{/if}>465
+                                                    </option>
+                                                    <option value="587"
+                                                            {if $settings['smtp_port'] === "587"}selected{/if}>587
+                                                    </option>
+                                                    <option value="443"
+                                                            {if $settings['smtp_port'] === "443"}selected{/if}>443
+                                                    </option>
+                                                    <option value="80"
+                                                            {if $settings['smtp_port'] === "80"}selected{/if}>80
+                                                    </option>
+                                                    <option value="2525"
+                                                            {if $settings['smtp_port'] === "2525"}selected{/if}>2525
+                                                    </option>
+                                                    <option value="25"
+                                                            {if $settings['smtp_port'] === "25"}selected{/if}>25
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">نام فرستنده SMTP</label>
+                                            <div class="col">
+                                                <input id="smtp_name" type="text" class="form-control"
+                                                       value="{$settings['smtp_name']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">آدرس ارسال SMTP</label>
+                                            <div class="col">
+                                                <input id="smtp_sender" type="text" class="form-control"
+                                                       value="{$settings['smtp_sender']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">استفاده کنید یا نه TLS/SSL</label>
+                                            <div class="col">
+                                                <select id="smtp_ssl" class="col form-select"
+                                                        value="{$settings['smtp_ssl']}">
+                                                    <option value="0" {if ! $settings['smtp_ssl']}selected{/if}>غیرفعال
+                                                    </option>
+                                                    <option value="1" {if $settings['smtp_ssl']}selected{/if}>فعال
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">صندوق پستی دریافتی کپی ایمیل مشتری</label>
+                                            <div class="col">
+                                                <input id="smtp_bbc" type="text" class="form-control"
+                                                       value="{$settings['smtp_bbc']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تعداد دفعاتی که یک IP می تواند درخواست ارسال نامه در ساعت کند</label>
-                                    <div class="col">
-                                        <input id="email_request_ip_limit" type="text" class="form-control"
-                                               value="{$settings['email_request_ip_limit']}">
+                                <div class="tab-pane" id="sendgrid">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">کلید Sendgrid</label>
+                                            <div class="col">
+                                                <input id="sendgrid_key" type="text" class="form-control"
+                                                       value="{$settings['sendgrid_key']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">آدرس ارسال Sendgrid</label>
+                                            <div class="col">
+                                                <input id="sendgrid_sender" type="text" class="form-control"
+                                                       value="{$settings['sendgrid_sender']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">نام فرستنده Sendgrid</label>
+                                            <div class="col">
+                                                <input id="sendgrid_name" type="text" class="form-control"
+                                                       value="{$settings['sendgrid_name']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">تعداد ایمیل هایی که می توان در هر ساعت برای یک آدرس ایمیل درخواست کرد</label>
-                                    <div class="col">
-                                        <input id="email_request_address_limit" type="text" class="form-control"
-                                               value="{$settings['email_request_address_limit']}">
+                                <div class="tab-pane" id="mailgun">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Mailgun کلید</label>
+                                            <div class="col">
+                                                <input id="mailgun_key" type="text" class="form-control"
+                                                       value="{$settings['mailgun_key']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Mailgun نام دامنه</label>
+                                            <div class="col">
+                                                <input id="mailgun_domain" type="text" class="form-control"
+                                                       value="{$settings['mailgun_domain']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Mailgun آدرس ارسال</label>
+                                            <div class="col">
+                                                <input id="mailgun_sender" type="text" class="form-control"
+                                                       value="{$settings['mailgun_sender']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Mailgun نام ارسال کننده</label>
+                                            <div class="col">
+                                                <input id="mailgun_sender_name" type="text" class="form-control"
+                                                       value="{$settings['mailgun_sender_name']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="smtp">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس میزبان SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_host" type="text" class="form-control" value="{$settings['smtp_host']}">
+                                <div class="tab-pane" id="postal">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Postal API آدرس</label>
+                                            <div class="col">
+                                                <input id="postal_host" type="text" class="form-control"
+                                                       value="{$settings['postal_host']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Postal API کلید</label>
+                                            <div class="col">
+                                                <input id="postal_key" type="text" class="form-control"
+                                                       value="{$settings['postal_key']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Postal ارسال ایمیل</label>
+                                            <div class="col">
+                                                <input id="postal_sender" type="text" class="form-control"
+                                                       value="{$settings['postal_sender']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">Postal نام ارسال کننده</label>
+                                            <div class="col">
+                                                <input id="postal_name" type="text" class="form-control"
+                                                       value="{$settings['postal_name']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">نام کاربری SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_username" type="text" class="form-control" value="{$settings['smtp_username']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">رمز عبور SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_password" type="text" class="form-control" value="{$settings['smtp_password']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">پورت SMTP</label>
-                                    <div class="col">
-                                        <select id="smtp_port" class="col form-select" value="{$settings['smtp_port']}">
-                                            <option value="465" {if $settings['smtp_port'] === "465"}selected{/if}>465</option>
-                                            <option value="587" {if $settings['smtp_port'] === "587"}selected{/if}>587</option>
-                                            <option value="443" {if $settings['smtp_port'] === "443"}selected{/if}>443</option>
-                                            <option value="80" {if $settings['smtp_port'] === "80"}selected{/if}>80</option>
-                                            <option value="2525" {if $settings['smtp_port'] === "2525"}selected{/if}>2525</option>
-                                            <option value="25" {if $settings['smtp_port'] === "25"}selected{/if}>25</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">نام فرستنده SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_name" type="text" class="form-control" value="{$settings['smtp_name']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس ارسال SMTP</label>
-                                    <div class="col">
-                                        <input id="smtp_sender" type="text" class="form-control" value="{$settings['smtp_sender']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">استفاده کنید یا نه TLS/SSL</label>
-                                    <div class="col">
-                                    <select id="smtp_ssl" class="col form-select" value="{$settings['smtp_ssl']}">
-                                        <option value="0" {if ! $settings['smtp_ssl']}selected{/if}>غیرفعال</option>
-                                        <option value="1" {if $settings['smtp_ssl']}selected{/if}>فعال</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">صندوق پستی دریافتی کپی ایمیل مشتری</label>
-                                    <div class="col">
-                                        <input id="smtp_bbc" type="text" class="form-control" value="{$settings['smtp_bbc']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="sendgrid">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کلید Sendgrid</label>
-                                    <div class="col">
-                                        <input id="sendgrid_key" type="text" class="form-control" value="{$settings['sendgrid_key']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">آدرس ارسال Sendgrid</label>
-                                    <div class="col">
-                                        <input id="sendgrid_sender" type="text" class="form-control" value="{$settings['sendgrid_sender']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">نام فرستنده Sendgrid</label>
-                                    <div class="col">
-                                        <input id="sendgrid_name" type="text" class="form-control" value="{$settings['sendgrid_name']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="mailgun">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Mailgun کلید</label>
-                                    <div class="col">
-                                        <input id="mailgun_key" type="text" class="form-control" value="{$settings['mailgun_key']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Mailgun نام دامنه</label>
-                                    <div class="col">
-                                        <input id="mailgun_domain" type="text" class="form-control" value="{$settings['mailgun_domain']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Mailgun آدرس ارسال</label>
-                                    <div class="col">
-                                        <input id="mailgun_sender" type="text" class="form-control" value="{$settings['mailgun_sender']}">
-                                    </div>
-                                </div>
-                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Mailgun نام ارسال کننده</label>
-                                    <div class="col">
-                                        <input id="mailgun_sender_name" type="text" class="form-control" value="{$settings['mailgun_sender_name']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="postal">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Postal API آدرس</label>
-                                    <div class="col">
-                                        <input id="postal_host" type="text" class="form-control" value="{$settings['postal_host']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Postal API کلید</label>
-                                    <div class="col">
-                                        <input id="postal_key" type="text" class="form-control" value="{$settings['postal_key']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Postal ارسال ایمیل</label>
-                                    <div class="col">
-                                        <input id="postal_sender" type="text" class="form-control" value="{$settings['postal_sender']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Postal نام ارسال کننده</label>
-                                    <div class="col">
-                                        <input id="postal_name" type="text" class="form-control" value="{$settings['postal_name']}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="ses">
-                            <div class="card-body">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">شناسه کلید AWS</label>
-                                    <div class="col">
-                                        <input id="aws_access_key_id" type="text" class="form-control" value="{$settings['aws_access_key_id']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کلید AWS</label>
-                                    <div class="col">
-                                        <input id="aws_secret_access_key" type="text" class="form-control" value="{$settings['aws_secret_access_key']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">منطقه AWS</label>
-                                    <div class="col">
-                                        <input id="aws_region" type="text" class="form-control" value="{$settings['aws_region']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">AWS SES آدرس ارسال</label>
-                                    <div class="col">
-                                        <input id="aws_ses_sender" type="text" class="form-control" value="{$settings['aws_ses_sender']}">
+                                <div class="tab-pane" id="ses">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">شناسه کلید AWS</label>
+                                            <div class="col">
+                                                <input id="aws_access_key_id" type="text" class="form-control"
+                                                       value="{$settings['aws_access_key_id']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">کلید AWS</label>
+                                            <div class="col">
+                                                <input id="aws_secret_access_key" type="text" class="form-control"
+                                                       value="{$settings['aws_secret_access_key']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">منطقه AWS</label>
+                                            <div class="col">
+                                                <input id="aws_region" type="text" class="form-control"
+                                                       value="{$settings['aws_region']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">AWS SES آدرس ارسال</label>
+                                            <div class="col">
+                                                <input id="aws_ses_sender" type="text" class="form-control"
+                                                       value="{$settings['aws_ses_sender']}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -285,51 +341,49 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-    $("#save-setting").click(function() {
-        $.ajax({
-            url: '/admin/setting/email',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                {foreach $update_field as $key}
-                {$key}: $('#{$key}').val(),
-                {/foreach}
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
+        <script>
+            $("#save-setting").click(function () {
+                $.ajax({
+                    url: '/admin/setting/email',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        {foreach $update_field as $key}
+                        {$key}: $('#{$key}').val(),
+                        {/foreach}
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                            $('#success-message').text(data.msg);
+                            $('#success-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
 
-    $("#test-email").click(function() {
-        $.ajax({
-            url: '/admin/setting/test_email',
-            type: 'POST',
-            dataType: "json",
-            data: {
-                recipient: $('#recipient').val(),
-            },
-            success: function(data) {
-                if (data.ret === 1) {
-                     $('#success-noreload-message').text(data.msg);
-                    $('#success-noreload-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
-</script>
+            $("#test-email").click(function () {
+                $.ajax({
+                    url: '/admin/setting/test_email',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        recipient: $('#recipient').val(),
+                    },
+                    success: function (data) {
+                        if (data.ret === 1) {
+                             $('#success-noreload-message').text(data.msg);
+                            $('#success-noreload-dialog').modal('show');
+                        } else {
+                            $('#fail-message').text(data.msg);
+                            $('#fail-dialog').modal('show');
+                        }
+                    }
+                })
+            });
+        </script>
 
-{include file='admin/footer.tpl'}
+        {include file='admin/footer.tpl'}

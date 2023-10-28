@@ -48,8 +48,9 @@ final class ServerController extends BaseController
             $array_node['online_user'] = $node->online_user;
             $array_node['online'] = $node->getNodeOnlineStatus();
             $array_node['traffic_rate'] = $node->traffic_rate;
+            $array_node['is_dynamic_rate'] = $node->is_dynamic_rate;
             $array_node['node_bandwidth'] = Tools::autoBytes($node->node_bandwidth);
-            $array_node['node_bandwidth_limit'] = $node->node_bandwidth_limit === 0 ? '无限制' :
+            $array_node['node_bandwidth_limit'] = $node->node_bandwidth_limit === 0 ? 'نامحدود' :
                 Tools::autoBytes($node->node_bandwidth_limit);
 
             $all_node[] = $array_node;

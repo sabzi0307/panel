@@ -1,5 +1,7 @@
 {include file='user/header.tpl'}
 
+<script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
+
 <div class="page-wrapper">
     <div class="container-xl">
         <div class="page-header d-print-none text-white">
@@ -25,8 +27,10 @@
                                 <div class="card-body">
                                     <h3 class="card-title">قوانین دعوت</h3>
                                     <ul>
-                                        <li>پس از تایید صورتحساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض آنها را دریافت کنید <code>{$rebate_ratio_per} %</code>
-                                            به عنوان تخفیف</li>
+                                        <li>پس از تایید صورتحساب توسط کاربران دعوت شده برای ثبت نام، می توانید مبلغ قبض آنها را دریافت کنید <code>{$rebate_ratio_per}
+                                                %</code>
+                                            به عنوان تخفیف
+                                        </li>
                                         <li>نسبت تخفیف برخی محصولات ممکن است از نسبت فوق تبعیت نکند</li>
                                     </ul>
                                     <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید است <code>{$paybacks_sum}</code> تومان</p>
@@ -37,12 +41,16 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">لینک دعوت</h3>
-                                    <input class="form-control" value="{$invite_url}" disabled />
+                                    <input class="form-control" id="invite-url" value="{$invite_url}" disabled/>
                                 </div>
                                 <div class="card-footer">
                                     <div class="d-flex">
-                                        <a id="reset-url" class="btn text-red btn-link">تنظیم مجدد</a>
-                                        <a data-clipboard-text="{$invite_url}" class="copy btn btn-primary ms-auto">کپی</a>
+                                        <button id="reset-url" class="btn text-red btn-link"
+                                                hx-post="/user/invite_reset" hx-swap="none">
+                                            تنظیم مجدد
+                                        </button>
+                                        <button data-clipboard-text="{$invite_url}"
+                                           class="copy btn btn-primary ms-auto">کپی</button>
                                     </div>
                                 </div>
                             </div>
@@ -57,16 +65,16 @@
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead>
-                                    <tr>
-                                        <th>شناسه ثبت</th>
-                                        <th>شناسه کاربری کاربر دعوت شده</th>
-                                        <th>نام مستعار کاربر دعوت شده</th>
-                                        <th>میزان تخفیف</th>
-                                        <th>زمان اعمال تخفیف‍</th>
-                                    </tr>
+                                <tr>
+                                    <th>شناسه ثبت</th>
+                                    <th>شناسه کاربری کاربر دعوت شده</th>
+                                    <th>نام مستعار کاربر دعوت شده</th>
+                                    <th>میزان تخفیف</th>
+                                    <th>زمان اعمال تخفیف‍</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {foreach $paybacks as $payback}
+                                {foreach $paybacks as $payback}
                                     <tr>
                                         <td>{$payback->id}</td>
                                         <td>{$payback->userid}</td>
@@ -74,7 +82,7 @@
                                         <td>{$payback->ref_get} تومان</td>
                                         <td>{$payback->datetime}</td>
                                     </tr>
-                                    {/foreach}
+                                {/foreach}
                                 </tbody>
                             </table>
                         </div>
@@ -85,28 +93,11 @@
     </div>
 
     <script>
-        var clipboard = new ClipboardJS('.copy');
-        clipboard.on('success', function(e) {
-            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
-            $('#success-noreload-dialog').modal('show');
-        });
-
-        $("#reset-url").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "/user/invite_reset",
-                dataType: "json",
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
+        let clipboard = new ClipboardJS('.copy');
+        clipboard.on('success', function (e) {
+            $('#success-message').text('در کلیپ بورد کپی شد');
+            $('#success-dialog').modal('show');
         });
     </script>
 
-{include file='user/footer.tpl'}
+    {include file='user/footer.tpl'}

@@ -15,7 +15,7 @@
                 <div class="col-auto">
                     <div class="btn-list">
                         <button href="#" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#create-ticket">
+                                data-bs-target="#create-ticket">
                             <i class="icon ti ti-plus"></i>
                             درخواست جدید
                         </button>
@@ -36,13 +36,13 @@
                                         <div class="card-body">
                                             <div class="card-stamp">
                                                 {if $ticket->status !== 'closed'}
-                                                <div class="card-stamp-icon bg-yellow">
-                                                    <i class="ti ti-clock"></i>
-                                                </div>
+                                                    <div class="card-stamp-icon bg-yellow">
+                                                        <i class="ti ti-clock"></i>
+                                                    </div>
                                                 {else}
-                                                <div class="card-stamp-icon bg-green">
-                                                    <i class="ti ti-check"></i>
-                                                </div>
+                                                    <div class="card-stamp-icon bg-green">
+                                                        <i class="ti ti-check"></i>
+                                                    </div>
                                                 {/if}
                                             </div>
                                             <h3 class="card-title" style="font-size: 20px;">
@@ -59,19 +59,19 @@
                                                 <!-- صفحه نوع تیکت -->
                                                 <span class="status status-grey">{$ticket->type}</span>
                                                 <a href="/user/ticket/{$ticket->id}/view"
-                                                    class="btn btn-primary ms-auto">بررسی</a>
+                                                   class="btn btn-primary ms-auto">بررسی</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             {/foreach}
                         {else}
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">بدون تیکت</h3>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">بدون تیکت</h3>
+                                </div>
+                                <div class="card-body">اگر به کمک نیاز دارید، لطفاً روی دکمه در گوشه سمت راست بالا کلیک کنید تا یک تیکت جدید باز شود</div>
                             </div>
-                            <div class="card-body">اگر به کمک نیاز دارید، لطفاً روی دکمه در گوشه سمت راست بالا کلیک کنید تا یک تیکت جدید باز شود</div>
-                        </div>
                         {/if}
                     </div>
                 </div>
@@ -100,40 +100,23 @@
                         <input id="ticket-title" type="text" class="form-control" placeholder="لطفا موضوع درخواست را وارد کنید">
                     </div>
                     <div class="mb-3">
-                        <textarea id="ticket-comment" class="form-control" rows="12" placeholder="لطفا محتوای درخواست را وارد کنید"></textarea>
+                        <textarea id="ticket-comment" class="form-control" rows="12"
+                                  placeholder="لطفا محتوای درخواست را وارد کنید"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
-                    <button id="create-ticket-button" type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">ثبت درخواست</button>
+                    <button id="create-ticket-button" class="btn btn-primary" data-bs-dismiss="modal"
+                            hx-post="/user/ticket" hx-swap="none"
+                            hx-vals='js:{
+                            title: document.getElementById("ticket-title").value
+                            comment: document.getElementById("ticket-comment").value
+                            type: document.getElementById("ticket-type").value }'>
+                        ثبت
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        $("#create-ticket-button").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "/user/ticket",
-                dataType: "json",
-                data: {
-                    title: $('#ticket-title').val(),
-                    comment: $('#ticket-comment').val(),
-                    type: $('#ticket-type').val(),
-                },
-                success: function(data) {
-                    if (data.ret === 1) {
-                        $('#success-message').text(data.msg);
-                        $('#success-dialog').modal('show');
-                    } else {
-                        $('#fail-message').text(data.msg);
-                        $('#fail-dialog').modal('show');
-                    }
-                }
-            })
-        });
-    </script>
 
 {include file='user/footer.tpl'}

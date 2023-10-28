@@ -282,32 +282,42 @@
     {
     "id": null,
         "item": "epay_url",
-        "value": "1000",
+        "value": "",
         "class": "billing",
         "is_public": 0,
         "type": "string",
-        "default": "1000",
+        "default": "",
         "mark": "Easy payment url"
     },
 {
         "id": null,
         "item": "epay_pid",
-        "value": "1000",
+        "value": "",
         "class": "billing",
         "is_public": 0,
         "type": "string",
-        "default": "1000",
+        "default": "",
         "mark": "Easy Payment Merchant ID"
     },
 {
         "id": null,
         "item": "epay_key",
-        "value": "1000",
+        "value": "",
         "class": "billing",
         "is_public": 0,
         "type": "string",
-        "default": "1000",
+        "default": "",
         "mark": "Easy Payment Merchant Key"
+    },
+    {
+        "id": null,
+        "item": "epay_sign_type",
+        "value": "sha256",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "sha256",
+        "mark": "Easy payment signature method"
     },
     {
         "id": null,
