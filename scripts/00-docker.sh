@@ -275,6 +275,10 @@ if [ "$INIT" = true ];then
         echo >&2 "enable_login_bind_ip not set! using false "
         enable_login_bind_ip=false
     fi
+    if [ -z "$enable_login_bind_device" ];then
+        echo >&2 "enable_login_bind_device not set! using true "
+        enable_login_bind_device=true
+    fi
     if [ -z "$rememberMeDuration" ];then
         echo >&2 "rememberMeDuration not set! using 7 "
         rememberMeDuration=7
@@ -522,6 +526,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['enable_detect_offline']           = $enable_detect_offline;
 
 \$_ENV['enable_login_bind_ip']   = $enable_login_bind_ip;        //Whether to bind the login thread to the IP
+\$_ENV['enable_login_bind_device']     = $enable_login_bind_device;           //bind the login thread to the device
 \$_ENV['rememberMeDuration']     = $rememberMeDuration;           //Remember the number of days of account duration when logging in
 \$_ENV['timeZone']               = '$timeZone';         //Requires a PHP-compatible timezone format
 \$_ENV['locale']                  = '$locale';              //Default language

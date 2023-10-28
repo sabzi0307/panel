@@ -86,6 +86,7 @@ $_ENV['detect_gfw_url']                  = 'http://example.com:8080/tcping?ip={i
 $_ENV['enable_detect_offline']           = true;
 
 $_ENV['enable_login_bind_ip']   = false;        //bind the login thread to the IP
+$_ENV['enable_login_bind_device'] = true;             //bind the login thread to the device
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 $_ENV['timeZone']               = 'Asia/Tehran';         //Requires a PHP-compatible timezone format
 $_ENV['theme']                  = 'tabler';              //Default Theme
