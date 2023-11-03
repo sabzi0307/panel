@@ -15,17 +15,17 @@ use Slim\Http\ServerRequest;
 final class MoneyLogController extends BaseController
 {
     private static array $details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'user_id' => 'شناسه کاربر',
-            'before' => 'موجودی قبل از تغییرات',
-            'after' => 'موجودی پس از تغییر',
-            'amount' => 'میزان تغییر',
-            'remark' => 'ریمارک',
-            'create_time' => 'زمان تغییر',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'user_id' => 'شناسه کاربر',
+                'before' => 'موجودی قبل از تغییرات',
+                'after' => 'موجودی پس از تغییر',
+                'amount' => 'میزان تغییر',
+                'remark' => 'ریمارک',
+                'create_time' => 'زمان تغییر',
+            ],
+        ];
 
     /**
      * 后台用户余额记录页面

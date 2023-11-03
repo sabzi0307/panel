@@ -50,12 +50,12 @@
                 type: 'POST',
                 dataType: "json",
                 success: function (data) {
-                    if (data.is_upto_date === true) {
+                    if (data.is_upto_date) {
                         $('.badge').remove();
-                        $('#version').append('<span class="badge bg-green">در حال حاضر آخرین نسخه</span>');
+                        $('#version').append('<span class="badge bg-green text-green-fg">در حال حاضر آخرین نسخه</span>');
                     } else {
                         $('.badge').remove();
-                        $('#version').append('<span class="badge bg-red">نسخه جدید در دسترس است ' + data.latest_version + ' در دسترس</span>');
+                        $('#version').append('<span class="badge bg-red text-red-fg">نسخه جدید در دسترس است ' + data.latest_version + ' در دسترس</span>');
                     }
                 }
             })

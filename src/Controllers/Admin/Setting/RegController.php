@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\Admin\Setting;
 
 use App\Controllers\BaseController;
-use App\Models\Setting;
+use App\Models\Config;
 use Exception;
 
 final class RegController extends BaseController
@@ -33,9 +33,9 @@ final class RegController extends BaseController
     /**
      * @throws Exception
      */
-    public function reg($request, $response, $args)
+    public function index($request, $response, $args)
     {
-        $settings = Setting::getClass('reg');
+        $settings = Config::getClass('reg');
 
         return $response->write(
             $this->view()
@@ -45,10 +45,10 @@ final class RegController extends BaseController
         );
     }
 
-    public function saveReg($request, $response, $args)
+    public function save($request, $response, $args)
     {
         foreach (self::$update_field as $item) {
-            if (! Setting::set($item, $request->getParam($item))) {
+            if (! Config::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'ذخیره ' . $item . ' خطا در',

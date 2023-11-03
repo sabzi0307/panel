@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\Admin\Setting;
 
 use App\Controllers\BaseController;
-use App\Models\Setting;
+use App\Models\Config;
 use App\Services\IM\Discord;
 use App\Services\IM\Slack;
 use App\Services\IM\Telegram;
@@ -64,9 +64,9 @@ final class ImController extends BaseController
     /**
      * @throws Exception
      */
-    public function im($request, $response, $args)
+    public function index($request, $response, $args)
     {
-        $settings = Setting::getClass('im');
+        $settings = Config::getClass('im');
 
         return $response->write(
             $this->view()
@@ -76,10 +76,10 @@ final class ImController extends BaseController
         );
     }
 
-    public function saveIm($request, $response, $args)
+    public function save($request, $response, $args)
     {
         foreach (self::$update_field as $item) {
-            if (! Setting::set($item, $request->getParam($item))) {
+            if (! Config::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'خطا در ذخیره ' . $item,

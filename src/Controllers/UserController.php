@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Ann;
+use App\Models\Config;
 use App\Models\InviteCode;
 use App\Models\LoginIp;
 use App\Models\Node;
 use App\Models\OnlineLog;
 use App\Models\Payback;
-use App\Models\Setting;
 use App\Models\SmartDns;
 use App\Models\StreamMedia;
 use App\Services\Auth;
@@ -65,7 +65,7 @@ final class UserController extends BaseController
         $class_expire = $this->user->class > 0 ?
             Tools::toDateTime(strtotime($this->user->class_expire)) : 0;
 
-        if (Setting::obtain('enable_checkin_captcha')) {
+        if (Config::obtain('enable_checkin_captcha')) {
             $captcha = Captcha::generate();
         }
 
@@ -213,7 +213,7 @@ final class UserController extends BaseController
         }
 
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
-        $rebate_ratio_per = Setting::obtain('rebate_ratio') * 100;
+        $rebate_ratio_per = Config::obtain('rebate_ratio') * 100;
 
         return $response->write($this->view()
             ->assign('paybacks', $paybacks)
@@ -229,7 +229,7 @@ final class UserController extends BaseController
             return ResponseHelper::error($response, 'هنوز امکان ورود به سیستم وجود ندارد');
         }
 
-        if (Setting::obtain('enable_checkin_captcha')) {
+        if (Config::obtain('enable_checkin_captcha')) {
             $ret = Captcha::verify($request->getParams());
 
             if (! $ret) {

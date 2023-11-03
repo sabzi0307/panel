@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\Admin\Setting;
 
 use App\Controllers\BaseController;
-use App\Models\Setting;
+use App\Models\Config;
 use Exception;
 
 final class RefController extends BaseController
@@ -24,9 +24,9 @@ final class RefController extends BaseController
     /**
      * @throws Exception
      */
-    public function ref($request, $response, $args)
+    public function index($request, $response, $args)
     {
-        $settings = Setting::getClass('ref');
+        $settings = Config::getClass('ref');
 
         return $response->write(
             $this->view()
@@ -36,10 +36,10 @@ final class RefController extends BaseController
         );
     }
 
-    public function saveRef($request, $response, $args)
+    public function save($request, $response, $args)
     {
         foreach (self::$update_field as $item) {
-            if (! Setting::set($item, $request->getParam($item))) {
+            if (! Config::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'ذخیره ' . $item . ' خطا در',

@@ -195,7 +195,7 @@
                                     <i class="ti ti-friends"></i>&nbsp;
                                     دعوت
                                 </a>
-                                <a class="dropdown-item" href="/admin/moneylog">
+                                <a class="dropdown-item" href="/admin/money">
                                     <i class="ti ti-coin"></i>&nbsp;
                                     موجودی حساب
                                 </a>
@@ -207,7 +207,7 @@
                                     <i class="ti ti-router"></i>&nbsp;
                                     IP آنلاین
                                 </a>
-                                <a class="dropdown-item" href="/admin/trafficlog">
+                                <a class="dropdown-item" href="/admin/traffic">
                                     <i class="ti ti-arrows-up-down"></i>&nbsp;
                                     مصرف ترافیک
                                 </a>

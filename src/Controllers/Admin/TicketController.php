@@ -26,17 +26,17 @@ use function time;
 final class TicketController extends BaseController
 {
     private static array $details =
-    [
-        'field' => [
-            'op' => 'شرح عملیات',
-            'id' => 'شناسه بلیت',
-            'title' => 'موضوع',
-            'status' => 'وضعیت تیکت',
-            'type' => 'نوع تیکت',
-            'userid' => 'ارسال کاربر',
-            'datetime' => 'زمان ایجاد',
-        ],
-    ];
+        [
+            'field' => [
+                'op' => 'شرح عملیات',
+                'id' => 'شناسه بلیت',
+                'title' => 'موضوع',
+                'status' => 'وضعیت تیکت',
+                'type' => 'نوع تیکت',
+                'userid' => 'ارسال کاربر',
+                'datetime' => 'زمان ایجاد',
+            ],
+        ];
 
     private static string $err_msg = 'درخواست ناموفق بود';
 
@@ -161,7 +161,7 @@ final class TicketController extends BaseController
      *
      * @throws Exception
      */
-    public function ticketView(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    public function detail(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $id = $args['id'];
         $ticket = Ticket::where('id', '=', $id)->first();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Ann;
+use App\Models\Config;
 use App\Models\DetectLog;
 use App\Models\EmailQueue;
 use App\Models\Invoice;
@@ -12,7 +13,6 @@ use App\Models\Node;
 use App\Models\OnlineLog;
 use App\Models\Order;
 use App\Models\Paylist;
-use App\Models\Setting;
 use App\Models\SharedAccount;
 use App\Models\SubscribeLog;
 use App\Models\User;
@@ -65,9 +65,9 @@ final class Cron
         SubscribeLog::where(
             'request_time',
             '<',
-            time() - 86400 * Setting::obtain('subscribe_log_retention_days')
+            time() - 86400 * Config::obtain('subscribe_log_retention_days')
         )->delete();
-        UserHourlyUsage::where('datetime', '<', time() - 86400 * Setting::obtain('traffic_log_retention_days'))->delete();
+        UserHourlyUsage::where('datetime', '<', time() - 86400 * Config::obtain('traffic_log_retention_days'))->delete();
         DetectLog::where('datetime', '<', time() - 86400 * 3)->delete();
         EmailQueue::where('time', '<', time() - 86400)->delete();
         OnlineLog::where('last_time', '<', time() - 86400)->delete();
@@ -78,9 +78,9 @@ final class Cron
 
     public static function detectInactiveUser(): void
     {
-        $checkin_days = Setting::obtain('detect_inactive_user_checkin_days');
-        $login_days = Setting::obtain('detect_inactive_user_login_days');
-        $use_days = Setting::obtain('detect_inactive_user_use_days');
+        $checkin_days = Config::obtain('detect_inactive_user_checkin_days');
+        $login_days = Config::obtain('detect_inactive_user_login_days');
+        $use_days = Config::obtain('detect_inactive_user_use_days');
 
         User::where('is_admin', 0)
             ->where('is_inactive', 0)
@@ -121,11 +121,11 @@ final class Cron
                     echo $e->getMessage() . PHP_EOL;
                 }
 
-                if (Setting::obtain('telegram_node_offline')) {
+                if (Config::obtain('telegram_node_offline')) {
                     $notice_text = str_replace(
                         '%node_name%',
                         $node->name,
-                        Setting::obtain('telegram_node_offline_text')
+                        Config::obtain('telegram_node_offline_text')
                     );
 
                     try {
@@ -153,11 +153,11 @@ final class Cron
                     echo $e->getMessage() . PHP_EOL;
                 }
 
-                if (Setting::obtain('telegram_node_online')) {
+                if (Config::obtain('telegram_node_online')) {
                     $notice_text = str_replace(
                         '%node_name%',
                         $node->name,
-                        Setting::obtain('telegram_node_online_text')
+                        Config::obtain('telegram_node_online_text')
                     );
 
                     try {
@@ -600,7 +600,7 @@ final class Cron
      */
     public static function sendTelegramDailyJob(): void
     {
-        (new Telegram())->send(0, Setting::obtain('telegram_daily_job_text'));
+        (new Telegram())->send(0, Config::obtain('telegram_daily_job_text'));
 
         echo Tools::toDateTime(time()) . ' یادآوری روزانه تلگرام با موفقیت ارسال شد' . PHP_EOL;
     }
@@ -621,7 +621,7 @@ final class Cron
                     Analytics::getTodayCheckinUser(),
                     Analytics::getTodayTrafficUsage(),
                 ],
-                Setting::obtain('telegram_diary_text')
+                Config::obtain('telegram_diary_text')
             )
         );
 

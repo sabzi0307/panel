@@ -6,8 +6,8 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Ann;
+use App\Models\Config;
 use App\Models\EmailQueue;
-use App\Models\Setting;
 use App\Models\User;
 use App\Services\IM\Telegram;
 use App\Utils\Tools;
@@ -18,6 +18,7 @@ use Slim\Http\ServerRequest;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use function str_replace;
 use function strip_tags;
+use function time;
 use const PHP_EOL;
 
 final class AnnController extends BaseController
@@ -114,7 +115,7 @@ final class AnnController extends BaseController
             }
         }
 
-        if (Setting::obtain('enable_telegram')) {
+        if (Config::obtain('enable_telegram')) {
             try {
                 (new Telegram())->sendHtml(0, 'اطلاعیه جدید：' . PHP_EOL . $content);
             } catch (TelegramSDKException $e) {
@@ -148,8 +149,6 @@ final class AnnController extends BaseController
 
     /**
      * 后台编辑公告提交
-     *
-     * @throws TelegramSDKException
      */
     public function update(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
@@ -164,7 +163,7 @@ final class AnnController extends BaseController
             ]);
         }
 
-        if (Setting::obtain('enable_telegram')) {
+        if (Config::obtain('enable_telegram')) {
             try {
                 (new Telegram())->sendHtml(0, 'به روز رسانی اطلاعیه：' . PHP_EOL . $request->getParam('content'));
             } catch (TelegramSDKException $e) {

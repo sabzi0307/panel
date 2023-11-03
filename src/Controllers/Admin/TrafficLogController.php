@@ -11,19 +11,20 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use function round;
 
 final class TrafficLogController extends BaseController
 {
     private static array $details =
-    [
-        'field' => [
-            'id' => 'شناسه ثبت',
-            'user_id' => 'شناسه کاربر',
-            'traffic' => 'ترافیک باقیمانده/GB',
-            'hourly_usage' => 'استفاده از ترافیک در یک ساعت گذشته/GB',
-            'datetime' => 'زمان',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه ثبت',
+                'user_id' => 'شناسه کاربر',
+                'traffic' => 'ترافیک باقیمانده/GB',
+                'hourly_usage' => 'استفاده از ترافیک در یک ساعت گذشته/GB',
+                'datetime' => 'زمان',
+            ],
+        ];
 
     /**
      * 后台流量记录页面

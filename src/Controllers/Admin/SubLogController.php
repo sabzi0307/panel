@@ -13,20 +13,20 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 
-final class SubscribeLogController extends BaseController
+final class SubLogController extends BaseController
 {
     private static array $details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'user_id' => 'شناسه کاربر',
-            'type' => 'دریافت نوع اشتراک',
-            'request_ip' => 'درخواست IP',
-            'location' => 'انتساب IP',
-            'request_time' => 'زمان درخواست',
-            'request_user_agent' => 'شناسه مشتری',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'user_id' => 'شناسه کاربر',
+                'type' => 'نوع اشتراک دریافت شده',
+                'request_ip' => 'درخواست IP',
+                'location' => 'مکان IP',
+                'request_time' => 'زمان درخواست',
+                'request_user_agent' => 'شناسه مشتری',
+            ],
+        ];
 
     /**
      * 后台订阅记录页面

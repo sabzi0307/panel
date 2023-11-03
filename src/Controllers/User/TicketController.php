@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
-use App\Models\Setting;
+use App\Models\Config;
 use App\Models\Ticket;
 use App\Services\Notification;
 use App\Services\RateLimit;
@@ -35,9 +35,9 @@ final class TicketController extends BaseController
     /**
      * @throws Exception
      */
-    public function ticket(ServerRequest $request, Response $response, array $args): ?ResponseInterface
+    public function index(ServerRequest $request, Response $response, array $args): ?ResponseInterface
     {
-        if (! Setting::obtain('enable_ticket')) {
+        if (! Config::obtain('enable_ticket')) {
             return $response->withRedirect('/user');
         }
 
@@ -62,13 +62,13 @@ final class TicketController extends BaseController
      * @throws TelegramSDKException
      * @throws GuzzleException
      */
-    public function ticketAdd(ServerRequest $request, Response $response, array $args): ResponseInterface
+    public function add(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $title = $request->getParam('title') ?? '';
         $comment = $request->getParam('comment') ?? '';
         $type = $request->getParam('type') ?? '';
 
-        if (! Setting::obtain('enable_ticket') ||
+        if (! Config::obtain('enable_ticket') ||
             $this->user->is_shadow_banned ||
             ! RateLimit::checkTicketLimit($this->user->id) ||
             $title === '' ||
@@ -101,7 +101,7 @@ final class TicketController extends BaseController
         $ticket->type = $antiXss->xss_clean($type);
         $ticket->save();
 
-        if (Setting::obtain('mail_ticket')) {
+        if (Config::obtain('mail_ticket')) {
             Notification::notifyAdmin(
                 $_ENV['appName'] . '-تیکت جدید باز شد',
                 'ادمین، یکی تیکت جدید باز کرده، لطفا به موقع باهاش ​​رسیدگی کنید.'
@@ -119,12 +119,12 @@ final class TicketController extends BaseController
      * @throws TelegramSDKException
      * @throws ClientExceptionInterface
      */
-    public function ticketUpdate(ServerRequest $request, Response $response, array $args): ResponseInterface
+    public function update(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $id = $args['id'];
         $comment = $request->getParam('comment') ?? '';
 
-        if (! Setting::obtain('enable_ticket') ||
+        if (! Config::obtain('enable_ticket') ||
             $this->user->is_shadow_banned ||
             $comment === ''
         ) {
@@ -159,7 +159,7 @@ final class TicketController extends BaseController
         $ticket->status = 'open_wait_admin';
         $ticket->save();
 
-        if (Setting::obtain('mail_ticket')) {
+        if (Config::obtain('mail_ticket')) {
             Notification::notifyAdmin(
                 $_ENV['appName'] . '-تیکت پاسخ داده شده است',
                 'ادمین یکی جواب داد <a href="' .
@@ -177,9 +177,9 @@ final class TicketController extends BaseController
     /**
      * @throws Exception
      */
-    public function ticketView(ServerRequest $request, Response $response, array $args): ResponseInterface
+    public function detail(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        if (! Setting::obtain('enable_ticket')) {
+        if (! Config::obtain('enable_ticket')) {
             return $response->withRedirect('/user');
         }
 

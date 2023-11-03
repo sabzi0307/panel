@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\Admin\Setting;
 
 use App\Controllers\BaseController;
-use App\Models\Setting;
+use App\Models\Config;
 use Exception;
 
 final class CronController extends BaseController
@@ -27,9 +27,9 @@ final class CronController extends BaseController
     /**
      * @throws Exception
      */
-    public function cron($request, $response, $args)
+    public function index($request, $response, $args)
     {
-        $settings = Setting::getClass('cron');
+        $settings = Config::getClass('cron');
 
         return $response->write(
             $this->view()
@@ -39,7 +39,7 @@ final class CronController extends BaseController
         );
     }
 
-    public function saveCron($request, $response, $args)
+    public function save($request, $response, $args)
     {
         $daily_job_hour = (int) $request->getParam('daily_job_hour');
         $daily_job_minute = (int) $request->getParam('daily_job_minute');
@@ -60,11 +60,11 @@ final class CronController extends BaseController
 
         foreach (self::$update_field as $item) {
             if ($item === 'daily_job_minute') {
-                Setting::set($item, $daily_job_minute - ($daily_job_minute % 5));
+                Config::set($item, $daily_job_minute - ($daily_job_minute % 5));
                 continue;
             }
 
-            if (! Setting::set($item, $request->getParam($item))) {
+            if (! Config::set($item, $request->getParam($item))) {
                 return $response->withJson([
                     'ret' => 0,
                     'msg' => 'خطا در ذخیره ' . $item,

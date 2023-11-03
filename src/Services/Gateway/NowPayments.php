@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Gateway;
 
 use App\Models\Paylist;
-use App\Models\Setting;
+use App\Models\Config;
 use App\Services\Auth;
 use App\Services\Exchange;
 use App\Services\View;
@@ -29,14 +29,14 @@ final class NowPayments extends AbstractPayment
 
     public function __construct()
     {
-        $this->nowpayments['apiurl'] = Setting::obtain('nowpayments_url');
-        $this->nowpayments['ipn_secret'] = Setting::obtain('nowpayments_ipn_secret');
-        $this->nowpayments['price_currency'] = Setting::obtain('nowpayments_price_currency');
-        $this->nowpayments['pay_currency'] = Setting::obtain('nowpayments_pay_currency');
+        $this->nowpayments['apiurl'] = Config::obtain('nowpayments_url');
+        $this->nowpayments['ipn_secret'] = Config::obtain('nowpayments_ipn_secret');
+        $this->nowpayments['price_currency'] = Config::obtain('nowpayments_price_currency');
+        $this->nowpayments['pay_currency'] = Config::obtain('nowpayments_pay_currency');
 
         $this->client = new Client();
         $this->headers = [
-            'x-api-key' => Setting::obtain('nowpayments_api_key'),
+            'x-api-key' => Config::obtain('nowpayments_api_key'),
             'Content-Type' => 'application/json'
         ];
     }
@@ -64,7 +64,7 @@ final class NowPayments extends AbstractPayment
     {
         $antiXss = new AntiXSS();
         $user = Auth::getUser();
-        $configs = Setting::getClass('billing');
+        $configs = Config::getClass('billing');
         $price = $antiXss->xss_clean($request->getParam('price'));
         $invoice_id = $antiXss->xss_clean($request->getParam('invoice_id'));
         $qr = $antiXss->xss_clean($request->getParam('qr'));

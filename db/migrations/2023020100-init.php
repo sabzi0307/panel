@@ -65,7 +65,7 @@ return new class() implements MigrationInterface {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `docs` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `date` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'document date',
                 `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'document title',
                 `content` longtext NOT NULL DEFAULT '' COMMENT 'document content',
@@ -97,7 +97,7 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `invoice` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Billing ID',
-                `user_id` bigint(20) unsigned DEFAULT 0 COMMENT 'Attributed User',
+                `user_id` bigint(20) unsigned DEFAULT 0 COMMENT 'Attributed UserID',
                 `order_id` bigint(20) unsigned DEFAULT 0 COMMENT 'order ID',
                 `content` longtext DEFAULT '{}' COMMENT 'bill content' CHECK (json_valid(`content`)),
                 `price` double unsigned DEFAULT 0 COMMENT 'Billing amount',
@@ -180,7 +180,7 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `order` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'order ID',
-                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'submit user',
+                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'submit userID',
                 `product_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Product ID',
                 `product_type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Product Types',
                 `product_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'product name',

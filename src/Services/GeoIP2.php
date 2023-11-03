@@ -31,8 +31,8 @@ final class GeoIP2
      */
     public function getCity(string $ip): ?string
     {
-        $record = $this->city_reader->city($ip);
-        return $record->city->names[$_ENV['geoip_locale']] ?? $record->city->name;
+        $record = $this?->city_reader?->city($ip);
+        return $record?->city?->names[$_ENV['geoip_locale']] ?? $record?->city?->name;
     }
 
     /**
@@ -41,8 +41,8 @@ final class GeoIP2
      */
     public function getCountry(string $ip): ?string
     {
-        $record = $this->country_reader->country($ip);
-        return $record->country->names[$_ENV['geoip_locale']] ?? $record->country->name;
+        $record = $this?->country_reader?->country($ip);
+        return $record?->country?->names[$_ENV['geoip_locale']] ?? $record?->country?->name;
     }
 
     /**
@@ -51,7 +51,7 @@ final class GeoIP2
      */
     public function getAsn(string $ip): ?object
     {
-        $record = $this->asn_reader->asn($ip);
+        $record = $this?->asn_reader?->asn($ip);
         return $record;
     }
 }

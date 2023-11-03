@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Bot\Telegram\Commands;
 
-use App\Models\Setting;
+use App\Models\Config;
 use App\Services\Bot\Telegram\Message;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
@@ -48,7 +48,7 @@ final class UnbindCommand extends Command
                 // 回送信息
                 $this->replyWithMessage(
                     [
-                        'text' => Setting::obtain('user_not_bind_reply'),
+                        'text' => Config::obtain('user_not_bind_reply'),
                         'parse_mode' => 'Markdown',
                     ]
                 );
@@ -95,7 +95,7 @@ final class UnbindCommand extends Command
     {
         $text = 'آن را به شکل «/unbind example@qq.com» برای لغو پیوند ارسال کنید.';
 
-        if (Setting::obtain('telegram_unbind_kick_member')) {
+        if (Config::obtain('telegram_unbind_kick_member')) {
             $text .= PHP_EOL . PHP_EOL . 'طبق تنظیمات مدیر، حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف خواهد شد.';
         }
 

@@ -15,18 +15,18 @@ use Slim\Http\ServerRequest;
 final class PaylistController extends BaseController
 {
     private static array $details =
-    [
-        'field' => [
-            'id' => 'شناسه رویداد',
-            'userid' => 'شناسه کاربر',
-            'total' => 'مبلغ',
-            'status' => 'وضعیت',
-            'gateway' => 'درگاه پرداخت',
-            'tradeno' => 'شماره رهگیری درگاه',
-            'datetime' => 'زمان پرداخت',
-            'invoice_id' => 'شناسه صورتحساب مرتبط',
-        ],
-    ];
+        [
+            'field' => [
+                'id' => 'شناسه رویداد',
+                'userid' => 'شناسه کاربر',
+                'total' => 'مبلغ',
+                'status' => 'وضعیت',
+                'gateway' => 'درگاه پرداخت',
+                'tradeno' => 'شماره رهگیری درگاه',
+                'datetime' => 'زمان پرداخت',
+                'invoice_id' => 'شناسه صورتحساب مرتبط',
+            ],
+        ];
 
     /**
      * 后台网关记录页面

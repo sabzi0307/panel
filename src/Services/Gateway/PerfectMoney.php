@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Services\Gateway;
 
 use App\Models\Paylist;
-use App\Models\Setting;
+use App\Models\Config;
 use App\Services\Auth;
 use App\Services\Exchange;
 use App\Services\Gateway\PerfectMoney\PerfectMoneyNotify;
@@ -29,10 +29,10 @@ final class PerfectMoney extends AbstractPayment
 
     public function __construct()
     {
-        $this->perfectmoney['apiurl'] = Setting::obtain('perfectmoney_url');
-        $this->perfectmoney['alter_pass_Phrase'] = Setting::obtain('perfectmoney_alter_pass_phrase');
-        $this->perfectmoney['payer_Account'] = Setting::obtain('perfectmoney_payee_account');
-        $this->perfectmoney['currency'] = Setting::obtain('perfectmoney_currency');
+        $this->perfectmoney['apiurl'] = Config::obtain('perfectmoney_url');
+        $this->perfectmoney['alter_pass_Phrase'] = Config::obtain('perfectmoney_alter_pass_phrase');
+        $this->perfectmoney['payer_Account'] = Config::obtain('perfectmoney_payee_account');
+        $this->perfectmoney['currency'] = Config::obtain('perfectmoney_currency');
         $this->perfectmoney['sign_type'] = strtoupper('MD5');
     }
 
@@ -79,12 +79,12 @@ final class PerfectMoney extends AbstractPayment
 
         $pl->save();
 
-        $exchange_amount = Exchange::exchange((float)$price, 'IRR', Setting::obtain('perfectmoney_currency'));
+        $exchange_amount = Exchange::exchange((float)$price, 'IRR', Config::obtain('perfectmoney_currency'));
         $data = [
-            'PAYEE_ACCOUNT' => Setting::obtain('perfectmoney_payee_account'),
+            'PAYEE_ACCOUNT' => Config::obtain('perfectmoney_payee_account'),
             'PAYEE_NAME' => $_ENV['appName'],
             'PAYMENT_AMOUNT' => $exchange_amount,
-            'PAYMENT_UNITS' => Setting::obtain('perfectmoney_currency'),
+            'PAYMENT_UNITS' => Config::obtain('perfectmoney_currency'),
             'PAYMENT_ID' => $invoice_id,
             'STATUS_URL' => $_ENV['baseUrl'] . '/payment/notify/perfectmoney',
             'PAYMENT_URL' => $_ENV['baseUrl'] . '/user/payment/return/perfectmoney',

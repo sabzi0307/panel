@@ -80,7 +80,7 @@ $_ENV['auto_detect_ban_time']        = 60;             // The duration of each b
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection
 $_ENV['detect_gfw_port']                 = 443;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
-$_ENV['detect_gfw_url']                  = 'http://example.com:8080/tcping?ip={ip}&port={port}'; //The URL of the API that detects whether the node is blocked by gfw
+$_ENV['detect_gfw_url']                  = 'http://example.com:8080/v1/tcping?ip={ip}&port={port}'; //The URL of the API that detects whether the node is blocked by gfw
 
 #offline detection
 $_ENV['enable_detect_offline']           = true;

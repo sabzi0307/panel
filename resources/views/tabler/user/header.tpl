@@ -111,7 +111,7 @@
                                             اصلاح اطلاعات
                                         </a>
                                         {if $public_setting['subscribe_log']}
-                                            <a class="dropdown-item" href="/user/subscribe/log">
+                                            <a class="dropdown-item" href="/user/subscribe">
                                                 <i class="ti ti-rss"></i></i>&nbsp;
                                                 مشترک شدن در مجله
                                             </a>

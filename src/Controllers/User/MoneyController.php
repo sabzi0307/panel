@@ -7,7 +7,7 @@ namespace App\Controllers\User;
 use App\Controllers\BaseController;
 use App\Models\GiftCard;
 use App\Models\Paylist;
-use App\Models\Setting;
+use App\Models\Config;
 use App\Models\UserMoneyLog;
 use App\Utils\Tools;
 use DOMDocument;
@@ -27,7 +27,7 @@ final class MoneyController extends BaseController
     /**
      * @throws Exception
      */
-    public function money(ServerRequest $request, Response $response, array $args): ResponseInterface
+    public function index(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
         $moneylogs = UserMoneyLog::where('user_id', $user->id)->orderBy('id', 'desc')->get();
@@ -38,7 +38,7 @@ final class MoneyController extends BaseController
 
         $moneylog_count = $moneylogs->count();
 
-        $configs = Setting::getClass('billing');
+        $configs = Config::getClass('billing');
         $perfectMoney = $configs['perfectmoney'];
 
         return $response->write(
@@ -113,7 +113,7 @@ final class MoneyController extends BaseController
             ]);
         }
 
-        $configs = Setting::getClass('billing');
+        $configs = Config::getClass('billing');
         $account_Id = $configs['perfectmoney_account_id'];
         $payer_Account = $configs['perfectmoney_payee_account'];
         $pass_Phrase = urlencode($configs['perfectmoney_pass_phrase']);
