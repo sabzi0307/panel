@@ -110,6 +110,8 @@ final class NodeController extends BaseController
         $node_class = $request->getParam('node_class') ?? 0;
         $node_bandwidth_limit = $request->getParam('node_bandwidth_limit') ?? 0;
         $bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday') ?? 0;
+        $is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;
+        $routedns_config = $request->getParam('routedns_config') ?? '';
 
         if ($name === '' ||
             $server === '' ||
@@ -144,6 +146,9 @@ final class NodeController extends BaseController
         } else {
             $node->custom_config = '{}';
         }
+
+        $node->is_route_dns = $is_route_dns;
+        $node->routedns_config = $routedns_config;
 
         $node->info = $info;
         $node->type = $type;
@@ -259,6 +264,9 @@ final class NodeController extends BaseController
         } else {
             $node->custom_config = '{}';
         }
+
+        $node->is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;
+        $node->routedns_config = $request->getParam('routedns_config') ?? '';
 
         $req_node_ip = trim($request->getParam('node_ip'));
 

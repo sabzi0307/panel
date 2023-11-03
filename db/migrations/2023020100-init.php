@@ -156,6 +156,8 @@ return new class() implements MigrationInterface {
                 `online` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'online status',
                 `gfw_block` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'is blocked by GFW',
                 `password` varchar(255) NOT NULL DEFAULT '' COMMENT 'backend connection password',
+                `is_route_dns` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable routedns',
+                `routedns_config` longtext NOT NULL DEFAULT '' COMMENT 'routedns configuration',
                 PRIMARY KEY (`id`),
                 KEY `type` (`type`),
                 KEY `sort` (`sort`),

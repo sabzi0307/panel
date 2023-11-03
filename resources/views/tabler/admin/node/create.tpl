@@ -56,8 +56,7 @@
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">سرعت ترافیک</label>
                                 <div class="col">
-                                    <input id="traffic_rate" type="text" class="form-control"
-                                           value="">
+                                    <input id="traffic_rate" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -77,19 +76,20 @@
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <div id="custom_config"></div>
                                 <label class="form-label col-form-label">
-                                     جهت افزودن پیکربندی سفارشی به
-                                    <a href="//wiki.sspanel.org/#/custom-config" target="_blank">wiki.sspanel.org/#/custom-config</a>
-                                   
-                                     مراجعه فرمایید
+                                    جهت افزودن پیکربندی سفارشی به
+                                    <a href="//wiki.sspanel.org/#/custom-config"
+                                        target="_blank">wiki.sspanel.org/#/custom-config</a>
+
+                                    مراجعه فرمایید
                                 </label>
                             </div>
                             <div class="form-group mb-3 row">
                                 <span class="col">نمایش سرور</span>
                                 <span class="col-auto">
-                                      <label class="form-check form-check-single form-switch">
-                                          <input id="type" class="form-check-input" type="checkbox" {if $node->type}checked="" {/if}>
-                                      </label>
-                                  </span>
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="type" class="form-check-input" type="checkbox" checked="">
+                                    </label>
+                                </span>
                             </div>
                             <div class="hr-text">
                                 <span>نسبت دینامیکی</span>
@@ -97,36 +97,36 @@
                             <div class="form-group mb-3 row">
                                 <span class="col">فعال کردن ضریب ترافیک پویا</span>
                                 <span class="col-auto">
-                                      <label class="form-check form-check-single form-switch">
-                                          <input id="is_dynamic_rate" class="form-check-input" type="checkbox" {if $node->is_dynamic_rate}checked="" {/if}>
-                                      </label>
-                                  </span>
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox">
+                                    </label>
+                                </span>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Maximum ratio</label>
                                 <div class="col">
-                                    <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
+                                    <input id="max_rate" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
                                 <div class="col">
-                                    <input id="max_rate_time" type="text" class="form-control" value="{$node->max_rate_time}">
+                                    <input id="max_rate_time" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Minimum ratio</label>
                                 <div class="col">
-                                    <input id="min_rate" type="text" class="form-control" value="{$node->min_rate}">
+                                    <input id="min_rate" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
                                 <div class="col">
-                                    <input id="min_rate_time" type="text" class="form-control" value="{$node->min_rate_time}">
+                                    <input id="min_rate_time" type="text" class="form-control" value="">
                                 </div>
                                 <label class="form-label col-form-label">
-                                حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
+                                    حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
                                 </label>
                             </div>
                         </div>
@@ -162,22 +162,41 @@
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">ترافیک موجود (GB)</label>
                                 <div class="col">
-                                    <input id="node_bandwidth_limit" type="text" class="form-control"
-                                           value="">
+                                    <input id="node_bandwidth_limit" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">تاریخ تنظیم مجدد ترافیک</label>
                                 <div class="col">
-                                    <input id="bandwidthlimit_resetday" type="text" class="form-control"
-                                           value="">
+                                    <input id="bandwidthlimit_resetday" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت نرخ داده (Mbps)</label>
                                 <div class="col">
-                                    <input id="node_speedlimit" type="text" class="form-control"
-                                           value="">
+                                    <input id="node_speedlimit" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row" id="routedns" style="display: none;">
+                                <label class="hr-text">Route Dns</label>
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن RouteDns</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="is_route_dns" class="form-check-input" type="checkbox">
+                                        </label>
+                                    </span>
+                                </div>
+                                <div id="routedns_container" style="display: none;">
+                                    <span class="col">پیکربندی</span>
+                                    
+                                    <label class="form-label col-form-label">
+                                        جهت افزودن پیکربندی سفارشی به
+                                        <a href="//wiki.sspanel.org/#/custom-config"
+                                            target="_blank">wiki.sspanel.org/#/custom-config</a>
+                                        مراجعه فرمایید
+                                    </label>
+                                    <div id="routedns_config" style="min-height: 200px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -188,26 +207,84 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/mode-toml.min.js"></script>
 <script>
     const container = document.getElementById('custom_config');
     var options = {
         modes: ['code', 'tree'],
+        // ace: ace,
     };
     const editor = new JSONEditor(container, options);
+    var dnseditor = ace.edit("routedns_config");
+    dnseditor.setFontSize("8pt");
+    dnseditor.setValue(`
+    [listeners.local-udp]
+address = ":53"
+protocol = "udp"
+resolver = "smartdns-allowclient"
 
-    $("#create-node").click(function () {
+[listeners.local-tcp]
+address = ":53"
+protocol = "tcp"
+resolver = "smartdns-allowclient"
+
+[groups.smartdns-allowclient]
+type                = "client-allowlist"
+resolvers           = "static-servfail"
+allowlist-resolver  = ["smartdns-allowhost"]
+allowlist           = [
+  '157.240.0.0/16',
+]
+
+[groups.smartdns-allowhost]
+type             = "blocklist-v2"
+resolvers        = ["cloudflare-dot"] # Default upstream resolver for anything not matching either list
+blocklist-resolver = "static-servfail" # Resolver used for anything matching the blocklist (and not on the allowlist)
+blocklist-format = "domain"
+blocklist = [
+  'block.panel.com',
+]
+allowlist-resolver = "cloudflare-dot" # Resolver for anything on the allowlist
+allowlist-format = "host"
+allowlist = [                  # Define the names to be allowed
+  '127.0.0.1 allow.panel.com', # Spoofed
+  '127.0.0.1 www.evil.com',    # Spoofed
+  '0.0.0.0   www.blocked.com', # Blocked
+  '127.0.0.1 www.domain.com',  # IP4 and IP6 addresses can be spoofed independently
+  '::1       www.domain.com',
+  '::        ads.com',
+]
+
+# Returns servfail for every query routed here by the blocklist
+[groups.static-servfail]
+type   = "static-responder"
+rcode  = 2 # Response code: 0 = NOERROR, 1 = FORMERR, 2 = SERVFAIL, 3 = NXDOMAIN, ...
+
+[resolvers.cloudflare-dot]
+address = "1.1.1.1:853"
+protocol = "dot"
+
+[resolvers.google-dot]
+address = "8.8.8.8:853"
+protocol = "dot"`)
+    dnseditor.getSession().setMode("ace/mode/toml");
+
+    $("#create-node").click(function() {
         $.ajax({
             url: '/admin/node',
             type: 'POST',
             dataType: "json",
             data: {
                 {foreach $update_field as $key}
-                {$key}: $('#{$key}').val(),
+                    {$key}: $('#{$key}').val(),
                 {/foreach}
                 type: $("#type").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
+                is_route_dns: $("#is_route_dns").is(":checked"),
+                routedns_config: dnseditor.getValue(),
             },
-            success: function (data) {
+            success: function(data) {
                 if (data.ret === 1) {
                     $('#success-message').text(data.msg);
                     $('#success-dialog').modal('show');
@@ -218,6 +295,26 @@
                 }
             }
         })
+    });
+
+    document.getElementById("sort").addEventListener("change", function() {
+        var selectedValue = this.value;
+        var hiddenSection = document.getElementById("routedns");
+
+        if (selectedValue === "3") {
+            hiddenSection.style.display = "block";
+        } else {
+            hiddenSection.style.display = "none";
+        }
+    });
+
+    document.getElementById("is_route_dns").addEventListener("change", function() {
+        var routedns = document.getElementById("routedns_container");
+        if (this.checked) {
+            routedns.style.display = "block";
+        } else {
+            routedns.style.display = "none";
+        }
     });
 </script>
 

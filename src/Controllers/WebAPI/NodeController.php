@@ -66,6 +66,20 @@ final class NodeController extends BaseController
             ]);
         }
 
+        $custom_config = json_decode($node->custom_config, true, JSON_UNESCAPED_SLASHES);
+        $is_route_dns = $node->is_route_dns;
+        $routedns_config = $node->routedns_config;
+        $is_route_dns = $node->is_route_dns;
+        if ($is_route_dns === 1 && $routedns_config != '') {
+            $additionalData = ["route-dns" => [
+                "is_route_dns" => true,
+                "routedns_config" => $routedns_config,
+            ],];
+            $custom_config = (object) array_merge((array) $custom_config, $additionalData);
+        }
+
+
+
         $data = [
             'node_group' => $node->node_group,
             'node_class' => $node->node_class,
@@ -73,7 +87,7 @@ final class NodeController extends BaseController
             'traffic_rate' => $node->traffic_rate,
             'sort' => $node->sort,
             'server' => $node->server,
-            'custom_config' => json_decode($node->custom_config, true, JSON_UNESCAPED_SLASHES),
+            'custom_config' => $custom_config,
             'type' => 'SSPanel-UIM',
             'version' => VERSION,
         ];

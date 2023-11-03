@@ -86,7 +86,7 @@
                                         <i class="ti ti-settings icon"></i>
                                     </span>
                                 <span class="nav-link-title">
-                                        مدیریت کنید
+                                        مدیریت
                                     </span>
                             </a>
                             <div class="dropdown-menu">
