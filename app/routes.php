@@ -13,6 +13,7 @@ return static function (Slim\App $app): void {
     $app->get('/', App\Controllers\HomeController::class . ':index');
     $app->get('/tos', App\Controllers\HomeController::class . ':tos');
     $app->get('/staff', App\Controllers\HomeController::class . ':staff');
+    $app->get('/dnscheck', App\Controllers\User\SmartDnsController::class . ':check');
     // Error Page
     $app->get('/404', App\Controllers\HomeController::class . ':notFound');
     $app->get('/405', App\Controllers\HomeController::class . ':methodNotAllowed');
@@ -26,6 +27,7 @@ return static function (Slim\App $app): void {
     $app->get('/link/{token}', App\Controllers\SubController::class . ':getTraditionalSubContent');
     // 通用订阅（Json/Clash/SIP008）
     $app->get('/sub/{token}/{subtype}', App\Controllers\SubController::class . ':getUniversalSubContent');
+
     // User Center
     $app->group('/user', static function (RouteCollectorProxy $group): void {
         $group->get('', App\Controllers\UserController::class . ':index');
@@ -242,6 +244,8 @@ return static function (Slim\App $app): void {
         $group->post('/setting/captcha', App\Controllers\Admin\Setting\CaptchaController::class . ':save');
         $group->get('/setting/cron', App\Controllers\Admin\Setting\CronController::class . ':index');
         $group->post('/setting/cron', App\Controllers\Admin\Setting\CronController::class . ':save');
+        $group->get('/setting/smart', App\Controllers\Admin\Setting\SmartDnsController::class . ':index');
+        $group->post('/setting/smart', App\Controllers\Admin\Setting\SmartDnsController::class . ':save');
         $group->get('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':index');
         $group->post('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':save');
         $group->get('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':index');

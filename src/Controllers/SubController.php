@@ -101,7 +101,7 @@ final class SubController extends BaseController
      */
     public static function getTraditionalSubContent($request, $response, $args): ResponseInterface
     {
-        $err_msg = '订阅链接无效';
+        $err_msg = 'لینک اشتراک نامعتبر است';
 
         if (! $_ENV['Subscribe'] ||
             ! Config::obtain('enable_traditional_sub') ||

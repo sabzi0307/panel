@@ -187,17 +187,6 @@
                                         </label>
                                     </span>
                                 </div>
-                                <div id="routedns_container" style="display: none;">
-                                    <span class="col">پیکربندی</span>
-                                    
-                                    <label class="form-label col-form-label">
-                                        جهت افزودن پیکربندی سفارشی به
-                                        <a href="//wiki.sspanel.org/#/custom-config"
-                                            target="_blank">wiki.sspanel.org/#/custom-config</a>
-                                        مراجعه فرمایید
-                                    </label>
-                                    <div id="routedns_config" style="min-height: 200px;"></div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -207,8 +196,6 @@
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/ace.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/mode-toml.min.js"></script>
 <script>
     const container = document.getElementById('custom_config');
     var options = {
@@ -216,60 +203,6 @@
         // ace: ace,
     };
     const editor = new JSONEditor(container, options);
-    var dnseditor = ace.edit("routedns_config");
-    dnseditor.setFontSize("8pt");
-    dnseditor.setValue(`
-    [listeners.local-udp]
-address = ":53"
-protocol = "udp"
-resolver = "smartdns-allowclient"
-
-[listeners.local-tcp]
-address = ":53"
-protocol = "tcp"
-resolver = "smartdns-allowclient"
-
-[groups.smartdns-allowclient]
-type                = "client-allowlist"
-resolvers           = "static-servfail"
-allowlist-resolver  = ["smartdns-allowhost"]
-allowlist           = [
-  '157.240.0.0/16',
-]
-
-[groups.smartdns-allowhost]
-type             = "blocklist-v2"
-resolvers        = ["cloudflare-dot"] # Default upstream resolver for anything not matching either list
-blocklist-resolver = "static-servfail" # Resolver used for anything matching the blocklist (and not on the allowlist)
-blocklist-format = "domain"
-blocklist = [
-  'block.panel.com',
-]
-allowlist-resolver = "cloudflare-dot" # Resolver for anything on the allowlist
-allowlist-format = "host"
-allowlist = [                  # Define the names to be allowed
-  '127.0.0.1 allow.panel.com', # Spoofed
-  '127.0.0.1 www.evil.com',    # Spoofed
-  '0.0.0.0   www.blocked.com', # Blocked
-  '127.0.0.1 www.domain.com',  # IP4 and IP6 addresses can be spoofed independently
-  '::1       www.domain.com',
-  '::        ads.com',
-]
-
-# Returns servfail for every query routed here by the blocklist
-[groups.static-servfail]
-type   = "static-responder"
-rcode  = 2 # Response code: 0 = NOERROR, 1 = FORMERR, 2 = SERVFAIL, 3 = NXDOMAIN, ...
-
-[resolvers.cloudflare-dot]
-address = "1.1.1.1:853"
-protocol = "dot"
-
-[resolvers.google-dot]
-address = "8.8.8.8:853"
-protocol = "dot"`)
-    dnseditor.getSession().setMode("ace/mode/toml");
-
     $("#create-node").click(function() {
         $.ajax({
             url: '/admin/node',
@@ -282,7 +215,6 @@ protocol = "dot"`)
                 type: $("#type").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
                 is_route_dns: $("#is_route_dns").is(":checked"),
-                routedns_config: dnseditor.getValue(),
             },
             success: function(data) {
                 if (data.ret === 1) {
@@ -305,15 +237,6 @@ protocol = "dot"`)
             hiddenSection.style.display = "block";
         } else {
             hiddenSection.style.display = "none";
-        }
-    });
-
-    document.getElementById("is_route_dns").addEventListener("change", function() {
-        var routedns = document.getElementById("routedns_container");
-        if (this.checked) {
-            routedns.style.display = "block";
-        } else {
-            routedns.style.display = "none";
         }
     });
 </script>

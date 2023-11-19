@@ -225,7 +225,7 @@
         }
 
         function disableCoupon(coupon_id) {
-            $('#notice-message').text('آیا مطمئنید که می‌خواهید این کد تبلیغاتی را غیرفعال کنید؟');
+            $('#notice-message').text('آیا مطمئنید که می‌خواهید این کد تخفیف را غیرفعال کنید؟');
             $('#notice-dialog').modal('show');
             $('#notice-confirm').off('click').on('click', function () {
                 $.ajax({

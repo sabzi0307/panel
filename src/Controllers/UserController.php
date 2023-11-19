@@ -15,6 +15,7 @@ use App\Models\SmartDns;
 use App\Models\StreamMedia;
 use App\Services\Auth;
 use App\Services\Captcha;
+use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use DeviceDetector\DeviceDetector;
@@ -35,8 +36,10 @@ final class UserController extends BaseController
     private static array $details = [
         'field' => [
             'ip' => 'آدرس IP',
-            'details' => 'مشخصات IP',
-            'updated_at' => 'زمان به روز رسانی',
+            // 'details' => 'مشخصات IP',
+            // 'updated_at' => 'زمان به روز رسانی',
+            'node' => 'سرور',
+            'op' => 'عملیات',
         ],
     ];
 
@@ -72,7 +75,6 @@ final class UserController extends BaseController
         $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']); // change this to the useragent you want to parse
         $dd->skipBotDetection();
         $dd->parse();
-        $tv = $dd->isTV();
         $osFamily = OperatingSystem::getOsFamily($dd->getOs('name'));
         if ($dd->isTV()) {
             $osFamily = "TV";

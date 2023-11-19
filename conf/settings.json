@@ -1,6 +1,146 @@
 [
     {
         "id": null,
+        "item": "smart_dns",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_plain",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS Plain Mode"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_plain_url_1",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Plain Url 1"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_plain_url_2",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Plain Url 2"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_dot",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoT Mode"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_dot_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoT Url"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_doh",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoH Mode"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_doh_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoH Url"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_dodtls",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoDTLS Mode"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_dodtls_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoDTLS Url"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_doq",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoQ Mode"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_doq_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoQ Url"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_check_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Check Url"
+    },
+    {
+        "id": null,
+        "item": "smart_dns_fail_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Fail Url"
+    },
+    {
+        "id": null,
         "item": "nowpayments_url",
         "value": "https://api.nowpayments.io/v1/",
         "class": "billing",

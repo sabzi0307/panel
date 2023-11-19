@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\SmartDns;
 use App\Services\Cloudflare;
 use App\Services\IM\Telegram;
+use App\Services\Subscribe;
 use App\Utils\Tools;
 use Cloudflare\API\Endpoints\EndpointException;
 use Exception;
@@ -44,181 +45,7 @@ final class SmartDnsController extends BaseController
         'bandwidthlimit_resetday',
     ];
 
-    /**
-     * Create the data output array for the DataTables rows
-     *
-     *  @param  array $columns Column information array
-     *  @param  array $data    Data from the SQL get
-     *  @return array          Formatted data in a row based format
-     */
-    static function data_output($columns, $data)
-    {
-        $out = array();
 
-        for ($i = 0, $ien = count($data); $i < $ien; $i++) {
-            $row = array();
-
-            for ($j = 0, $jen = count($columns); $j < $jen; $j++) {
-                $column = $columns[$j];
-
-                // Is there a formatter?
-                if (isset($column['formatter'])) {
-                    if (empty($column['db'])) {
-                        $row[$column['dt']] = $column['formatter']($data[$i]);
-                    } else {
-                        $row[$column['dt']] = $column['formatter']($data[$i][$column['db']], $data[$i]);
-                    }
-                } else {
-                    if (!empty($column['db'])) {
-                        $row[$column['dt']] = $data[$i][$columns[$j]['db']];
-                    } else {
-                        $row[$column['dt']] = "";
-                    }
-                }
-            }
-
-            $out[] = $row;
-        }
-
-        return $out;
-    }
-
-    static function order($request, $columns)
-    {
-        $order = '';
-
-        if (isset($request['order']) && count($request['order'])) {
-            $orderBy = array();
-            $dtColumns = self::pluck($columns, 'dt');
-
-            for ($i = 0, $ien = count($request['order']); $i < $ien; $i++) {
-                // Convert the column index into the column data property
-                $columnIdx = intval($request['order'][$i]['column']);
-                $requestColumn = $request['columns'][$columnIdx];
-
-                $columnIdx = array_search($requestColumn['data'], $dtColumns);
-                $column = $columns[$columnIdx];
-
-                if ($requestColumn['orderable'] == 'true') {
-                    $dir = $request['order'][$i]['dir'] === 'asc' ?
-                        'ASC' :
-                        'DESC';
-
-                    $orderBy[] = '`' . $column['db'] . '` ' . $dir;
-                }
-            }
-
-            if (count($orderBy)) {
-                // $order = 'ORDER BY '.implode(', ', $orderBy);
-                $order = implode(', ', $orderBy);
-                $order = implode(', ', $orderBy);
-            }
-        }
-
-        return $order;
-    }
-
-    /**
-     * Create a PDO binding key which can be used for escaping variables safely
-     * when executing a query with sql_exec()
-     *
-     * @param  array &$a    Array of bindings
-     * @param  *      $val  Value to bind
-     * @param  int    $type PDO field type
-     * @return string       Bound key to be used in the SQL where this parameter
-     *   would be used.
-     */
-    static function bind(&$a, $val, $type)
-    {
-        $key = ':binding_' . count($a);
-
-        $a[] = array(
-            'key' => $key,
-            'val' => $val,
-            'type' => $type
-        );
-
-        return $key;
-    }
-
-    /**
-     * Searching / Filtering
-     *
-     * Construct the WHERE clause for server-side processing SQL query.
-     *
-     * NOTE this does not match the built-in DataTables filtering which does it
-     * word by word on any field. It's possible to do here performance on large
-     * databases would be very poor
-     *
-     *  @param  array $request Data sent to server by DataTables
-     *  @param  array $columns Column information array
-     *  @param  array $bindings Array of values for PDO bindings, used in the
-     *    sql_exec() function
-     *  @return string SQL where clause
-     */
-    static function filter($request, $columns, &$bindings)
-    {
-        $globalSearch = array();
-        $columnSearch = array();
-        $dtColumns = self::pluck($columns, 'dt');
-
-        if (isset($request['search']) && $request['search']['value'] != '') {
-            $str = $request['search']['value'];
-
-            for ($i = 0, $ien = count($request['columns']); $i < $ien; $i++) {
-                $requestColumn = $request['columns'][$i];
-                $columnIdx = array_search($requestColumn['data'], $dtColumns);
-                $column = $columns[$columnIdx];
-
-                if ($requestColumn['searchable'] == 'true') {
-                    if (!empty($column['db'])) {
-                        $binding = self::bind($bindings, '%' . $str . '%', PDO::PARAM_STR);
-                        $globalSearch[] = "`" . $column['db'] . "` LIKE " . $binding;
-                    }
-                }
-            }
-        }
-
-        // Individual column filtering
-        if (isset($request['columns'])) {
-            for ($i = 0, $ien = count($request['columns']); $i < $ien; $i++) {
-                $requestColumn = $request['columns'][$i];
-                $columnIdx = array_search($requestColumn['data'], $dtColumns);
-                $column = $columns[$columnIdx];
-
-                $str = $requestColumn['search']['value'];
-
-                if (
-                    $requestColumn['searchable'] == 'true' &&
-                    $str != ''
-                ) {
-                    if (!empty($column['db'])) {
-                        $binding = self::bind($bindings, '%' . $str . '%', PDO::PARAM_STR);
-                        $columnSearch[] = "`" . $column['db'] . "` LIKE " . $binding;
-                    }
-                }
-            }
-        }
-
-        // Combine the filters into a single string
-        $where = '';
-
-        if (count($globalSearch)) {
-            $where = '(' . implode(' OR ', $globalSearch) . ')';
-        }
-
-        if (count($columnSearch)) {
-            $where = $where === '' ?
-                implode(' AND ', $columnSearch) :
-                $where . ' AND ' . implode(' AND ', $columnSearch);
-        }
-
-        // if ( $where !== '' ) {
-        // 	$where = 'WHERE '.$where;
-        // }
-
-        return $where;
-    }
 
     /**
      * Pull a particular property from each assoc. array in a numeric array, 
@@ -245,70 +72,6 @@ final class SmartDnsController extends BaseController
         return $out;
     }
 
-    /**
-     * Perform the SQL queries needed for an server-side processing requested,
-     * utilising the helper functions of this class, limit(), order() and
-     * filter() among others. The returned array is ready to be encoded as JSON
-     * in response to an SSP request, or can be modified if needed before
-     * sending back to the client.
-     *
-     *  @param  array $request Data sent to server by DataTables
-     *  @param  string $primaryKey Primary key of the table
-     *  @param  array $columns Column information array
-     *  @return array          Server-side processing response array
-     */
-    static function simple($request, $primaryKey, $columns)
-    {
-        $bindings = array();
-
-        // Allow for a JSON string to be passed in
-        if (isset($request['json'])) {
-            $request = json_decode($request['json'], true);
-        }
-
-        // $query = SmartDns::select(self::pluck($columns, 'db'));
-        $temp1 = self::pluck($columns, 'db');
-        $selectColumns = [];
-        foreach (self::pluck($columns, 'db') as $column) {
-            $selectColumns[] = strtolower($column);
-        }
-        $query = SmartDns::select($selectColumns);
-
-        $order = self::order($request, $columns);
-        if (!empty($order)) {
-            $query->orderBy($order);
-        }
-        ;
-
-        $where = self::filter($request, $columns, $bindings);
-        if (!empty($where)) {
-            $query->where($where);
-        }
-        ;
-
-        if (isset($request['start']) && $request['length'] != -1) {
-            $query->offset(intval($request['start']))->limit(intval($request['length']));
-        }
-
-        $data = $query->get();
-
-        $recordsTotal = $data->count(`{$primaryKey}`);
-        $recordsFiltered = $recordsTotal;
-        if (!empty($where)) {
-            $recordsFiltered = $data->where($where)->count(`{$primaryKey}`);
-        }
-
-        /*
-         * Output
-         */
-        return array(
-            "draw" => isset($request['draw']) ? intval($request['draw']) : 0,
-            "recordsTotal" => intval($recordsTotal),
-            "recordsFiltered" => intval($recordsFiltered),
-            "data" => self::data_output($columns, $data),
-            "error" => ""
-        );
-    }
 
     /**
      * @throws Exception
@@ -319,21 +82,20 @@ final class SmartDnsController extends BaseController
             ->fetch('user/smart_dns.tpl'));
     }
 
+
     /**
      * 后台节点页面
      *
      * @throws Exception
      */
-    public function index(ServerRequest $request, Response $response, array $args): ResponseInterface
+    public function check(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         // $_SERVER['REMOTE_ADDR']
-        return $response->write(
-            $this->view()
-                ->assign('details', self::$details)
-                ->assign('update_field', self::$update_field)
-                ->assign('ip', $_SERVER['REMOTE_ADDR'])
-                ->fetch('user/smart_dns.tpl')
-        );
+        return $response->withStatus(200)
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withJson([
+                'ret' => 1,
+            ]);
     }
 
     /**
@@ -397,7 +159,7 @@ final class SmartDnsController extends BaseController
         $dns->ip = $ip;
         $dns->created_at = time();
         $dns->updated_at = time();
-        $dns->mark = Tools::getIpLocation($ip);
+        $dns->mark = (string) Tools::getIpLocation($ip);
         $dns->userid = $user->id;
 
         if (!$dns->save()) {
@@ -420,10 +182,10 @@ final class SmartDnsController extends BaseController
      */
     public function update(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $id = $args['id'];
+        $antiXss = new AntiXSS();
+        $id = $antiXss->xss_clean($args['id']);
         $dns = SmartDns::find($id);
 
-        $antiXss = new AntiXSS();
         $data = $antiXss->xss_clean($request->getParam('data'));
 
         if (count($data) > 1) {
@@ -434,23 +196,28 @@ final class SmartDnsController extends BaseController
                     'error' => 'فقط یک گزینه را انتخاب کنید.'
                 ]);
         }
-        $ip = $antiXss->xss_clean(trim($data[$id]['ip']));
-
-        $dupplicate = SmartDns::where('ip', $ip)->count();
-        if ($dupplicate !== 0) {
-            return $response->withStatus(400)
-                ->withJson([
-                    'ret' => 0,
-                    'msg' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
-                    'error' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
-                ]);
+        if (isset($data[$id]['ip'])) {
+            $ip = $antiXss->xss_clean(trim($data[$id]['ip']));
+            $dupplicate = SmartDns::where('ip', $ip)->count();
+            if ($dupplicate !== 0) {
+                return $response->withStatus(400)
+                    ->withJson([
+                        'ret' => 0,
+                        'msg' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
+                        'error' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
+                    ]);
+            }
+            $dns->ip = $ip;
         }
+        ;
 
-        $mark = Tools::getIpLocation($ip);
-        $dns->ip = $ip;
-        $update = time();
-        $dns->updated_at = $update;
-        $dns->mark = $mark;
+        if (isset($data[$id]['node'])) {
+            $node = $antiXss->xss_clean($data[$id]['node']);
+            $dns->node = $node['id'];
+        }
+        ;
+
+        $dns->updated_at = time();
 
 
         if (!$dns->save()) {
@@ -461,10 +228,19 @@ final class SmartDnsController extends BaseController
                     'error' => 'خطا در اصلاح اطلاعات',
                 ]);
         }
+
+        $rdns = json_decode(Subscribe::getContent($this->user, "smartdns"));
+        foreach ($rdns as $rd) {
+            $value = $rd->id;
+            if ($value == $dns->node) {
+                $dns->node = $rd;
+                break;
+            }
+        }
+
         $ret = new stdClass();
-        $ret->updated_at = Tools::toDateTime($update);
-        $ret->ip = $ip;
-        $ret->mark = $mark;
+        $ret->ip = $dns->ip;
+        $ret->node = $dns->node;
 
         return $response->withStatus(200)
             ->withJson([
@@ -503,60 +279,25 @@ final class SmartDnsController extends BaseController
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
 
-        // $antiXss = new AntiXSS();
-        // $clientName = $antiXss->xss_clean($args['name']);
-
         $user = $this->user;
-        $smartdnss = SmartDns::where('userid', $user->id)->orderBy('id', 'desc')->get();
+        $userdnss = SmartDns::where('userid', $user->id)->orderBy('id', 'desc')->get();
+        $rdns = json_decode(Subscribe::getContent($this->user, "smartdns"));
 
-        foreach ($smartdnss as $smartdns) {
-            $smartdns->updated_at = Tools::toDateTime($smartdns->updated_at);
-            if (Tools::isIPv4($smartdns->mark) || Tools::isIPv6($smartdns->mark)) {
-                $smartdns->mark = Tools::getIpLocation($smartdns->mark);
+        foreach ($userdnss as $userdns) {
+            foreach ($rdns as $rd) {
+                $id = $rd->id;
+                if ($userdns->node == $id) {
+                    $userdns->node = $rd;
+                    break;
+                };
             }
         }
 
-        // $smartdnss_count = $smartdnss->count();
-
         return $response->withStatus(200)
             ->withJson([
-                'data' => $smartdnss,
+                'data' => $userdnss,
                 'ret' => 1,
                 'msg' => 'success'
             ]);
-    }
-
-    /**
-     * 后台节点页面 AJAX
-     */
-    public function ajaxServerSide(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        // Table's primary key
-        $primaryKey = 'id';
-
-        // Array of database columns which should be read and sent back to DataTables.
-// The `db` parameter represents the column name in the database, while the `dt`
-// parameter represents the DataTables column identifier. In this case simple
-// indexes
-        $columns = array(
-            array('db' => 'id', 'dt' => 'id'),
-            array('db' => 'ip', 'dt' => 'ip'),
-            array('db' => 'mark', 'dt' => 'mark'),
-            array('db' => 'updated_at', 'dt' => 'updated_at'),
-        );
-
-
-        // $da = $request->getBody()->getContents();
-        // parse_str($da, $output);
-
-        $res = self::simple(array(), $primaryKey, $columns);
-        // $res["error"] = "ye alam error";
-        $datas = $res["data"];
-        foreach ($datas as &$data) {
-            $data["updated_at"] = Tools::toDateTime($data["updated_at"]);
-        }
-        $res["data"] = $datas;
-        return $response->withStatus(200)
-            ->withJson($res);
     }
 }

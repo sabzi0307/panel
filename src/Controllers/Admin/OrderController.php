@@ -26,7 +26,7 @@ final class OrderController extends BaseController
             'product_id' => 'شناسه سرویس',
             'product_type' => 'نوع سرویس',
             'product_name' => 'نام سرویس',
-            'coupon' => 'کد تبلیغاتی',
+            'coupon' => 'کد تخفیف',
             'price' => 'قیمت',
             'status' => 'وضعیت',
             'create_time' => 'زمان ایجاد',

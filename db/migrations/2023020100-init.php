@@ -157,7 +157,6 @@ return new class() implements MigrationInterface {
                 `gfw_block` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'is blocked by GFW',
                 `password` varchar(255) NOT NULL DEFAULT '' COMMENT 'backend connection password',
                 `is_route_dns` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable routedns',
-                `routedns_config` longtext NOT NULL DEFAULT '' COMMENT 'routedns configuration',
                 PRIMARY KEY (`id`),
                 KEY `type` (`type`),
                 KEY `sort` (`sort`),
@@ -394,6 +393,7 @@ return new class() implements MigrationInterface {
             
             CREATE TABLE `smart_dns` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `node` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user ID',
                 `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'dns Login IP',
                 `mark` varchar(255) NOT NULL DEFAULT '' COMMENT 'Remark',

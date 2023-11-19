@@ -67,15 +67,19 @@ final class NodeController extends BaseController
         }
 
         $custom_config = json_decode($node->custom_config, true, JSON_UNESCAPED_SLASHES);
-        $is_route_dns = $node->is_route_dns;
-        $routedns_config = $node->routedns_config;
-        $is_route_dns = $node->is_route_dns;
-        if ($is_route_dns === 1 && $routedns_config != '') {
-            $additionalData = ["route-dns" => [
-                "is_route_dns" => true,
-                "routedns_config" => $routedns_config,
-            ],];
-            $custom_config = (object) array_merge((array) $custom_config, $additionalData);
+        
+        if ($node->sort === 3) {
+            $port = $custom_config["offset_port_node"];
+            if ($port === "") {
+                return $response->withJson([
+                    'ret' => 0,
+                    'data' => 'offset_port_node must set.',
+                ]);
+            }
+            $port += 1;
+            $custom_config["route_dns"]["socks"]["username"] = "smartdns-socks-id-" . $node->id;
+            $custom_config["route_dns"]["socks"]["password"] = $node->password;
+            $custom_config["route_dns"]["socks"]["address"] = $node->server . ":" . $port;
         }
 
 

@@ -64,7 +64,8 @@ final class UserController extends BaseController
                 user.passwd,
                 user.uuid,
                 IF(online_log.count IS NULL, 0, online_log.count) AS alive_ip,
-                smart_dns.ip AS dns_ip
+                smart_dns.ip AS dns_ip,
+                smart_dns.node AS dns_node
             FROM
                 user LEFT JOIN (
                     SELECT
@@ -79,7 +80,8 @@ final class UserController extends BaseController
                 LEFT JOIN (
                     SELECT
                         userid,
-                        ip
+                        ip,
+                        node
                     FROM
                         smart_dns
                 ) AS smart_dns ON smart_dns.userid = user.id
@@ -95,11 +97,11 @@ final class UserController extends BaseController
         ', [$node->node_class, $node->node_group, $node->node_group]);
 
         $keys_unset = match ((int) $node->sort) {
-            14, 11 => ['u', 'd', 'transfer_enable', 'method', 'port', 'passwd', 'dns_ip'],
-            3 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip', 'uuid'],
-            2 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip'],
-            1 => ['u', 'd', 'transfer_enable', 'method', 'port', 'uuid', 'dns_ip'],
-            default => ['u', 'd', 'transfer_enable', 'uuid', 'dns_ip']
+            14, 11 => ['u', 'd', 'transfer_enable', 'method', 'port', 'passwd', 'dns_ip', 'dns_node'],
+            3 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip', 'uuid', 'dns_node'],
+            2 => ['u', 'd', 'transfer_enable', 'method', 'port', 'dns_ip', 'dns_node'],
+            1 => ['u', 'd', 'transfer_enable', 'method', 'port', 'uuid', 'dns_ip', 'dns_node'],
+            default => ['u', 'd', 'transfer_enable', 'uuid', 'dns_ip', 'dns_node']
         };
 
         $users = [];
@@ -126,19 +128,15 @@ final class UserController extends BaseController
             }
 
             if ($node->sort === 3) {
-                // $user_raw->passwd = $user_raw->dns_ip ?: "";
-                $dns_ips = [];
-        
-                // حلقه بر روی تمام dns_ip های کاربر
-                foreach ($users_raw as $user) {
-                    $dns_ip = $user->dns_ip;
-                    if (!empty($dns_ip)) {
-                        $dns_ips[] = $dns_ip;
-                    }
+                if ($node_id != $user_raw->dns_node) {
+                    continue;
                 }
-                
-                // تبدیل آدرس‌های IP به یک رشته جداشده توسط ویرگول
-                $user_raw->passwd = implode(", ", $dns_ips);
+
+                if (empty($user_raw->dns_ip)) {
+                    continue;
+                }
+
+                $user_raw->passwd = $user_raw->dns_ip;
             }
 
             foreach ($keys_unset as $key) {

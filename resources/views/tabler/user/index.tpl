@@ -193,14 +193,16 @@
                                     &nbsp;تنظیمات
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#dns" {if $osFamily eq "TV"} class="nav-link active" 
-                                {else} class="nav-link"
-                                    {/if} data-bs-toggle="tab">
-                                    <i class="ti ti-device-tv-old icon"></i>
-                                    &nbsp;SmartDNS
-                                </a>
-                            </li>
+                            {if $public_setting['smart_dns_plain'] }
+                                <li class="nav-item">
+                                    <a href="#dns" {if $osFamily eq "TV"} class="nav-link active" 
+                                    {else} class="nav-link"
+                                        {/if} data-bs-toggle="tab">
+                                        <i class="ti ti-device-tv-old icon"></i>
+                                        &nbsp;SmartDNS
+                                    </a>
+                                </li>
+                            {{/if}}
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
@@ -310,15 +312,6 @@
                                             <div id="win-1" class="accordion-collapse collapse"
                                                 data-bs-parent="#windows-accordion">
                                                 <div class="accordion-body pt-0">
-
-
-                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                        style="background-color: green">
-                                                        آموزش نصب و استفاده از iClash
-                                                    </a>
-                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                    <br><br>
                                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                             سازگار با کلش متا:</strong></a><br>
                                                     <p>
@@ -379,15 +372,6 @@
                                             <div id="win-2" class="accordion-collapse collapse"
                                                 data-bs-parent="#windows-accordion">
                                                 <div class="accordion-body pt-0">
-                                                    {include file='user/knowledge/i2RayN.tpl'}
-
-                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                        style="background-color: green;">
-                                                        آموزش نصب و استفاده از iClash
-                                                    </a>
-                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                    <br><br>
                                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                             سازگار با کلش متا:</strong></a><br>
                                                     <p>
@@ -459,13 +443,6 @@
                                             <div id="mac-2" class="accordion-collapse collapse"
                                                 data-bs-parent="#mac-accordion">
                                                 <div class="accordion-body pt-0">
-                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                        style="background-color: green;">
-                                                        آموزش نصب و استفاده از SingBox
-                                                    </a>
-                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                    <br><br>
                                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                             سازگار با SingBox:</strong></a><br>
                                                     <p>
@@ -524,12 +501,6 @@
                                                 </button>
                                             </h2>
                                             <div id="mac-1" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                    style="background-color: green;">
-                                                    آموزش نصب و استفاده از iClash
-                                                </a>
-                                                {include file='user/knowledge/iClash.tpl' ros="all"}
                                                 <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong></a><br>
@@ -598,13 +569,6 @@
                                             <div id="droid-1" class="accordion-collapse collapse"
                                                 data-bs-parent="#droid-accordion">
                                                 <div class="accordion-body pt-0">
-                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                        style="background-color: green;">
-                                                        آموزش نصب و استفاده از SingBox
-                                                    </a>
-                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                    <br><br>
                                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                             سازگار با SingBox:</strong></a><br>
                                                     <p>
@@ -663,13 +627,6 @@
                                                 </button>
                                             </h2>
                                             <div id="droid-2" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                    href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                    style="background-color: green;">
-                                                    آموزش نصب و استفاده از iClash
-                                                </a>
-                                                {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong></a><br>
                                                 <p>
@@ -731,13 +688,6 @@
                                             <div id="ios-1" class="accordion-collapse collapse"
                                                 data-bs-parent="#ios-accordion">
                                                 <div class="accordion-body pt-0">
-                                                    <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                        href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd"
-                                                        style="background-color: green;">
-                                                        آموزش نصب و استفاده از SingBox
-                                                    </a>
-                                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                                    <br><br>
                                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                             سازگار با SingBox:</strong></a><br>
                                                     <p>
@@ -794,18 +744,11 @@
                                             </h2>
                                             <div id="ios-2" class="accordion-collapse collapse">
                                                 <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                    href="#offcanvasEndShadowrocket" role="button"
-                                                    aria-controls="offcanvasEndShadowrocket"
-                                                    style="background-color: green;">
-                                                    آموزش نصب و استفاده از ShadowRocket
-                                                </a>
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
                                                     href="#offcanvasEndSharedAccount" role="button"
                                                     aria-controls="offcanvasEndSharedAccount"
                                                     style="background-color: green;">
                                                     آموزش استفاده از اکانت اشتراکی
                                                 </a>
-                                                {include file='user/knowledge/shadowRocket.tpl' ros="all"}
                                                 {include file='user/knowledge/SharedAccount.tpl' accounts=$SharedAccounts}
                                                 <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
@@ -860,13 +803,6 @@
                                                 </button>
                                             </h2>
                                             <div id="ios-3" class="accordion-collapse collapse">
-                                                <a class="btn btn-primary" data-bs-toggle="offcanvas"
-                                                    href="#offcanvasEndStash" role="button"
-                                                    aria-controls="offcanvasEndStash" style="background-color: green;">
-                                                    آموزش نصب و استفاده از Stash
-                                                </a>
-                                                {include file='user/knowledge/stash.tpl' ros="all"}
-                                                <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong></a><br>
                                                 <p>
@@ -913,12 +849,6 @@
                                 <div {if $osFamily eq "Linux"} class="tab-pane active show" 
                                 {else} class="tab-pane"
                                     {{/if}} id="linux">
-                                    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasEnd"
-                                        role="button" aria-controls="offcanvasEnd" style="background-color: green;">
-                                        آموزش نصب و استفاده از iClash
-                                    </a>
-                                    {include file='user/knowledge/iClash.tpl' ros="all"}
-                                    <br><br>
                                     <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                             سازگار با کلش متا:</strong></a><br>
                                     <p>
@@ -989,30 +919,102 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div {if $osFamily eq "TV"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
-                                    id="dns">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">{$ip}</h3>
-                                        </div>
-                                        <div class="card-body p-0" style="margin: 30px;">
-                                            <div class="table-responsive">
-                                                <table id="data_table" class="table table-vcenter card-table"
-                                                    cellspacing="0" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            {foreach $details['field'] as $key => $value}
-                                                                <th style="width: unset;">{$value}</th>
-                                                            {/foreach}
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
+                                {if $public_setting['smart_dns_plain'] }
+                                    <div {if $osFamily eq "TV"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
+                                        id="dns">
+                                        <div class="card">
+                                            <div class="card-header" style="display: block;">
+                                                <div style="text-align: center;">
+                                                    <strong>برای استفاده از بشکن کافیه DNS رو تنظیم کنید</strong>
+                                                    <br>
+                                                    <div style="direction: ltr;">
+                                                        {if $public_setting['smart_dns_plain']}
+                                                            <p>
+                                                                Plain DNS-1: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_url_1']}">{$public_setting['smart_dns_url_1']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_url_1']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                            <p>
+                                                                Plain DNS-2: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_url_2']}">{$public_setting['smart_dns_url_2']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_url_2']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                        {{/if}}
+                                                        {if $public_setting['smart_dns_dot']}
+                                                            <p>
+                                                                DNS-over-TLS: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_dot_url']}">{$public_setting['smart_dns_dot_url']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_dot_url']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                        {{/if}}
+                                                        {if $public_setting['smart_dns_doh']}
+                                                            <p>
+                                                                DNS-over-Https: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_doh_url']}">{$public_setting['smart_dns_doh_url']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_doh_url']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                        {/if}
+                                                        {if $public_setting['smart_dns_dodtls']}
+                                                            <p>
+                                                                DNS-over-DTLS: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_dodtls_url']}">{$public_setting['smart_dns_dodtls_url']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_dodtls_url']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                        {/if}
+                                                        {if $public_setting['smart_dns_doq']}
+                                                            <p>
+                                                                DNS-over-DTLS: <code class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_doq_url']}">{$public_setting['smart_dns_doq_url']}</code>
+                                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                                    data-clipboard-text="{$public_setting['smart_dns_doq_url']}">
+                                                                    <i class="ti ti-copy"></i>
+                                                                    کپی
+                                                                </a>
+                                                            </p>
+                                                        {/if}
+                                                    </div>
+                                                </div>
+                                                <div id="message" class="beshecan-result"></div>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table id="data_table" class="table table-vcenter card-table"
+                                                        width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                {foreach $details['field'] as $key => $value}
+                                                                    <th style="width: unset;">{$value}</th>
+                                                                {/foreach}
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {{/if}}
                             </div>
                         </div>
                     </div>
@@ -1077,11 +1079,11 @@
                                 {/if}
                             </h3>
                             <p class="text-secondary">
-                                    {if $ann !== null}
-                                        {$ann->content}
-                                    {else}
-                                        هنوز اطلاعیه ای وجود ندارد
-                                    {/if}
+                                {if $ann !== null}
+                                    {$ann->content}
+                                {else}
+                                    شما اطلاعیه خوانده نشده ندارید
+                                {/if}
                             </p>
                         </div>
                     </div>
@@ -1146,242 +1148,295 @@
         </div>
     </div>
 
-    <script>
-        var clipboard = new ClipboardJS('.copy');
-        clipboard.on('success', function(e) {
-            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
-            $('#success-noreload-dialog').modal('show');
-        });
+    {if $public_setting['smart_dns_plain'] }
+        <script>
+            var jqxhrc = jQuery.ajax("http://check.beshcan.ir/dnscheck?" + Math.random())
+                .done(function() {
+                    var jqxhrf = jQuery.ajax("https://block.panel.com?" + Math.random())
+                        .done(function() {
+                            jQuery('#message').html(
+                                '<i class="ti ti-alert-circle icon"></i>هشدار! شما علاوه بر بشکن، از DNS دیگه‌ای هم استفاده می‌کنید که ممکنه مشکل‌ساز بشه!'
+                            ).addClass('warning').removeClass('success');
+                        })
+                        .fail(function() {
+                            jQuery('#message').html(
+                                '<i class="ti ti-check-circle icon"></i> تبریک! شما در حال استفاده از بشکن هستید'
+                            ).addClass('success');
+                        })
+                        .always(function() {});
+                })
+                .fail(function() {
+                    var jqxhrf = jQuery.ajax("http://check2.beshcan.ir/dnscheck?" + Math.random())
+                        .done(function() {
+                            jQuery('#message').html(
+                                '<i class="ti ti-info-circle icon"></i>هشدار! شما تنظیمات DNS را انجام داده اید اما IP شما احراز هویت نشده است . '
+                            ).addClass('warning').removeClass('success');
+                        })
+                        .fail(function() {
+                            jQuery('#message').html(
+                                '<i class="ti ti-exclamation-circle icon"></i>بشکن برای شما فعال نیست! اگر تنظیمات را انجام داده‌اید، بخش <a href="https://bebeshcan.ir/faq/">پرسش‌های پرتکرار</a> را به دقت مطالعه کنید'
+                            ).addClass('warning').removeClass('success');
+                        })
+                        .always(function() {});
+                })
+                .always(function() {});
 
-        $.fn.dataTable.ext.errMode = 'none';
-        var editor = new $.fn.dataTable.Editor({
-            ajax: {
-                create: {
-                    type: 'POST',
-                    url: '/user/dns'
-                },
-                edit: {
-                    type: 'PUT',
-                    url: '/user/dns/_id_'
-                },
-                remove: {
-                    type: 'DELETE',
-                    url: '/user/dns/_id_'
-                }
-            },
-            table: '#data_table',
-            idSrc: 'id',
-            fields: [
-                { label: 'آدرس IP', name: 'ip' }
-            ],
-            i18n: {
-                create: {
-                    button: "افزودن",
-                    title: "افزودن IP جدید",
-                    submit: "ثبت"
-                },
-                edit: {
-                    button: "ویرایش",
-                    title: "ویرایش آدرس IP",
-                    submit: "ثبت"
-                },
-                remove: {
-                    button: "حذف",
-                    title: "حذف IP",
-                    submit: "حذف",
-                    confirm: {
-                        _: "شما در حال حذف %d گزینه هستید. آیا تایید میفرمایید؟",
-                        1: "شما در حال حذف یک گزینه هستید. آیا تایید میفرمایید؟",
-                    }
-                },
-                error: {
-                    system: "خطا در سرور! لطفا با پشتیبانی مطرح فرمایید."
-                },
-            }
-        });
 
-        var table = $('#data_table')
-            .DataTable({
-                ajax: {
-                    url: "/user/dns/ajax",
-                    type: "POST",
-                    contentType: "application/json",
-                    dataType: "json",
-                    error: function(xhr, error, thrown) {
-                        if (xhr.responseJSON.ret !== null && xhr.responseJSON.ret === 0) {
-                            if (xhr.responseJSON.msg !== "") {
-                                alert("خطا " + xhr.status + " :" + xhr.responseJSON.msg);
-                            } else {
-                                alert("خطا " + xhr.status + " :" + thrown);
-                            }
-                        } else {
-                            alert(error + xhr.status + " : " + thrown);
-                        }
-                    }
-                },
-                columnDefs: [
-                    //default content for all columns in case of empty or data not found
-                    { targets: "_all", defaultContent: "<b>بدون داده</b>" },
-                ],
-                dom: 'Brtip',
-                // data: data,
-                // rowCallback: function(row, data, index) {
-                //     $('td:first-child', row).attr('title', 'Click to edit');
-                // },
-                serverSide: false,
-                processing: false,
-                columns: [
-                    { data: 'ip', className: 'dt-body-right', orderable: false },
-                    { data: 'mark', className: 'dt-body-right', orderable: false },
-                    { data: 'updated_at', className: 'dt-body-right', orderable: false },
-                    {
-                        data: null,
-                        className: 'center',
-                        defaultContent: '<a href="" class="editor_edit_to">ویرایش به آدرس فعلی</a> / <a href="" class="editor_edit">ویرایش</a> / <a href="" class="editor_remove">حذف</a>'
-                    }
-                ],
-                select: {
-                    style: 'single',
-                },
-                buttons: [
-                    { extend: 'create', editor: editor },
-                    { extend: 'edit', editor: editor },
-                    {
-                        extend: 'selectedSingle',
-                        text: 'تغییر به IP فعلی',
-                        action: function(e, dt, node, config) {
-                            editor
-                                .edit(table.row({ selected: true }).index(), false)
-                                .set('ip', "127.0.0.1")
-                                .submit();
-                        }
-                    },
-                    { extend: 'remove', editor: editor },
-                ],
+            var clipboard = new ClipboardJS('.copy');
+            clipboard.on('success', function(e) {
+                $('#success-noreload-message').text('در کلیپ بورد کپی شد');
+                $('#success-noreload-dialog').modal('show');
             });
 
-        // Activate an inline edit on click of a table cell
-        $('#data_table')
-            // .on('click', 'tbody td:first-child', function(e) {
-            //     // editor.inline(this, {
-            //     //     buttons: { label: 'به روزرسانی', fn: function() { this.submit(); } }
-            //     // });
-            //     editor.bubble(this, );
-            // })
 
-            .on('click', 'tbody td:first-child', function() {
-                var value = $(this).text();
-                if ($value != "No data available in table") {
+            $.fn.dataTable.ext.errMode = 'none';
+            var editor = new $.fn.dataTable.Editor({
+                ajax: {
+                    create: {
+                        type: 'POST',
+                        url: '/user/dns'
+                    },
+                    edit: {
+                        type: 'PUT',
+                        url: '/user/dns/_id_'
+                    },
+                    remove: {
+                        type: 'DELETE',
+                        url: '/user/dns/_id_'
+                    }
+                },
+                table: '#data_table',
+                idSrc: 'id',
+                fields: [
+                    { label: 'آدرس IP', name: 'ip' },
+                    {
+                        label: 'سرور انتخابی',
+                        name: 'node.id',
+                        type: 'select',
+                        options: {$smarts} 
+                    }
+                ],
+                i18n: {
+                    create: {
+                        button: "افزودن",
+                        title: "افزودن IP جدید",
+                        submit: "ثبت"
+                    },
+                    edit: {
+                        button: "ویرایش",
+                        title: "ویرایش آدرس IP",
+                        submit: "ثبت"
+                    },
+                    remove: {
+                        button: "حذف",
+                        title: "حذف IP",
+                        submit: "حذف",
+                        confirm: {
+                            _: "شما در حال حذف %d گزینه هستید. آیا تایید میفرمایید؟",
+                            1: "شما در حال حذف یک گزینه هستید. آیا تایید میفرمایید؟",
+                        }
+                    },
+                    error: {
+                        system: "خطا در سرور! لطفا با پشتیبانی مطرح فرمایید."
+                    },
+                }
+            });
 
-                
-                editor.bubble(this, ['ip', 'id'], {
-                    buttons: [{
-                            label: 'ثبت',
+            var table = $('#data_table')
+                .DataTable({
+                    ajax: {
+                        url: "/user/dns/ajax",
+                        type: "POST",
+                        contentType: "application/json",
+                        dataType: "json",
+                        error: function(xhr, error, thrown) {
+                            if (xhr.responseJSON.ret !== null && xhr.responseJSON.ret === 0) {
+                                if (xhr.responseJSON.msg !== "") {
+                                    alert("خطا " + xhr.status + " :" + xhr.responseJSON.msg);
+                                } else {
+                                    alert("خطا " + xhr.status + " :" + thrown);
+                                }
+                            } else {
+                                alert(error + xhr.status + " : " + thrown);
+                            }
+                        }
+                    },
+                    columnDefs: [
+                        { targets: "_all", defaultContent: "<b>بدون داده</b>" },
+                    ],
+                    dom: 'Brtip',
+                    // data: ,
+                    serverSide: false,
+                    processing: false,
+                    paging: false,
+                    scrollCollapse: true,
+                    columns: [
+                        { data: 'ip', className: 'dt-body-right', orderable: false },
+                        {
+                            data: 'node.name',
+                            className: 'dt-body-right',
+                            orderable: false,
+                            editField: "node.id",
+                        },
+                        {
+                            data: null,
+                            className: 'dt-body-right',
+                            defaultContent: '<a href="" class="editor_remove">حذف</a>'
+                        }
+                    ],
+                    select: false,
+                    buttons: [
+                        { extend: 'create', editor: editor },
+                        // { extend: 'edit', editor: editor },
+                        // {
+                        //     extend: 'selectedSingle',
+                        //     text: 'تغییر به IP فعلی',
+                        //     action: function(e, dt, node, config) {
+                        //         editor
+                        //             .edit(table.row({ selected: true }).index(), false)
+                        //             .set('ip', "127.0.0.1")
+                        //             .submit();
+                        //     }
+                        // },
+                        // { extend: 'remove', editor: editor },
+                    ],
+                });
+
+            // Activate an inline edit on click of a table cell
+            $('#data_table')
+                // .on('click', 'tbody td:first-child', function(e) {
+                //     // editor.inline(this, {
+                //     //     buttons: { label: 'به روزرسانی', fn: function() { this.submit(); } }
+                //     // });
+                //     editor.bubble(this, );
+                // })
+
+                .on('click', 'td:not(:last-child)', function() {
+                    // var value = $(this).text();
+                    // if ($value != "No data available in table") {
+
+
+                    editor.bubble(this, ['ip', 'node.id'], {
+                        // submit: 'IfChanged',
+                        buttons: [{
+                                label: 'ثبت',
+                                fn: function() {
+                                    editor.submit();
+                                }
+                            },
+                            {
+                                text: 'ثبت آدرس ‌IP فعلی',
+                                action: function() {
+                                    editor
+                                        .set('ip', "{$ip}")
+                                        .submit();
+                                }
+                            },
+                        ]
+                    });
+                    // }
+                })
+
+
+                // // Edit record
+                // .on('click', 'a.editor_edit', function(e) {
+                //     e.preventDefault();
+
+                //     editor
+                //         .title('Edit record')
+                //         .buttons({
+                //             label: 'Update',
+                //             fn: function() {
+                //                 editor.submit();
+                //             }
+                //         })
+                //         .edit($(this).closest('tr'));
+                // })
+
+                // // Edit record
+                // .on('click', 'a.editor_edit_to', function(e) {
+                //     // e.preventDefault();
+
+                //     editor
+                //         .edit($(this).closest('tr'))
+                //         .set('ip', "127.0.0.1")
+                //         .submit();
+                // })
+
+                // Delete a record
+                .on('click', 'a.editor_remove', function(e) {
+                    e.preventDefault();
+
+                    editor
+                        .title('حذف گزینه')
+                        .message('آیا از حذف این گزینه اطمینان دارید ؟')
+                        .buttons({
+                            label: 'حذف',
                             fn: function() {
                                 editor.submit();
                             }
-                        },
-                        {
-                            text: 'ثبت آدرس ‌IP فعلی',
-                            action: function() {
-                                editor
-                                    // .field('ip').val('127.0.01')
-                                    .set('ip', "127.0.0.1")
-                                    .submit();
-                            }
-                        }
-                    ]
+                        })
+                        .remove($(this).closest('tr'));
+                })
+
+                // .on('click', 'tbody td:not(:first-child)', function(e) {
+                //     var columnIndex = $(this).index();
+
+                //     // اگر عنصر فعلی درست در ستون دوم (index 1) باشد
+                //     if (columnIndex === 1) {
+                //         editor.inline(this, {
+                //             onBlur: 'allIfChanged'
+                //         });
+                //     }
+                // })
+
+                .on('error.dt', function(e, settings, techNote, message) {
+                    alert('خطا: ' + settings.jqXHR.responseJSON.error);
+                    console.log('خطا: ' + settings.jqXHR.responseJSON.error);
+                })
+                .DataTable();
+
+            var openVals;
+            editor
+                .on('open', function(e, type) {
+                    openVals = JSON.stringify(editor.get());
+                })
+                .on('preBlur', function(e) {
+                    if (openVals !== JSON.stringify(editor.get())) {
+                        return confirm('شما یک تغییر ذخیره نشده دارید! آیا از خروج اطمینان دارید؟');
+                    }
+                })
+                .on('submitSuccess', function() {
+                    table.ajax.reload();
+                    alert('تغییرات با موفقیت ذخیره شد.');
+                })
+                .on('submitError', function() {
+                    alert('متاسفانه خطایی رخ داده! لطفا مجددا تلاش کنید و یا به پشتیبانی گزارش دهید.');
+                    table.ajax.reload();
                 });
-                }
-            })
-
-            // Edit record
-            .on('click', 'a.editor_edit', function(e) {
-                e.preventDefault();
-
-                editor
-                    .title('Edit record')
-                    .buttons({
-                        label: 'Update',
-                        fn: function() {
-                            editor.submit();
-                        }
-                    })
-                    .edit($(this).closest('tr'));
-            })
-
-            // Edit record
-            .on('click', 'a.editor_edit_to', function(e) {
-                // e.preventDefault();
-
-                editor
-                    .edit($(this).closest('tr'))
-                    .set('ip', "127.0.0.1")
-                    .submit();
-            })
-
-            // Delete a record
-            .on('click', 'a.editor_remove', function(e) {
-                e.preventDefault();
-
-                editor
-                    .title('حذف گزینه')
-                    .message('آیا از حذف این گزینه اطمینان دارید ؟')
-                    .buttons({
-                        label: 'حذف',
-                        fn: function() {
-                            editor.submit();
-                        }
-                    })
-                    .remove($(this).closest('tr'));
-            })
-
-            .on('error.dt', function(e, settings, techNote, message) {
-                alert('خطا: ' + settings.jqXHR.responseJSON.error);
-                console.log('خطا: ' + settings.jqXHR.responseJSON.error);
-            })
-            .DataTable();
-
-        var openVals;
-        editor
-            .on('open', function(e, type) {
-                openVals = JSON.stringify(editor.get());
-            })
-            .on('preBlur', function(e) {
-                if (openVals !== JSON.stringify(editor.get())) {
-                    return confirm('شما یک تغییر ذخیره نشده دارید! آیا از خروج اطمینان دارید؟');
-                }
-            })
-            // .on('submitSuccess', function() {
-            //     table.ajax.reload();
-            //     alert('تغییرات با موفقیت ذخیره شد.');
-            // })
-            .on('submitError', function() {
-                alert('متاسفانه خطایی رخ داده! لطفا مجددا تلاش کنید و یا به پشتیبانی گزارش دهید.');
-                table.ajax.reload();
-            });
-    </script>
+        </script>
+    {{/if}}
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
-    {if $public_setting['captcha_provider'] === 'turnstile'}
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    {/if}
-    {if $public_setting['captcha_provider'] === 'geetest'}
-        <script src="https://static.geetest.com/v4/gt4.js"></script>
-        <script>
-            let geetest_result = '';
-            initGeetest4({
-                captchaId: '{$captcha['geetest_id']}',
-                product: 'float',
-                language: "en",
-                riskType:  'slide'
-            }, function(geetest) {
-                geetest.appendTo("#geetest");
-                geetest.onSuccess(function () {
-                    geetest_result = geetest.getValidate();
+        {if $public_setting['captcha_provider'] === 'turnstile'}
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        {/if}
+        {if $public_setting['captcha_provider'] === 'geetest'}
+            <script src="https://static.geetest.com/v4/gt4.js"></script>
+            <script>
+                let geetest_result = '';
+                initGeetest4({
+                    captchaId: '{$captcha['geetest_id']}',
+                    product: 'float',
+                    language: "en",
+                    riskType: 'slide'
+                }, function(geetest) {
+                    geetest.appendTo("#geetest");
+                    geetest.onSuccess(function() {
+                        geetest_result = geetest.getValidate();
+                    });
                 });
-            });
-        </script>
+            </script>
+        {/if}
     {/if}
-    {/if}
-    {include file='user/footer.tpl'}
+{include file='user/footer.tpl'}

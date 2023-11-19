@@ -23,7 +23,7 @@ use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use voku\helper\AntiXSS;
 
-final class PerfectMoney extends AbstractPayment
+final class PerfectMoney extends Base
 {
     protected array $perfectmoney = [];
 

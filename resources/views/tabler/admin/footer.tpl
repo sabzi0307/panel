@@ -89,12 +89,11 @@
 
 <footer class="footer footer-transparent d-print-none">
     <div class="container-xl">
-        <div class="row text-center align-items-center flex-row-reverse">
+        <!--<div class="row text-center align-items-center flex-row-reverse">
             <div class="col-lg-auto ms-lg-auto">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
                         Powered by <a href="/staff" class="link-secondary">SSPanel-UIM</a>
-                        <!-- حذف کارکنان یک عمل بی احترامی برای هر توسعه دهنده است -->
                     </li>
                 </ul>
             </div>
@@ -105,7 +104,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </div>
 </footer>
 </div>
@@ -135,7 +134,7 @@
     });
 </script>
 <script src="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
-<script>console.table([['پرس و جو پایگاه داده', 'زمان اجرا'], ['{count($queryLog)} 次', '{$optTime} ms']])</script>
+<script>console.table([['پرس و جو پایگاه داده', 'زمان اجرا'], ['{count($queryLog)}', '{$optTime} ms']])</script>
 
 </body>
 

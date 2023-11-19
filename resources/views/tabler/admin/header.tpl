@@ -75,7 +75,7 @@
                                         <i class="ti ti-home icon"></i>
                                     </span>
                                 <span class="nav-link-title">
-                                        نمای کلی
+                                        نمایه
                                     </span>
                             </a>
                         </li>
@@ -96,7 +96,7 @@
                                             <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                                data-bs-auto-close="outside" role="button" aria-expanded="false">
                                                 <i class="ti ti-settings"></i>&nbsp;
-                                                راه اندازی
+                                                نصب
                                             </a>
                                             <div class="dropdown-menu">
                                                 <a href="/admin/setting/billing" class="dropdown-item">
@@ -125,6 +125,9 @@
                                                 </a>
                                                 <a href="/admin/setting/cron" class="dropdown-item">
                                                     وظایف زمان بندی شده
+                                                </a>
+                                                <a href="/admin/setting/smart" class="dropdown-item">
+                                                    اسمارت دی ان اس
                                                 </a>
                                                 <a href="/admin/setting/feature" class="dropdown-item">
                                                     سایر تنظیمات
@@ -168,7 +171,7 @@
                                 </a>
                                 <a class="dropdown-item" href="/admin/docs">
                                     <i class="ti ti-notes"></i>&nbsp;
-                                    مدارک
+                                    دانشنامه
                                 </a>
                             </div>
                         </li>
@@ -265,7 +268,7 @@
                                         </a>
                                         <a class="dropdown-item" href="/admin/coupon">
                                             <i class="ti ti-ticket"></i>&nbsp;
-                                            کد تبلیغاتی
+                                            کد تخفیف
                                         </a>
                                         <a class="dropdown-item" href="/admin/giftcard">
                                             <i class="ti ti-gift"></i>&nbsp;
@@ -281,7 +284,7 @@
                                         <i class="ti ti-arrow-back-up icon"></i>
                                     </span>
                                 <span class="nav-link-title">
-                                        بازگشت به مرکز کاربر
+                                        بازگشت به پنل کاربران
                                     </span>
                             </a>
                         </li>

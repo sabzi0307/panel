@@ -21,7 +21,7 @@ use Slim\Http\ServerRequest;
 
 use voku\helper\AntiXSS;
 
-final class NowPayments extends AbstractPayment
+final class NowPayments extends Base
 {
     protected array $nowpayments = [];
     protected array $headers = [];
