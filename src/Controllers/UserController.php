@@ -33,25 +33,9 @@ final class UserController extends BaseController
     private static array $details = [
         'field' => [
             'ip' => 'آدرس IP',
-            // 'details' => 'مشخصات IP',
-            // 'updated_at' => 'زمان به روز رسانی',
             'node' => 'سرور',
             'op' => 'عملیات',
         ],
-    ];
-
-    private static array $update_field = [
-        'name',
-        'server',
-        'traffic_rate',
-        'info',
-        'node_group',
-        'node_speedlimit',
-        'sort',
-        'node_ip',
-        'node_class',
-        'node_bandwidth_limit',
-        'bandwidthlimit_resetday',
     ];
 
     /**
@@ -87,7 +71,7 @@ final class UserController extends BaseController
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
                 ->assign('osFamily', $osFamily)
                 ->assign('details', self::$details)
-                ->assign('update_field', self::$update_field)
+                ->assign('smarts', Subscribe::getContent($this->user, "smartdns"))
                 ->assign('ip', $_SERVER['REMOTE_ADDR'])
                 ->fetch('user/index.tpl')
         );
@@ -206,7 +190,7 @@ final class UserController extends BaseController
 
         $paybacks_sum = Payback::where('ref_by', $this->user->id)->sum('ref_get');
 
-        if (! $paybacks_sum) {
+        if (!$paybacks_sum) {
             $paybacks_sum = 0;
         }
 
@@ -223,21 +207,21 @@ final class UserController extends BaseController
 
     public function checkin(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (! $_ENV['enable_checkin']) {
+        if (!$_ENV['enable_checkin']) {
             return ResponseHelper::error($response, 'هنوز امکان ورود به سیستم وجود ندارد');
         }
 
         if (Config::obtain('enable_checkin_captcha')) {
             $ret = Captcha::verify($request->getParams());
 
-            if (! $ret) {
+            if (!$ret) {
                 return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید');
             }
         }
 
         $checkin = $this->user->checkin();
 
-        if (! $checkin['ok']) {
+        if (!$checkin['ok']) {
             return ResponseHelper::error($response, (string) $checkin['msg']);
         }
 
@@ -252,7 +236,7 @@ final class UserController extends BaseController
         $user = $this->user;
         $user->is_dark_mode = $user->is_dark_mode === 1 ? 0 : 1;
 
-        if (! $user->save()) {
+        if (!$user->save()) {
             return ResponseHelper::error($response, 'سوئیچ ناموفق بود');
         }
 

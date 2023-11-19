@@ -82,7 +82,7 @@ final class Tools
             }
 
             $res = "";
-            if ($asn !== null) {
+            if ($asn !== null && $asn !== 'اپراتور ناشناخته') {
                 $provider = Tools::getServerAddr($asn->autonomousSystemNumber);
                 if ($provider != "") {
                     $res = $provider . ', ';

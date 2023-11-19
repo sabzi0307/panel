@@ -191,7 +191,7 @@
                                     &nbsp;تنظیمات
                                 </a>
                             </li>
-                            {if $public_setting['smart_dns_plain'] }
+                            {if $public_setting['smart_dns'] }
                                 <li class="nav-item">
                                     <a href="#dns" {if $osFamily eq "TV"} class="nav-link active" 
                                     {else} class="nav-link"
@@ -204,7 +204,6 @@
                         </ul>
                         <div class="card-body">
                             <div class="tab-content">
-
                                 <div {if $osFamily eq "Unknown"} class="tab-pane active show" 
                                 {else} class="tab-pane"
                                     {{/if}} id="sub">
@@ -249,7 +248,7 @@
                                         {/if}
                                     </div>
                                 </div>
-                                <div class="tab-pane show" id="client-sub">
+                                <div class="tab-pane" id="client-sub">
                                     <div style="direction: ltr;">
                                         {if $public_setting['enable_ss_sub']}
                                             <p>
@@ -391,8 +390,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/Clash.Verge.exe" {else}
-                                                            href="/clients/Clash.Verge.exe" {/if}
-                                                            class="btn btn-azure">
+                                                            href="/clients/Clash.Verge.exe" {/if} class="btn btn-azure">
                                                             دانلود (x86_64)
                                                         </a>
                                                         <a {if $config['enable_r2_client_download']}
@@ -422,132 +420,6 @@
                                                         افزودن خودکار به Clash
                                                     </a>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div {if $osFamily eq "Mac"} class="tab-pane active show" 
-                                {else} class="tab-pane"
-                                    {{/if}} id="macos">
-                                    <div class="accordion-item">
-                                        <div class="accordion" id="mac-accordion">
-                                            <h2 class="accordion-header" id="heading-2">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#mac-2"
-                                                    aria-expanded="false">
-                                                    SingBox (پیشنهادی)
-                                                </button>
-                                            </h2>
-                                            <div id="mac-2" class="accordion-collapse collapse"
-                                                data-bs-parent="#mac-accordion">
-                                                <div class="accordion-body pt-0">
-                                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
-                                                            سازگار با SingBox:</strong></a><br>
-                                                    <p>
-                                                        <code class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
-                                                        <a style="font-size: 90%;" class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">
-                                                            کپی
-                                                            <i class="ti ti-copy"></i>
-                                                        </a>
-                                                    </p>
-                                                    <a>ابتدا نرم افزار SingBox را از
-                                                        لینک های
-                                                        زیر
-                                                        دانلود
-                                                        کنید.</a>
-                                                    <br>
-                                                    <div style="margin-top: 5px;"
-                                                        class="btn-list justify-content-start">
-                                                        <a {if $config['enable_r2_client_download']}
-                                                            href="/user/clients/SFM.zip" {else} href="/clients/SFM.zip"
-                                                            {/if} class="btn btn-azure">
-                                                            دانلود SFM
-                                                        </a>
-                                                    </div>
-                                                    <br>
-                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
-                                                        کنید و با
-                                                        مشاهده
-                                                        پنجره باز
-                                                        شده در
-                                                        مرورگر
-                                                        بر
-                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
-                                                        نرم
-                                                        افزار SingBox
-                                                        افزوده شود.</a>
-                                                    <br>
-                                                    <a style="margin-top: 5px;"
-                                                        href="sing-box://import-remote-profile?url={$UniversalSub}/singbox#{$config['appName']}"
-                                                        class="btn btn-primary">
-                                                        افزودن خودکار به SingBox
-                                                    </a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <div class="accordion" id="mac-accordion">
-                                            <h2 class="accordion-header" id="heading-1">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#mac-1"
-                                                    aria-expanded="false">
-                                                    CLASH
-                                                </button>
-                                            </h2>
-                                            <div id="mac-1" class="accordion-collapse collapse">
-                                                <br><br>
-                                                <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
-                                                        سازگار با کلش متا:</strong></a><br>
-                                                <p>
-                                                    <code class="copy btn-icon"
-                                                        data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$UniversalSub}/clash">
-                                                        کپی
-                                                        <i class="ti ti-copy"></i>
-                                                    </a>
-                                                </p>
-                                                <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
-                                                    لینک های
-                                                    زیر
-                                                    دانلود
-                                                    کنید.</a>
-                                                <br>
-                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                                    <a {if $config['enable_r2_client_download']}
-                                                        href="/user/clients/Clash.Verge_x64.dmg" {else}
-                                                        href="/clients/Clash.Verge_x64.dmg" {/if} class="btn btn-azure">
-                                                        دانلود (x86_64)
-                                                    </a>
-                                                    <a {if $config['enable_r2_client_download']}
-                                                        href="/user/clients/Clash.Verge_aarch64.dmg" {else}
-                                                        href="/clients/Clash.Verge_aarch64.dmg" {/if}
-                                                        class="btn btn-azure">
-                                                        دانلود (aarch64)
-                                                    </a>
-                                                </div>
-                                                <br>
-                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
-                                                    با
-                                                    مشاهده
-                                                    پنجره باز
-                                                    شده در
-                                                    مرورگر
-                                                    بر
-                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
-                                                    نرم
-                                                    افزار Clash
-                                                    افزوده شود.</a>
-                                                <br>
-                                                <a style="margin-top: 5px;"
-                                                    href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                                    class="btn btn-primary">
-                                                    افزودن خودکار به Clash
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -917,7 +789,133 @@
                                         </table>
                                     </div>
                                 </div>
-                                {if $public_setting['smart_dns_plain'] }
+                                <div {if $osFamily eq "Mac"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="macos">
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="mac-accordion">
+                                            <h2 class="accordion-header" id="heading-2">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#mac-2"
+                                                    aria-expanded="false">
+                                                    SingBox (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="mac-2" class="accordion-collapse collapse"
+                                                data-bs-parent="#mac-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                            سازگار با SingBox:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار SingBox را از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/SFM.zip" {else} href="/clients/SFM.zip"
+                                                            {/if} class="btn btn-azure">
+                                                            دانلود SFM
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار SingBox
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="sing-box://import-remote-profile?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به SingBox
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="mac-accordion">
+                                            <h2 class="accordion-header" id="heading-1">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#mac-1"
+                                                    aria-expanded="false">
+                                                    CLASH
+                                                </button>
+                                            </h2>
+                                            <div id="mac-1" class="accordion-collapse collapse">
+                                                <br><br>
+                                                <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                        سازگار با کلش متا:</strong></a><br>
+                                                <p>
+                                                    <code class="copy btn-icon"
+                                                        data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                                    <a style="font-size: 90%;" class="copy btn-icon"
+                                                        data-clipboard-text="{$UniversalSub}/clash">
+                                                        کپی
+                                                        <i class="ti ti-copy"></i>
+                                                    </a>
+                                                </p>
+                                                <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                    لینک های
+                                                    زیر
+                                                    دانلود
+                                                    کنید.</a>
+                                                <br>
+                                                <div style="margin-top: 5px;" class="btn-list justify-content-start">
+                                                    <a {if $config['enable_r2_client_download']}
+                                                        href="/user/clients/Clash.Verge_x64.dmg" {else}
+                                                        href="/clients/Clash.Verge_x64.dmg" {/if} class="btn btn-azure">
+                                                        دانلود (x86_64)
+                                                    </a>
+                                                    <a {if $config['enable_r2_client_download']}
+                                                        href="/user/clients/Clash.Verge_aarch64.dmg" {else}
+                                                        href="/clients/Clash.Verge_aarch64.dmg" {/if}
+                                                        class="btn btn-azure">
+                                                        دانلود (aarch64)
+                                                    </a>
+                                                </div>
+                                                <br>
+                                                <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
+                                                    با
+                                                    مشاهده
+                                                    پنجره باز
+                                                    شده در
+                                                    مرورگر
+                                                    بر
+                                                    روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                    نرم
+                                                    افزار Clash
+                                                    افزوده شود.</a>
+                                                <br>
+                                                <a style="margin-top: 5px;"
+                                                    href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                    class="btn btn-primary">
+                                                    افزودن خودکار به Clash
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {if $public_setting['smart_dns'] }
                                     <div {if $osFamily eq "TV"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
                                         id="dns">
                                         <div class="card">
@@ -929,18 +927,18 @@
                                                         {if $public_setting['smart_dns_plain']}
                                                             <p>
                                                                 Plain DNS-1: <code class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_url_1']}">{$public_setting['smart_dns_url_1']}</code>
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_1']}">{$public_setting['smart_dns_plain_url_1']}</code>
                                                                 <a style="font-size: 90%;" class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_url_1']}">
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_1']}">
                                                                     <i class="ti ti-copy"></i>
                                                                     کپی
                                                                 </a>
                                                             </p>
                                                             <p>
                                                                 Plain DNS-2: <code class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_url_2']}">{$public_setting['smart_dns_url_2']}</code>
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_2']}">{$public_setting['smart_dns_plain_url_2']}</code>
                                                                 <a style="font-size: 90%;" class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_url_2']}">
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_2']}">
                                                                     <i class="ti ti-copy"></i>
                                                                     کپی
                                                                 </a>
@@ -1143,9 +1141,16 @@
         </div>
     </div>
 
+    <script>
+        var clipboard = new ClipboardJS('.copy');
+        clipboard.on('success', function(e) {
+            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
+            $('#success-noreload-dialog').modal('show');
+        });
+    </script>
     {if $public_setting['smart_dns_plain'] }
         <script>
-            var jqxhrc = jQuery.ajax("http://check.beshcan.ir/dnscheck?" + Math.random())
+            var jqxhrc = jQuery.ajax({$public_setting['smart_dns_check_url']})
                 .done(function() {
                     var jqxhrf = jQuery.ajax("https://block.panel.com?" + Math.random())
                         .done(function() {
@@ -1161,7 +1166,7 @@
                         .always(function() {});
                 })
                 .fail(function() {
-                    var jqxhrf = jQuery.ajax("http://check2.beshcan.ir/dnscheck?" + Math.random())
+                    var jqxhrf = jQuery.ajax({$public_setting['smart_dns_fail_url']})
                         .done(function() {
                             jQuery('#message').html(
                                 '<i class="ti ti-info-circle icon"></i>هشدار! شما تنظیمات DNS را انجام داده اید اما IP شما احراز هویت نشده است . '
@@ -1175,14 +1180,6 @@
                         .always(function() {});
                 })
                 .always(function() {});
-
-
-            var clipboard = new ClipboardJS('.copy');
-            clipboard.on('success', function(e) {
-                $('#success-noreload-message').text('در کلیپ بورد کپی شد');
-                $('#success-noreload-dialog').modal('show');
-            });
-
 
             $.fn.dataTable.ext.errMode = 'none';
             var editor = new $.fn.dataTable.Editor({
@@ -1297,22 +1294,9 @@
                     ],
                 });
 
-            // Activate an inline edit on click of a table cell
             $('#data_table')
-                // .on('click', 'tbody td:first-child', function(e) {
-                //     // editor.inline(this, {
-                //     //     buttons: { label: 'به روزرسانی', fn: function() { this.submit(); } }
-                //     // });
-                //     editor.bubble(this, );
-                // })
-
                 .on('click', 'td:not(:last-child)', function() {
-                    // var value = $(this).text();
-                    // if ($value != "No data available in table") {
-
-
                     editor.bubble(this, ['ip', 'node.id'], {
-                        // submit: 'IfChanged',
                         buttons: [{
                                 label: 'ثبت',
                                 fn: function() {
@@ -1329,35 +1313,7 @@
                             },
                         ]
                     });
-                    // }
                 })
-
-
-                // // Edit record
-                // .on('click', 'a.editor_edit', function(e) {
-                //     e.preventDefault();
-
-                //     editor
-                //         .title('Edit record')
-                //         .buttons({
-                //             label: 'Update',
-                //             fn: function() {
-                //                 editor.submit();
-                //             }
-                //         })
-                //         .edit($(this).closest('tr'));
-                // })
-
-                // // Edit record
-                // .on('click', 'a.editor_edit_to', function(e) {
-                //     // e.preventDefault();
-
-                //     editor
-                //         .edit($(this).closest('tr'))
-                //         .set('ip', "127.0.0.1")
-                //         .submit();
-                // })
-
                 // Delete a record
                 .on('click', 'a.editor_remove', function(e) {
                     e.preventDefault();
@@ -1373,18 +1329,6 @@
                         })
                         .remove($(this).closest('tr'));
                 })
-
-                // .on('click', 'tbody td:not(:first-child)', function(e) {
-                //     var columnIndex = $(this).index();
-
-                //     // اگر عنصر فعلی درست در ستون دوم (index 1) باشد
-                //     if (columnIndex === 1) {
-                //         editor.inline(this, {
-                //             onBlur: 'allIfChanged'
-                //         });
-                //     }
-                // })
-
                 .on('error.dt', function(e, settings, techNote, message) {
                     alert('خطا: ' + settings.jqXHR.responseJSON.error);
                     console.log('خطا: ' + settings.jqXHR.responseJSON.error);
@@ -1434,4 +1378,5 @@
             </script>
         {/if}
     {/if}
+
 {include file='user/footer.tpl'}
