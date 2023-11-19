@@ -1,6 +1,15 @@
 version: '2.1'
 
 services:
+  cache:
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${redis_password}
+    volumes:
+      - ./cache:/data
+
   sspanel:
     image: ttracy/panel:latest
     container_name: sspanel
@@ -15,15 +24,6 @@ services:
     depends_on:
       ss_db:
         condition: service_healthy
-  cache:
-    image: redis:7.2-alpine
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${redis_password}
-    volumes:
-      - ./cache:/data
-
 
   ss_db:
     image: mariadb:11.1

@@ -40,14 +40,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test:
-        [
-          "CMD",
-          "healthcheck.sh",
-          "--su=mysql",
-          "--connect",
-          "--innodb_initialized"
-        ]
+      test: [ "CMD", "healthcheck.sh", "--su=mysql", "--connect", "--innodb_initialized" ]
       timeout: 20s
       retries: 10
 
@@ -62,18 +55,6 @@ services:
       - "8090:80"
     links:
       - ss_db:db
-
-  snidust:
-    container_name: snidust
-    environment:
-      - 'ALLOWED_CLIENTS=127.0.0.1'
-      - EXTERNAL_IP=10.111.123.8
-      - SPOOF_ALL_DOMAINS=false # Set to true (case sensetive!) if you want spoof ALL domains.
-    ports:
-      - '443:443'
-      - '80:80'
-      - '53:5300/udp'
-    image: 'ghcr.io/seji64/snidust:main'
 
   # xrayr:
   #   image: ghcr.io/xrayr-project/xrayr:latest

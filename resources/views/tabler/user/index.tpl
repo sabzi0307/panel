@@ -191,7 +191,7 @@
                                     &nbsp;تنظیمات
                                 </a>
                             </li>
-                            {if $public_setting['smart_dns'] }
+                            {{if $public_setting['smart_dns']}}
                                 <li class="nav-item">
                                     <a href="#dns" {if $osFamily eq "TV"} class="nav-link active" 
                                     {else} class="nav-link"
@@ -915,7 +915,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {if $public_setting['smart_dns'] }
+                                {{if $public_setting['smart_dns']}}
                                     <div {if $osFamily eq "TV"} class="tab-pane active show" {else} class="tab-pane" {{/if}}
                                         id="dns">
                                         <div class="card">
@@ -1146,7 +1146,7 @@
             $('#success-noreload-dialog').modal('show');
         });
     </script>
-    {if $public_setting['smart_dns_plain'] }
+    {{if $public_setting['smart_dns_plain'] }}
         <script>
             var jqxhrc = jQuery.ajax("{$public_setting['smart_dns_check_url']}")
                 .done(function() {
