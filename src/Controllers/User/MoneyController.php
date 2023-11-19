@@ -19,9 +19,6 @@ use Slim\Http\ServerRequest;
 use voku\helper\AntiXSS;
 use function time;
 
-/**
- *  User MoneyController
- */
 final class MoneyController extends BaseController
 {
     /**

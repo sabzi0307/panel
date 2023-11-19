@@ -633,12 +633,8 @@ final class Cron
         $nodes = Node::where('type', 1)->get();
 
         foreach ($nodes as $node) {
-            $server = $node->server;
-
-            if (! Tools::isIPv4($server) && ! Tools::isIPv6($server)) {
-                $node->changeNodeIp($server);
-                $node->save();
-            }
+            $node->updateNodeIp();
+            $node->save();
         }
 
         echo Tools::toDateTime(time()) . ' به روز رسانی IP گره تکمیل شد' . PHP_EOL;

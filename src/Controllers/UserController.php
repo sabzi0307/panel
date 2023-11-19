@@ -28,9 +28,6 @@ use function str_replace;
 use function strtotime;
 use function time;
 
-/**
- *  HomeController
- */
 final class UserController extends BaseController
 {
     private static array $details = [
@@ -87,7 +84,6 @@ final class UserController extends BaseController
                 ->assign('class_expire_days', $class_expire_days)
                 ->assign('class_expire', $class_expire)
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
-                ->assign('TraditionalSub', SubController::getTraditionalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
                 ->assign('osFamily', $osFamily)
                 ->assign('details', self::$details)

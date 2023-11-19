@@ -137,14 +137,12 @@
                                     &nbsp;پروفایل ها
                                 </a>
                             </li>
-                            {if $public_setting['enable_traditional_sub']}
-                                <li class="nav-item">
-                                    <a href="#traditional-sub" class="nav-link" data-bs-toggle="tab">
-                                        <i class="ti ti-rss icon"></i>
-                                        &nbsp;پراکسی ها
-                                    </a>
-                                </li>
-                            {/if}
+                            <li class="nav-item">
+                                <a href="#client-sub" class="nav-link" data-bs-toggle="tab">
+                                    <i class="ti ti-rss icon"></i>
+                                    &nbsp;پراکسی ها
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="#windows" {if $osFamily eq "Windows"} class="nav-link active" 
                                 {else}
@@ -207,7 +205,9 @@
                         <div class="card-body">
                             <div class="tab-content">
 
-                                <div {if $osFamily eq "Unknown"} class="tab-pane active show" {else} class="tab-pane" {{/if}} id="sub">
+                                <div {if $osFamily eq "Unknown"} class="tab-pane active show" 
+                                {else} class="tab-pane"
+                                    {{/if}} id="sub">
                                     <div style="direction: ltr;">
                                         <p>
                                             JSON: <code class="copy btn-icon"
@@ -249,54 +249,52 @@
                                         {/if}
                                     </div>
                                 </div>
-                                {if $public_setting['enable_traditional_sub']}
-                                    <div class="tab-pane show" id="traditional-sub">
-                                        <div style="direction: ltr;">
-                                            {if $public_setting['enable_ss_sub']}
-                                                <p>
-                                                    Shadowsocks: <code class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?ss=1">{$TraditionalSub}?ss=1</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?ss=1">
-                                                        <i class="ti ti-copy"></i>
-                                                        کپی
-                                                    </a>
-                                                </p>
-                                                <p>
-                                                    Shadowsocks SIP002: <code class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?sip002=1">{$TraditionalSub}?sip002=1</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?sip002=1">
-                                                        <i class="ti ti-copy"></i>
-                                                        کپی
-                                                    </a>
-                                                </p>
-                                            {/if}
-                                            {if $public_setting['enable_v2_sub']}
-                                                <p>
-                                                    V2Ray: <code class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?v2ray=1">{$TraditionalSub}?v2ray=1</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?v2ray=1">
-                                                        <i class="ti ti-copy"></i>
-                                                        کپی
-                                                    </a>
-                                                </p>
-                                            {/if}
-                                            {if $public_setting['enable_trojan_sub']}
-                                                <p>
-                                                    Trojan: <code class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?trojan=1">{$TraditionalSub}?trojan=1</code>
-                                                    <a style="font-size: 90%;" class="copy btn-icon"
-                                                        data-clipboard-text="{$TraditionalSub}?trojan=1">
-                                                        <i class="ti ti-copy"></i>
-                                                        کپی
-                                                    </a>
-                                                </p>
-                                            {/if}
-                                        </div>
+                                <div class="tab-pane show" id="client-sub">
+                                    <div style="direction: ltr;">
+                                        {if $public_setting['enable_ss_sub']}
+                                            <p>
+                                                Shadowsocks: <code class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/ss">{$UniversalSub}/ss</code>
+                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/ss">
+                                                    <i class="ti ti-copy"></i>
+                                                    کپی
+                                                </a>
+                                            </p>
+                                            <p>
+                                                Shadowsocks SIP002: <code class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/sip002">{$UniversalSub}/sip002</code>
+                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/sip002">
+                                                    <i class="ti ti-copy"></i>
+                                                    کپی
+                                                </a>
+                                            </p>
+                                        {/if}
+                                        {if $public_setting['enable_v2_sub']}
+                                            <p>
+                                                V2Ray: <code class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/v2ray">{$UniversalSub}/v2ray</code>
+                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/v2ray">
+                                                    <i class="ti ti-copy"></i>
+                                                    کپی
+                                                </a>
+                                            </p>
+                                        {/if}
+                                        {if $public_setting['enable_trojan_sub']}
+                                            <p>
+                                                Trojan: <code class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/trojan">{$UniversalSub}/trojan</code>
+                                                <a style="font-size: 90%;" class="copy btn-icon"
+                                                    data-clipboard-text="{$UniversalSub}/trojan">
+                                                    <i class="ti ti-copy"></i>
+                                                    کپی
+                                                </a>
+                                            </p>
+                                        {/if}
                                     </div>
-                                {/if}
+                                </div>
                                 <div {if $osFamily eq "Windows"} class="tab-pane active show" 
                                 {else} class="tab-pane"
                                     {{/if}} id="windows">
@@ -392,8 +390,8 @@
                                                     <div style="margin-top: 5px;"
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
-                                                            href="/user/clients/Clash.Verge_x64.dmg" {else}
-                                                            href="/clients/Clash.Verge_x64.dmg" {/if}
+                                                            href="/user/clients/Clash.Verge.exe" {else}
+                                                            href="/clients/Clash.Verge.exe" {/if}
                                                             class="btn btn-azure">
                                                             دانلود (x86_64)
                                                         </a>
@@ -1028,14 +1026,14 @@
                                     <div class="progress-bar bg-primary" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-primary" role="progressbar"
-                                         style="width: {$user->LastusedTrafficPercent()}%">
+                                        style="width: {$user->LastusedTrafficPercent()}%">
                                     </div>
                                 {/if}
                                 {if $user->TodayusedTrafficPercent() < '1'}
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 1%"></div>
                                 {else}
                                     <div class="progress-bar bg-success" role="progressbar"
-                                         style="width: {$user->TodayusedTrafficPercent()}%"></div>
+                                        style="width: {$user->TodayusedTrafficPercent()}%"></div>
                                 {/if}
                             </div>
                             <div class="row">
@@ -1056,7 +1054,7 @@
                                 {if $user->class === 0}
                                     بسته شما منقضی شده است . لطفا جهت خرید بسته به
                                     <a href="/user/product">فروشگاه</a>
-                                   
+
                                     مراجعه فرمایید.
                                 {else}
                                     سطح حساب شما {$user->class} و تا {$class_expire_days} روز دیگر معتبر است.
@@ -1128,14 +1126,11 @@
                                                 <div id="geetest"></div>
                                             {/if}
                                         {/if}
-                                        <button id="check-in" class="btn btn-primary ms-auto"
-                                                hx-post="/user/checkin" hx-swap="none"
-                                                {if $public_setting['captcha_provider'] === 'turnstile'}
-                                                    hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
-                                                {/if}
-                                                {if $public_setting['captcha_provider'] === 'geetest'}
-                                                    hx-vals='js:{ geetest: geetest_result }'
-                                                {/if}>
+                                        <button id="check-in" class="btn btn-primary ms-auto" hx-post="/user/checkin"
+                                            hx-swap="none" {if $public_setting['captcha_provider'] === 'turnstile'}
+                                                hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
+                                                {/if} {if $public_setting['captcha_provider'] === 'geetest'}
+                                            hx-vals='js:{ geetest: geetest_result }' {/if}>
                                             بررسی
                                         </button>
                                     {/if}

@@ -30,9 +30,7 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `detect_ban_log` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `user_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'username',
                 `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
-                `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'user email',
                 `detect_number` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'The number of ban this time',
                 `ban_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'The duration of this ban',
                 `start_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Statistics start time',
@@ -138,8 +136,6 @@ return new class() implements MigrationInterface {
                 `type` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT 'node display',
                 `server` varchar(255) NOT NULL DEFAULT '' COMMENT 'node address',
                 `custom_config` longtext NOT NULL DEFAULT '{}' COMMENT 'custom configuration' CHECK (json_valid(`custom_config`)),
-                `info` varchar(255) NOT NULL DEFAULT '' COMMENT 'node information',
-                `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'node status',
                 `sort` tinyint(2) unsigned NOT NULL DEFAULT 14 COMMENT 'node type',
                 `traffic_rate` float unsigned NOT NULL DEFAULT 1 COMMENT 'Flow rate',
                 `is_dynamic_rate` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable dynamic traffic ratio',
@@ -351,8 +347,6 @@ return new class() implements MigrationInterface {
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'Invitation code',
                 `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
-                `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'creation time',
-                `updated_at` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'update time',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `code` (`code`),
                 UNIQUE KEY `user_id` (`user_id`)

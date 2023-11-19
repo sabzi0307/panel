@@ -40,16 +40,7 @@
                         <div class="tab-pane active show" id="sub">
                             <div class="card-body">
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">فعال کردن سیستم اشتراک قدیمی</label>
-                                    <div class="col">
-                                        <select id="enable_traditional_sub" class="col form-select" value="{$settings['enable_traditional_sub']}">
-                                            <option value="0" {if ! $settings['enable_traditional_sub']}selected{/if}>غیرفعال</option>
-                                            <option value="1" {if $settings['enable_traditional_sub']}selected{/if}>فعال</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">اشتراک‌های Shadowsocks را فعال کنید (فقط روی صفحه نمایش جلویی و اشتراک‌های قدیمی/sip002/sip008 تأثیر می‌گذارد)</label>
+                                    <label class="form-label col-3 col-form-label">اشتراک‌</label>
                                     <div class="col">
                                         <select id="enable_ss_sub" class="col form-select" value="{$settings['enable_ss_sub']}">
                                             <option value="0" {if ! $settings['enable_ss_sub']}selected{/if}>غیرفعال</option>

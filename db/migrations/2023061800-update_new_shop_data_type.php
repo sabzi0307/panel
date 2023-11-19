@@ -14,9 +14,7 @@ return new class() implements MigrationInterface {
         ALTER TABLE announcement MODIFY COLUMN `content` text NOT NULL DEFAULT '' COMMENT 'announcement content';
         ALTER TABLE config MODIFY COLUMN `value` varchar(2048) DEFAULT NULL COMMENT 'value';
         ALTER TABLE detect_ban_log MODIFY COLUMN `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
-        ALTER TABLE detect_ban_log MODIFY COLUMN `user_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'username';
         ALTER TABLE detect_ban_log MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';
-        ALTER TABLE detect_ban_log MODIFY COLUMN `email` varchar(255) NOT NULL DEFAULT '' COMMENT 'User Email';
         ALTER TABLE detect_ban_log MODIFY COLUMN `detect_number` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Number of violations this time';
         ALTER TABLE detect_ban_log MODIFY COLUMN `ban_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'The duration of this ban';
         ALTER TABLE detect_ban_log MODIFY COLUMN `start_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Statistics start time';
@@ -73,8 +71,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE node MODIFY COLUMN `type` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT 'node display';
         ALTER TABLE node MODIFY COLUMN `server` varchar(255) NOT NULL DEFAULT '' COMMENT 'node address';
         ALTER TABLE node MODIFY COLUMN `custom_config` longtext NOT NULL DEFAULT '{}' COMMENT 'Custom Configuration' CHECK (json_valid(`custom_config`));
-        ALTER TABLE node MODIFY COLUMN `info` varchar(255) NOT NULL DEFAULT '' COMMENT 'node information';
-        ALTER TABLE node MODIFY COLUMN `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'node status';
         ALTER TABLE node MODIFY COLUMN `sort` tinyint(2) unsigned NOT NULL DEFAULT 14 COMMENT 'node type';
         ALTER TABLE node MODIFY COLUMN `traffic_rate` float unsigned NOT NULL DEFAULT 1 COMMENT 'traffic multiplier';
         ALTER TABLE node MODIFY COLUMN `node_class` smallint(5) unsigned NOT NULL DEFAULT 0 COMMENT 'node class';
@@ -169,8 +165,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user_invite_code MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
         ALTER TABLE user_invite_code MODIFY COLUMN `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'invite code';
         ALTER TABLE user_invite_code MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';
-        ALTER TABLE user_invite_code MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'created_at';
-        ALTER TABLE user_invite_code MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Updated time';
         ALTER TABLE user_money_log MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
         SET FOREIGN_KEY_CHECKS = 1;");
 

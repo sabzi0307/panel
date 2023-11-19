@@ -38,16 +38,16 @@ final class UserController extends BaseController
         if ($node === null) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Node not found.',
+                'msg' => 'Node not found.',
             ]);
         }
 
         $node->update(['node_heartbeat' => time()]);
 
-        if (($node->node_bandwidth_limit !== 0) && $node->node_bandwidth_limit < $node->node_bandwidth) {
+        if ($node->node_bandwidth_limit !== 0 && $node->node_bandwidth_limit <= $node->node_bandwidth) {
             return $response->withJson([
-                'ret' => 1,
-                'data' => [],
+                'ret' => 0,
+                'msg' => 'Node out of bandwidth.',
             ]);
         }
 
@@ -168,7 +168,7 @@ final class UserController extends BaseController
         if (! $data || ! is_array($data->data)) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Invalid data.',
+                'msg' => 'Invalid data.',
             ]);
         }
 
@@ -179,7 +179,7 @@ final class UserController extends BaseController
         if ($node === null) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Node not found.',
+                'msg' => 'Node not found.',
             ]);
         }
 
@@ -225,7 +225,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'data' => 'ok',
+            'msg' => 'ok',
         ]);
     }
 
@@ -245,7 +245,7 @@ final class UserController extends BaseController
         if (! $data || ! is_array($data->data)) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Invalid data.',
+                'msg' => 'Invalid data.',
             ]);
         }
 
@@ -255,7 +255,7 @@ final class UserController extends BaseController
         if ($node_id === null || ! Node::where('id', $node_id)->exists()) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Node not found.',
+                'msg' => 'Node not found.',
             ]);
         }
 
@@ -282,7 +282,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'data' => 'ok',
+            'msg' => 'ok',
         ]);
     }
 
@@ -302,7 +302,7 @@ final class UserController extends BaseController
         if (! $data || ! is_array($data->data)) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Invalid data.',
+                'msg' => 'Invalid data.',
             ]);
         }
 
@@ -312,7 +312,7 @@ final class UserController extends BaseController
         if ($node_id === null || ! Node::where('id', $node_id)->exists()) {
             return $response->withJson([
                 'ret' => 0,
-                'data' => 'Node not found.',
+                'msg' => 'Node not found.',
             ]);
         }
 
@@ -330,7 +330,7 @@ final class UserController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'data' => 'ok',
+            'msg' => 'ok',
         ]);
     }
 }

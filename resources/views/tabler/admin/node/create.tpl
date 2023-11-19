@@ -48,12 +48,6 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">آی پی سرور</label>
-                                <div class="col">
-                                    <input id="node_ip" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">سرعت ترافیک</label>
                                 <div class="col">
                                     <input id="traffic_rate" type="text" class="form-control" value="">
@@ -77,8 +71,11 @@
                                 <div id="custom_config"></div>
                                 <label class="form-label col-form-label">
                                     جهت افزودن پیکربندی سفارشی به
+                                   
                                     <a href="//wiki.sspanel.org/#/custom-config"
-                                        target="_blank">wiki.sspanel.org/#/custom-config</a>
+                                        target="_blank">
+                                        wiki.sspanel.org/#/custom-config
+                                    </a>
 
                                     مراجعه فرمایید
                                 </label>
@@ -98,7 +95,7 @@
                                 <span class="col">فعال کردن ضریب ترافیک پویا</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
-                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox">
+                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox" checked="">
                                     </label>
                                 </span>
                             </div>
@@ -138,12 +135,6 @@
                             <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">ریمارک</label>
-                                <div class="col">
-                                    <input id="info" type="text" class="form-control" value="">
-                                </div>
-                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">

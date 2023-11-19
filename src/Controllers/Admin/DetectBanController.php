@@ -18,9 +18,8 @@ final class DetectBanController extends BaseController
         [
             'field' => [
                 'id' => 'شناسه رویداد',
-                'user_name' => 'نام کاربری',
                 'user_id' => 'شناسه کاربر',
-                'email' => 'ایمیل کاربر',
+                'user_name' => 'نام کاربری',
                 'detect_number' => 'تعداد تخلفات',
                 'ban_time' => 'مدت زمان ممنوعیت (دقیقه)',
                 'start_time' => 'زمان شروع آمار',
@@ -52,6 +51,7 @@ final class DetectBanController extends BaseController
         $total = DetectBanLog::count();
 
         foreach ($bans as $ban) {
+            $ban->user_name = $ban->userName();
             $ban->start_time = Tools::toDateTime((int) $ban->start_time);
             $ban->end_time = Tools::toDateTime((int) $ban->end_time);
             $ban->ban_end_time = $ban->banEndTime();
