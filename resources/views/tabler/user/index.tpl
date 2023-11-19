@@ -924,10 +924,10 @@
                                                     <strong>برای استفاده از بشکن کافیه DNS رو تنظیم کنید</strong>
                                                     <br>
                                                     <div style="direction: ltr;">
-                                                        {if $public_setting['smart_dns_plain']}
+                                                        {{if $public_setting['smart_dns_plain']}}
                                                             <p>
                                                                 Plain DNS-1: <code class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_1']}">{$public_setting['smart_dns_plain_url_1']}</code>
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_1']}">"{$public_setting['smart_dns_plain_url_1']}"</code>
                                                                 <a style="font-size: 90%;" class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_plain_url_1']}">
                                                                     <i class="ti ti-copy"></i>
@@ -936,7 +936,7 @@
                                                             </p>
                                                             <p>
                                                                 Plain DNS-2: <code class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_2']}">{$public_setting['smart_dns_plain_url_2']}</code>
+                                                                    data-clipboard-text="{$public_setting['smart_dns_plain_url_2']}">"{$public_setting['smart_dns_plain_url_2']}"</code>
                                                                 <a style="font-size: 90%;" class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_plain_url_2']}">
                                                                     <i class="ti ti-copy"></i>
@@ -944,10 +944,10 @@
                                                                 </a>
                                                             </p>
                                                         {{/if}}
-                                                        {if $public_setting['smart_dns_dot']}
+                                                        {{if $public_setting['smart_dns_dot']}}
                                                             <p>
                                                                 DNS-over-TLS: <code class="copy btn-icon"
-                                                                    data-clipboard-text="{$public_setting['smart_dns_dot_url']}">{$public_setting['smart_dns_dot_url']}</code>
+                                                                    data-clipboard-text="{$public_setting['smart_dns_dot_url']}">"{$public_setting['smart_dns_dot_url']}"</code>
                                                                 <a style="font-size: 90%;" class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_dot_url']}">
                                                                     <i class="ti ti-copy"></i>
@@ -955,7 +955,7 @@
                                                                 </a>
                                                             </p>
                                                         {{/if}}
-                                                        {if $public_setting['smart_dns_doh']}
+                                                        {{if $public_setting['smart_dns_doh']}}
                                                             <p>
                                                                 DNS-over-Https: <code class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_doh_url']}">{$public_setting['smart_dns_doh_url']}</code>
@@ -965,8 +965,8 @@
                                                                     کپی
                                                                 </a>
                                                             </p>
-                                                        {/if}
-                                                        {if $public_setting['smart_dns_dodtls']}
+                                                        {{/if}}
+                                                        {{if $public_setting['smart_dns_dodtls']}}
                                                             <p>
                                                                 DNS-over-DTLS: <code class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_dodtls_url']}">{$public_setting['smart_dns_dodtls_url']}</code>
@@ -976,8 +976,8 @@
                                                                     کپی
                                                                 </a>
                                                             </p>
-                                                        {/if}
-                                                        {if $public_setting['smart_dns_doq']}
+                                                        {{/if}}
+                                                        {{if $public_setting['smart_dns_doq']}}
                                                             <p>
                                                                 DNS-over-DTLS: <code class="copy btn-icon"
                                                                     data-clipboard-text="{$public_setting['smart_dns_doq_url']}">{$public_setting['smart_dns_doq_url']}</code>
@@ -987,7 +987,7 @@
                                                                     کپی
                                                                 </a>
                                                             </p>
-                                                        {/if}
+                                                        {{/if}}
                                                     </div>
                                                 </div>
                                                 <div id="message" class="beshecan-result"></div>
@@ -1134,7 +1134,7 @@
                             </div>
                         </div>
                     </div>
-                {/if}
+                {{/if}}
             </div>
         </div>
     </div>
