@@ -204,7 +204,6 @@
                                             target="_blank">wiki.sspanel.org/#/custom-config</a>
                                         مراجعه فرمایید
                                     </label>
-                                    <div id="routedns_config" style="min-height: 200px;"></div>
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -252,11 +251,6 @@
     const editor = new JSONEditor(container, options);
     editor.set({$node->custom_config})
 
-    var dnseditor = ace.edit("routedns_config");
-    dnseditor.setFontSize("11pt");
-    dnseditor.setValue(`{$node->routedns_config}`)
-    dnseditor.getSession().setMode("ace/mode/toml");
-
     $("#reset-node-password").click(function() {
         $.ajax({
             url: '/admin/node/{$node->id}/reset',
@@ -287,7 +281,6 @@
                 is_dynamic_rate: $("#is_dynamic_rate").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
                 is_route_dns: $("#is_route_dns").is(":checked"),
-                routedns_config: dnseditor.getValue(),
             },
             success: function(data) {
                 if (data.ret === 1) {

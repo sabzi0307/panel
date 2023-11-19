@@ -30,14 +30,6 @@ use function time;
 
 final class UserController extends BaseController
 {
-    private static array $details = [
-        'field' => [
-            'ip' => 'آدرس IP',
-            'node' => 'سرور',
-            'op' => 'عملیات',
-        ],
-    ];
-
     /**
      * @throws Exception
      */
@@ -61,6 +53,7 @@ final class UserController extends BaseController
             $osFamily = "TV";
         }
 
+        $dns = Subscribe::getContent($this->user, "smartdns");
         return $response->write(
             $this->view()
                 ->assign('ann', Ann::orderBy('date', 'desc')->first())
@@ -70,8 +63,7 @@ final class UserController extends BaseController
                 ->assign('UniversalSub', SubController::getUniversalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
                 ->assign('osFamily', $osFamily)
-                ->assign('details', self::$details)
-                ->assign('smarts', Subscribe::getContent($this->user, "smartdns"))
+                ->assign('smarts', $dns)
                 ->assign('ip', $_SERVER['REMOTE_ADDR'])
                 ->fetch('user/index.tpl')
         );

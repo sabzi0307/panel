@@ -22,7 +22,6 @@ use const DNS_AAAA;
  * @property float  $traffic_rate            流量倍率
  * @property int    $is_dynamic_rate         是否启用动态流量倍率
  * @property int    $is_route_dns            routedns enable
- * @property string $routedns_config         routedns config
  * @property string $dynamic_rate_config     动态流量倍率配置
  * @property int    $node_class              节点等级
  * @property float  $node_speedlimit         节点限速

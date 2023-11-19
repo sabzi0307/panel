@@ -387,7 +387,7 @@ return new class() implements MigrationInterface {
             
             CREATE TABLE `smart_dns` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `node` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `node` bigint(20) unsigned NOT NULL COMMENT 'Node ID',
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user ID',
                 `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'dns Login IP',
                 `mark` varchar(255) NOT NULL DEFAULT '' COMMENT 'Remark',

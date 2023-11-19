@@ -998,11 +998,9 @@
                                                         width="100%">
                                                         <thead>
                                                             <tr>
-                                                                {foreach $details['field'] as $key => $value}
-                                                                    <th style="width: unset;">{$value}</th>
-                                                                {/foreach}
-                                                                <th></th>
-                                                                <th></th>
+                                                                <th style="width: unset;">آدرس IP</th>
+                                                                <th style="width: unset;">سرور</th>
+                                                                <th style="width: unset;">عملیات</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1150,7 +1148,7 @@
     </script>
     {if $public_setting['smart_dns_plain'] }
         <script>
-            var jqxhrc = jQuery.ajax({$public_setting['smart_dns_check_url']})
+            var jqxhrc = jQuery.ajax("{$public_setting['smart_dns_check_url']}")
                 .done(function() {
                     var jqxhrf = jQuery.ajax("https://block.panel.com?" + Math.random())
                         .done(function() {
@@ -1166,7 +1164,7 @@
                         .always(function() {});
                 })
                 .fail(function() {
-                    var jqxhrf = jQuery.ajax({$public_setting['smart_dns_fail_url']})
+                    var jqxhrf = jQuery.ajax("{$public_setting['smart_dns_fail_url']}")
                         .done(function() {
                             jQuery('#message').html(
                                 '<i class="ti ti-info-circle icon"></i>هشدار! شما تنظیمات DNS را انجام داده اید اما IP شما احراز هویت نشده است . '

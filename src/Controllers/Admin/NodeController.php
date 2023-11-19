@@ -112,8 +112,7 @@ final class NodeController extends BaseController
             $node->custom_config = '{}';
         }
 
-        $node->is_route_dns = $request->getParam('is_route_dns');
-        $node->routedns_config = $request->getParam('routedns_config');
+        $node->is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;        
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
         $node->sort = $request->getParam('sort');
@@ -213,7 +212,6 @@ final class NodeController extends BaseController
         $node->sort = $request->getParam('sort');
 
         $node->is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;
-        $node->routedns_config = $request->getParam('routedns_config') ?? '';
         $node->node_class = $request->getParam('node_class');
         $node->node_bandwidth_limit = Tools::toGB($request->getParam('node_bandwidth_limit'));
         $node->bandwidthlimit_resetday = $request->getParam('bandwidthlimit_resetday');
