@@ -299,11 +299,72 @@
                                     {{/if}} id="windows">
                                     <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
+                                            <h2 class="accordion-header" id="heading-3">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#windows-3"
+                                                    aria-expanded="false">
+                                                    هیدیفای نکست (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="windows-3" class="accordion-collapse collapse"
+                                                data-bs-parent="#windows-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما
+                                                            سازگار با هیدیفای نکست:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار هیدیفای نکست را از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/hiddify-windows-x64-setup.zip" {else}
+                                                            href="/clients/hiddify-windows-x64-setup.zip" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود هیدیفای نکست
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار هیدیفای نکست
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به هیدیفای نکست
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-1">
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#win-1"
                                                     aria-expanded="false">
-                                                    CLASH (پیشنهادی)
+                                                    CLASH
                                                 </button>
                                             </h2>
                                             <div id="win-1" class="accordion-collapse collapse"
@@ -429,11 +490,72 @@
                                     {{/if}} id="android">
                                     <div class="accordion-item">
                                         <div class="accordion" id="droid-accordion">
+                                            <h2 class="accordion-header" id="heading-3">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#droid-3"
+                                                    aria-expanded="false">
+                                                    هیدیفای نکست (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="droid-3" class="accordion-collapse collapse"
+                                                data-bs-parent="#droid-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما
+                                                            سازگار با هیدیفای نکست:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار هیدیفای نکست را از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/hiddify-android-universal.apk" {else}
+                                                            href="/clients/hiddify-android-universal.apk" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود هیدیفای نکست
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار هیدیفای نکست
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به هیدیفای نکست
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="droid-accordion">
                                             <h2 class="accordion-header" id="heading-1">
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#droid-1"
                                                     aria-expanded="false">
-                                                    SingBox (پیشنهادی)
+                                                    SingBox
                                                 </button>
                                             </h2>
                                             <div id="droid-1" class="accordion-collapse collapse"
@@ -719,48 +841,127 @@
                                 <div {if $osFamily eq "Linux"} class="tab-pane active show" 
                                 {else} class="tab-pane"
                                     {{/if}} id="linux">
-                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
-                                            سازگار با کلش متا:</strong></a><br>
-                                    <p>
-                                        <code class="copy btn-icon"
-                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
-                                        <a style="font-size: 90%;" class="copy btn-icon"
-                                            data-clipboard-text="{$UniversalSub}/clash">
-                                            کپی
-                                            <i class="ti ti-copy"></i>
-                                        </a>
-                                    </p>
-                                    <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
-                                        لینک های
-                                        زیر
-                                        دانلود
-                                        کنید.</a>
-                                    <br>
-                                    <div style="margin-top: 5px;" class="btn-list justify-content-start">
-                                        <a {if $config['enable_r2_client_download']}
-                                            href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
-                                            href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
-                                            دانلود Clash Verge
-                                        </a>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="linux-accordion">
+                                            <h2 class="accordion-header" id="heading-3">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#linux-3"
+                                                    aria-expanded="false">
+                                                    هیدیفای نکست (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="linux-3" class="accordion-collapse collapse"
+                                                data-bs-parent="#linux-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما
+                                                            سازگار با هیدیفای نکست:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار هیدیفای نکست را از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/hiddify-linux-x64.zip" {else}
+                                                            href="/clients/hiddify-linux-x64.zip" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود هیدیفای نکست
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار هیدیفای نکست
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به هیدیفای نکست
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <br>
-                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک کنید و
-                                        با
-                                        مشاهده
-                                        پنجره باز
-                                        شده در
-                                        مرورگر
-                                        بر
-                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
-                                        نرم
-                                        افزار Clash
-                                        افزوده شود.</a>
-                                    <br>
-                                    <a style="margin-top: 5px;"
-                                        href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                        class="btn btn-primary">
-                                        افزودن خودکار به Clash
-                                    </a>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="linux-accordion">
+                                            <h2 class="accordion-header" id="heading-1">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#linux-1"
+                                                    aria-expanded="false">
+                                                    CLASH (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="linux-1" class="accordion-collapse collapse"
+                                                data-bs-parent="#linux-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
+                                                            سازگار با کلش متا:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/clash">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار Clash Verge را با توجه به نوع سیستم عامل از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
+                                                            href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
+                                                            دانلود Clash Verge
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و
+                                                        با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار Clash
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="clash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به Clash
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div {if $osFamily eq "Unix"} class="tab-pane active show" 
                                 {else} class="tab-pane"
@@ -794,11 +995,72 @@
                                     {{/if}} id="macos">
                                     <div class="accordion-item">
                                         <div class="accordion" id="mac-accordion">
+                                            <h2 class="accordion-header" id="heading-3">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#mac-3"
+                                                    aria-expanded="false">
+                                                    هیدیفای نکست (پیشنهادی)
+                                                </button>
+                                            </h2>
+                                            <div id="mac-3" class="accordion-collapse collapse"
+                                                data-bs-parent="#mac-accordion">
+                                                <div class="accordion-body pt-0">
+                                                    <a><strong>لینک اشتراک هوشمند شما
+                                                            سازگار با هیدیفای نکست:</strong></a><br>
+                                                    <p>
+                                                        <code class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                        <a style="font-size: 90%;" class="copy btn-icon"
+                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            کپی
+                                                            <i class="ti ti-copy"></i>
+                                                        </a>
+                                                    </p>
+                                                    <a>ابتدا نرم افزار هیدیفای نکست را از
+                                                        لینک های
+                                                        زیر
+                                                        دانلود
+                                                        کنید.</a>
+                                                    <br>
+                                                    <div style="margin-top: 5px;"
+                                                        class="btn-list justify-content-start">
+                                                        <a {if $config['enable_r2_client_download']}
+                                                            href="/user/clients/hiddify-macos-universal.zip" {else}
+                                                            href="/clients/hiddify-macos-universal.zip" {/if}
+                                                            class="btn btn-azure">
+                                                            دانلود هیدیفای نکست
+                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <a>سپس کافیست تا بر روی دکمه <strong>افزودن خودکار</strong> کلیک
+                                                        کنید و با
+                                                        مشاهده
+                                                        پنجره باز
+                                                        شده در
+                                                        مرورگر
+                                                        بر
+                                                        روی گزینه Open کلیک کنید تا لینک سرور به صورت خودکار به
+                                                        نرم
+                                                        افزار هیدیفای نکست
+                                                        افزوده شود.</a>
+                                                    <br>
+                                                    <a style="margin-top: 5px;"
+                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        class="btn btn-primary">
+                                                        افزودن خودکار به هیدیفای نکست
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-2">
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#mac-2"
                                                     aria-expanded="false">
-                                                    SingBox (پیشنهادی)
+                                                    SingBox
                                                 </button>
                                             </h2>
                                             <div id="mac-2" class="accordion-collapse collapse"
@@ -856,12 +1118,12 @@
                                         <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-1">
                                                 <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#mac-1"
+                                                    data-bs-toggle="collapse" data-bs-target="#mac-clash"
                                                     aria-expanded="false">
                                                     CLASH
                                                 </button>
                                             </h2>
-                                            <div id="mac-1" class="accordion-collapse collapse">
+                                            <div id="mac-clash" class="accordion-collapse collapse">
                                                 <br><br>
                                                 <a><strong>لینک اشتراک هوشمند شما برای تمامی کلاینت های
                                                         سازگار با کلش متا:</strong></a><br>
@@ -1149,7 +1411,7 @@
     {{if $public_setting['smart_dns_plain'] }}
         <script>
             var jqxhrc = jQuery.ajax("{$public_setting['smart_dns_check_url']}")
-                .done(function() {
+            .done(function() {
                     var jqxhrf = jQuery.ajax("https://block.panel.com?" + Math.random())
                         .done(function() {
                             jQuery('#message').html(
@@ -1165,7 +1427,7 @@
                 })
                 .fail(function() {
                     var jqxhrf = jQuery.ajax("{$public_setting['smart_dns_fail_url']}")
-                        .done(function() {
+                    .done(function() {
                             jQuery('#message').html(
                                 '<i class="ti ti-info-circle icon"></i>هشدار! شما تنظیمات DNS را انجام داده اید اما IP شما احراز هویت نشده است . '
                             ).addClass('warning').removeClass('success');

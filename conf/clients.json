@@ -1,6 +1,30 @@
 {
     "clients":[
         {
+            "name": "Hiddify Next",
+            "tagMethod": "github_release",
+            "gitRepo": "hiddify/hiddify-next",
+            "savePath": "public/clients/",
+            "downloads": [
+                {
+                    "sourceName": "hiddify-android-universal.apk",
+                    "saveName": "hiddify-android-universal.apk"
+                },
+                {
+                    "sourceName": "hiddify-linux-x64.zip",
+                    "saveName": "hiddify-linux-x64.zip"
+                },
+                {
+                    "sourceName": "hiddify-macos-universal.zip",
+                    "saveName": "hiddify-macos-universal.zip"
+                },
+                {
+                    "sourceName": "hiddify-windows-x64-setup.zip",
+                    "saveName": "hiddify-windows-x64-setup.zip"
+                }
+            ]
+        },
+        {
             "name": "Clash Verge",
             "tagMethod": "github_release",
             "gitRepo": "zzzgydi/clash-verge",
