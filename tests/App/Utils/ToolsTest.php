@@ -131,7 +131,7 @@ class ToolsTest extends TestCase
     {
         date_default_timezone_set('ROC'); // Use Asia/Shanghai or PRC will cause this test to fail
         $time = 612907200; // 1989-06-04 04:00:00 UTC+8
-        $expected = 'چهارشنبه, ۱۰ شهریور ۱۴۰۰-۱۶:۰۰:۰۰';
+        $expected = 'یکشنبه, ۱۴ خرداد ۱۳۶۸-۰۴:۰۰:۰۰';
         $result = Tools::toDateTime($time);
         $this->assertIsString($result);
         $this->assertEquals($expected, $result);

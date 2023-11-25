@@ -1,3 +1,4 @@
 docker-compose-devel.yml
 docker-compose.yml
 Dockerfile
+.env
