@@ -549,7 +549,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['huggingface_api_key'] = '$huggingface_api_key';
 \$_ENV['huggingface_endpoint_url'] = '$huggingface_endpoint_url';
 #Cloudflare Workers AI
-\$_ENV['cf_workers_ai_account_id']      = $cf_workers_ai_account_id;
+\$_ENV['cf_workers_ai_account_id']      = '$cf_workers_ai_account_id';
 \$_ENV['cf_workers_ai_api_token']       = '$cf_workers_ai_api_token';
 \$_ENV['cf_workers_ai_model_id']         = '$cf_workers_ai_model_id';
 
