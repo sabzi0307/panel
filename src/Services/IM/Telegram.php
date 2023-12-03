@@ -28,7 +28,7 @@ final class Telegram extends Base
      */
     public function send($to = 0, $msg = ''): void
     {
-        if ($to === 0) {
+        if ($to === 0 || $to === '') {
             $to = Config::obtain('telegram_chatid');
         }
 
