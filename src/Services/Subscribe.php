@@ -13,7 +13,7 @@ use App\Services\Subscribe\SIP008;
 use App\Services\Subscribe\SS;
 use App\Services\Subscribe\Trojan;
 use App\Services\Subscribe\V2Ray;
-use App\Services\Subscribe\SmartDNS;
+use App\Services\Subscribe\SmartDns;
 
 final class Subscribe
 {
@@ -35,7 +35,7 @@ final class Subscribe
             ->get();
     }
 
-    public static function getClient($type): Json|SS|SIP002|V2Ray|Trojan|Clash|SIP008|SingBox|SmartDNS
+    public static function getClient($type): Json|SS|SIP002|V2Ray|Trojan|Clash|SIP008|SingBox|SmartDns
     {
         return match ($type) {
             'ss' => new SS(),
@@ -45,7 +45,7 @@ final class Subscribe
             'clash' => new Clash(),
             'sip008' => new SIP008(),
             'singbox' => new SingBox(),
-            'smartdns' => new SmartDNS(),
+            'smartdns' => new SmartDns(),
             default => new Json(),
         };
     }
