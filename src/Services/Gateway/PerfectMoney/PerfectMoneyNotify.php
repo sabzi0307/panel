@@ -30,11 +30,6 @@ final class PerfectMoneyNotify
             return false;
         }
         //Generate signature results
-        $isSign = self::verify($_GET, $this->perfectmoney_config['alter_pass_Phrase']);
-
-        return $isSign;
+        return self::verify($_GET, $this->perfectmoney_config['alter_pass_Phrase']);;
     }
-
-   
-
 }

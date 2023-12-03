@@ -681,9 +681,11 @@ crond -b
 
 echo -n >&2 "\nApplying permissions..."
 chmod 755 -R $current_dir/*
-chown -R www-data:www-data *
+chown -R nginx:nginx *
 echo -n >&2 "\nDownloading Clients..."
-sudo -u www-data php xcat ClientDownload
+sudo -u nginx php xcat ClientDownload
+chmod -R 755 storage
+chown -R nginx:nginx *
 git config core.fileMode false
 
 echo >&2  "\nAll set, please enjoy!\n\n"

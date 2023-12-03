@@ -37,10 +37,10 @@ final class Exchange
             $fromVal = $data['rates'][strtoupper($from)];
             $toVal = $data['rates'][strtoupper($to)];
 
-            if (empty($fromVal) || strtoupper($from) == "IRR") {
-                if (strtoupper($from) == "IRR") {
+            if (empty($fromVal) || strtoupper($from) === "IRR") {
+                if (strtoupper($from) === "IRR") {
                     $from = "USDT";
-                };
+                }
                 $response = $client->get('https://api.bitpin.ir/v1/mkt/currencies/');
                 $data = json_decode($response->getBody()->getContents(), true);
                 foreach ($data['results'] as $item) {
@@ -51,10 +51,10 @@ final class Exchange
                 }
             }
 
-            if (empty($toVal) || strtoupper($to) == "IRR") {
-                if (strtoupper($to) == "IRR") {
+            if (empty($toVal) || strtoupper($to) === "IRR") {
+                if (strtoupper($to) === "IRR") {
                     $to = "USDT";
-                };
+                }
                 $response = $client->get('https://api.bitpin.ir/v1/mkt/currencies/');
                 $data = json_decode($response->getBody()->getContents(), true);
                 foreach ($data as $item) {
