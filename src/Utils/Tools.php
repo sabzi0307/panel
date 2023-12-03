@@ -93,12 +93,12 @@ final class Tools
             }
 
             if ($city !== null) {
-                $res = $res . $city . ', ';
+                $res .= $city . ', ';
                 // return $city . ', ' . $country;
             }
 
             if ($country !== null) {
-                $res = $res . $country . ', ';
+                $res .= $country . ', ';
                 // return $country;
             }
             return $res;
@@ -114,9 +114,10 @@ final class Tools
         $server = "";
         if (isset($_ENV['Internet_Service_Providers'])) {
             foreach ($_ENV['Internet_Service_Providers'] as $provider) {
-                if (in_array($asn, $provider['AsNum']))
+                if (in_array($asn, $provider['AsNum'])) {
                     $server = $provider['AsName'];
                     break;
+                }
             }
         }
         return $server;
@@ -314,7 +315,7 @@ final class Tools
             $i = 0;
 
             while (($file = readdir($handle)) !== false) {
-                if ($file !== '.' && $file !== '..' && !strpos($file, '.')) {
+                if ($file !== '.' && $file !== '..' && ! strpos($file, '.')) {
                     $dirArray[$i] = $file;
                     $i++;
                 }
@@ -372,7 +373,7 @@ final class Tools
         $res = [];
         $res['ret'] = 0;
 
-        if (!self::isEmail($email)) {
+        if (! self::isEmail($email)) {
             $res['msg'] = 'ایمیل استاندارد نیست';
             return $res;
         }
@@ -392,7 +393,7 @@ final class Tools
                 return $res;
             case 2:
                 // 黑名单
-                if (!in_array($mail_suffix, $mail_filter_list)) {
+                if (! in_array($mail_suffix, $mail_filter_list)) {
                     $res['ret'] = 1;
                 } else {
                     $res['msg'] = 'نام دامنه ایمیل ' . $mail_suffix . ' نامعتبر است، لطفا آدرس ایمیل را تغییر دهید';
