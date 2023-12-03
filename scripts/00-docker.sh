@@ -683,7 +683,7 @@ echo -n >&2 "\nApplying permissions..."
 chmod 755 -R $current_dir/*
 chown -R www-data:www-data *
 echo -n >&2 "\nDownloading Clients..."
-sudo -u nginx php xcat ClientDownload
+sudo -u www-data php xcat ClientDownload
 git config core.fileMode false
 
 echo >&2  "\nAll set, please enjoy!\n\n"
