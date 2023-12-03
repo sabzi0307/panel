@@ -55,9 +55,9 @@ final class SmartDnsController extends BaseController
      *  @param  string $prop Property to read
      *  @return array        Array of property values
      */
-    static function pluck($a, $prop)
+    public static function pluck($a, $prop)
     {
-        $out = array();
+        $out = [];
 
         for ($i = 0, $len = count($a); $i < $len; $i++) {
             if (empty($a[$i][$prop]) && $a[$i][$prop] !== 0) {
@@ -118,7 +118,7 @@ final class SmartDnsController extends BaseController
         }
 
         $ip = $antiXss->xss_clean(trim($data[0]['ip']));
-        if (!(Tools::isIPv4($ip) || Tools::isIPv6($ip))) {
+        if (! (Tools::isIPv4($ip) || Tools::isIPv6($ip))) {
             return $response->withStatus(200)
                 ->withJson([
                     'ret' => 0,
@@ -209,13 +209,11 @@ final class SmartDnsController extends BaseController
             }
             $dns->ip = $ip;
         }
-        ;
 
         if (isset($data[$id]['node'])) {
             $node = $antiXss->xss_clean($data[$id]['node']);
             $dns->node = $node['id'];
         }
-        ;
 
         $dns->updated_at = time();
 
@@ -232,7 +230,7 @@ final class SmartDnsController extends BaseController
         $rdns = json_decode(Subscribe::getContent($this->user, "smartdns"));
         foreach ($rdns as $rd) {
             $value = $rd->id;
-            if ($value == $dns->node) {
+            if ($value === $dns->node) {
                 $dns->node = $rd;
                 break;
             }
@@ -278,7 +276,6 @@ final class SmartDnsController extends BaseController
      */
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-
         $user = $this->user;
         $userdnss = SmartDns::where('userid', $user->id)->orderBy('id', 'desc')->get();
         $rdns = json_decode(Subscribe::getContent($this->user, "smartdns"));
@@ -286,10 +283,10 @@ final class SmartDnsController extends BaseController
         foreach ($userdnss as $userdns) {
             foreach ($rdns as $rd) {
                 $id = $rd->id;
-                if ($userdns->node == $id) {
+                if ($userdns->node === $id) {
                     $userdns->node = $rd;
                     break;
-                };
+                }
             }
         }
 
