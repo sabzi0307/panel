@@ -14,8 +14,7 @@
                 </div>
                 <div class="col-auto">
                     <div class="btn-list">
-                        <button href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#create-ticket">
+                        <button href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-ticket">
                             <i class="icon ti ti-plus"></i>
                             درخواست جدید
                         </button>
@@ -59,7 +58,7 @@
                                                 <!-- صفحه نوع تیکت -->
                                                 <span class="status status-grey">{$ticket->type}</span>
                                                 <a href="/user/ticket/{$ticket->id}/view"
-                                                   class="btn btn-primary ms-auto">بررسی</a>
+                                                    class="btn btn-primary ms-auto">بررسی</a>
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +69,8 @@
                                 <div class="card-header">
                                     <h3 class="card-title">بدون تیکت</h3>
                                 </div>
-                                <div class="card-body">اگر به کمک نیاز دارید، لطفاً روی دکمه در گوشه سمت راست بالا کلیک کنید تا یک تیکت جدید باز شود</div>
+                                <div class="card-body">اگر به کمک نیاز دارید، لطفاً روی دکمه در گوشه سمت راست بالا کلیک کنید
+                                    تا یک تیکت جدید باز شود</div>
                             </div>
                         {/if}
                     </div>
@@ -97,21 +97,22 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <input id="ticket-title" type="text" class="form-control" placeholder="لطفا موضوع درخواست را وارد کنید">
+                        <input id="ticket-title" type="text" class="form-control"
+                            placeholder="لطفا موضوع درخواست را وارد کنید">
                     </div>
                     <div class="mb-3">
                         <textarea id="ticket-comment" class="form-control" rows="12"
-                                  placeholder="لطفا محتوای درخواست را وارد کنید"></textarea>
+                            placeholder="لطفا محتوای درخواست را وارد کنید"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">لغو</button>
                     <button id="create-ticket-button" class="btn btn-primary" data-bs-dismiss="modal"
-                            hx-post="/user/ticket" hx-swap="none"
-                            hx-vals='js:{
-                            title: document.getElementById("ticket-title").value
-                            comment: document.getElementById("ticket-comment").value
-                            type: document.getElementById("ticket-type").value }'>
+                        hx-post="/user/ticket" hx-swap="none" hx-vals='js:{
+                            title: document.getElementById("ticket-title").value,
+                            comment: document.getElementById("ticket-comment").value,
+                            type: document.getElementById("ticket-type").value
+                        }'>
                         ثبت
                     </button>
                 </div>

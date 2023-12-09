@@ -95,7 +95,7 @@ final class TicketController extends BaseController
         Notification::notifyUser(
             $user,
             $_ENV['appName'] . '-بلیت پاسخ داده شده است',
-            'سلام، یکی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.'
+            'سلام، یکی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت</a>，لطفا آن را بررسی کنید.'
         );
 
         $ticket->content = json_encode(array_merge($content_old, $content_new));
@@ -143,7 +143,7 @@ final class TicketController extends BaseController
         Notification::notifyUser(
             $user,
             $_ENV['appName'] . '-تیکت پاسخ داده شده است',
-            'سلام，هوش مصنوعی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">دستور کار</a>，لطفا آن را بررسی کنید.'
+            'سلام，هوش مصنوعی پاسخ داد<a href="' . $_ENV['baseUrl'] . '/user/ticket/' . $ticket->id . '/view">تیکت</a>，لطفا آن را بررسی کنید.'
         );
 
         $ticket->content = json_encode(array_merge($content_old, $content_new));

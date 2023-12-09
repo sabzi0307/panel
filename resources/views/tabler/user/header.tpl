@@ -169,7 +169,7 @@
                                 {if $public_setting['enable_ticket']}
                                     <a class="dropdown-item" href="/user/ticket">
                                         <i class="ti ti-ticket"></i>&nbsp;
-                                        دستور کار
+                                        تیکت
                                     </a>
                                 {/if}
                                 {if $public_setting['display_docs'] &&

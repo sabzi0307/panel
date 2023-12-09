@@ -161,7 +161,7 @@ final class TicketController extends BaseController
                 $_ENV['appName'] . '-تیکت پاسخ داده شده است',
                 'ادمین یکی جواب داد <a href="' .
                 $_ENV['baseUrl'] . '/admin/ticket/' . $ticket->id . '/view">#' . $ticket->id .
-                '</a> دستور کار، لطفا به موقع به آن رسیدگی کنید.'
+                '</a> تیکت جدید، لطفا به موقع به آن رسیدگی کنید.'
             );
         }
 
