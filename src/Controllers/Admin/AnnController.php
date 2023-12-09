@@ -87,7 +87,7 @@ final class AnnController extends BaseController
 
         if ($content !== '') {
             $ann = new Ann();
-            $ann->date = Tools::toDateTime(time());
+            $ann->date = time();
             $ann->content = $content;
 
             if (! $ann->save()) {

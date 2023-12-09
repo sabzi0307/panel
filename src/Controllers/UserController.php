@@ -54,9 +54,13 @@ final class UserController extends BaseController
         }
 
         $dns = Subscribe::getContent($this->user, "smartdns");
+
+        $ann = Ann::orderBy('date', 'desc')->first();
+        $ann->date = Tools::toDateTime((int) $ann->date);
+
         return $response->write(
             $this->view()
-                ->assign('ann', Ann::orderBy('date', 'desc')->first())
+                ->assign('ann', $ann)
                 ->assign('captcha', $captcha)
                 ->assign('class_expire_days', $class_expire_days)
                 ->assign('class_expire', $class_expire)
