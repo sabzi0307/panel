@@ -1374,11 +1374,15 @@
                                         {if $public_setting['enable_checkin_captcha']}
                                             {include file='captcha_div.tpl'}
                                         {/if}
-                                        <button id="check-in" class="btn btn-primary ms-auto" hx-post="/user/checkin"
-                                            hx-swap="none" {if $public_setting['captcha_provider'] === 'turnstile'}
-                                                hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
-                                                {/if} {if $public_setting['captcha_provider'] === 'geetest'}
-                                            hx-vals='js:{ geetest: geetest_result }' {/if}>
+                                        <button id="check-in" class="btn btn-primary ms-auto" hx-post="/user/checkin" hx-swap="none"
+                                            {if $public_setting['enable_checkin_captcha']} 
+                                                {if $public_setting['captcha_provider'] === 'turnstile'}
+                                                    hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
+                                                    {/if} 
+                                                {if $public_setting['captcha_provider'] === 'geetest'} 
+                                                    hx-vals='js:{ geetest: geetest_result }' 
+                                                {/if}>
+                                            {/if}>
                                             بررسی
                                         </button>
                                     {/if}
@@ -1602,7 +1606,5 @@
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
         {include file='captcha_js.tpl'}
     {/if}
-
-    {include file='user/footer.tpl'}
 
 {include file='user/footer.tpl'}

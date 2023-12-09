@@ -98,7 +98,7 @@
                     }
 
                     if (key === "last-checkin-time") {
-                        document.getElementById("check-in").innerHTML = "已签到"
+                        document.getElementById("check-in").innerHTML = "امروز دریافت شده"
                         document.getElementById("check-in").disabled = true;
                     }
 
