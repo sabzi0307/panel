@@ -15,7 +15,7 @@ final class SmartDns extends Base
     public function getContent($user): string
     {
         $nodes = [];
-        $nodes_raw = Subscribe::getSubNodes($user);
+        $nodes_raw = Subscribe::getUserSubNodes($user);
 
         foreach ($nodes_raw as $node_raw) {
             $node_custom_config = json_decode($node_raw->custom_config, true);

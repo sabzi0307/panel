@@ -1362,7 +1362,7 @@
                                     {/if}
                                 </p>
                                 <p>
-                                    上次签到时间：<code id="last-checkin-time">{$user->lastCheckInTime()}</code>
+                                آخرین زمان دریافت:<code style="font-family: Yekan;" id="last-checkin-time">{$user->lastCheckInTime()}</code>
                                 </p>
                             </div>
                             <div class="card-footer">
