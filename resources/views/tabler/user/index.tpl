@@ -1,7 +1,5 @@
 {include file='user/header.tpl'}
 
-<script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
-
 <div class="page-wrapper">
     <div class="container-xl">
         <div class="page-header d-print-none text-white">
@@ -1364,7 +1362,7 @@
                                     {/if}
                                 </p>
                                 <p>
-                                    آخرین زمان استفاده：<code style="font-family: Yekan;">{$user->lastCheckInTime()}</code>
+                                    上次签到时间：<code id="last-checkin-time">{$user->lastCheckInTime()}</code>
                                 </p>
                             </div>
                             <div class="card-footer">
@@ -1374,15 +1372,7 @@
                                             شده</button>
                                     {else}
                                         {if $public_setting['enable_checkin_captcha']}
-                                            {if $public_setting['captcha_provider'] === 'turnstile'}
-                                                <div id="cf-turnstile" class="cf-turnstile"
-                                                    data-sitekey="{$captcha['turnstile_sitekey']}" {if $user->is_dark_mode}
-                                                    data-theme="dark" {else} data-theme="light" 
-                                                    {/if}></div>
-                                            {/if}
-                                            {if $public_setting['captcha_provider'] === 'geetest'}
-                                                <div id="geetest"></div>
-                                            {/if}
+                                            {include file='captcha_div.tpl'}
                                         {/if}
                                         <button id="check-in" class="btn btn-primary ms-auto" hx-post="/user/checkin"
                                             hx-swap="none" {if $public_setting['captcha_provider'] === 'turnstile'}
@@ -1401,13 +1391,6 @@
         </div>
     </div>
 
-    <script>
-        var clipboard = new ClipboardJS('.copy');
-        clipboard.on('success', function(e) {
-            $('#success-noreload-message').text('در کلیپ بورد کپی شد');
-            $('#success-noreload-dialog').modal('show');
-        });
-    </script>
     {{if $public_setting['smart_dns_plain'] }}
         <script>
             var jqxhrc = jQuery.ajax("{$public_setting['smart_dns_check_url']}")
@@ -1617,26 +1600,9 @@
     {{/if}}
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
-        {if $public_setting['captcha_provider'] === 'turnstile'}
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-        {/if}
-        {if $public_setting['captcha_provider'] === 'geetest'}
-            <script src="https://static.geetest.com/v4/gt4.js"></script>
-            <script>
-                let geetest_result = '';
-                initGeetest4({
-                    captchaId: '{$captcha['geetest_id']}',
-                    product: 'float',
-                    language: "en",
-                    riskType: 'slide'
-                }, function(geetest) {
-                    geetest.appendTo("#geetest");
-                    geetest.onSuccess(function() {
-                        geetest_result = geetest.getValidate();
-                    });
-                });
-            </script>
-        {/if}
+        {include file='captcha_js.tpl'}
     {/if}
+
+    {include file='user/footer.tpl'}
 
 {include file='user/footer.tpl'}

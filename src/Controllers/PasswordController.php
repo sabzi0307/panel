@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use RedisException;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
-use voku\helper\AntiXSS;
 use function strlen;
 
 final class PasswordController extends BaseController
@@ -54,8 +53,7 @@ final class PasswordController extends BaseController
             }
         }
 
-        $antiXss = new AntiXSS();
-        $email = strtolower($antiXss->xss_clean($request->getParam('email')));
+        $email = strtolower($this->antiXss->xss_clean($request->getParam('email')));
 
         if ($email === '') {
             return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
@@ -67,7 +65,7 @@ final class PasswordController extends BaseController
             return ResponseHelper::error($response, 'درخواست شما خیلی زیاد است، لطفاً بعداً دوباره امتحان کنید');
         }
 
-        $user = User::where('email', $email)->first();
+        $user = (new User())->where('email', $email)->first();
         $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
 
         if ($user !== null) {
@@ -86,9 +84,8 @@ final class PasswordController extends BaseController
      */
     public function token(ServerRequest $request, Response $response, array $args)
     {
-        $antiXss = new AntiXSS();
-        $token = $antiXss->xss_clean($args['token']);
-        $redis = Cache::initRedis();
+        $token = $this->antiXss->xss_clean($args['token']);
+        $redis = (new Cache())->initRedis();
         $email = $redis->get('password_reset:' . $token);
 
         if (! $email) {
@@ -105,8 +102,7 @@ final class PasswordController extends BaseController
      */
     public function handleToken(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $antiXss = new AntiXSS();
-        $token = $antiXss->xss_clean($args['token']);
+        $token = $this->antiXss->xss_clean($args['token']);
         $password = $request->getParam('password');
         $repasswd = $request->getParam('repasswd');
 
@@ -118,14 +114,14 @@ final class PasswordController extends BaseController
             return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
         }
 
-        $redis = Cache::initRedis();
+        $redis = (new Cache())->initRedis();
         $email = $redis->get('password_reset:' . $token);
 
         if (! $email) {
             return ResponseHelper::error($response, 'لینک نامعتبر');
         }
 
-        $user = User::where('email', $email)->first();
+        $user = (new User())->where('email', $email)->first();
 
         if ($user === null) {
             return ResponseHelper::error($response, 'لینک منقضی شده است، لطفا دوباره امتحان کنید');

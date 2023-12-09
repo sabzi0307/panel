@@ -31,9 +31,9 @@
             <p class="empty-title"><a href="https://github.com/sspanel-uim">صفحه تیم پروژه</a></p>
             <br>
             <p class="empty-title">SSPanel-UIM وجود از پروژه های منبع باز زیر جدایی ناپذیر است</p>
-            <p><a href="https://github.com/smarty-php/smarty">Smarty template engine</a></p>
             <p><a href="https://github.com/slimphp/Slim">Slim Framework</a></p>
             <p><a href="https://github.com/tabler/tabler">Tabler</a></p>
+            <p><a href="https://github.com/twigphp/Twig">Twig</a></p>
             <br>
             <p>This product includes GeoLite2 data created by MaxMind, available from
                 <a href="https://www.maxmind.com">https://www.maxmind.com</a>.</p>

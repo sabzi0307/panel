@@ -19,7 +19,7 @@
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
     <script src="//{$config['jsdelivr_url']}/npm/qrcode_js@latest/qrcode.min.js"></script>
-    <script src="//{$config['jsdelivr_url']}/npm/jquery/dist/jquery.min.js"></script>
+    <script src="//{$config['jsdelivr_url']}/npm/clipboard@latest/dist/clipboard.min.js"></script>
     <script src="//{$config['jsdelivr_url']}/npm/htmx.org@latest/dist/htmx.min.js"></script>
     <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.13.6/b-2.4.2/sl-1.7.0/datatables.min.js"></script>
     <script src="/assets/js/dataTables.editor.min.js"></script>

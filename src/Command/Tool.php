@@ -126,7 +126,7 @@ EOL;
         foreach ($settings as $item) {
             $config[] = $item['item'];
             $item_name = $item['item'];
-            $query = Config::where('item', $item['item'])->first();
+            $query = (new Config())->where('item', $item['item'])->first();
 
             if ($query === null) {
                 $new_item = new Config();
@@ -192,7 +192,7 @@ EOL;
     public function resetPort(): void
     {
         fwrite(STDOUT, 'Please enter user id: ');
-        $user = ModelsUser::find(trim(fgets(STDIN)));
+        $user = (new ModelsUser())->find(trim(fgets(STDIN)));
 
         if ($user !== null) {
             $user->port = Tools::getSsPort();
@@ -227,7 +227,7 @@ EOL;
     public function resetTraffic(): void
     {
         try {
-            ModelsUser::where('is_banned', 0)->update([
+            (new ModelsUser())->where('is_banned', 0)->update([
                 'd' => 0,
                 'u' => 0,
                 'transfer_today' => 0,

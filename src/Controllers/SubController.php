@@ -11,13 +11,11 @@ use App\Models\SubscribeLog;
 use App\Services\RateLimit;
 use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
-use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use RedisException;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use voku\helper\AntiXSS;
 use function in_array;
 use function strtotime;
 
@@ -35,10 +33,9 @@ final class SubController extends BaseController
      * @throws RedisException
      * @throws TelegramSDKException
      */
-    public static function getUniversalSubContent($request, $response, $args): ResponseInterface
+    public function index($request, $response, $args): ResponseInterface
     {
         $err_msg = 'پیوند اشتراک نامعتبر است';
-
         $subtype = $args['subtype'];
         $subtype_list = ['json', 'clash', 'sip008', 'singbox', 'sip002', 'ss', 'v2ray', 'trojan'];
 
@@ -49,8 +46,7 @@ final class SubController extends BaseController
             return ResponseHelper::error($response, $err_msg);
         }
 
-        $antiXss = new AntiXSS();
-        $token = $antiXss->xss_clean($args['token']);
+        $token = $this->antiXss->xss_clean($args['token']);
 
         if ($_ENV['enable_rate_limit'] &&
             (! RateLimit::checkIPLimit($request->getServerParam('REMOTE_ADDR')) ||
@@ -59,7 +55,7 @@ final class SubController extends BaseController
             return ResponseHelper::error($response, $err_msg);
         }
 
-        $link = Link::where('token', $token)->first();
+        $link = (new Link())->where('token', $token)->first();
 
         if ($link === null || ! $link->isValid()) {
             return ResponseHelper::error($response, $err_msg);
@@ -80,27 +76,12 @@ final class SubController extends BaseController
         . '; expire=' . strtotime($user->class_expire);
 
         if (Config::obtain('subscribe_log')) {
-            (new SubscribeLog())->add($user, $subtype, $antiXss->xss_clean($request->getHeaderLine('User-Agent')));
+            (new SubscribeLog())->add($user, $subtype, $this->antiXss->xss_clean($request->getHeaderLine('User-Agent')));
         }
 
         return $response->withHeader('Subscription-Userinfo', $sub_details)
             ->withHeader('Content-Type', $content_type)
             ->write($sub_info);
-    }
-
-    public static function getUniversalSubLink($user): string
-    {
-        $userid = $user->id;
-        $token = Link::where('userid', $userid)->first();
-
-        if ($token === null) {
-            $token = new Link();
-            $token->userid = $userid;
-            $token->token = Tools::genSubToken();
-            $token->save();
-        }
-
-        return $_ENV['subUrl'] . '/sub/' . $token->token;
     }
 
     public static function getSharedAccounts($user): array

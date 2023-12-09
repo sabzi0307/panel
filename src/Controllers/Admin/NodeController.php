@@ -32,6 +32,7 @@ final class NodeController extends BaseController
             'sort' => 'نوع',
             'traffic_rate' => 'بزرگنمایی',
             'is_dynamic_rate' => 'فعال کردن ضریب ترافیک پویا',
+            'dynamic_rate_type' => 'روش محاسبه پویا',
             'node_class' => 'درجه',
             'node_group' => 'گروه',
             'node_bandwidth_limit' => 'محدودیت های ترافیکی/GB',
@@ -45,6 +46,7 @@ final class NodeController extends BaseController
         'server',
         'traffic_rate',
         'is_dynamic_rate',
+        'dynamic_rate_type',
         'max_rate',
         'max_rate_time',
         'min_rate',
@@ -97,6 +99,7 @@ final class NodeController extends BaseController
         $node->server = trim($request->getParam('server'));
         $node->traffic_rate = $request->getParam('traffic_rate') ?? 1;
         $node->is_dynamic_rate = $request->getParam('is_dynamic_rate') === 'true' ? 1 : 0;
+        $node->dynamic_rate_type = $request->getParam('dynamic_rate_type') ?? 0;
         $node->dynamic_rate_config = json_encode([
             'max_rate' => $request->getParam('max_rate') ?? 1,
             'max_rate_time' => $request->getParam('max_rate_time') ?? 3,
@@ -161,7 +164,7 @@ final class NodeController extends BaseController
      */
     public function edit(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $node = Node::find($args['id']);
+        $node = (new Node())->find($args['id']);
 
         $dynamic_rate_config = json_decode($node->dynamic_rate_config);
         $node->max_rate = $dynamic_rate_config?->max_rate ?? 1;
@@ -185,13 +188,14 @@ final class NodeController extends BaseController
      */
     public function update(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $node = Node::find($args['id']);
+        $node = (new Node())->find($args['id']);
 
         $node->name = $request->getParam('name');
         $node->node_group = $request->getParam('node_group') ?? 0;
         $node->server = trim($request->getParam('server'));
         $node->traffic_rate = $request->getParam('traffic_rate') ?? 1;
         $node->is_dynamic_rate = $request->getParam('is_dynamic_rate') === 'true' ? 1 : 0;
+        $node->dynamic_rate_type = $request->getParam('dynamic_rate_type') ?? 0;
         $node->dynamic_rate_config = json_encode([
             'max_rate' => $request->getParam('max_rate') ?? 1,
             'max_rate_time' => $request->getParam('max_rate_time') ?? 0,
@@ -249,7 +253,7 @@ final class NodeController extends BaseController
 
     public function reset(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $node = Node::find($args['id']);
+        $node = (new Node())->find($args['id']);
         $node->password = Tools::genRandomChar(32);
         $node->save();
 
@@ -264,7 +268,7 @@ final class NodeController extends BaseController
      */
     public function delete(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $node = Node::find($args['id']);
+        $node = (new Node())->find($args['id']);
 
         if (! $node->delete()) {
             return $response->withJson([
@@ -299,7 +303,7 @@ final class NodeController extends BaseController
 
     public function copy($request, $response, $args)
     {
-        $old_node = Node::find($args['id']);
+        $old_node = (new Node())->find($args['id']);
         $new_node = $old_node->replicate([
             'node_bandwidth',
         ]);
@@ -324,7 +328,7 @@ final class NodeController extends BaseController
      */
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $nodes = Node::orderBy('id', 'desc')->get();
+        $nodes = (new Node())->orderBy('id', 'desc')->get();
 
         foreach ($nodes as $node) {
             $node->op = '<button type="button" class="btn btn-red" id="delete-node-' . $node->id . '" 

@@ -14,6 +14,5 @@
     <style>:root { --tblr-font-sans-serif: 'Yekan';}</style>
     <!-- JS files -->
     <script src="/assets/js/fuck.min.js"></script>
-        <script src="//{$config['jsdelivr_url']}/npm/jquery/dist/jquery.min.js"></script>
-
+    <script src="//{$config['jsdelivr_url']}/npm/htmx.org@latest/dist/htmx.min.js"></script>
 </head>

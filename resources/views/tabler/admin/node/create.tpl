@@ -99,6 +99,14 @@
                                     </label>
                                 </span>
                             </div>
+                                <label class="form-label col-3 col-form-label">روش محاسبه دینامیک</label>
+                                <div class="col">
+                                    <select id="dynamic_rate_type" class="col form-select">
+                                        <option value="0">Logistic</option>
+                                        <option value="1">Linear</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Maximum ratio</label>
                                 <div class="col">
@@ -189,7 +197,7 @@
 
 <script>
     const container = document.getElementById('custom_config');
-    var options = {
+    let options = {
         modes: ['code', 'tree'],
         // ace: ace,
     };

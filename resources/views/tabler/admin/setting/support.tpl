@@ -47,17 +47,9 @@
                                     <div class="col">
                                         <select id="live_chat" class="col form-select" value="{$settings['live_chat']}">
                                             <option value="none" {if $settings['live_chat'] === "none"}selected{/if}>هیچکدام</option>
-                                            <option value="tawk" {if $settings['live_chat'] === "tawk"}selected{/if}>Tawk</option>
                                             <option value="crisp" {if $settings['live_chat'] === "crisp"}selected{/if}>Crisp</option>
                                             <option value="livechat" {if $settings['live_chat'] === "livechat"}selected{/if}>LiveChat</option>
-                                            <option value="mylivechat" {if $settings['live_chat'] === "mylivechat"}selected{/if}>MyLiveChat</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Tawk ID</label>
-                                    <div class="col">
-                                        <input id="tawk_id" type="text" class="form-control" value="{$settings['tawk_id']}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
@@ -67,15 +59,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">LiveChat ID</label>
+                                    <label class="form-label col-3 col-form-label">LiveChat License</label>
                                     <div class="col">
-                                        <input id="livechat_id" type="text" class="form-control" value="{$settings['livechat_id']}">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">MyLiveChat ID</label>
-                                    <div class="col">
-                                        <input id="mylivechat_id" type="text" class="form-control" value="{$settings['mylivechat_id']}">
+                                        <input id="livechat_license" type="text" class="form-control" value="{$settings['livechat_license']}">
                                     </div>
                                 </div>
                             </div>

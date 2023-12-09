@@ -105,6 +105,15 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">روش محاسبه دینامیکی</label>
+                                <div class="col">
+                                    <select id="dynamic_rate_type" class="col form-select" value="{$node->dynamic_rate_type}">
+                                        <option value="0" {if $node->dynamic_rate_type === 0}selected{/if}>Logistic</option>
+                                        <option value="1" {if $node->dynamic_rate_type === 1}selected{/if}>Linear</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Maximum ratio</label>
                                 <div class="col">
                                     <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
@@ -238,14 +247,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/ace.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.0/mode-toml.min.js"></script>
 <script>
-    var clipboard = new ClipboardJS('.copy');
+    let clipboard = new ClipboardJS('.copy');
     clipboard.on('success', function(e) {
         $('#success-noreload-message').text('در کلیپ بورد کپی شد');
         $('#success-noreload-dialog').modal('show');
     });
 
     const container = document.getElementById('custom_config');
-    var options = {
+    let options = {
         modes: ['code', 'tree'],
     };
     const editor = new JSONEditor(container, options);

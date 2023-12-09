@@ -11,19 +11,20 @@
         <div class="card card-md">
             <div class="card-body">
                 <h2 class="card-title text-center mb-4">تنظیم رمز جدید</h2>
-                <p class="text-secondary mb-4">
-                    لطفاً یک رمز ورود به حساب کاربری جدید در زیر تنظیم کنید
-                </p>
                 <div class="mb-3">
                     <label class="form-label">رمز عبور جدید</label>
                     <input id="password" type="password" class="form-control" placeholder="لطفا یک رمز عبور جدید وارد کنید">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">رمز جدید را دوباره وارد کنید</label>
+                    <label class="form-label">رمز جدید را مجدد وارد نمایید</label>
                     <input id="repasswd" type="password" class="form-control" placeholder="لطفا رمز جدید را دوباره وارد کنید">
                 </div>
                 <div class="form-footer">
-                    <button id="reset" class="btn btn-primary w-100">
+                    <button id="reset" class="btn btn-primary w-100"
+                            hx-post="{ location.pathname }" hx-swap="none"
+                            hx-vals='js:{
+                            password: document.getElementById("password").value,
+                            repasswd: document.getElementById("repasswd").value, }'>
                         <i class="ti ti-key icon"></i>
                         تنظیم مجدد
                     </button>
@@ -35,28 +36,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    $("#reset").click(function () {
-        $.ajax({
-            type: 'POST',
-            url: location.pathname,
-            dataType: "json",
-            data: {
-                password: $('#password').val(),
-                repasswd: $('#repasswd').val(),
-            },
-            success: function (data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
-</script>
 
 {include file='footer.tpl'}
