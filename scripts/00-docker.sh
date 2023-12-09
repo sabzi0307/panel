@@ -116,7 +116,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$redis_host" ];then
         echo >&2 "redis_host not set! using default"
-        redis_host='127.0.0.1'
+        redis_host='redis'
     fi
 
     if [ -z "$redis_port" ];then
@@ -465,20 +465,20 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['db_prefix']    = '$db_prefix';
 
 //Redis settings-------------------------------------------------------------------------------------------
-\$_ENV['redis_host']     = '127.0.0.1';        //Redis address
-\$_ENV['redis_port']     = 6379;               //Redis port
-\$_ENV['redis_timeout']  = 2;                  //Redis connection timeout, in seconds
-\$_ENV['redis_username'] = '';                 //Redis username, leave it blank to connect without username
-\$_ENV['redis_password'] = '';                 //Redis password, leave blank to have no password
-\$_ENV['redis_ssl']      = false;              //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
+\$_ENV['redis_host']     = '$redis_host';        //Redis address
+\$_ENV['redis_port']     = $redis_port;               //Redis port
+\$_ENV['redis_timeout']  = $redis_timeout;                  //Redis connection timeout, in seconds
+\$_ENV['redis_username'] = '$redis_username';                 //Redis username, leave it blank to connect without username
+\$_ENV['redis_password'] = '$redis_password';                 //Redis password, leave blank to have no password
+\$_ENV['redis_ssl']      = $redis_ssl;              //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
 
 //Rate Limit setting--------------------------------------------------------------------------------------------
-\$_ENV['enable_rate_limit']    = true;            //Whether to enable request restriction
-\$_ENV['rate_limit_ip']        = 120;             //Global request limit per minute per IP
-\$_ENV['rate_limit_sub']       = 30;              //Subscription link request limit per user per minute
-\$_ENV['rate_limit_webapi']    = 600;             //WebAPI key request limit per minute per node
-\$_ENV['rate_limit_user_api']  = 60;              //API request limit per user per minute
-\$_ENV['rate_limit_admin_api'] = 60;              //API request limit per admin per minute
+\$_ENV['enable_rate_limit']    = $enable_rate_limit;            //Whether to enable request restriction
+\$_ENV['rate_limit_ip']        = $rate_limit_ip;             //Global request limit per minute per IP
+\$_ENV['rate_limit_sub']       = $rate_limit_sub;              //Subscription link request limit per user per minute
+\$_ENV['rate_limit_webapi']    = $rate_limit_webapi;             //WebAPI key request limit per minute per node
+\$_ENV['rate_limit_user_api']  = $rate_limit_user_api;              //API request limit per user per minute
+\$_ENV['rate_limit_admin_api'] = $rate_limit_admin_api;              //API request limit per admin per minute
 
 //E-Mail settings--------------------------------------------------------------------------------------------
 \$_ENV['mail_filter']        = $mail_filter;            //0: off; 1: whitelist mode; 2; blacklist mode;
@@ -527,7 +527,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['jump_delay']             = $jump_delay;                  //Jump delay, in ms, it is not recommended to be too long
 \$_ENV['keep_connect']           = $keep_connect;               // Speed limit to 1Mbps for traffic exhausted users
 
-\$_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
+\$_ENV['jsdelivr_url'] = '$jsdelivr_url'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
 
 // https://sentry.io for production debugging
 \$_ENV['sentry_dsn'] = '$sentry_dsn';
@@ -537,7 +537,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['geoip_locale'] = '$geoip_locale';
 
 // Large language model powered ticket reply and more
-\$_ENV['llm_backend'] = 'openai'; // openai/palm/huggingface/cf-workers-ai
+\$_ENV['llm_backend'] = '$llm_backend'; // openai/palm/huggingface/cf-workers-ai
 
 // OpenAI API Key for GPT powered ticket reply and more
 \$_ENV['openai_api_key'] = '$openai_api_key';
