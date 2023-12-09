@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">اسناد فقط برای کاربران پولی
+                                            <label class="form-label col-3 col-form-label">دانشنامه فقط برای کاربران پولی
                                                 قابل مشاهده باشد</label>
                                             <div class="col">
                                                 <select id="display_docs_only_for_paid_user" class="col form-select"

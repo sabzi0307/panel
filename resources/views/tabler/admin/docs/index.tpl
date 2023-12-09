@@ -6,10 +6,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">مدیریت اسناد</span>
+                        <span class="home-title">مدیریت دانشنامه</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">اسناد را مشاهده و مدیریت کنید</span>
+                        <span class="home-subtitle">مطالب را مشاهده و مدیریت کنید</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">

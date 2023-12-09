@@ -135,13 +135,13 @@ final class DocsController extends BaseController
         if (! $doc->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'به‌روزرسانی سند انجام نشد',
+                'msg' => 'به‌روزرسانی مطلب انجام نشد',
             ]);
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'اسناد با موفقیت به روز شد',
+            'msg' => 'مطلب با موفقیت به روز شد',
         ]);
     }
 

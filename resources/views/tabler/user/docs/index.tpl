@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">مرکز اسناد</span>
+                        <span class="home-title">دانشنامه</span>
                     </h2>
                     <div class="page-pretitle my-3">
                         <span class="home-subtitle">آموزش نصب و استفاده را اینجا ببینید</span>
@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">لیست اسناد</h3>
+                            <h3 class="card-title">لیست مطالب</h3>
                         </div>
                         <div class="list-group list-group-flush list-group-hoverable">
                             {foreach $docs as $doc}
