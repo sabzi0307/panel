@@ -28,7 +28,7 @@
                 </div>
                 <div class="mb-2">
                     <label class="form-label">احراز هویت دو مرحله ای</label>
-                    <input id="mfa_code" type="email" class="form-control" placeholder="اگر تنظیم نشده، می تواند خالی باشد">
+                    <input style="direction: rtl;" id="mfa_code" type="email" class="form-control" placeholder="اگر تنظیم نشده، می تواند خالی باشد">
                 </div>
                 <div class="mb-2">
                     <label class="form-check">

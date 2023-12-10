@@ -216,6 +216,7 @@
                                 </a>
                             </div>
                         </li>
+                        {{if $public_setting['display_detect']}}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
                                data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -241,6 +242,7 @@
                                 </a>
                             </div>
                         </li>
+                        {{/if}}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                                data-bs-auto-close="outside" role="button" aria-expanded="false">

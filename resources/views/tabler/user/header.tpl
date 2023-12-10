@@ -181,6 +181,7 @@
                                 {/if}
                             </div>
                         </li>
+                        {{if $public_setting['display_detect']}}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
                                data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -191,19 +192,20 @@
                                         ممیزی
                                     </span>
                             </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="/user/detect">
-                                    <i class="ti ti-barrier-block"></i>&nbsp;
-                                    قوانین
-                                </a>
-                                {if $public_setting['display_detect_log']}
-                                    <a class="dropdown-item" href="/user/detect/log">
-                                        <i class="ti ti-notes"></i>&nbsp;
-                                        سوابق ممیزی
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/user/detect">
+                                        <i class="ti ti-barrier-block"></i>&nbsp;
+                                        قوانین
                                     </a>
-                                {/if}
-                            </div>
-                        </li>
+                                    {{if $public_setting['display_detect_log']}}
+                                        <a class="dropdown-item" href="/user/detect/log">
+                                            <i class="ti ti-notes"></i>&nbsp;
+                                            سوابق ممیزی
+                                        </a>
+                                    {/if}
+                                </div>
+                                </li>
+                            {/if}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                                data-bs-auto-close="outside" role="button" aria-expanded="false">

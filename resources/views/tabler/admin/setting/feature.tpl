@@ -57,14 +57,27 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">نمایش منوی ممیزی
+                                                کاربران</label>
+                                            <div class="col">
+                                                <select id="display_detect" class="col form-select"
+                                                    value="{$settings['display_detect']}">
+                                                    <option value="0" {if ! $settings['display_detect']}selected{/if}>
+                                                        غیرفعال</option>
+                                                    <option value="1" {if $settings['display_detect']}selected{/if}>فعال
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">نمایش سوابق ممیزی
                                                 کاربران</label>
                                             <div class="col">
-                                                <select id="display_docs" class="col form-select"
-                                                    value="{$settings['display_docs']}">
-                                                    <option value="0" {if ! $settings['display_docs']}selected{/if}>
+                                                <select id="display_detect_log" class="col form-select"
+                                                    value="{$settings['display_detect_log']}">
+                                                    <option value="0" {if ! $settings['display_detect_log']}selected{/if}>
                                                         غیرفعال</option>
-                                                    <option value="1" {if $settings['display_docs']}selected{/if}>فعال
+                                                    <option value="1" {if $settings['display_detect_log']}selected{/if}>فعال
                                                     </option>
                                                 </select>
                                             </div>

@@ -1622,11 +1622,11 @@
     {
         "id": null,
         "item": "display_detect_log",
-        "value": "1",
+        "value": "0",
         "class": "feature",
         "is_public": 1,
         "type": "bool",
-        "default": "1",
+        "default": "0",
         "mark": "show user audit records"
     },
     {
@@ -1908,5 +1908,15 @@
         "type": "bool",
         "default": "0",
         "mark": "Display node streaming unlock status"
+    },
+    {
+        "id": null,
+        "item": "display_detect",
+        "value": "0",
+        "class": "feature",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Display detect ruls and logs in user"
     }
 ]
