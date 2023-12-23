@@ -9,7 +9,7 @@
                         <span class="home-title">سابقه اشتراک</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">اخیراً {$config['subscribeLog_keep_days']} تمام سوابق اشتراک در روز</span>
+                        <span class="home-subtitle">اخیراً {$subscribe_log_retention_days} تمام سوابق اشتراک در روز</span>
                     </div>
                 </div>
             </div>

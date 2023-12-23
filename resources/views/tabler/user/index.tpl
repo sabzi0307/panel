@@ -233,6 +233,15 @@
                                                 کپی
                                             </a>
                                         </p>
+                                        <p>
+                                            V2Ray JSON: <code class="copy btn-icon"
+                                                data-clipboard-text="{$UniversalSub}/v2rayjson">{$UniversalSub}/v2rayjson</code>
+                                            <a style="font-size: 90%;" class="copy btn-icon"
+                                                data-clipboard-text="{$UniversalSub}/v2rayjson">
+                                                <i class="ti ti-copy"></i>
+                                                کپی
+                                            </a>
+                                        </p>
                                         {if $public_setting['enable_ss_sub']}
                                             <p>
                                                 SIP008: <code class="copy btn-icon"

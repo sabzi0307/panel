@@ -2,6 +2,47 @@
 
 declare(strict_types=1);
 
+$_ENV['V2RayJson_Config'] = [
+    'log' => [
+        'error' => [
+            'level' => 'error',
+            'type' => 'console',
+        ],
+        'access' => [
+            'type' => 'none',
+        ],
+    ],
+    'dns' => [
+        'nameServer' => [
+            [
+                'address' => '1.1.1.1',
+            ],
+            [
+                'address' => '1.0.0.1',
+            ],
+        ],
+    ],
+    'inbounds' => [
+        [
+            'protocol' => 'socks',
+            'settings' => [
+                'udpEnabled' => true,
+                'address' => '127.0.0.1',
+                'packetEncoding' => 'packet',
+            ],
+            'port' => 7892,
+            'listen' => '127.0.0.1',
+        ],
+        [
+            'protocol' => 'http',
+            'settings' => [],
+            'port' => 7893,
+            'listen' => '127.0.0.1',
+        ],
+    ],
+    'outbounds' => [],
+];
+
 #Cloudflare
 $_ENV['Internet_Service_Providers'] = array(
     array(

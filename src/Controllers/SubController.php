@@ -37,7 +37,7 @@ final class SubController extends BaseController
     {
         $err_msg = 'پیوند اشتراک نامعتبر است';
         $subtype = $args['subtype'];
-        $subtype_list = ['json', 'clash', 'sip008', 'singbox', 'sip002', 'ss', 'v2ray', 'trojan'];
+        $subtype_list = ['json', 'clash', 'sip008', 'singbox', 'v2rayjson', 'sip002', 'ss', 'v2ray', 'trojan'];
 
         if (! $_ENV['Subscribe'] ||
             ! in_array($subtype, $subtype_list) ||
@@ -66,7 +66,7 @@ final class SubController extends BaseController
 
         $content_type = match ($subtype) {
             'clash' => 'application/yaml',
-            'json','sip008','singbox' => 'application/json',
+            'json','sip008','singbox', 'v2rayjson' => 'application/json',
             default => 'text/plain',
         };
 
