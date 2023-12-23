@@ -512,7 +512,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
-\$_ENV['detect_gfw_port']                 = $detect_gfw_port;                                                                 //The TCP port opened by all node servers, commonly used is 22 (SSH port)
+\$_ENV['detect_gfw_port']                 = $detect_gfw_port; //The TCP port opened by all node servers, commonly used is 22 (SSH port)
 \$_ENV['detect_gfw_url']                  = '$detect_gfw_url'; //The URL of the API that detects whether the node is blocked by gfw
 
 #offline detection
@@ -671,11 +671,13 @@ fi
     fi
 # fi
 
-
 current_dir=$(pwd)
 crontab -l > cron.tmp
-echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
-crontab cron.tmp
+if ! grep -q "*/5 * * * * php $current_dir/xcat Cron" cron.tmp; then
+    # اضافه کردن خط به فایل cron.tmp
+    echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
+    crontab cron.tmp
+fi
 rm cron.tmp
 crond -b
 
