@@ -477,4 +477,140 @@ final class Tools
 
         return true;
     }
+
+
+    /**
+     * 判断是否 JSON
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+
+    public static function check_host($url): string
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => ["Accept: application/json"],
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $tcp_results = [];
+        } else {
+            $request_id = json_decode($response, true)["request_id"];
+            sleep(5);
+            $tcp_results = Tools::get_check_host_results($request_id);
+
+        }
+        curl_close($ch);
+        
+        $json_pings = json_encode($tcp_results, JSON_PRETTY_PRINT);
+        return $json_pings;
+    }
+
+    /**
+     * 判断是否 JSON
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function get_check_host_results($request_id): array
+    {
+        $json_pings = "خطا";
+        $url = "https://check-host.net/check-result/" . $request_id;
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => ["Accept: application/json"],
+        ]);
+
+        $response = curl_exec($ch);
+
+
+        if (curl_errno($ch)) {
+            echo "cURL error: " . curl_error($ch);
+        } else {
+            $decoded_response = json_decode($response, true);
+
+            $Tehran_ping = $Shiraz_ping = $Esfahan_ping = $Karaj_ping = 0;
+            $Pings = [];
+
+            if (!empty($decoded_response["ir1.node.check-host.net"])) {
+                $count = 0;
+                foreach ($decoded_response["ir1.node.check-host.net"][0] as $value) {
+                    if (@$value[0] == "OK") {
+                        $count++;
+                        $Tehran_ping += $value[1];
+                    }
+                }
+                if ($count !== 0) {
+                    $Tehran_ping = (@$Tehran_ping / $count) * 1000;
+                }
+
+            }
+
+            if (!empty($decoded_response["ir3.node.check-host.net"])) {
+                $count = 0;
+                foreach ($decoded_response["ir3.node.check-host.net"][0] as $value) {
+                    if (@$value[0] == "OK") {
+                        $count++;
+                        $Shiraz_ping += $value[1];
+                    }
+                }
+                if ($count !== 0) {
+                    $Shiraz_ping = (@$Shiraz_ping / $count) * 1000;
+                }
+
+
+            }
+
+            if (!empty($decoded_response["ir5.node.check-host.net"])) {
+                $count = 0;
+                foreach ($decoded_response["ir5.node.check-host.net"][0] as $value) {
+                    if (@$value[0] == "OK") {
+                        $count++;
+                        $Esfahan_ping += $value[1];
+                    }
+                }
+                if ($count !== 0) {
+                    $Esfahan_ping = (@$Esfahan_ping / $count) * 1000;
+                }
+
+            }
+
+            if (!empty($decoded_response["ir6.node.check-host.net"])) {
+                $count = 0;
+                foreach ($decoded_response["ir6.node.check-host.net"][0] as $value) {
+                    if (@$value[0] == "OK") {
+                        $count++;
+                        $Karaj_ping += $value[1];
+                    }
+                }
+                if ($count !== 0) {
+                    $Karaj_ping = (@$Karaj_ping / $count) * 1000;
+                }
+
+            }
+
+            $Pings = [
+                "Tehran" => $Tehran_ping,
+                "Esfahan" => $Esfahan_ping,
+                "Shiraz" => $Shiraz_ping,
+                "Karaj" => $Karaj_ping,
+            ];
+
+        }
+
+        curl_close($ch);
+        return $Pings;
+    }
+
+
 }

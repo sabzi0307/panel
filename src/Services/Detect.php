@@ -38,24 +38,37 @@ final class Detect
                 $_ENV['detect_gfw_url']
             );
 
-            $json_tcping = json_decode(file_get_contents($api_url), true);
-            $result_tcping = $json_tcping['status'] === 'true';
-
-            if ($result_tcping && ! $node->gfw_block) {
+            if (stripos($_ENV['detect_gfw_url'], 'check-host.net') !== false) {
+                $json_tcping = json_decode(Tools::check_host($api_url), true);
+                foreach ($json_tcping as $city => $ping) {
+                    if ($city != "Tehran") {
+                        continue;
+                    }
+                    if ($ping != 0) {
+                        $result_tcping = false;
+                    } else {
+                        $result_tcping = true;
+                    }
+                }
+            } else {
+                $json_tcping = json_decode(file_get_contents($api_url), true);
+                $result_tcping = $json_tcping['status'] === 'true';
+            }
+            if ($result_tcping && !$node->gfw_block) {
                 continue;
             }
 
-            if (! $result_tcping && ! $node->gfw_block) {
+            if (!$result_tcping && !$node->gfw_block) {
                 //被墙了
-                echo 'گره شناسایی شد #' . $node->id . ' توسط GFW مسدود شده است' . PHP_EOL;
+                echo 'گره #' . $node->id . 'مسدود شده است' . PHP_EOL;
                 echo 'Send gfw mail to admin' . PHP_EOL;
 
                 try {
                     Notification::notifyAdmin(
                         $_ENV['appName'] . '-هشدار سیستم',
-                        'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' توسط دیوار'
+                        'سلام مدیر، گره #' . $node->name . ' توسط دیوار' . 'شناسایی شده'
                     );
-                } catch (GuzzleException|ClientExceptionInterface|TelegramSDKException $e) {
+                } catch (GuzzleException | ClientExceptionInterface | TelegramSDKException $e) {
                     echo $e->getMessage() . PHP_EOL;
                 }
 
@@ -75,6 +88,7 @@ final class Detect
                 continue;
             }
 
+
             if ($result_tcping && $node->gfw_block) {
                 echo 'گره شناسایی شد #' . $node->id . ' توسط GFW رفع انسداد شد' . PHP_EOL;
                 echo 'Send gfw mail to admin' . PHP_EOL;
@@ -84,7 +98,7 @@ final class Detect
                         $_ENV['appName'] . '-راهنمایی سیستم',
                         'سلام مدیر، سیستم گره را کشف می کند ' . $node->name . ' از دیوار لیز خورد'
                     );
-                } catch (GuzzleException|ClientExceptionInterface|TelegramSDKException $e) {
+                } catch (GuzzleException | ClientExceptionInterface | TelegramSDKException $e) {
                     echo $e->getMessage() . PHP_EOL;
                 }
 
@@ -101,6 +115,7 @@ final class Detect
                 $node->gfw_block = false;
                 $node->save();
             }
+
         }
     }
 
@@ -125,9 +140,11 @@ final class Detect
                 continue;
             }
 
-            if ($user->is_banned === 1 ||
+            if (
+                $user->is_banned === 1 ||
                 ($user->is_admin && $_ENV['auto_detect_ban_allow_admin']) ||
-                in_array($user->id, $_ENV['auto_detect_ban_allow_users'])) {
+                in_array($user->id, $_ENV['auto_detect_ban_allow_users'])
+            ) {
                 continue;
             }
 

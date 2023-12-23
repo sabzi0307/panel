@@ -263,7 +263,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$detect_gfw_url" ];then
         echo >&2 "detect_gfw_url not set! using 443 "
-        detect_gfw_url=http://example.com:8080/tcping?ip={ip}&port={port}
+        detect_gfw_url='https://check-host.net/check-tcp?host={ip}:{port}&node=ir1.node.check-host.net&node=ir3.node.check-host.net&node=ir5.node.check-host.net&node=ir6.node.check-host.net'
     fi
 
     if [ -z "$enable_detect_offline" ];then
