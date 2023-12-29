@@ -79,7 +79,7 @@ final class PerfectMoney extends Base
 
         $pl->save();
 
-        $exchange_amount = Exchange::exchange((float)$price, 'IRR', Config::obtain('perfectmoney_currency'));
+        $exchange_amount = (new Exchange())->exchange((float) $price, 'IRR', Config::obtain('perfectmoney_currency'));
         $data = [
             'PAYEE_ACCOUNT' => Config::obtain('perfectmoney_payee_account'),
             'PAYEE_NAME' => $_ENV['appName'],
@@ -131,7 +131,7 @@ final class PerfectMoney extends Base
         $batch = $_GET['PAYMENT_BATCH_NUM'];
         $money = $_GET['PAYMENT_AMOUNT'];
         $unit = $_GET['PAYMENT_UNITS'];
-        $exchange_amount = Exchange::exchange((float)$money, $unit, 'IRR');
+        $exchange_amount = (new Exchange())->exchange((float) $money, Config::obtain('perfectmoney_currency'), 'IRR');
 
         $html = '';
 
