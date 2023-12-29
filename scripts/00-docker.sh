@@ -141,37 +141,37 @@ if [ "$INIT" = true ];then
 
     if [ -z "$redis_ssl" ];then
         echo >&2 "redis_ssl not set!"
-        redis_ssl= false
+        redis_ssl=false
     fi
 
     if [ -z "$enable_rate_limit" ];then
         echo >&2 "enable_rate_limit not set!"
-        enable_rate_limit= false
+        enable_rate_limit=false
     fi
 
     if [ -z "$rate_limit_ip" ];then
         echo >&2 "rate_limit_ip not set!"
-        rate_limit_ip = 120
+        rate_limit_ip=120
     fi
 
     if [ -z "$rate_limit_sub" ];then
         echo >&2 "rate_limit_sub not set!"
-        rate_limit_sub = 30
+        rate_limit_sub=30
     fi
 
     if [ -z "$rate_limit_webapi" ];then
         echo >&2 "rate_limit_webapi not set!"
-        rate_limit_webapi = 600
+        rate_limit_webapi=600
     fi
 
     if [ -z "$rate_limit_admin_api" ];then
         echo >&2 "rate_limit_admin_api not set!"
-        rate_limit_admin_api = 60
+        rate_limit_admin_api=60
     fi
 
     if [ -z "$rate_limit_user_api" ];then
         echo >&2 "rate_limit_user_api not set!"
-        rate_limit_user_api = 60
+        rate_limit_user_api=60
     fi
 
     if [ -z "$mail_filter" ];then
