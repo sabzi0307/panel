@@ -1323,7 +1323,6 @@
                                     مراجعه فرمایید.
                                 {else}
                                     سطح حساب شما {$user->class} و تا {$class_expire_days} روز دیگر معتبر است.
-                                    ({$class_expire})
                                 {/if}
                             </p>
                         </div>
