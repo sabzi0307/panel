@@ -298,7 +298,7 @@ $_ENV['Clash_Config'] = [
     'external-controller' => '0.0.0.0:9090',
 ];
 
-$_ENV['Clash_Group_Indexes'] = [0, 1, 2, 5, 7, 8, 9, 12];
+$_ENV['Clash_Group_Indexes'] = [0, 1, 2, 9];
 
 $_ENV['Clash_Group_Config'] = [
     'geox-url' => [
