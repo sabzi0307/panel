@@ -44,7 +44,7 @@ use const FILTER_VALIDATE_INT;
 use const FILTER_VALIDATE_IP;
 
 final class Tools
-{    
+{
     /**
      * 查询IP归属
      *
@@ -94,15 +94,14 @@ final class Tools
                 // return $city . ', ' . $country;
             }
 
-        if ($city !== null) {
-            $data = $city . ', ' . $country;
+            if ($city !== null && $country !== null) {
+                $data = $city . ', ' . $country;
+            } else if ($city == null && $country !== null) {
+                $data = $country;
+            } else if ($city !== null && $country == null) {
+                $data = $city;
+            }
         }
-
-        if ($country !== null) {
-            $data = $country;
-        }
-
-
 
         return $data;
     }
@@ -510,7 +509,7 @@ final class Tools
 
         }
         curl_close($ch);
-        
+
         $json_pings = json_encode($tcp_results, JSON_PRETTY_PRINT);
         return $json_pings;
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89d355ede511bcdac97ebf08436d41fc",
+    "content-hash": "85c846fc41bfa1c021b7b922ef56d9ec",
     "packages": [
         {
             "name": "anankke/omnipay-alipay",
@@ -123,16 +123,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.295.8",
+            "version": "3.296.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "dc23d1d1e2e0413a3707d5dd90d8c43cb6c7521b"
+                "reference": "7c61ea4f7df51e6e9f1e7fc1112e296bed8429f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/dc23d1d1e2e0413a3707d5dd90d8c43cb6c7521b",
-                "reference": "dc23d1d1e2e0413a3707d5dd90d8c43cb6c7521b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7c61ea4f7df51e6e9f1e7fc1112e296bed8429f9",
+                "reference": "7c61ea4f7df51e6e9f1e7fc1112e296bed8429f9",
                 "shasum": ""
             },
             "require": {
@@ -212,9 +212,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.295.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.296.0"
             },
-            "time": "2024-01-08T19:04:58+00:00"
+            "time": "2024-01-12T19:32:12+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1200,16 +1200,16 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
-                "reference": "63fc240a047788fbc2ebe153de85cb72fce88440"
+                "reference": "82025fd7ac761cc50d5dbd9f9532ebf066821858"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/63fc240a047788fbc2ebe153de85cb72fce88440",
-                "reference": "63fc240a047788fbc2ebe153de85cb72fce88440",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/82025fd7ac761cc50d5dbd9f9532ebf066821858",
+                "reference": "82025fd7ac761cc50d5dbd9f9532ebf066821858",
                 "shasum": ""
             },
             "require": {
@@ -1251,11 +1251,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-12-21T14:17:35+00:00"
+            "time": "2024-01-01T15:17:18+00:00"
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
@@ -1301,7 +1301,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -1352,7 +1352,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1400,16 +1400,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "f014850671278a8d1a0e9fd2f421aad5b487ab9e"
+                "reference": "d41a5b7b1dc67bf640f16bf50c376b29ba575da5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/f014850671278a8d1a0e9fd2f421aad5b487ab9e",
-                "reference": "f014850671278a8d1a0e9fd2f421aad5b487ab9e",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/d41a5b7b1dc67bf640f16bf50c376b29ba575da5",
+                "reference": "d41a5b7b1dc67bf640f16bf50c376b29ba575da5",
                 "shasum": ""
             },
             "require": {
@@ -1469,11 +1469,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-12-21T01:49:42+00:00"
+            "time": "2024-01-07T15:44:56+00:00"
         },
         {
             "name": "illuminate/macroable",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -1519,7 +1519,7 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -1569,16 +1569,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v10.39.0",
+            "version": "v10.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "6705007f24091863fefdf1f9320ac2c121cf37f1"
+                "reference": "76a79337200b06b4b2a7fe93902aa770d6dcec03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/6705007f24091863fefdf1f9320ac2c121cf37f1",
-                "reference": "6705007f24091863fefdf1f9320ac2c121cf37f1",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/76a79337200b06b4b2a7fe93902aa770d6dcec03",
+                "reference": "76a79337200b06b4b2a7fe93902aa770d6dcec03",
                 "shasum": ""
             },
             "require": {
@@ -1636,7 +1636,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-12-25T01:11:56+00:00"
+            "time": "2024-01-07T16:54:08+00:00"
         },
         {
             "name": "irazasyed/telegram-bot-sdk",
@@ -4966,16 +4966,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v13.8.0",
+            "version": "v13.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "577d64a3fdc92ba2915263299a69136a2813f4a3"
+                "reference": "3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/577d64a3fdc92ba2915263299a69136a2813f4a3",
-                "reference": "577d64a3fdc92ba2915263299a69136a2813f4a3",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d",
+                "reference": "3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d",
                 "shasum": ""
             },
             "require": {
@@ -5019,9 +5019,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v13.8.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v13.9.0"
             },
-            "time": "2024-01-04T19:52:48+00:00"
+            "time": "2024-01-12T18:12:31+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -9380,16 +9380,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.8.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "5805f7a4e4958dbb5e944ef1e6edae0a303765e7"
+                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/5805f7a4e4958dbb5e944ef1e6edae0a303765e7",
-                "reference": "5805f7a4e4958dbb5e944ef1e6edae0a303765e7",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/14f5fff1e64118595db5408e946f3a22c75807f7",
+                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7",
                 "shasum": ""
             },
             "require": {
@@ -9399,11 +9399,11 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
             },
             "bin": [
-                "bin/phpcs",
-                "bin/phpcbf"
+                "bin/phpcbf",
+                "bin/phpcs"
             ],
             "type": "library",
             "extra": {
@@ -9456,7 +9456,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-12-08T12:32:31+00:00"
+            "time": "2024-01-11T20:47:48+00:00"
         },
         {
             "name": "symfony/cache",
