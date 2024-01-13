@@ -124,9 +124,14 @@ if [ "$INIT" = true ];then
         redis_port=6379
     fi    
 
-    if [ -z "$redis_timeout" ];then
-        echo >&2 "redis_timeout not set!, using default 2"
-        redis_timeout=2
+    if [ -z "$redis_connect_timeout" ];then
+        echo >&2 "redis_connect_timeout not set!, using default 2.0"
+        redis_connect_timeout=2.0
+    fi
+
+    if [ -z "$redis_read_timeout" ];then
+        echo >&2 "redis_read_timeout not set!, using default 8.0"
+        redis_read_timeout=8.0
     fi
 
     if [ -z "$redis_username" ];then
@@ -142,6 +147,11 @@ if [ "$INIT" = true ];then
     if [ -z "$redis_ssl" ];then
         echo >&2 "redis_ssl not set!"
         redis_ssl=false
+    fi
+
+    if [ -z "$redis_ssl_context" ];then
+        echo >&2 "redis_ssl_context not set!"
+        redis_ssl_context=[]
     fi
 
     if [ -z "$enable_rate_limit" ];then
@@ -435,16 +445,16 @@ cat <<EOF >/var/www/html/conf/.config.php
 <?php
 
 //basic settings--------------------------------------------------------------------------------------------
-\$_ENV['key']           = '$key';                      //Cookie encryption key, please be sure to modify this key to a random string
-\$_ENV['pwdMethod']     = '$pwdMethod';                //Password encryption optional md5, sha256, bcrypt, argon2i, argon2id
-\$_ENV['salt']          = '$salt';                     //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
+\$_ENV['key']           = '$key';                       //Cookie encryption key, please be sure to modify this key to a random string
+\$_ENV['pwdMethod']     = '$pwdMethod';                 //Password encryption optional md5, sha256, bcrypt, argon2i, argon2id
+\$_ENV['salt']          = '$salt';                      //Recommended for md5/sha256， bcrypt/argon2i/argon2id will ignore this
 
 \$_ENV['debug']         = $debug;                       //debug mode switch，The production environment should be kept as false
 \$_ENV['appName']       = '$appName';                   // Site name
 \$_ENV['baseUrl']       = '$baseUrl';                   // site address
 
 \$_ENV['webAPI']        = $WebAPI;                      // Whether to enable the WebAPI function
-\$_ENV['webAPIUrl']     = \$_ENV['baseUrl'];           //WebAPI地址，如需和站点名称相同，请不要修改
+\$_ENV['webAPIUrl']     = \$_ENV['baseUrl'];            //WebAPI地址，如需和站点名称相同，请不要修改
 \$_ENV['muKey']         = '$muKey';                     //WebAPI Key, used for communication between the node server and the panel，请务必修改此key为随机字符串
 \$_ENV['checkNodeIp']   = $checkNodeIp;                 //Whether webapi verifies node ip
 
@@ -456,76 +466,78 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['db_host']      = '$db_host';
 \$_ENV['db_socket']    = '$db_socket';
 \$_ENV['db_database']  = '$MYSQL_DATABASE';           //Database name
-\$_ENV['db_username']  = '$MYSQL_USER';           //database username
+\$_ENV['db_username']  = '$MYSQL_USER';               //database username
 \$_ENV['db_password']  = '$MYSQL_PASSWORD';           //The password corresponding to the username
-\$_ENV['db_port']      = '$db_port';               //database poprt
+\$_ENV['db_port']      = '$db_port';                  //database poprt
 #advanced
 \$_ENV['db_charset']   = '$db_charset';
 \$_ENV['db_collation'] = '$db_collation';
 \$_ENV['db_prefix']    = '$db_prefix';
 
 //Redis settings-------------------------------------------------------------------------------------------
-\$_ENV['redis_host']     = '$redis_host';        //Redis address
-\$_ENV['redis_port']     = $redis_port;               //Redis port
-\$_ENV['redis_timeout']  = $redis_timeout;                  //Redis connection timeout, in seconds
-\$_ENV['redis_username'] = '$redis_username';                 //Redis username, leave it blank to connect without username
-\$_ENV['redis_password'] = '$redis_password';                 //Redis password, leave blank to have no password
-\$_ENV['redis_ssl']      = $redis_ssl;              //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
+\$_ENV['redis_host']             = '$redis_host';             //Redis address
+\$_ENV['redis_port']             = $redis_port;               //Redis port
+\$_ENV['redis_connect_timeout']  = $redis_connect_timeout;    //Redis connection timeout, in seconds
+\$_ENV['redis_read_timeout']     = $redis_read_timeout;       //Redis connection timeout, in seconds
+\$_ENV['redis_username']         = '$redis_username';         //Redis username, leave it blank to connect without username
+\$_ENV['redis_password']         = '$redis_password';         //Redis password, leave blank to have no password
+\$_ENV['redis_ssl']              = $redis_ssl;                //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
+\$_ENV['redis_ssl_context']      = $redis_ssl_context;        //Whether to use SSL to connect to Redis. If SSL is used, the Redis port should be the TLS port of the Redis instance.
 
 //Rate Limit setting--------------------------------------------------------------------------------------------
-\$_ENV['enable_rate_limit']    = $enable_rate_limit;            //Whether to enable request restriction
+\$_ENV['enable_rate_limit']    = $enable_rate_limit;         //Whether to enable request restriction
 \$_ENV['rate_limit_ip']        = $rate_limit_ip;             //Global request limit per minute per IP
-\$_ENV['rate_limit_sub']       = $rate_limit_sub;              //Subscription link request limit per user per minute
-\$_ENV['rate_limit_webapi']    = $rate_limit_webapi;             //WebAPI key request limit per minute per node
-\$_ENV['rate_limit_user_api']  = $rate_limit_user_api;              //API request limit per user per minute
-\$_ENV['rate_limit_admin_api'] = $rate_limit_admin_api;              //API request limit per admin per minute
+\$_ENV['rate_limit_sub']       = $rate_limit_sub;            //Subscription link request limit per user per minute
+\$_ENV['rate_limit_webapi']    = $rate_limit_webapi;         //WebAPI key request limit per minute per node
+\$_ENV['rate_limit_user_api']  = $rate_limit_user_api;       //API request limit per user per minute
+\$_ENV['rate_limit_admin_api'] = $rate_limit_admin_api;      //API request limit per admin per minute
 
 //E-Mail settings--------------------------------------------------------------------------------------------
-\$_ENV['mail_filter']        = $mail_filter;            //0: off; 1: whitelist mode; 2; blacklist mode;
+\$_ENV['mail_filter']        = $mail_filter;                 //0: off; 1: whitelist mode; 2; blacklist mode;
 \$_ENV['mail_filter_list']   = array($mail_filter_list);
 
 //Registered user settings---------------------------------------------------------------------------------------
 #Base
-\$_ENV['enable_checkin']             = $enable_checkin;         // Whether to enable the sign-in function
-\$_ENV['checkinMin']                 = $checkinMin;            // User sign-in minimum traffic unit MB
+\$_ENV['enable_checkin']             = $enable_checkin;       // Whether to enable the sign-in function
+\$_ENV['checkinMin']                 = $checkinMin;           // User sign-in minimum traffic unit MB
 \$_ENV['checkinMax']                 = $checkinMax;           // User check-in traffic with the most traffic
 
 #advanced
-\$_ENV['class_expire_reset_traffic'] = $class_expire_reset_traffic;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
-\$_ENV['enable_kill']                = $enable_kill;         //Whether to allow users to log out of accounts
+\$_ENV['class_expire_reset_traffic'] = $class_expire_reset_traffic;  //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
+\$_ENV['enable_kill']                = $enable_kill;                 //Whether to allow users to log out of accounts
 \$_ENV['enable_change_email']        = $enable_change_email;         //Whether to allow users to change account email
 
 #Email reminder for insufficient user data allowance
-\$_ENV['notify_limit_mode']          = $notify_limit_mode;         //false is closed, per is reminded according to percentage, mb is reminded according to fixed remaining flow
-\$_ENV['notify_limit_value']         = $notify_limit_value;           //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
+\$_ENV['notify_limit_mode']          = $notify_limit_mode;          //false is closed, per is reminded according to percentage, mb is reminded according to fixed remaining flow
+\$_ENV['notify_limit_value']         = $notify_limit_value;         //When the previous item is per, fill in the percentage here; when the previous item is mb, fill in the traffic here
 
 //subscription settings---------------------------------------------------------------------------------------
-\$_ENV['Subscribe']                  = $Subscribe;                         //Does this site provide a subscription function?
+\$_ENV['Subscribe']                  = $Subscribe;            //Does this site provide a subscription function?
 \$_ENV['subUrl']                     = '$subUrl';             //Subscription address, if it needs to be the same as the site name, please do not modify
-\$_ENV['sub_token_len']              = $sub_token_len;                           //订阅token长度
+\$_ENV['sub_token_len']              = $sub_token_len;        //订阅token长度
 
 //Audit auto-ban settings--------------------------------------------------------------------------------------------
 \$_ENV['auto_detect_ban_allow_admin'] = $auto_detect_ban_allow_admin;        // Administrators are not subject to audit restrictions
-\$_ENV['auto_detect_ban_allow_users'] = $auto_detect_ban_allow_users;          // Exception User IDs for Audit Bans
+\$_ENV['auto_detect_ban_allow_users'] = $auto_detect_ban_allow_users;        // Exception User IDs for Audit Bans
 \$_ENV['auto_detect_ban_number']      = $auto_detect_ban_number;             // The number of procs needed to enforce a ban in mercy mode
-\$_ENV['auto_detect_ban_time']        = $auto_detect_ban_time;             // The duration of each ban in mercy mode (minutes)
+\$_ENV['auto_detect_ban_time']        = $auto_detect_ban_time;               // The duration of each ban in mercy mode (minutes)
 
 //node detection-----------------------------------------------------------------------------------------------
 #GFW detection, please [enable/disable] through crontab
-\$_ENV['detect_gfw_port']                 = $detect_gfw_port; //The TCP port opened by all node servers, commonly used is 22 (SSH port)
-\$_ENV['detect_gfw_url']                  = '$detect_gfw_url'; //The URL of the API that detects whether the node is blocked by gfw
+\$_ENV['detect_gfw_port']                 = $detect_gfw_port;   //The TCP port opened by all node servers, commonly used is 22 (SSH port)
+\$_ENV['detect_gfw_url']                  = '$detect_gfw_url';  //The URL of the API that detects whether the node is blocked by gfw
 
 #offline detection
 \$_ENV['enable_detect_offline']           = $enable_detect_offline;
 
-\$_ENV['enable_login_bind_ip']   = $enable_login_bind_ip;        //Whether to bind the login thread to the IP
-\$_ENV['enable_login_bind_device']     = $enable_login_bind_device;           //bind the login thread to the device
-\$_ENV['rememberMeDuration']     = $rememberMeDuration;           //Remember the number of days of account duration when logging in
-\$_ENV['timeZone']               = '$timeZone';         //Requires a PHP-compatible timezone format
-\$_ENV['locale']                  = '$locale';              //Default language
-\$_ENV['theme']                  = '$theme';              //Default Theme
-\$_ENV['jump_delay']             = $jump_delay;                  //Jump delay, in ms, it is not recommended to be too long
-\$_ENV['keep_connect']           = $keep_connect;               // Speed limit to 1Mbps for traffic exhausted users
+\$_ENV['enable_login_bind_ip']   = $enable_login_bind_ip;               //Whether to bind the login thread to the IP
+\$_ENV['enable_login_bind_device']     = $enable_login_bind_device;     //bind the login thread to the device
+\$_ENV['rememberMeDuration']     = $rememberMeDuration;                 //Remember the number of days of account duration when logging in
+\$_ENV['timeZone']               = '$timeZone';                         //Requires a PHP-compatible timezone format
+\$_ENV['locale']                  = '$locale';                          //Default language
+\$_ENV['theme']                  = '$theme';                            //Default Theme
+\$_ENV['jump_delay']             = $jump_delay;                         //Jump delay, in ms, it is not recommended to be too long
+\$_ENV['keep_connect']           = $keep_connect;                       // Speed limit to 1Mbps for traffic exhausted users
 
 \$_ENV['jsdelivr_url'] = '$jsdelivr_url'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
 
@@ -622,7 +634,7 @@ fi
                 echo "Table is empty ..."
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
-                php xcat Tool importAllSettings
+                php xcat Tool importSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit
@@ -655,7 +667,7 @@ fi
                 echo "Table is empty ..."
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
-                php xcat Tool importAllSettings
+                php xcat Tool importSettings
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit

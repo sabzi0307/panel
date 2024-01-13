@@ -20,9 +20,8 @@ final class LoginLogController extends BaseController
             'field' => [
                 'id' => 'شناسه رویداد',
                 'userid' => 'شناسه کاربر',
-                'user_name' => 'نام کاربری',
-                'ip' => 'IP',
-                'location' => 'انتساب IP',
+                'ip' => 'Login IP',
+                'location' => 'مشخصات IP',
                 'datetime' => 'زمان',
                 'type' => 'نوع',
             ],
@@ -53,11 +52,31 @@ final class LoginLogController extends BaseController
         $page = $request->getParam('start') / $length + 1;
         $draw = $request->getParam('draw');
 
-        $logins = (new LoginIp())->orderBy('id', 'desc')->paginate($length, '*', '', $page);
+        $login_log = LoginIp::query();
+
+        $search = $request->getParam('search')['value'];
+
+        if ($search !== '') {
+            $login_log->where('userid', '=', $search)
+                ->orWhere('ip', 'LIKE', "%{$search}%");
+        }
+
+        $order = $request->getParam('order')[0]['dir'];
+
+        if ($request->getParam('order')[0]['column'] !== '0') {
+            $order_by = $request->getParam('columns')[$request->getParam('order')[0]['column']]['data'];
+
+            $login_log->orderBy($order_by, $order)->orderBy('id', 'desc');
+        } else {
+            $login_log->orderBy('id', $order);
+        }
+
+        $filtered = $login_log->count();
         $total = (new LoginIp())->count();
 
+        $logins = $login_log->paginate($length, '*', '', $page);
+
         foreach ($logins as $login) {
-            $login->user_name = $login->userName();
             $login->location = Tools::getIpLocation($login->ip);
             $login->datetime = Tools::toDateTime((int) $login->datetime);
             $login->type = $login->type();
@@ -66,7 +85,7 @@ final class LoginLogController extends BaseController
         return $response->withJson([
             'draw' => $draw,
             'recordsTotal' => $total,
-            'recordsFiltered' => $total,
+            'recordsFiltered' => $filtered,
             'logins' => $logins,
         ]);
     }

@@ -16,6 +16,8 @@ use function array_flip;
 use function base64_encode;
 use function bin2hex;
 use function closedir;
+use function count;
+use function date;
 use function explode;
 use function filter_var;
 use function floor;
@@ -49,29 +51,29 @@ final class Tools
      * @param string $ip
      *
      * @return string
-     *
-     * @throws InvalidDatabaseException
      */
     public static function getIpLocation(string $ip): string
     {
-        $err_msg = '';
+        $data = 'سرویس GeoIP2 پیکربندی نشده است';
         $city = null;
         $country = null;
 
-        if ($_ENV['maxmind_license_key'] === '') {
-            $err_msg = 'سرویس GeoIP2 پیکربندی نشده است';
-        } else {
-            $geoip = new GeoIP2();
+        if ($_ENV['maxmind_license_key'] !== '') {
+            try {
+                $geoip = new GeoIP2();
+            } catch (InvalidDatabaseException $e) {
+                return $data;
+            }
 
             try {
                 $city = $geoip->getCity($ip);
-            } catch (AddressNotFoundException $e) {
+            } catch (AddressNotFoundException|InvalidDatabaseException $e) {
                 $city = 'شهر نامعلوم';
             }
 
             try {
                 $country = $geoip->getCountry($ip);
-            } catch (AddressNotFoundException $e) {
+            } catch (AddressNotFoundException|InvalidDatabaseException $e) {
                 $country = 'کشور ناشناخته';
             }
 
@@ -92,21 +94,17 @@ final class Tools
                 // return $city . ', ' . $country;
             }
 
-            if ($city !== null) {
-                $res .= $city . ', ';
-                // return $city . ', ' . $country;
-            }
+        if ($city !== null) {
+            $data = $city . ', ' . $country;
+        }
 
-            if ($country !== null) {
-                $res .= $country . ', ';
-                // return $country;
-            }
-            return $res;
+        if ($country !== null) {
+            $data = $country;
         }
 
 
 
-        return $err_msg;
+        return $data;
     }
 
     public static function getServerAddr($asn): string
@@ -195,9 +193,9 @@ final class Tools
         return round(pow(1000, $base - floor($base)), $precision) . $units[floor($base)];
     }
 
-    //虽然名字是toMB，但是实际上功能是from MB to B
-
     /**
+     * 虽然名字是toMB，但是实际上功能是from MB to B
+     *
      * @param $traffic
      *
      * @return int
@@ -207,9 +205,9 @@ final class Tools
         return (int) $traffic * 1048576;
     }
 
-    //虽然名字是toGB，但是实际上功能是from GB to B
-
     /**
+     * 虽然名字是toGB，但是实际上功能是from GB to B
+     *
      * @param $traffic
      *
      * @return int
@@ -285,17 +283,21 @@ final class Tools
 
     public static function getSsPort(): int
     {
-        if (
-            Config::obtain('min_port') > 65535
-            || Config::obtain('min_port') <= 0
-            || Config::obtain('max_port') > 65535
-            || Config::obtain('max_port') <= 0
+        $max_port = Config::obtain('max_port');
+        $min_port = Config::obtain('min_port');
+
+        if ($min_port >= 65535
+            || $min_port <= 0
+            || $max_port > 65535
+            || $max_port <= 0
+            || $min_port > $max_port
+            || count(User::all()) >= $max_port - $min_port + 1
         ) {
             return 0;
         }
 
         $det = (new User())->pluck('port')->toArray();
-        $port = array_diff(range(Config::obtain('min_port'), Config::obtain('max_port')), $det);
+        $port = array_diff(range($min_port, $max_port), $det);
         shuffle($port);
 
         return $port[0];
@@ -464,6 +466,7 @@ final class Tools
 
     /**
      * 判断是否 JSON
+     * TODO: Remove this function when PHP 8.3 is minimum requirement and replace it with native function
      *
      * @param string $string
      *

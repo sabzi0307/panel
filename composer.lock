@@ -746,16 +746,16 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "4.8.5",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "0db25b506a8411a5e1644ebaa67123a6eb7b6a77"
+                "reference": "0efd071a3640af323e23c94122fe92cfd5199833"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/0db25b506a8411a5e1644ebaa67123a6eb7b6a77",
-                "reference": "0db25b506a8411a5e1644ebaa67123a6eb7b6a77",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/0efd071a3640af323e23c94122fe92cfd5199833",
+                "reference": "0efd071a3640af323e23c94122fe92cfd5199833",
                 "shasum": ""
             },
             "require": {
@@ -766,7 +766,7 @@
                 "khanamiryan/qrcode-detector-decoder": "^1.0.6"
             },
             "require-dev": {
-                "endroid/quality": "dev-master",
+                "endroid/quality": "dev-main",
                 "ext-gd": "*",
                 "khanamiryan/qrcode-detector-decoder": "^1.0.4||^2.0.2",
                 "setasign/fpdf": "^1.8.2"
@@ -780,7 +780,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.x-dev"
+                    "dev-main": "5.x-dev"
                 }
             },
             "autoload": {
@@ -809,7 +809,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/4.8.5"
+                "source": "https://github.com/endroid/qr-code/tree/5.0.4"
             },
             "funding": [
                 {
@@ -817,7 +817,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-29T14:03:20+00:00"
+            "time": "2023-12-24T13:47:07+00:00"
         },
         {
             "name": "geoip2/geoip2",
@@ -1356,12 +1356,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "f6bf37a272fda164f6c451407c99f820eb1eb95b"
+                "reference": "0b26d49d4bb0986da1ca30bcc701d5c22722576b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/f6bf37a272fda164f6c451407c99f820eb1eb95b",
-                "reference": "f6bf37a272fda164f6c451407c99f820eb1eb95b",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/0b26d49d4bb0986da1ca30bcc701d5c22722576b",
+                "reference": "0b26d49d4bb0986da1ca30bcc701d5c22722576b",
                 "shasum": ""
             },
             "require": {
@@ -1396,7 +1396,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-10-30T00:59:22+00:00"
+            "time": "2023-12-28T16:46:25+00:00"
         },
         {
             "name": "illuminate/database",
@@ -1523,12 +1523,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
-                "reference": "2af69e712297cc38377593a72f00d430867e8bdc"
+                "reference": "7447caf65da6b183a3c247b78942c7633c059bd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pagination/zipball/2af69e712297cc38377593a72f00d430867e8bdc",
-                "reference": "2af69e712297cc38377593a72f00d430867e8bdc",
+                "url": "https://api.github.com/repos/illuminate/pagination/zipball/7447caf65da6b183a3c247b78942c7633c059bd4",
+                "reference": "7447caf65da6b183a3c247b78942c7633c059bd4",
                 "shasum": ""
             },
             "require": {
@@ -1565,7 +1565,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-04-17T16:01:53+00:00"
+            "time": "2024-01-03T22:51:06+00:00"
         },
         {
             "name": "illuminate/support",
@@ -1977,16 +1977,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v3.6.3",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "3dbdc2f220fa64e78e903477efa22858c72509be"
+                "reference": "c1832496b479708ca47276459268d454e557319d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/3dbdc2f220fa64e78e903477efa22858c72509be",
-                "reference": "3dbdc2f220fa64e78e903477efa22858c72509be",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/c1832496b479708ca47276459268d454e557319d",
+                "reference": "c1832496b479708ca47276459268d454e557319d",
                 "shasum": ""
             },
             "require": {
@@ -2032,9 +2032,9 @@
             "description": "The Mailgun SDK provides methods for all API functions.",
             "support": {
                 "issues": "https://github.com/mailgun/mailgun-php/issues",
-                "source": "https://github.com/mailgun/mailgun-php/tree/v3.6.3"
+                "source": "https://github.com/mailgun/mailgun-php/tree/v4.0.1"
             },
-            "time": "2023-12-01T10:04:01+00:00"
+            "time": "2024-01-08T19:37:43+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -6510,21 +6510,21 @@
         },
         {
             "name": "vectorface/googleauthenticator",
-            "version": "v3.0",
+            "version": "v3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vectorface/GoogleAuthenticator.git",
-                "reference": "bf6879959b69f7573038f4601d2c5b85dca8bb48"
+                "reference": "139fd0b6c28094f5d13f2ac8c71f9ff4f3e3d589"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vectorface/GoogleAuthenticator/zipball/bf6879959b69f7573038f4601d2c5b85dca8bb48",
-                "reference": "bf6879959b69f7573038f4601d2c5b85dca8bb48",
+                "url": "https://api.github.com/repos/Vectorface/GoogleAuthenticator/zipball/139fd0b6c28094f5d13f2ac8c71f9ff4f3e3d589",
+                "reference": "139fd0b6c28094f5d13f2ac8c71f9ff4f3e3d589",
                 "shasum": ""
             },
             "require": {
-                "endroid/qr-code": "^4.0.0",
-                "php": ">=7.3"
+                "endroid/qr-code": "^5.0.0",
+                "php": ">=8.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9"
@@ -6563,7 +6563,7 @@
                 "issues": "https://github.com/Vectorface/GoogleAuthenticator/issues",
                 "source": "https://github.com/Vectorface/GoogleAuthenticator"
             },
-            "time": "2021-04-20T19:40:40+00:00"
+            "time": "2024-01-10T21:14:16+00:00"
         },
         {
             "name": "voku/anti-xss",

@@ -239,8 +239,8 @@ return new class() implements MigrationInterface {
                 `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
                 `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Get the subscription type',
                 `request_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Request IP',
-                `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
                 `request_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'request time',
+                `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
                 PRIMARY KEY (`id`),
                 KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

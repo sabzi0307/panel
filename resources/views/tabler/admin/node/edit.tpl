@@ -167,10 +167,13 @@
                                 <span>تنظیمات ترافیک</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">ترافیک استفاده شده (GB)</label>
+                                <label class="form-label col-3 col-form-label">ترافیک استفاده شده</label>
                                 <div class="col">
                                     <input id="node_bandwidth" type="text" class="form-control"
                                         value="{$node->node_bandwidth}" disabled="">
+                                </div>
+                                <div class="col-auto">
+                                    <button id="reset-bandwidth" class="btn btn-red">ریست</button>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -224,7 +227,7 @@
                                     disabled="">
                                 <div class="row my-3">
                                     <div class="col">
-                                        <button id="reset-node-password" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="reset-password" class="btn btn-red">تنظیم مجدد</button>
                                         <button id="copy-password" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->password}">
                                             کپی
@@ -260,9 +263,26 @@
     const editor = new JSONEditor(container, options);
     editor.set({$node->custom_config})
 
-    $("#reset-node-password").click(function() {
+    $("#reset-bandwidth").click(function () {
         $.ajax({
-            url: '/admin/node/{$node->id}/reset',
+            url: '/admin/node/{$node->id}/reset_bandwidth',
+            type: 'POST',
+            dataType: "json",
+            success: function (data) {
+                if (data.ret === 1) {
+                    $('#success-message').text(data.msg);
+                    $('#success-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#reset-password").click(function () {
+        $.ajax({
+            url: '/admin/node/{$node->id}/reset_password',
             type: 'POST',
             dataType: "json",
             success: function(data) {

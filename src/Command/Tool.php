@@ -31,25 +31,27 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_UNICODE;
 use const PHP_EOL;
 use const STDIN;
+use const STDOUT;
 
 final class Tool extends Command
 {
     public string $description = <<<EOL
 ├─=: php xcat Tool [options]
 │ ├─ setTelegram             - Set up a Telegram bot
-│ ├─ resetAllSettings        - Override Settings Center settings with default values
-│ ├─ exportAllSettings       - export all settings
-│ ├─ importAllSettings       - import all settings
+│ ├─ resetSettings           - Override database configuration with default values
+│ ├─ exportSettings          - Export database configuration
+│ ├─ importSettings          - import all settings
 │ ├─ resetNodePassword       - Reset all node communication keys
+│ ├─ resetNodeBandwidth      - Reset all node traffic
 │ ├─ resetPort               - Reset individual user ports
-│ ├─ createAdmin             - Create an administrator account
-│ ├─ resetAllPort            - Reset all user ports
-│ ├─ resetTraffic            - Reset all user traffic
+│ ├─ resetBandwidth          - Reset all user traffic
+│ ├─ resetPassword           - Reset all user passwords
 │ ├─ clearSubToken           - clear user Sub Token
 │ ├─ generateUUID            - Generate new UUIDs for all users
 │ ├─ generateGa              - Generate new Ga Secrets for all users
 │ ├─ generateApiToken        - Generate a new API Token for all users
 │ ├─ setTheme                - Set a new theme for all users
+│ ├─ createAdmin             - Create an administrator account
 
 EOL;
 
@@ -83,7 +85,7 @@ EOL;
         }
     }
 
-    public function resetAllSettings(): void
+    public function resetSetting(): void
     {
         $settings = Config::all();
 
@@ -95,7 +97,7 @@ EOL;
         echo 'All database settings have been overridden with default values' . PHP_EOL;
     }
 
-    public function exportAllSettings(): void
+    public function exportSetting(): void
     {
         $settings = Config::all();
 
@@ -113,7 +115,7 @@ EOL;
         echo 'All database settings have been exported' . PHP_EOL;
     }
 
-    public function importAllSettings(): void
+    public function importSetting(): void
     {
         $json_settings = file_get_contents('./conf/settings.json');
         $settings = json_decode($json_settings, true);
@@ -186,58 +188,69 @@ EOL;
         echo 'All node passwords have been reset' . PHP_EOL;
     }
 
-    /**
-     * 重置用户端口
-     */
-    public function resetPort(): void
+    public function resetNodeBandwidth(): void
     {
-        fwrite(STDOUT, 'Please enter user id: ');
-        $user = (new ModelsUser())->find(trim(fgets(STDIN)));
+        $nodes = Node::all();
 
-        if ($user !== null) {
-            $user->port = Tools::getSsPort();
-            if ($user->save()) {
-                echo 'reset successful!';
-            }
-        } else {
-            echo 'User does not exist';
+        foreach ($nodes as $node) {
+            $node->node_bandwidth = 0;
+            $node->save();
         }
+
+        echo 'All node traffic has been reset' . PHP_EOL;
     }
 
     /**
      * 重置所有用户端口
      */
-    public function resetAllPort(): void
+    public function resetPort(): void
     {
         $users = ModelsUser::all();
 
+        if (count($users) === 0 || count($users) >= 65535) {
+            echo 'تعداد کاربران نامعتبر است' . PHP_EOL;
+            return;
+        }
+
+        (new ModelsUser())->update([
+            'port' => 0,
+        ]);
+
         foreach ($users as $user) {
-            $origin_port = $user->port;
             $user->port = Tools::getSsPort();
-            echo '$origin_port=' . $origin_port . '&$user->port=' . $user->port . PHP_EOL;
             $user->save();
         }
 
-        echo 'reset all ports successful';
+        echo 'همه پورت های کاربر ریست شده اند' . PHP_EOL;
     }
 
     /**
      * 重置所有用户流量
      */
-    public function resetTraffic(): void
+    public function resetBandwidth(): void
     {
-        try {
-            (new ModelsUser())->where('is_banned', 0)->update([
-                'd' => 0,
-                'u' => 0,
-                'transfer_today' => 0,
-            ]);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            return;
+        (new ModelsUser())->where('is_banned', 0)->update([
+            'd' => 0,
+            'u' => 0,
+            'transfer_today' => 0,
+        ]);
+
+        echo 'تمام ترافیک کاربر بازنشانی شده است' . PHP_EOL;
+    }
+
+    /**
+     * 重置所有用户密码
+     */
+    public function resetPassword(): void
+    {
+        $users = ModelsUser::all();
+
+        foreach ($users as $user) {
+            $user->pass = Hash::passwordHash(Tools::genRandomChar(32));
+            $user->save();
         }
 
-        echo 'reset traffic successful';
+        echo 'تمام رمزهای عبور کاربر بازنشانی شده است' . PHP_EOL;
     }
 
     /**
@@ -247,7 +260,7 @@ EOL;
     {
         Link::query()->truncate();
 
-        echo 'clear Sub Token successful';
+        echo 'همه کاربران پاک شدند Sub Token' . PHP_EOL;
     }
 
     /**
@@ -262,7 +275,7 @@ EOL;
             $user->save();
         }
 
-        echo 'generate UUID successful';
+        echo 'موارد جدید برای همه کاربران ایجاد شده است UUID' . PHP_EOL;
     }
 
     /**
@@ -281,7 +294,7 @@ EOL;
             }
         }
 
-        echo 'generate Ga Secret successful';
+        echo 'موارد جدید برای همه کاربران ایجاد شده است Ga Secret' . PHP_EOL;
     }
 
     /**
@@ -295,7 +308,24 @@ EOL;
             $user->generateApiToken();
         }
 
-        echo 'generate Api Token successful';
+        echo 'موارد جدید برای همه کاربران ایجاد شده است Api Token' . PHP_EOL;
+    }
+
+    /**
+     * 为所有用户设置新的主题
+     */
+    public function setTheme(): void
+    {
+        fwrite(STDOUT, 'لطفاً نام تم مورد نظر را وارد کنید: ');
+        $theme = trim(fgets(STDIN));
+        $users = ModelsUser::all();
+
+        foreach ($users as $user) {
+            $user->theme = $theme;
+            $user->save();
+        }
+
+        echo 'مجموعه تم جدید برای همه کاربران: ' . $theme . PHP_EOL;
     }
 
     /**
@@ -363,21 +393,6 @@ EOL;
             }
         } else {
             echo 'Canceled' . PHP_EOL;
-        }
-    }
-
-    /**
-     * 为所有用户设置新的主题
-     */
-    public function setTheme(): void
-    {
-        fwrite(STDOUT, 'Please enter a theme name to set: ');
-        $theme = trim(fgets(STDIN));
-        $users = ModelsUser::all();
-
-        foreach ($users as $user) {
-            $user->theme = $theme;
-            $user->save();
         }
     }
 }

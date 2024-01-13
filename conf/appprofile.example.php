@@ -142,31 +142,15 @@ $_ENV['SingBox_Config'] = [
                 'tag' => 'local',
                 'address' => 'local',
             ],
-            [
-                'tag' => 'cloudflare',
-                'address' => 'tcp://1.1.1.1',
-                'address_resolver' => 'local',
-                'strategy' => 'prefer_ipv4',
-            ],
         ],
         'rules' => [
             [
-                'clash_mode' => 'Direct',
-                'server' => 'local',
-            ],
-            [
-                'clash_mode' => 'Global',
-                'server' => 'cloudflare',
-            ],
-            [
-                'geosite' => [
-                    'ir',
-                ],
+                'outbound' => 'any',
                 'server' => 'local',
             ],
         ],
-        'final' => 'cloudflare',
-        'strategy' => 'prefer_ipv4',
+        'final' => 'local',
+        'strategy' => 'prefer_ipv6',
     ],
     'inbounds' => [
         [
@@ -207,28 +191,9 @@ $_ENV['SingBox_Config'] = [
             'type' => 'block',
             'tag' => 'block',
         ],
-        [
-            'type' => 'dns',
-            'tag' => 'dns',
-        ],
     ],
     'route' => [
-        'geoip' => [
-            'download_url' => 'https://github.com/Chocolate4U/Iran-sing-box-rules/releases/latest/download/geoip.db'
-        ],
-        'geosite' => [
-            'download_url' => 'https://github.com/Chocolate4U/Iran-sing-box-rules/releases/latest/download/geosite.db'
-        ],
         'rules' => [
-            [
-                'protocol' => 'dns',
-                'outbound' => 'dns',
-            ],
-            [
-                'network' => 'udp',
-                'port' => 53,
-                'outbound' => 'dns',
-            ],
             [
                 'protocol' => 'quic',
                 'port' => 443,
@@ -239,6 +204,10 @@ $_ENV['SingBox_Config'] = [
                 'outbound' => 'direct',
             ],
             [
+                'clash_mode' => 'Rule',
+                'outbound' => 'default',
+            ],
+            [
                 'clash_mode' => 'Global',
                 'outbound' => 'default',
             ],
@@ -247,43 +216,96 @@ $_ENV['SingBox_Config'] = [
                 'outbound' => 'block',
             ],
             [
-                'geosite' => 'ir',
+                'ip_is_private' => true,
                 'outbound' => 'direct',
             ],
             [
-                'geoip' => [
-                    "ir",
-                    "private",
-                    "arvancloud",
-                    "derakcloud",
-                    "iranserver",
-                    "parspack",
-                ],
-                'outbound' => 'direct',
-            ],
-            [
-                'geosite' => [
-                    "category-ads-all",
-                    "malware",
-                    "phishing",
-                    "cryptominers"
+                'rule_set' => [
+                    'geosite-category-ads-all',
+                    'geosite-malware',
+                    'geosite-phishing',
+                    'geosite-cryptominers',
+                    'geoip-malware',
+                    'geoip-phishing'
                 ],
                 'outbound' => 'block',
             ],
             [
-                'geoip' => [
-                    "malware",
-                    "phishing"
-                ],
-                'outbound' => 'block',
+                'rule_set' => 'geoip-ir',
+                'outbound' => 'direct',
+            ],
+            [
+                'rule_set' => 'geosite-ir',
+                'outbound' => 'direct',
+            ],
+        ],
+        'rule_set' => [
+            [
+                'tag' => 'geoip-ir',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geoip-ir.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geosite-ir',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geosite-ir.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geosite-category-ads-all',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geosite-category-ads-all.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geosite-malware',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geosite-malware.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geosite-phishing',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geosite-phishing.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geosite-cryptominers',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geosite-cryptominers.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geoip-malware',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geoip-malware.srs',
+                'download_detour' => 'direct',
+            ],
+            [
+                'tag' => 'geoip-phishing',
+                'type' => 'remote',
+                'format' => 'binary',
+                'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-sing-box-rules@rule-set/geoip-phishing.srs',
+                'download_detour' => 'direct',
             ],
         ],
         'auto_detect_interface' => true,
     ],
     'experimental' => [
-        'clash_api' => [
-            'store_mode' => true,
+        'cache_file' => [
+            'enabled' => true,
             'cache_id' => '',
+        ],
+        'clash_api' => [
+            'external_controller' => '127.0.0.1:9090',
         ],
     ],
 ];

@@ -9,7 +9,7 @@
                         <span class="home-title my-3">سابقه اشتراک</span>
                     </h2>
                     <div class="page-pretitle">
-                        <span class="home-subtitle">مشاهده سابقه اشتراک کاربر</span>
+                        <span class="home-subtitle">مشاهده سوابق اشتراک کاربر</span>
                     </div>
                 </div>
             </div>
@@ -40,8 +40,8 @@
     <script>
         let table = new DataTable('#data-table', {
             "serverSide": true,
-            "searching": false,
-            "ordering": false,
+            "searching": true,
+            "ordering": true,
             ajax: {
                 url: '/admin/subscribe/ajax',
                 type: 'POST',
@@ -59,6 +59,12 @@
                     data: '{$key}'
                 },
                 {/foreach}
+            ],
+            columnDefs: [
+                {
+                    orderable: false,
+                    targets: [4]
+                },
             ],
             "dom": "<'row px-3 py-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
