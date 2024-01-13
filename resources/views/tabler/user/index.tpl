@@ -356,7 +356,7 @@
                                                         افزوده شود.</a>
                                                     <br>
                                                     <a style="margin-top: 5px;"
-                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        href="hiddify://install-config?url={$UniversalSub}/clash#{$config['appName']}"
                                                         class="btn btn-primary">
                                                         افزودن خودکار به هیدیفای نکست
                                                     </a>
@@ -547,7 +547,7 @@
                                                         افزوده شود.</a>
                                                     <br>
                                                     <a style="margin-top: 5px;"
-                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        href="hiddify://install-config?url={$UniversalSub}/clash#{$config['appName']}"
                                                         class="btn btn-primary">
                                                         افزودن خودکار به هیدیفای نکست
                                                     </a>
@@ -900,7 +900,7 @@
                                                         افزوده شود.</a>
                                                     <br>
                                                     <a style="margin-top: 5px;"
-                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        href="hiddify://install-config?url={$UniversalSub}/clash#{$config['appName']}"
                                                         class="btn btn-primary">
                                                         افزودن خودکار به هیدیفای نکست
                                                     </a>
@@ -1052,7 +1052,7 @@
                                                         افزوده شود.</a>
                                                     <br>
                                                     <a style="margin-top: 5px;"
-                                                        href="hiddify://install-config?url={$UniversalSub}/singbox#{$config['appName']}"
+                                                        href="hiddify://install-config?url={$UniversalSub}/clash#{$config['appName']}"
                                                         class="btn btn-primary">
                                                         افزودن خودکار به هیدیفای نکست
                                                     </a>
