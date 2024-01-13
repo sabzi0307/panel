@@ -84,6 +84,10 @@ final class SubController extends BaseController
         }
 
         return $response->withHeader('Subscription-Userinfo', $sub_details)
+            ->withHeader('Profile-Title', $_ENV['appName'])
+            ->withHeader('profile-update-interval', 12)
+            ->withHeader('profile-web-page-url', $_ENV['appName']."/user")
+            ->withHeader('support-url', $_ENV['appName']."/user")
             ->withHeader('Content-Type', $content_type)
             ->write($sub_info);
     }
