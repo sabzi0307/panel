@@ -215,7 +215,7 @@ $_ENV['SingBox_Config'] = [
                 'protocol' => 'stun',
                 'outbound' => 'block',
             ],
-            [
+[
                 'ip_is_private' => true,
                 'outbound' => 'direct',
             ],
@@ -323,10 +323,104 @@ $_ENV['Clash_Config'] = [
 $_ENV['Clash_Group_Indexes'] = [0, 1, 2, 8];
 
 $_ENV['Clash_Group_Config'] = [
-    'geox-url' => [
-        'geoip' => 'https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geoip.dat',
-        'geosite' => 'https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geosite.dat',
-        'mmdb' => 'https://github.com/chocolate4u/Iran-clash-rules/releases/latest/download/geoip.metadb'
+    'rule-providers' => [
+        'ir' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'domain',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/ir.yaml',
+            'path' => './ruleset/ir.yaml',
+            'interval' => 86400
+        ],
+        'ads' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'domain',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/ads.yaml',
+            'path' => './ruleset/ads.yaml',
+            'interval' => 86400
+        ],
+        'malware' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'domain',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/malware.yaml',
+            'path' => './ruleset/malware.yaml',
+            'interval' => 86400
+        ],
+        'phishing' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'domain',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/phishing.yaml',
+            'path' => './ruleset/phishing.yaml',
+            'interval' => 86400
+        ],
+        'cryptominers' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'domain',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/cryptominers.yaml',
+            'path' => './ruleset/cryptominers.yaml',
+            'interval' => 86400
+        ],
+        'apps' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'classical',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/apps.yaml',
+            'path' => './ruleset/apps.yaml',
+            'interval' => 86400
+        ],
+        'ircidr' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/ircidr.yaml',
+            'path' => './ruleset/ircidr.yaml',
+            'interval' => 86400
+        ],
+        'private' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/private.yaml',
+            'path' => './ruleset/private.yaml',
+            'interval' => 86400
+        ],
+        'arvancloud' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/arvancloud.yaml',
+            'path' => './ruleset/arvancloud.yaml',
+            'interval' => 86400
+        ],
+        'derakcloud' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/derakcloud.yaml',
+            'path' => './ruleset/derakcloud.yaml',
+            'interval' => 86400
+        ],
+        'iranserver' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/iranserver.yaml',
+            'path' => './ruleset/iranserver.yaml',
+            'interval' => 86400
+        ],
+        'parspack' => [
+            'type' => 'http',
+            'format' => 'yaml',
+            'behavior' => 'ipcidr',
+            'url' => 'https://' . $_ENV['jsdelivr_url'] . 'gh/chocolate4u/Iran-clash-rules/releases/latest/download/parspack.yaml',
+            'path' => './ruleset/parspack.yaml',
+            'interval' => 86400
+        ],
+        
     ],
     'proxy-groups' => [
         [
@@ -410,19 +504,17 @@ $_ENV['Clash_Group_Config'] = [
         ],
     ],
     'rules' => [
-        'GEOIP,private,DIRECT,no-resolve',
-        'GEOSITE,category-ads-all,⛔️ تبلیغات',
-        'GEOSITE,malware,🚫 فیشینگ و مخرب',
-        'GEOSITE,phishing,🚫 فیشینگ و مخرب',
-        'GEOSITE,cryptominers,🚫 فیشینگ و مخرب',
-        'GEOIP,malware,🚫 فیشینگ و مخرب',
-        'GEOIP,phishing,🚫 فیشینگ و مخرب',
-        'GEOSITE,ir,🇮🇷 سایت های ایرانی',
-        'GEOIP,ir,🇮🇷 سایت های ایرانی',
-        'GEOIP,arvancloud,🇮🇷 سایت های ایرانی',
-        'GEOIP,derakcloud,🇮🇷 سایت های ایرانی',
-        'GEOIP,iranserver,🇮🇷 سایت های ایرانی',
-        'GEOIP,parspack,🇮🇷 سایت های ایرانی',
+        'RULE-SET,private,DIRECT,no-resolve',
+        'RULE-SET,ads,⛔️ تبلیغات',
+        'RULE-SET,malware,🚫 فیشینگ و مخرب',
+        'RULE-SET,phishing,🚫 فیشینگ و مخرب',
+        'RULE-SET,cryptominers,🚫 فیشینگ و مخرب',
+        'RULE-SET,ir,🇮🇷 سایت های ایرانی',
+        'RULE-SET,ircidr,🇮🇷 سایت های ایرانی',
+        'RULE-SET,arvancloud,🇮🇷 سایت های ایرانی',
+        'RULE-SET,derakcloud,🇮🇷 سایت های ایرانی',
+        'RULE-SET,iranserver,🇮🇷 سایت های ایرانی',
+        'RULE-SET,parspack,🇮🇷 سایت های ایرانی',
         'MATCH,🐟 اتصال پراکسی',
     ],
 ];
