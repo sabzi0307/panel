@@ -22,6 +22,10 @@ final class SubLogController extends BaseController
      */
     public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
+        if (! Config::obtain('subscribe_log')) {
+            return $response->withRedirect('/user');
+        }
+
         $logs = (new SubscribeLog())->orderBy('id', 'desc')->where('user_id', $this->user->id)->get();
 
         foreach ($logs as $log) {
