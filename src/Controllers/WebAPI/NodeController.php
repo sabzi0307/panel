@@ -25,8 +25,8 @@ final class NodeController extends BaseController
             $ids = new SharedAccount();
             $ids->priority = $item['priority'];
             $ids->status = $item['status'];
-            $ids->created_at = time();
-            $ids->updated_at = $item['updated_at'];
+            $ids->create_time = time();
+            $ids->update_time = $item['updated_at'];
             $ids->account = $item['account'];
             $ids->password = $item['password'];
             $ids->save();
