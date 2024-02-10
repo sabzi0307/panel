@@ -23,6 +23,9 @@ final class FeatureController extends BaseController
         'notify_new_subscribe',
         'login_log',
         'notify_new_login',
+        'enable_checkin',
+        'checkin_min',
+        'checkin_max',
     ];
 
     /**

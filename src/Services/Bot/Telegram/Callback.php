@@ -11,6 +11,7 @@ use App\Models\OnlineLog;
 use App\Models\Payback;
 use App\Models\SubscribeLog;
 use App\Models\User;
+use App\Services\Reward;
 use App\Services\Subscribe;
 use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
@@ -890,11 +891,11 @@ final class Callback
         $invite = Config::getClass('ref');
 
         $text = [
-            '<strong>برای هر کاربری که دعوت به ثبت نام می کنید：</strong>',
+            '<strong>برای هر <code>1</code> کاربر که دعوت به ثبت نام می کنید: </strong>',
             '',
-            '- دریافت خواهید کرد <strong>' . $invite['invitation_to_register_traffic_reward'] . 'G</strong> پاداش ترافیک',
-            '- طرف مقابل دریافت خواهد کرد <strong>' . $invite['invitation_to_register_balance_reward'] . ' تومان</strong> موجودی اولیه حساب',
-            '- زمانی که طرف مقابل شارژ می کند، مبلغ شارژ طرف مقابل را نیز دریافت خواهید کرد <strong>' . $invite['rebate_ratio'] * 100 . '%</strong> تخفیفات',
+            '- دریافت خواهید کرد <code>' . Config::obtain('invite_reg_traffic_reward') . 'G</code> پاداش ترافیک',
+            '- طرف مقابل دریافت خواهد کرد <code>' . Config::obtain('invite_reg_money_reward') . 'تومان</code> موجودی حساب',
+            '- وقتی طرف مقابل صورت حساب را پرداخت کرد، مبلغ صورت حساب طرف مقابل را دریافت خواهید کرد. <code>' . Config::obtain('invite_reward_rate') * 100 . '%</code> از تخفیف ها',
             '',
             'تخفیف دریافت کرده است：' . $paybacks_sum . ' تومان。',
         ];
@@ -936,8 +937,7 @@ final class Callback
             $code = (new InviteCode())->where('user_id', $this->user->id)->first();
 
             if ($code === null) {
-                $this->user->addInviteCode();
-                $code = (new InviteCode())->where('user_id', $this->user->id)->first();
+                $code = (new InviteCode())->add($this->user->id);
             }
 
             $inviteUrl = $_ENV['baseUrl'] . '/auth/register?code=' . $code->code;
@@ -981,10 +981,20 @@ final class Callback
      */
     public function userCheckin(): void
     {
-        $checkin = $this->user->checkin();
+        if ($this->user->isAbleToCheckin()) {
+            $traffic = Reward::issueCheckinReward($this->user->id);
+
+            if (! $traffic) {
+                $msg = 'ورود ناموفق بود';
+            } else {
+                $msg = 'برنده ' . $traffic . 'MB ترافیک.';
+            }
+        } else {
+            $msg = 'شما امروز هدیه خود را دریافت کرده اید';
+        }
 
         $this->answerCallbackQuery([
-            'text' => $checkin['msg'],
+            'text' => $msg,
             'show_alert' => true,
         ]);
         // 回送信息
@@ -1006,7 +1016,7 @@ final class Callback
         }
 
         $this->replyWithMessage([
-            'text' => $temp['text'] . PHP_EOL . PHP_EOL . $checkin['msg'],
+            'text' => $temp['text'] . PHP_EOL . PHP_EOL . $msg,
             'reply_to_message_id' => $this->message_id,
             'parse_mode' => 'Markdown',
             'reply_markup' => json_encode(

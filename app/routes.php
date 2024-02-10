@@ -89,6 +89,8 @@ return static function (Slim\App $app): void {
         $group->post('/switch_theme_mode', App\Controllers\UserController::class . ':switchThemeMode');
         // 订阅记录
         $group->get('/subscribe', App\Controllers\User\SubLogController::class . ':index');
+        // 流量记录
+        $group->get('/traffic', App\Controllers\User\TrafficLogController::class . ':index');
         // 账户余额
         $group->get('/money', App\Controllers\User\MoneyController::class . ':index');
         $group->post('/giftcard', App\Controllers\User\MoneyController::class . ':applyGiftCard');
@@ -224,14 +226,9 @@ return static function (Slim\App $app): void {
         // 订阅日志
         $group->get('/subscribe', App\Controllers\Admin\SubLogController::class . ':index');
         $group->post('/subscribe/ajax', App\Controllers\Admin\SubLogController::class . ':ajax');
-        // 邀请日志
-        $group->get('/invite', App\Controllers\Admin\InviteController::class . ':index');
-        $group->post('/invite/update_invite', App\Controllers\Admin\InviteController::class . ':update');
-        $group->post('/invite/add_invite', App\Controllers\Admin\InviteController::class . ':add');
-        $group->post('/invite/ajax', App\Controllers\Admin\InviteController::class . ':ajax');
-        // 流量日志
-        $group->get('/traffic', App\Controllers\Admin\TrafficLogController::class . ':index');
-        $group->post('/traffic/ajax', App\Controllers\Admin\TrafficLogController::class . ':ajax');
+        // 返利日志
+        $group->get('/payback', App\Controllers\Admin\PaybackController::class . ':index');
+        $group->post('/payback/ajax', App\Controllers\Admin\PaybackController::class . ':ajax');
         // 用户余额日志
         $group->get('/money', App\Controllers\Admin\MoneyLogController::class . ':index');
         $group->post('/money/ajax', App\Controllers\Admin\MoneyLogController::class . ':ajax');

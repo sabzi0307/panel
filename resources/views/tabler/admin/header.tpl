@@ -194,9 +194,9 @@
                                     <i class="ti ti-rss"></i>&nbsp;
                                     عضویت
                                 </a>
-                                <a class="dropdown-item" href="/admin/invite">
+                                <a class="dropdown-item" href="/admin/payback">
                                     <i class="ti ti-friends"></i>&nbsp;
-                                    دعوت
+                                    تخفیف
                                 </a>
                                 <a class="dropdown-item" href="/admin/money">
                                     <i class="ti ti-coin"></i>&nbsp;
@@ -209,10 +209,6 @@
                                 <a class="dropdown-item" href="/admin/online">
                                     <i class="ti ti-router"></i>&nbsp;
                                     IP آنلاین
-                                </a>
-                                <a class="dropdown-item" href="/admin/traffic">
-                                    <i class="ti ti-arrows-up-down"></i>&nbsp;
-                                    مصرف ترافیک
                                 </a>
                             </div>
                         </li>

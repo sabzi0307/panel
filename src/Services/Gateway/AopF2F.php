@@ -98,17 +98,11 @@ final class AopF2F extends Base
 
         if ($aliResponse->isPaid()) {
             $this->postPayment($pid);
-
-            return $response->withJson([
-                'ret' => 1,
-                'msg' => 'پرداخت موفق',
-            ]);
+            // https://opendocs.alipay.com/open/194/103296#%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5%E7%89%B9%E6%80%A7
+            return $response->write('success');
         }
 
-        return $response->withJson([
-            'ret' => 0,
-            'msg' => 'پرداخت ناموفق',
-        ]);
+        return $response->write('failed');
     }
 
     /**

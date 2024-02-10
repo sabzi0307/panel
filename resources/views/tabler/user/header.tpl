@@ -112,8 +112,8 @@
                                         </a>
                                         {if $public_setting['subscribe_log']}
                                             <a class="dropdown-item" href="/user/subscribe">
-                                                <i class="ti ti-rss"></i></i>&nbsp;
-                                                مشترک شدن در مجله
+                                                <i class="ti ti-rss"></i>&nbsp;
+                                                در وبلاگ مشترک شوید
                                             </a>
                                         {/if}
                                         <a class="dropdown-item" href="/user/invite">
@@ -149,6 +149,12 @@
                                     <i class="ti ti-chart-bar"></i>&nbsp;
                                     سرعت جریان
                                 </a>
+                                {if $public_setting['traffic_log']}
+                                    <a class="dropdown-item" href="/user/traffic">
+                                        <i class="ti ti-traffic-lights"></i>&nbsp;
+                                        گزارش ترافیک
+                                    </a>
+                                {/if}
                             </div>
                         </li>
                         <li class="nav-item dropdown">

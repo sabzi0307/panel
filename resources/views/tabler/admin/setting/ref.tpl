@@ -45,17 +45,17 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">پاداش موجودی (تومان) که با استفاده از لینک دعوت برای ثبت نام قابل دریافت است</label>
                                             <div class="col">
-                                                <input id="invitation_to_register_balance_reward" type="text"
+                                                <input id="invite_reg_money_reward" type="text"
                                                        class="form-control"
-                                                       value="{$settings['invitation_to_register_balance_reward']}">
+                                                       value="{$settings['invite_reg_money_reward']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">پاداش ترافیک (GB) که با استفاده از لینک دعوت برای ثبت نام قابل دریافت است</label>
                                             <div class="col">
-                                                <input id="invitation_to_register_traffic_reward" type="text"
+                                                <input id="invite_reg_traffic_reward" type="text"
                                                        class="form-control"
-                                                       value="{$settings['invitation_to_register_traffic_reward']}">
+                                                       value="{$settings['invite_reg_traffic_reward']}">
                                             </div>
                                         </div>
                                     </div>
@@ -65,14 +65,14 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">حالت دعوت کردن</label>
                                             <div class="col">
-                                                <select id="invitation_mode" class="col form-select"
-                                                        value="{$settings['invitation_mode']}">
+                                                <select id="invite_mode" class="col form-select"
+                                                        value="{$settings['invite_mode']}">
                                                     <option value="reg_only"
-                                                            {if $settings['invitation_mode'] === 'reg_only'}selected{/if}>
+                                                            {if $settings['invite_mode'] === 'reg_only'}selected{/if}>
                                                         بدون تخفیف
                                                     </option>
-                                                    <option value="after_paid"
-                                                            {if $settings['invitation_mode'] === 'after_paid'}selected{/if}>
+                                                    <option value="reward"
+                                                            {if $settings['invite_mode'] === 'reward'}selected{/if}>
                                                         زمانی که کاربران دعوت شده قبض های خود را پرداخت می کنند تخفیف بدهید
                                                     </option>
                                                 </select>
@@ -81,23 +81,15 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">مدل تخفیف</label>
                                             <div class="col">
-                                                <select id="invite_rebate_mode" class="col form-select"
-                                                        value="{$settings['invite_rebate_mode']}">
-                                                    <option value="continued"
-                                                            {if $settings['invite_rebate_mode'] === 'continued'}selected{/if}>
-                                                        تخفیف مستمر
+                                                <select id="invite_reward_mode" class="col form-select"
+                                                        value="{$settings['invite_reward_mode']}">
+                                                    <option value="reward_count"
+                                                            {if $settings['invite_reward_mode'] === 'reward_count'}selected{/if}>
+                                                        تعداد تخفیف ها را محدود کنید
                                                     </option>
-                                                    <option value="limit_frequency"
-                                                            {if $settings['invite_rebate_mode'] === 'limit_frequency'}selected{/if}>
-                                                        تعداد تخفیف هایی را که دعوت کننده می تواند از دعوت شونده دریافت کند محدود کنید
-                                                    </option>
-                                                    <option value="limit_amount"
-                                                            {if $settings['invite_rebate_mode'] === 'limit_amount'}selected{/if}>
-                                                        مقدار تخفیف هایی را که دعوت کننده می تواند از دعوت شونده دریافت کند محدود کنید
-                                                    </option>
-                                                    <option value="limit_time_range"
-                                                            {if $settings['invite_rebate_mode'] === 'limit_time_range'}selected{/if}>
-                                                        محدوده زمانی را که دعوت کننده می تواند از دعوت شونده تخفیف دریافت کند، محدود کنید
+                                                    <option value="reward_total"
+                                                            {if $settings['invite_reward_mode'] === 'reward_total'}selected{/if}>
+                                                        مقدار تخفیف را محدود کنید
                                                     </option>
                                                 </select>
                                             </div>
@@ -105,29 +97,22 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">نرخ تخفیف، 10% پر کردن 0.1</label>
                                             <div class="col">
-                                                <input id="rebate_ratio" type="text" class="form-control"
-                                                       value="{$settings['rebate_ratio']}">
+                                                <input id="invite_reward_rate" type="text" class="form-control"
+                                                       value="{$settings['invite_reward_rate']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">محدوده زمانی تخفیف (روزها)</label>
+                                            <label class="form-label col-3 col-form-label">محدودیت تعداد تخفیف</label>
                                             <div class="col">
-                                                <input id="rebate_time_range_limit" type="text" class="form-control"
-                                                       value="{$settings['rebate_time_range_limit']}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">زمان تخفیف</label>
-                                            <div class="col">
-                                                <input id="rebate_frequency_limit" type="text" class="form-control"
-                                                       value="{$settings['rebate_frequency_limit']}">
+                                                <input id="invite_reward_count_limit" type="text" class="form-control"
+                                                       value="{$settings['invite_reward_count_limit']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">محدودیت مقدار تخفیف</label>
                                             <div class="col">
-                                                <input id="rebate_amount_limit" type="text" class="form-control"
-                                                       value="{$settings['rebate_amount_limit']}">
+                                                <input id="invite_reward_total_limit" type="text" class="form-control"
+                                                       value="{$settings['invite_reward_total_limit']}">
                                             </div>
                                         </div>
                                     </div>

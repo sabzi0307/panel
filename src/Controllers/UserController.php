@@ -15,6 +15,7 @@ use App\Models\SmartDns;
 use App\Models\StreamMedia;
 use App\Services\Auth;
 use App\Services\Captcha;
+use App\Services\Reward;
 use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
 use App\Utils\Tools;
@@ -172,7 +173,7 @@ final class UserController extends BaseController
         $code = (new InviteCode())->where('user_id', $this->user->id)->first()?->code;
 
         if ($code === null) {
-            $code = $this->user->addInviteCode();
+            $code = (new InviteCode())->add($this->user->id);
         }
 
         $paybacks = (new Payback())->where('ref_by', $this->user->id)
@@ -190,19 +191,21 @@ final class UserController extends BaseController
         }
 
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
-        $rebate_ratio_per = Config::obtain('rebate_ratio') * 100;
+        $invite_reward_rate = Config::obtain('invite_reward_rate') * 100;
 
-        return $response->write($this->view()
-            ->assign('paybacks', $paybacks)
-            ->assign('invite_url', $invite_url)
-            ->assign('paybacks_sum', $paybacks_sum)
-            ->assign('rebate_ratio_per', $rebate_ratio_per)
-            ->fetch('user/invite.tpl'));
+        return $response->write(
+            $this->view()
+                ->assign('paybacks', $paybacks)
+                ->assign('invite_url', $invite_url)
+                ->assign('paybacks_sum', $paybacks_sum)
+                ->assign('invite_reward_rate', $invite_reward_rate)
+                ->fetch('user/invite.tpl')
+        );
     }
 
     public function checkin(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (!$_ENV['enable_checkin']) {
+        if (!Config::obtain('enable_checkin') || ! $this->user->isAbleToCheckin()) {
             return ResponseHelper::error($response, 'هنوز امکان ورود به سیستم وجود ندارد');
         }
 
@@ -214,17 +217,17 @@ final class UserController extends BaseController
             }
         }
 
-        $checkin = $this->user->checkin();
+        $traffic = Reward::issueCheckinReward($this->user->id);
 
-        if (!$checkin['ok']) {
-            return ResponseHelper::error($response, (string) $checkin['msg']);
+        if (!$traffic) {
+            return ResponseHelper::error($response, 'ورود ناموفق بود');
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => $checkin['msg'],
+            'msg' => 'برنده ' . $traffic . 'MB ترافیک',
             'data' => [
-                'last-checkin-time' => $this->user->lastCheckInTime(),
+                'last-checkin-time' => Tools::toDateTime(time()),
             ],
         ]);
     }
@@ -251,9 +254,11 @@ final class UserController extends BaseController
     {
         $user = $this->user;
 
-        return $response->write($this->view()
-            ->assign('banned_reason', $user->banned_reason)
-            ->fetch('user/banned.tpl'));
+        return $response->write(
+            $this->view()
+                ->assign('banned_reason', $user->banned_reason)
+                ->fetch('user/banned.tpl')
+        );
     }
 
     public function logout(ServerRequest $request, Response $response, array $args): Response

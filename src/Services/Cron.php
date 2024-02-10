@@ -8,6 +8,7 @@ use App\Models\Ann;
 use App\Models\Config;
 use App\Models\DetectLog;
 use App\Models\EmailQueue;
+use App\Models\HourlyUsage;
 use App\Models\Invoice;
 use App\Models\Node;
 use App\Models\OnlineLog;
@@ -16,7 +17,6 @@ use App\Models\Paylist;
 use App\Models\SharedAccount;
 use App\Models\SubscribeLog;
 use App\Models\User;
-use App\Models\UserHourlyUsage;
 use App\Services\IM\Telegram;
 use App\Utils\Tools;
 use DateTime;
@@ -35,31 +35,6 @@ use const PHP_EOL;
 
 final class Cron
 {
-    public static function addTrafficLog(): void
-    {
-        $users = User::all();
-
-        foreach ($users as $user) {
-            $transfer_total = $user->transfer_total;
-            $transfer_total_last = (new UserHourlyUsage())->where('user_id', $user->id)->orderBy('id', 'desc')->first();
-
-            if ($transfer_total_last === null) {
-                $transfer_total_last = 0;
-            } else {
-                $transfer_total_last = $transfer_total_last->traffic;
-            }
-
-            $trafficlog = new UserHourlyUsage();
-            $trafficlog->user_id = $user->id;
-            $trafficlog->traffic = $transfer_total;
-            $trafficlog->hourly_usage = $transfer_total - $transfer_total_last;
-            $trafficlog->datetime = time();
-            $trafficlog->save();
-        }
-
-        echo Tools::toDateTime(time()) . ' پردازش رکورد ترافیک به پایان رسید' . PHP_EOL;
-    }
-
     public static function cleanDb(): void
     {
         (new SubscribeLog())->where(
@@ -67,7 +42,11 @@ final class Cron
             '<',
             time() - 86400 * Config::obtain('subscribe_log_retention_days')
         )->delete();
-        (new UserHourlyUsage())->where('datetime', '<', time() - 86400 * Config::obtain('traffic_log_retention_days'))->delete();
+        (new HourlyUsage())->where(
+            'date',
+            '<',
+            date('Y-m-d', time() - 86400 * Config::obtain('traffic_log_retention_days'))
+        )->delete();
         (new DetectLog())->where('datetime', '<', time() - 86400 * 3)->delete();
         (new EmailQueue())->where('time', '<', time() - 86400)->delete();
         (new OnlineLog())->where('last_time', '<', time() - 86400)->delete();
@@ -432,7 +411,8 @@ final class Cron
 
     public static function resetFreeUserTraffic(): void
     {
-        $freeUsers = (new User())->where('class', 0)->where('auto_reset_day', date('d'))->get();
+        $freeUsers = (new User())->where('class', 0)
+            ->where('auto_reset_day', date('d'))->get();
 
         foreach ($freeUsers as $user) {
             try {
@@ -457,7 +437,8 @@ final class Cron
     public static function sendDailyFinanceMail(): void
     {
         $today = strtotime('00:00:00');
-        $paylists = (new Paylist())->where('status', 1)->whereBetween('datetime', [strtotime('-1 day', $today), $today])->get();
+        $paylists = (new Paylist())->where('status', 1)
+            ->whereBetween('datetime', [strtotime('-1 day', $today), $today])->get();
         $text_html = '<table border=1><tr><td>مقدار</td><td>شناسه کاربر</td><td>نام کاربری</td><td>زمان شارژ مجدد</td>';
 
         foreach ($paylists as $paylist) {

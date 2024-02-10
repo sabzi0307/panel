@@ -6,12 +6,15 @@ namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
 use App\Services\DynamicRate;
+use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use function array_fill;
+use function count;
+use function json_decode;
 use function json_encode;
 
 final class RateController extends BaseController
@@ -21,7 +24,7 @@ final class RateController extends BaseController
      */
     public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $nodes = $this->user->getUserFrontEndNodes();
+        $nodes = Subscribe::getUserNodes($this->user);
         $node_list = [];
 
         foreach ($nodes as $node) {
@@ -31,16 +34,23 @@ final class RateController extends BaseController
             ];
         }
 
+        if (count($node_list) === 0) {
+            $node_list[] = [
+                'id' => 0,
+                'name' => 'هنوز گره ای وجود ندارد',
+            ];
+        }
+
         return $response->write(
             $this->view()
-                ->assign('nodes', $node_list)
+                ->assign('node_list', $node_list)
                 ->fetch('user/rate.tpl')
         );
     }
 
     public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $nodes = $this->user->getUserFrontEndNodes();
+        $nodes = Subscribe::getUserNodes($this->user);
         $node = $nodes->find($request->getParam('node_id'));
 
         if ($node === null) {

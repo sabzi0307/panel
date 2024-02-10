@@ -92,6 +92,16 @@ return new class() implements MigrationInterface {
                 KEY `id` (`id`),
                 KEY `status` (`status`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            CREATE TABLE `hourly_usage` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه رکورد',
+                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'شناسه کاربر',
+                `date` date NOT NULL DEFAULT 0 COMMENT 'تاریخ رکورد',
+                `usage` longtext NOT NULL DEFAULT '{}' COMMENT 'مصرف ترافیک' CHECK (json_valid(`usage`)),
+                PRIMARY KEY (`id`),
+                KEY `user_id` (`user_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
             CREATE TABLE `invoice` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Billing ID',
@@ -199,6 +209,7 @@ return new class() implements MigrationInterface {
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
                 `ref_by` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Referrer ID',
                 `ref_get` decimal(12,2) unsigned NOT NULL DEFAULT 0 COMMENT 'Amount received by referrer',
+                `invoice_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Invoice ID',
                 `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -277,7 +288,6 @@ return new class() implements MigrationInterface {
                 `last_check_in_time` int(11) unsigned DEFAULT 0 COMMENT 'Last check-in time',
                 `last_login_time` int(11) unsigned DEFAULT 0 COMMENT 'last login time',
                 `reg_date` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'Registration time',
-                `invite_num` int(11) NOT NULL DEFAULT 0 COMMENT 'Available invitations',
                 `money` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Account Balance',
                 `ref_by` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Inviter ID',
                 `method` varchar(255) NOT NULL DEFAULT 'aes-128-gcm' COMMENT 'Shadowsocks encryption method',
@@ -332,16 +342,6 @@ return new class() implements MigrationInterface {
                 KEY `id` (`id`),
                 KEY `code` (`code`),
                 KEY `expire_time` (`expire_time`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-            CREATE TABLE `user_hourly_usage` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
-                `traffic` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'current total traffic',
-                `hourly_usage` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'traffic in the past hour',
-                `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'record time',
-                PRIMARY KEY (`id`),
-                KEY `user_id` (`user_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `user_invite_code` (
@@ -405,7 +405,7 @@ return new class() implements MigrationInterface {
 
     public function down(): int
     {
-        echo "No reverse operation for initial migration\n";
+        echo 'No reverse operation for initial migration' . PHP_EOL . PHP_EOL;
 
         return 2023020100;
     }

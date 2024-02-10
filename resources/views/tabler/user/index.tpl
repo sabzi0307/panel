@@ -76,7 +76,7 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                            <span class="bg-twitter text-white avatar">
+                                            <span class="bg-azure text-white avatar">
                                                 <i class="ti ti-devices-pc icon"></i>
                                             </span>
                                         </div>
@@ -101,7 +101,7 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                            <span class="bg-facebook text-white avatar">
+                                            <span class="bg-indigo text-white avatar">
                                                 <i class="ti ti-rocket icon"></i>
                                             </span>
                                         </div>
@@ -1350,7 +1350,7 @@
                         </div>
                     </div>
                 </div>
-                {if $config['enable_checkin']}
+                {if $public_setting['enable_checkin']}
                     <div class="col-lg-6 col-sm-12">
                         <div class="card">
                             <div class="card-stamp">
@@ -1362,11 +1362,11 @@
                                 <h3 class="card-title">ترافیک هدیه ورود روزانه</h3>
                                 <p>
                                     جهت دریافت حجم هدیه کلیک کنید
-                                    {if $config['checkinMin'] !== $config['checkinMax']}
+                                    {if $public_setting['checkin_min'] !== $public_setting['checkin_max']}
                                         در محدوده
-                                        &nbsp;<code>{$config['checkinMin']} MB</code> تا <code>{$config['checkinMax']} MB</code>
+                                        &nbsp;<code>{$public_setting['checkin_min']} MB</code> تا <code>{$public_setting['checkin_max']} MB</code>
                                     {else}
-                                        <code>{$config['checkinMin']} MB</code>
+                                        <code>{$public_setting['checkin_min']} MB</code>
                                     {/if}
                                 </p>
                                 <p>
@@ -1614,5 +1614,6 @@
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
         {include file='captcha_js.tpl'}
     {/if}
+
 
 {include file='user/footer.tpl'}

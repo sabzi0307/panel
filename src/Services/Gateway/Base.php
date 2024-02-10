@@ -6,9 +6,9 @@ namespace App\Services\Gateway;
 
 use App\Models\Config;
 use App\Models\Invoice;
-use App\Models\Payback;
 use App\Models\Paylist;
 use App\Models\User;
+use App\Services\Reward;
 use App\Utils\Tools;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -80,8 +80,8 @@ abstract class Base
 
         $user = (new User())->find($paylist?->userid);
         // 返利
-        if ($user !== null && $user->ref_by > 0 && Config::obtain('invitation_mode') === 'after_paid') {
-            (new Payback())->rebate($user->id, $paylist->total);
+        if ($user !== null && $user->ref_by > 0 && Config::obtain('invite_mode') === 'reward') {
+            Reward::issuePaybackReward($user->id, $user->ref_by, $paylist->total, $paylist->invoice_id);
         }
     }
 
@@ -104,9 +104,11 @@ abstract class Base
     {
         $payment_gateways = (new Config())->where('item', 'payment_gateway')->first();
         $active_gateways = json_decode($payment_gateways->value);
+
         if (in_array($key, $active_gateways)) {
             return true;
         }
+
         return false;
     }
 }
