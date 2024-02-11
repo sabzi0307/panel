@@ -320,9 +320,9 @@
                                                             سازگار با هیدیفای نکست:</strong></a><br>
                                                     <p>
                                                         <code class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
                                                         <a style="font-size: 90%;" class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            data-clipboard-text="{$UniversalSub}/clash">
                                                             کپی
                                                             <i class="ti ti-copy"></i>
                                                         </a>
@@ -511,9 +511,9 @@
                                                             سازگار با هیدیفای نکست:</strong></a><br>
                                                     <p>
                                                         <code class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
                                                         <a style="font-size: 90%;" class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            data-clipboard-text="{$UniversalSub}/clash">
                                                             کپی
                                                             <i class="ti ti-copy"></i>
                                                         </a>
@@ -864,9 +864,9 @@
                                                             سازگار با هیدیفای نکست:</strong></a><br>
                                                     <p>
                                                         <code class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
                                                         <a style="font-size: 90%;" class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            data-clipboard-text="{$UniversalSub}/clash">
                                                             کپی
                                                             <i class="ti ti-copy"></i>
                                                         </a>
@@ -1016,9 +1016,9 @@
                                                             سازگار با هیدیفای نکست:</strong></a><br>
                                                     <p>
                                                         <code class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">{$UniversalSub}/singbox</code>
+                                                            data-clipboard-text="{$UniversalSub}/clash">{$UniversalSub}/clash</code>
                                                         <a style="font-size: 90%;" class="copy btn-icon"
-                                                            data-clipboard-text="{$UniversalSub}/singbox">
+                                                            data-clipboard-text="{$UniversalSub}/clash">
                                                             کپی
                                                             <i class="ti ti-copy"></i>
                                                         </a>
