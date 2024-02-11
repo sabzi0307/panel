@@ -36,6 +36,9 @@
                                 <li class="nav-item">
                                     <a href="#log" class="nav-link" data-bs-toggle="tab">گزارش کاربر</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="#checkin" class="nav-link" data-bs-toggle="tab">签到</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="card-body">
@@ -199,6 +202,38 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="tab-pane" id="checkin">
+                                <div class="card-body">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">فعال‌سازی هدیه روزانه</label>
+                                        <div class="col">
+                                            <select id="enable_checkin" class="col form-select"
+                                                    value="{$settings['enable_checkin']}">
+                                                <option value="0" {if ! $settings['enable_checkin']}selected{/if}>
+                                                    بسته
+                                                </option>
+                                                <option value="1" {if $settings['enable_checkin']}selected{/if}>باز
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">حداقل ترافیک هدیه روزانه (مگابایت)</label>
+                                        <div class="col">
+                                            <input id="checkin_min" type="text" class="form-control"
+                                                value="{$settings['checkin_min']}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">حداکثر ترافیک هدیه روزانه (مگابایت)</label>
+                                        <div class="col">
+                                            <input id="checkin_max" type="text"
+                                                class="form-control"
+                                                value="{$settings['checkin_max']}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>

@@ -157,11 +157,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user_coupon MODIFY COLUMN `use_count` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Cumulative usage times';
         ALTER TABLE user_coupon MODIFY COLUMN `create_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'create time';
         ALTER TABLE user_coupon MODIFY COLUMN `expire_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'expire time';
-        ALTER TABLE user_hourly_usage MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Record ID';
-        ALTER TABLE user_hourly_usage MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';
-        ALTER TABLE user_hourly_usage MODIFY COLUMN `traffic` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'current total traffic';
-        ALTER TABLE user_hourly_usage MODIFY COLUMN `hourly_usage` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Traffic in the past hour';
-        ALTER TABLE user_hourly_usage MODIFY COLUMN `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'record time';
         ALTER TABLE user_invite_code MODIFY COLUMN `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID';
         ALTER TABLE user_invite_code MODIFY COLUMN `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'invite code';
         ALTER TABLE user_invite_code MODIFY COLUMN `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'user_id';

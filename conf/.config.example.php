@@ -53,12 +53,6 @@ $_ENV['rate_limit_admin_api'] = 60;              //每分钟每个管理员的AP
 $_ENV['mail_filter']        = 0;            //0: off; 1: whitelist mode; 2; blacklist mode;
 $_ENV['mail_filter_list']   = array("qq.com", "vip.qq.com", "foxmail.com");
 
-//Registered user settings---------------------------------------------------------------------------------------
-#Base
-$_ENV['enable_checkin']             = true;         // enable the sign-in function
-$_ENV['checkinMin']                 = 1;            // User sign-in minimum traffic unit MB
-$_ENV['checkinMax']                 = 50;           // User check-in traffic with the most traffic
-
 #advanced
 $_ENV['class_expire_reset_traffic'] = 0;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
 $_ENV['enable_kill']                = true;         //allow users to log out of accounts
@@ -107,13 +101,18 @@ $_ENV['maxmind_license_key'] = 'local';
 $_ENV['geoip_locale'] = 'en';
 
 // Large language model powered ticket reply and more
-$_ENV['llm_backend'] = 'openai'; // openai/palm/huggingface/cf-workers-ai
+$_ENV['llm_backend'] = 'openai'; // openai/google-ai/huggingface/cf-workers-ai
 // OpenAI ChatGPT
 $_ENV['openai_api_key'] = '';
-$_ENV['openai_model'] = 'gpt-3.5-turbo-1106';
-// Google PaLM API
-$_ENV['palm_api_key'] = '';
-$_ENV['palm_text_model'] = 'text-bison-001';
+$_ENV['openai_model']   = 'gpt-4-turbo-preview';
+// Google AI API
+$_ENV['google_ai_api_key']  = '';
+$_ENV['google_ai_model_id'] = 'gemini-pro';
+// Vertex AI API
+$_ENV['vertex_ai_access_token']  = '';
+$_ENV['vertex_ai_location'] = 'us-central1';
+$_ENV['vertex_ai_model_id'] = 'gemini-pro';
+$_ENV['vertex_ai_project_id'] = '';
 // Hugging Face Inference API
 $_ENV['huggingface_api_key'] = '';
 $_ENV['huggingface_endpoint_url'] = '';

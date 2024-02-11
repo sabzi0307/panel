@@ -182,8 +182,6 @@ final class Message
     {
         $text = [
             'موجودی فعلی：' . $user->money,
-            'تعداد IP های آنلاین：' . ($user->node_iplimit !== 0 ? $user->onlineIpCount() .
-                ' / ' . $user->node_iplimit : $user->onlineIpCount() . ' / بدون محدودیت'),
             'سرعت درگاه：' . ($user->node_speedlimit > 0 ? $user->node_speedlimit . 'Mbps' : 'بدون محدودیت'),
             'آخرین استفاده:' . $user->lastUseTime(),
             'انقضاء:' . $user->class_expire,

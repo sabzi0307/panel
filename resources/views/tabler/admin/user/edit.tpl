@@ -170,13 +170,6 @@
                                 <span>دعوت به ثبت نام</span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-4 col-form-label">تعداد دعوت نامه های موجود</label>
-                                <div class="col">
-                                    <input id="invite_num" type="text" class="form-control"
-                                           value="{$edit_user->invite_num}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
                                 <label class="form-label col-4 col-form-label">افراد را دعوت کنید</label>
                                 <div class="col">
                                     <input id="ref_by" type="text" class="form-control" value="{$edit_user->ref_by}">

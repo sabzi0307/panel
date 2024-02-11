@@ -193,21 +193,6 @@ if [ "$INIT" = true ];then
         mail_filter_list=["qq.com", "vip.qq.com", "foxmail.com"]
     fi
 
-    if [ -z "$enable_checkin" ];then
-        echo >&2 "enable_checkin not set!, using true"
-        enable_checkin=true
-    fi
-
-    if [ -z "$checkinMin" ];then
-        echo >&2 "checkinMin not set!, using 1"
-        checkinMin=1
-    fi
-
-    if [ -z "$checkinMax" ];then
-        echo >&2 "checkinMax not set!, using 50"
-        checkinMax=50
-    fi
-
     if [ -z "$class_expire_reset_traffic" ];then
         echo >&2 "class_expire_reset_traffic not set!, using 0 "
         class_expire_reset_traffic=0
@@ -346,18 +331,38 @@ if [ "$INIT" = true ];then
     fi
 
     if [ -z "$openai_model" ];then
-        echo >&2 "openai_model not set! using gpt-3.5-turbo-1106 "
-        openai_model="gpt-3.5-turbo-1106"
+        echo >&2 "openai_model not set! using gpt-4-turbo-preview "
+        openai_model="gpt-4-turbo-preview"
     fi
 
-    if [ -z "$palm_api_key" ];then
-        echo >&2 "palm_api_key not set!"
-        palm_api_key=""
+    if [ -z "$google_ai_api_key" ];then
+        echo >&2 "google_ai_api_key not set!"
+        google_ai_api_key=""
     fi
 
-    if [ -z "$palm_text_model" ];then
-        echo >&2 "palm_text_model not set!"
-        palm_text_model="text-bison-001"
+    if [ -z "$google_ai_model_id" ];then
+        echo >&2 "google_ai_model_id not set! using gemini-pro"
+        google_ai_model_id="gemini-pro"
+    fi
+
+    if [ -z "$vertex_ai_access_token" ];then
+        echo >&2 "vertex_ai_access_token not set!"
+        vertex_ai_access_token=""
+    fi
+
+    if [ -z "$vertex_ai_location" ];then
+        echo >&2 "vertex_ai_location not set! using us-central1"
+        vertex_ai_location="us-central1"
+    fi
+
+    if [ -z "$vertex_ai_model_id" ];then
+        echo >&2 "vertex_ai_model_id not set! using gemini-pro"
+        vertex_ai_model_id="gemini-pro"
+    fi
+
+    if [ -z "$vertex_ai_project_id" ];then
+        echo >&2 "vertex_ai_project_id not set!"
+        vertex_ai_project_id=""
     fi
 
     if [ -z "$huggingface_api_key" ];then
@@ -496,12 +501,6 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['mail_filter']        = $mail_filter;                 //0: off; 1: whitelist mode; 2; blacklist mode;
 \$_ENV['mail_filter_list']   = array($mail_filter_list);
 
-//Registered user settings---------------------------------------------------------------------------------------
-#Base
-\$_ENV['enable_checkin']             = $enable_checkin;       // Whether to enable the sign-in function
-\$_ENV['checkinMin']                 = $checkinMin;           // User sign-in minimum traffic unit MB
-\$_ENV['checkinMax']                 = $checkinMax;           // User check-in traffic with the most traffic
-
 #advanced
 \$_ENV['class_expire_reset_traffic'] = $class_expire_reset_traffic;  //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
 \$_ENV['enable_kill']                = $enable_kill;                 //Whether to allow users to log out of accounts
@@ -555,8 +554,13 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['openai_api_key'] = '$openai_api_key';
 \$_ENV['openai_model'] = '$openai_model';
 // Google PaLM API
-\$_ENV['palm_api_key'] = '$palm_api_key';
-\$_ENV['palm_text_model'] = '$palm_text_model';
+\$_ENV['google_ai_api_key'] = '$google_ai_api_key';
+\$_ENV['google_ai_model_id'] = '$google_ai_model_id';
+// Vertex AI API
+\$_ENV['vertex_ai_access_token'] = '$vertex_ai_access_token';
+\$_ENV['vertex_ai_location'] = '$vertex_ai_location';
+\$_ENV['vertex_ai_model_id'] = '$vertex_ai_model_id';
+\$_ENV['vertex_ai_project_id'] = '$vertex_ai_project_id';
 // Hugging Face Inference API
 \$_ENV['huggingface_api_key'] = '$huggingface_api_key';
 \$_ENV['huggingface_endpoint_url'] = '$huggingface_endpoint_url';

@@ -6,6 +6,7 @@ namespace App\Services\Bot\Telegram\Commands;
 
 use App\Models\Config;
 use App\Services\Bot\Telegram\Message;
+use App\Services\Reward;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
@@ -64,11 +65,21 @@ final class CheckinCommand extends Command
                 ]
             );
         } else {
-            $checkin = $user->checkin();
+            if ($user->isAbleToCheckin()) {
+                $traffic = Reward::issueCheckinReward($user->id);
+
+                if (! $traffic) {
+                    $msg = 'ورود ناموفق بود';
+                } else {
+                    $msg = 'برنده ' . $traffic . 'MB ترافیک.';
+                }
+            } else {
+                $msg = 'شما امروز هدیه خود را دریافت کرده اید';
+            }
             // 回送信息
             $response = $this->replyWithMessage(
                 [
-                    'text' => $checkin['msg'],
+                    'text' => $msg,
                     'parse_mode' => 'Markdown',
                     'reply_to_message_id' => $message->getMessageId(),
                 ]

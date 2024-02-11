@@ -7,18 +7,13 @@ namespace App\Models;
 use App\Services\IM;
 use App\Utils\Hash;
 use App\Utils\Tools;
-use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Ramsey\Uuid\Uuid;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use function date;
-use function is_null;
 use function md5;
-use function random_int;
 use function round;
-use function time;
 use const PHP_EOL;
 
 /**
@@ -40,7 +35,6 @@ use const PHP_EOL;
  * @property int    $last_check_in_time 最后签到时间
  * @property int    $last_login_time 最后登录时间
  * @property string $reg_date 注册时间
- * @property int    $invite_num 可用邀请次数
  * @property float  $money 账户余额
  * @property int    $ref_by 邀请人ID
  * @property string $method Shadowsocks加密方式
@@ -110,23 +104,6 @@ final class User extends Model
         return Tools::genSs2022UserPk($this->passwd, $len);
     }
 
-    public function getUserFrontEndNodes(): Collection
-    {
-        $query = Node::query();
-        $query->where('type', 1);
-
-        if (! $this->is_admin) {
-            $group = ($this->node_group !== 0 ? [0, $this->node_group] : [0]);
-            $query->whereIn('node_group', $group);
-        }
-
-        return $query->where(static function ($query): void {
-            $query->where('node_bandwidth_limit', '=', 0)->orWhereRaw('node_bandwidth < node_bandwidth_limit');
-        })->orderBy('node_class')
-            ->orderBy('name')
-            ->get();
-    }
-
     /**
      * DiceBear 头像
      */
@@ -174,29 +151,6 @@ final class User extends Model
     }
 
     /**
-     * 生成邀请码
-     */
-    public function addInviteCode(): string
-    {
-        $code = new InviteCode();
-        $code->code = Tools::genRandomChar(10);
-        $code->user_id = $this->id;
-        $code->save();
-
-        return $code->code;
-    }
-
-    /**
-     * 添加邀请次数
-     */
-    public function addInviteNum(int $num): bool
-    {
-        $this->invite_num += $num;
-
-        return $this->save();
-    }
-
-    /**
      * 生成新的 API Token
      */
     public function generateApiToken(): bool
@@ -228,17 +182,6 @@ final class User extends Model
     public function totalTraffic(): string
     {
         return Tools::autoBytes($this->transfer_total);
-    }
-
-    /*
-     * 已用流量占总流量的百分比
-     */
-    public function trafficUsagePercent(): float
-    {
-        return $this->transfer_enable === 0 ?
-            0
-            :
-            round(($this->u + $this->d) / $this->transfer_enable, 2) * 100;
     }
 
     /*
@@ -303,7 +246,7 @@ final class User extends Model
      */
     public function isAbleToCheckin(): bool
     {
-        return date('Ymd') !== date('Ymd', $this->last_check_in_time);
+        return date('Ymd') !== date('Ymd', $this->last_check_in_time) && ! $this->is_shadow_banned;
     }
 
     /**
@@ -320,25 +263,6 @@ final class User extends Model
     public function clearInviteCodes(): void
     {
         (new InviteCode())->where('user_id', $this->id)->delete();
-    }
-
-    /**
-     * 累计充值金额
-     */
-    public function getTopUp(): float
-    {
-        $number = (new Paylist())->where('userid', $this->id)->sum('number');
-        return is_null($number) ? 0.00 : round((float) $number, 2);
-    }
-
-    /**
-     * 在线 IP 个数
-     */
-    public function onlineIpCount(): int
-    {
-        return (new OnlineLog())->where('user_id', $this->id)
-            ->where('last_time', '>', time() - 90)
-            ->count();
     }
 
     /**
@@ -359,38 +283,11 @@ final class User extends Model
         return $this->delete();
     }
 
-    /**
-     * 签到
-     */
-    public function checkin(): array
-    {
-        $return = [
-            'ok' => true,
-        ];
-
-        if (! $this->isAbleToCheckin() || $this->is_shadow_banned) {
-            $return['ok'] = false;
-            $return['msg'] = 'به نظر می رسد شما وارد سیستم شده اید...';
-        } else {
-            try {
-                $traffic = random_int((int) $_ENV['checkinMin'], (int) $_ENV['checkinMax']);
-            } catch (Exception $e) {
-                $traffic = 0;
-            }
-
-            $this->transfer_enable += Tools::toMB($traffic);
-            $this->last_check_in_time = time();
-            $this->save();
-            $return['msg'] = 'برنده شد ' . $traffic . 'MB ترافیک.';
-        }
-
-        return $return;
-    }
-
     public function unbindIM(): bool
     {
         $this->im_type = 0;
         $this->im_value = '';
+
         return $this->save();
     }
 
