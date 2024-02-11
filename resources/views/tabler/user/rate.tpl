@@ -129,7 +129,7 @@
             chart.render();
             chart.updateOptions({
                 series: [{
-                    name: "倍率",
+                    name: "ضریب",
                     data: evt.detail.data
                 }],
             });

@@ -645,8 +645,8 @@
                                                 <br>
                                                 <div style="margin-top: 5px;" class="btn-list justify-content-start">
                                                     <a {if $config['enable_r2_client_download']}
-                                                        href="/user/clients/Clash-Android.apk" {else}
-                                                        href="/clients/Clash-Android.apk" {/if} class="btn btn-azure">
+                                                        href="/user/clients/CMFA.apk" {else}
+                                                        href="/clients/CMFA.apk" {/if} class="btn btn-azure">
                                                         دانلود کلش برای اندروید
                                                     </a>
                                                 </div>

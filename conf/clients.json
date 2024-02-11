@@ -31,12 +31,16 @@
             "savePath": "public/clients/",
             "downloads": [
                 {
-                    "sourceName": "Clash.Verge_%tagName1%_x64.msi",
-                    "saveName": "Clash.Verge.msi"
+                    "sourceName": "Clash.Verge_%tagName1%_x64-setup.exe",
+                    "saveName": "Clash.Verge.exe"
                 },
                 {
                     "sourceName": "Clash.Verge_%tagName1%_aarch64.dmg",
                     "saveName": "Clash.Verge_aarch64.dmg"
+                },
+                {
+                    "sourceName": "Clash.Verge_%tagName1%_x64.dmg",
+                    "saveName": "Clash.Verge_x64.dmg"
                 },
                 {
                     "sourceName": "clash-verge_%tagName1%_amd64.AppImage.tar.gz",

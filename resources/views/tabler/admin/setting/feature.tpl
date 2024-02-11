@@ -37,7 +37,7 @@
                                     <a href="#log" class="nav-link" data-bs-toggle="tab">گزارش کاربر</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#checkin" class="nav-link" data-bs-toggle="tab">签到</a>
+                                    <a href="#checkin" class="nav-link" data-bs-toggle="tab">هدیه روزانه</a>
                                 </li>
                             </ul>
                         </div>

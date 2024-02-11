@@ -22,9 +22,9 @@ final class PaybackController extends BaseController
                 'userid' => 'شروع شناسه کاربر',
                 'user_name' => 'شروع نام کاربری',
                 'ref_by' => 'شناسه کاربر سودآور',
-                'ref_user_name' => 'نام کاربری سودآور'،
+                'ref_user_name' => 'نام کاربری سودآور',
                 'ref_get' => 'مقدار سود',
-                'invoice_id' => 'شناسه قبض'،
+                'invoice_id' => 'شناسه قبض',
                 'datetime' => 'زمان',
             ],
         ];

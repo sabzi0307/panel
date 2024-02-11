@@ -62,7 +62,7 @@
                                                                         {if $server["is_dynamic_rate"]}
                                                                             dynamic ratio
                                                                         {else}
-                                                                            {$server["traffic_rate"]} 倍
+                                                                            {$server["traffic_rate"]} ضریب
                                                                         {/if}
                                                                     </li>
                                                                     <li class="list-inline-item">
