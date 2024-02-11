@@ -310,7 +310,7 @@
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#windows-3"
                                                     aria-expanded="false">
-                                                    هیدیفای نکست (پیشنهادی)
+                                                    هیدیفای نکست 
                                                 </button>
                                             </h2>
                                             <div id="windows-3" class="accordion-collapse collapse"
@@ -501,7 +501,7 @@
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#droid-3"
                                                     aria-expanded="false">
-                                                    هیدیفای نکست (پیشنهادی)
+                                                    هیدیفای نکست 
                                                 </button>
                                             </h2>
                                             <div id="droid-3" class="accordion-collapse collapse"
@@ -854,7 +854,7 @@
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#linux-3"
                                                     aria-expanded="false">
-                                                    هیدیفای نکست (پیشنهادی)
+                                                    هیدیفای نکست 
                                                 </button>
                                             </h2>
                                             <div id="linux-3" class="accordion-collapse collapse"
@@ -1006,7 +1006,7 @@
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#mac-3"
                                                     aria-expanded="false">
-                                                    هیدیفای نکست (پیشنهادی)
+                                                    هیدیفای نکست
                                                 </button>
                                             </h2>
                                             <div id="mac-3" class="accordion-collapse collapse"
