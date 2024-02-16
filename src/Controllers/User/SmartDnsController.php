@@ -158,7 +158,7 @@ final class SmartDnsController extends BaseController
         $dns = new SmartDns();
         $dns->ip = $ip;
         $dns->created_at = time();
-        $dns->update_time = time();
+        $dns->updated_at = time();
         $dns->mark = (string) Tools::getIpLocation($ip);
         $dns->userid = $user->id;
 
@@ -215,7 +215,7 @@ final class SmartDnsController extends BaseController
             $dns->node = $node['id'];
         }
 
-        $dns->update_time = time();
+        $dns->updated_at = time();
 
 
         if (!$dns->save()) {
