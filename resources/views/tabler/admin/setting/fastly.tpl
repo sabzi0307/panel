@@ -1,5 +1,8 @@
 {include file='admin/header.tpl'}
-
+<link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.13.6/b-2.4.2/sl-1.7.0/datatables.min.css" />
+<link rel="stylesheet" href="/assets/css/editor.dataTables.css">
+<script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.13.6/b-2.4.2/sl-1.7.0/datatables.min.js"></script>
+<script src="/assets/js/dataTables.editor.js"></script>
 <div class="page-wrapper">
     <div class="container-xl">
         <div class="page-header d-print-none text-white">
@@ -32,15 +35,18 @@
                             <a>تونل Fastly</a>
                         </div>
                         <div class="card-body">
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">فعال بودن اسمارت دی ان اس</label>
-                                <div class="col">
-                                    <select id="smart_dns" class="col form-select" value="{$settings['smart_dns']}">
-                                        <option value="0" {if ! $settings['smart_dns']}selected{/if}>
-                                            غیرفعال</option>
-                                        <option value="1" {if $settings['smart_dns']}selected{/if}>فعال
-                                        </option>
-                                    </select>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table id="data_table" class="table table-vcenter card-table"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: unset;">آدرس IP</th>
+                                                <th style="width: unset;">سرور</th>
+                                                <th style="width: unset;">عملیات</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -50,27 +56,178 @@
         </div>
 
         <script>
-            $("#save-setting").click(function() {
-                $.ajax({
-                    url: '/admin/setting/fastly',
-                    type: 'POST',
-                    dataType: "json",
-                    data: {
-                        {foreach $update_field as $key}
-                            {$key}: $('#{$key}').val(),
-                        {/foreach}
+$.fn.dataTable.ext.errMode = 'none';
+            var editor = new $.fn.dataTable.Editor({
+                ajax: {
+                    create: {
+                        type: 'POST',
+                        url: '/admin/setting/fastly'
                     },
-                    success: function(data) {
-                        if (data.ret === 1) {
-                            $('#success-message').text(data.msg);
-                            $('#success-dialog').modal('show');
-                        } else {
-                            $('#fail-message').text(data.msg);
-                            $('#fail-dialog').modal('show');
+                    edit: {
+                        type: 'PUT',
+                        url: '/admin/setting/fastly/_id_'
+                    },
+                    remove: {
+                        type: 'DELETE',
+                        url: '/admin/setting/fastly/_id_'
+                    }
+                },
+                table: '#data_table',
+                idSrc: 'id',
+                fields: [
+                    { label: 'آدرس IP', name: 'ip' },
+                    {
+                        label: 'سرور انتخابی',
+                        name: 'node.id',
+                        type: 'select',
+                        options: {$smarts}
+                    }
+                ],
+                i18n: {
+                    create: {
+                        button: "افزودن",
+                        title: "افزودن IP جدید",
+                        submit: "ثبت"
+                    },
+                    edit: {
+                        button: "ویرایش",
+                        title: "ویرایش آدرس IP",
+                        submit: "ثبت"
+                    },
+                    remove: {
+                        button: "حذف",
+                        title: "حذف IP",
+                        submit: "حذف",
+                        confirm: {
+                            _: "شما در حال حذف %d گزینه هستید. آیا تایید میفرمایید؟",
+                            1: "شما در حال حذف یک گزینه هستید. آیا تایید میفرمایید؟",
                         }
+                    },
+                    error: {
+                        system: "خطا در سرور! لطفا با پشتیبانی مطرح فرمایید."
+                    },
+                }
+            });
+
+            var table = $('#data_table')
+                .DataTable({
+                    ajax: {
+                        url: "/admin/setting/fastly/ajax",
+                        type: "POST",
+                        contentType: "application/json",
+                        dataType: "json",
+                        error: function(xhr, error, thrown) {
+                            if (xhr.responseJSON.ret !== null && xhr.responseJSON.ret === 0) {
+                                if (xhr.responseJSON.msg !== "") {
+                                    alert("خطا " + xhr.status + " :" + xhr.responseJSON.msg);
+                                } else {
+                                    alert("خطا " + xhr.status + " :" + thrown);
+                                }
+                            } else {
+                                alert(error + xhr.status + " : " + thrown);
+                            }
+                        }
+                    },
+                    columnDefs: [
+                        { targets: "_all", defaultContent: "<b>بدون داده</b>" },
+                    ],
+                    dom: 'Brtip',
+                    // data: ,
+                    serverSide: false,
+                    processing: false,
+                    paging: false,
+                    scrollCollapse: true,
+                    columns: [
+                        { data: 'ip', className: 'dt-body-right', orderable: false },
+                        {
+                            data: 'node.name',
+                            className: 'dt-body-right',
+                            orderable: false,
+                            editField: "node.id",
+                        },
+                        {
+                            data: null,
+                            className: 'dt-body-right',
+                            defaultContent: '<a href="" class="editor_remove">حذف</a>'
+                        }
+                    ],
+                    select: false,
+                    buttons: [
+                        { extend: 'create', editor: editor },
+                        // { extend: 'edit', editor: editor },
+                        // {
+                        //     extend: 'selectedSingle',
+                        //     text: 'تغییر به IP فعلی',
+                        //     action: function(e, dt, node, config) {
+                        //         editor
+                        //             .edit(table.row({ selected: true }).index(), false)
+                        //             .set('ip', "127.0.0.1")
+                        //             .submit();
+                        //     }
+                        // },
+                        // { extend: 'remove', editor: editor },
+                    ],
+                });
+
+            $('#data_table')
+                .on('click', 'td:not(:last-child)', function() {
+                    editor.bubble(this, ['ip', 'node.id'], {
+                        buttons: [{
+                                label: 'ثبت',
+                                fn: function() {
+                                    editor.submit();
+                                }
+                            },
+                            {
+                                text: 'ثبت آدرس ‌IP فعلی',
+                                action: function() {
+                                    editor
+                                        .set('ip', "{$ip}")
+                                        .submit();
+                                }
+                            },
+                        ]
+                    });
+                })
+                // Delete a record
+                .on('click', 'a.editor_remove', function(e) {
+                    e.preventDefault();
+
+                    editor
+                        .title('حذف گزینه')
+                        .message('آیا از حذف این گزینه اطمینان دارید ؟')
+                        .buttons({
+                            label: 'حذف',
+                            fn: function() {
+                                editor.submit();
+                            }
+                        })
+                        .remove($(this).closest('tr'));
+                })
+                .on('error.dt', function(e, settings, techNote, message) {
+                    alert('خطا: ' + settings.jqXHR.responseJSON.error);
+                    console.log('خطا: ' + settings.jqXHR.responseJSON.error);
+                })
+                .DataTable();
+
+            var openVals;
+            editor
+                .on('open', function(e, type) {
+                    openVals = JSON.stringify(editor.get());
+                })
+                .on('preBlur', function(e) {
+                    if (openVals !== JSON.stringify(editor.get())) {
+                        return confirm('شما یک تغییر ذخیره نشده دارید! آیا از خروج اطمینان دارید؟');
                     }
                 })
-            });
+                .on('submitSuccess', function() {
+                    table.ajax.reload();
+                    alert('تغییرات با موفقیت ذخیره شد.');
+                })
+                .on('submitError', function() {
+                    alert('متاسفانه خطایی رخ داده! لطفا مجددا تلاش کنید و یا به پشتیبانی گزارش دهید.');
+                    table.ajax.reload();
+                });
         </script>
 
 {include file='admin/footer.tpl'}

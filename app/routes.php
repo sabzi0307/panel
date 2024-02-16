@@ -247,8 +247,13 @@ return static function (Slim\App $app): void {
         $group->post('/setting/cron', App\Controllers\Admin\Setting\CronController::class . ':save');
         $group->get('/setting/smart', App\Controllers\Admin\Setting\SmartDnsController::class . ':index');
         $group->post('/setting/smart', App\Controllers\Admin\Setting\SmartDnsController::class . ':save');
+
         $group->get('/setting/fastly', App\Controllers\Admin\Setting\FastlyController::class . ':index');
-        $group->post('/setting/fastly', App\Controllers\Admin\Setting\FastlyController::class . ':save');
+        $group->post('/setting/fastly', App\Controllers\Admin\Setting\FastlyController::class . ':add');
+        $group->put('/setting/fastly/{id}', App\Controllers\Admin\Setting\FastlyController::class . ':update');
+        $group->delete('/setting/fastly/{id}', App\Controllers\Admin\Setting\FastlyController::class . ':delete');
+        $group->post('/setting/fastly/ajax', App\Controllers\Admin\Setting\FastlyController::class . ':ajax');
+        
         $group->get('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':index');
         $group->post('/setting/email', App\Controllers\Admin\Setting\EmailController::class . ':save');
         $group->get('/setting/feature', App\Controllers\Admin\Setting\FeatureController::class . ':index');
