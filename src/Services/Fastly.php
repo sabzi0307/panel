@@ -15,11 +15,22 @@ use Exception;
 
 final class Fastly
 {
+
+    private string $token;
+    private string $username;
+    private string $password;
+
+    public function __construct($token, $username, $password)
+    {
+        $this->token = $token;
+        $this->username = $username;
+        $this->password = $password;
+    }
     public static function ServiceInit(): ServiceApi
     {
         // Authorize the client with a Fastly API token.
         $config = Configuration::getDefaultConfiguration()->setApiToken($_ENV['fastly_api_token']);
-        return new ServiceApi(null, $config);
+                return new ServiceApi(null, $config);
     }
 
     /**
@@ -594,6 +605,184 @@ final class Fastly
             } else {
                 echo "Error: " . $e->getMessage();
             }
+        }
+
+    }
+    public static function isValidToken()
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->get('https://api.fastly.com/current_user', [
+                'headers' => [
+                    'Accept' => 'application/vnd.api+json;q=1.0,application/json;q=0.9',
+                    'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Authority' => 'api.fastly.com',
+                    'Origin' => 'https://manage.fastly.com',
+                    'Referer' => 'https://manage.fastly.com/',
+                    'fastly-key' => self::$token
+                ]
+            ]);
+
+            $body = $response->getBody()->getContents();
+            $currentUser = json_decode($body, true);
+            if (! $currentUser ) {
+                return [null, 'مقدار توکن صحیح نیست.'];
+            }
+    
+            if ($currentUser["role"] !== "superuser") {
+                return [null, 'این توکن دسترسی مورد نیاز را ندارد.'];
+            }
+            
+            if ($currentUser["deleted_at"] !== null) {
+                return [null, 'این اکانت حذف شده است.'];
+            }
+    
+            if ($currentUser["locked"] !== null) {
+                return [null, 'این اکانت قفل شده است.'];
+            }
+    
+            if ($currentUser["require_new_password"] !== null) {
+                return [null, 'این اکانت درخواست ویرایش رمز را ارسال کرده.'];
+            }
+    
+            if ($currentUser["limit_services"] !== false) {
+                return [null, 'این توکن محدود شده است.'];
+            }
+    
+            if ($currentUser["two_factor_auth_enabled"] !== null) {
+                return [null, 'این توکن دارای احراز هویت دو عاملی است.'];
+            }
+            return [$currentUser, null];
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                return [null, $e->getResponse()->getBody()];
+            } else {
+                return [null, $e->getMessage()];
+            }
+        }
+
+    }
+    public static function isValidFanout()
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->get('https://api.fastly.com/entitled-products/fanout', [
+                'headers' => [
+                    'Accept' => 'application/vnd.api+json;q=1.0,application/json;q=0.9',
+                    'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Authority' => 'api.fastly.com',
+                    'Origin' => 'https://manage.fastly.com',
+                    'Referer' => 'https://manage.fastly.com/',
+                    'fastly-key' => self::$token
+                ]
+            ]);
+
+            $body = $response->getBody()->getContents();
+            $fanout = json_decode($body, true);
+
+            if (! $fanout["has_access"]) {
+                return [null, 'شما به سرویس Fanout دسترسی ندارید.'];
+            }
+    
+            if (! $fanout["has_permission_to_enable"]) {
+                return [null, 'شما دسترسی لازم را برای فعال سازی سرویس Fanout ندارید.'];
+            }
+    
+            if (stripos($fanout["access_level"], 'trial') !== false) {
+                $fanout_access_level = $fanout["access_level"];
+                $fanout_limit = $fanout["limit"]["trial_access_expires_on"];
+                $fanout_remain = Tools::getRemainingDays($fanout_limit);
+                if ($fanout_remain->invert) {
+                    return [null, 'سرویس Fanout آزمایشی شما در ' . $fanout_remain->days . ' روز پیش منقضی شده.'];
+                }
+    
+                if ($fanout_remain->days < 2) {
+                    return [null, 'کمتر از ' . $fanout_remain->days-1 . 'روز از زمان اعتبار سرویس Fanout باقی مانده.'];
+                }
+            }
+            return [$fanout, null];
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                return [null, $e->getResponse()->getBody()];
+            } else {
+                return [null, $e->getMessage()];
+            }
+        }
+
+    }
+
+    public static function isValidWebSockets()
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->get('https://api.fastly.com/entitled-products/websockets', [
+                'headers' => [
+                    'Accept' => 'application/vnd.api+json;q=1.0,application/json;q=0.9',
+                    'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Authority' => 'api.fastly.com',
+                    'Origin' => 'https://manage.fastly.com',
+                    'Referer' => 'https://manage.fastly.com/',
+                    'fastly-key' => self::$token
+                ]
+            ]);
+
+            $body = $response->getBody()->getContents();
+            $ws = json_decode($body, true);
+            if (! $ws["has_access"]) {
+                return [null, 'شما به سرویس WebSocket دسترسی ندارید.'];
+            }
+    
+            if (! $ws["has_permission_to_enable"]) {
+                return [null, 'شما دسترسی لازم را برای فعال سازی سرویس WebSocket ندارید.'];
+            }
+            
+            if (stripos($ws["access_level"], 'trial') !== false) {
+    
+                $ws_limit = $ws["limit"]["trial_access_expires_on"];
+                $ws_remain = Tools::getRemainingDays($ws_limit);
+                if ($ws_remain->invert) {
+                    return [null, 'سرویس WebSocket آزمایشی شما در ' . $ws_remain->days . ' روز پیش منقضی شده.'];
+                }
+    
+                if ($ws_remain->days < 2) {
+                    return [null, 'کمتر از ' . $ws_remain->days . 'روز از زمان اعتبار سرویس WebSocket باقی مانده.'];
+                }
+            }
+            return [$ws, null];
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                return [null, $e->getResponse()->getBody()];
+            } else {
+                return [null, $e->getMessage()];
+            }
+        }
+
+    }
+
+    public static function Validate()
+    {
+        [$currentUser, $error] = self::isValidToken();
+        if ($error) {
+            return [$currentUser, $error];
+        }
+
+        // $dupplicate = Fastly::where('customer_id', $currentUser['customer_id'])->count();
+        // if ($dupplicate !== 0) {
+        //     return [null, 'این اکانت قبلا ثبت شده.'];
+        // }
+
+        [$fanout, $error] = self::isValidFanout();
+        if ($error) {
+            return [$fanout, $error];
+        }
+
+        [$ws, $error] = self::isValidWebSockets();
+        if ($error) {
+            return [$ws, $error];
         }
 
     }

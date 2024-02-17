@@ -8,6 +8,7 @@ use App\Models\Config;
 use App\Models\Link;
 use App\Models\User;
 use App\Services\GeoIP2;
+use DateTime;
 use GeoIp2\Exception\AddressNotFoundException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Morilog\Jalali\Jalalian;
@@ -104,6 +105,22 @@ final class Tools
         }
 
         return $data;
+    }
+
+    public static function getRemainingDays($date)
+    {
+        // تاریخ و زمان فعلی
+        $currentDate = new DateTime();
+
+        // تاریخ مشخص شده
+        $targetDate = new DateTime($date);
+
+        // محاسبه تفاوت بین دو تاریخ
+        $interval = $currentDate->diff($targetDate);
+
+        // استخراج تعداد روزهای باقیمانده
+        return $interval;
+
     }
 
     public static function getServerAddr($asn): string

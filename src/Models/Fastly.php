@@ -8,12 +8,12 @@ use Illuminate\Database\Query\Builder;
 
 /**
  * @property int        $id          商品ID
- * @property int        $node        类型
- * @property int        $userid        名称
- * @property int        $create_time 创建时间
- * @property int        $update_time 更新时间
- * @property string     $ip  累计销量
- * @property string     $mark       库存
+ * @property string     $token        类型
+ * @property string     $customer_id 类型
+ * @property string     $name 类型
+ * @property string     $login 类型
+ * @property int        $created_at 创建时间
+ * @property int        $updated_at 更新时间
  *
  * @mixin Builder
  */

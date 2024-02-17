@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 
 use App\Models\Fastly;
 use App\Services\IM\Telegram;
-use App\Services\Subscribe;
+use App\Services\Fastly as FastlyClient;
 use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -16,6 +16,7 @@ use Slim\Http\ServerRequest;
 use stdClass;
 use voku\helper\AntiXSS;
 use function trim;
+
 
 final class FastlyController extends BaseController
 {
@@ -80,40 +81,32 @@ final class FastlyController extends BaseController
                 ]);
         }
 
-        $ip = $antiXss->xss_clean(trim($data[0]['ip']));
-        if (! (Tools::isIPv4($ip) || Tools::isIPv6($ip))) {
-            return $response->withStatus(200)
-                ->withJson([
-                    'ret' => 0,
-                    'error' => 'مقدار IP صحیح نیست.'
-                ]);
-        }
-
-
-        $user = $this->user;
-        $count = Fastly::where('userid', $user->id)->count();
-
-        $dupplicate = Fastly::where('ip', $ip)->count();
-        if ($dupplicate !== 0) {
-            return $response->withStatus(200)
-                ->withJson([
-                    'ret' => 0,
-                    'error' => 'این آدرس قبلا ثبت شده و نیازی به ثبت مجدد نیست.',
-                ]);
-        }
-
-        $dns = new Fastly();
-        $dns->ip = $ip;
-        $dns->create_time = time();
-        $dns->update_time = time();
-        $dns->mark = (string) Tools::getIpLocation($ip);
-        $dns->userid = $user->id;
-
-        if (!$dns->save()) {
+        $token = $antiXss->xss_clean(trim($data[0]['token']));
+        $username = $antiXss->xss_clean(trim($data[0]['username']));
+        $password = $antiXss->xss_clean(trim($data[0]['password']));
+        $fastlyClient = new FastlyClient($token, $username, $password);
+        [$currentUser, $error] = $fastlyClient::Validate();
+        if ($error) {
             return $response->withStatus(500)
                 ->withJson([
                     'ret' => 0,
-                    'msg' => 'گره اضافه نشد',
+                    'msg' => $error,
+                ]);
+        }
+        
+        $fastly = new Fastly();
+        $fastly->token = $token;
+        $fastly->customer_id = $currentUser['customer_id'];
+        $fastly->name = $currentUser['name'];
+        $fastly->login = $currentUser['login'];
+        $fastly->created_at = time();
+        $fastly->updated_at = time();
+
+        if (!$fastly->save()) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'توکن اضافه نشد',
                 ]);
         }
 
@@ -162,7 +155,7 @@ final class FastlyController extends BaseController
             $dns->node = $node['id'];
         }
 
-        $dns->update_time = time();
+        $dns->updated_at = time();
 
 
         if (!$dns->save()) {
@@ -223,23 +216,21 @@ final class FastlyController extends BaseController
      */
     public function ajax(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $user = $this->user;
-        $userdnss = Fastly::where('userid', $user->id)->orderBy('id', 'desc')->get();
-        $rdns = json_decode(Subscribe::getContent($this->user, "smartdns"));
+        $accounts = Fastly::all();
 
-        foreach ($userdnss as $userdns) {
-            foreach ($rdns as $rd) {
-                $id = $rd->id;
-                if ($userdns->node === $id) {
-                    $userdns->node = $rd;
-                    break;
-                }
-            }
-        }
+        // foreach ($accounts as $account) {
+        //     foreach ($account as $rd) {
+        //         $id = $rd->id;
+        //         if ($account->token === $id) {
+        //             $userdns->node = $rd;
+        //             break;
+        //         }
+        //     }
+        // }
 
         return $response->withStatus(200)
             ->withJson([
-                'data' => $userdnss,
+                'data' => $accounts,
                 'ret' => 1,
                 'msg' => 'success'
             ]);
