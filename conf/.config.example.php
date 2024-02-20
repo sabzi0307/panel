@@ -131,3 +131,13 @@ $_ENV['r2_account_id'] = '';
 $_ENV['r2_access_key_id'] = '';
 $_ENV['r2_access_key_secret'] = '';
 $_ENV['r2_client_download_timeout'] = 10;
+
+#Obtain the user's real ip after setting up the CDN. If you don't know what this is, please don't mess around
+$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
+foreach ($_ENV['cdn_forwarded_ip'] as $cdn_forwarded_ip) {
+    if (isset($_SERVER[$cdn_forwarded_ip])) {
+        $list = explode(',', $_SERVER[$cdn_forwarded_ip]);
+        $_SERVER['REMOTE_ADDR'] = $list[0];
+        break;
+    }
+}
