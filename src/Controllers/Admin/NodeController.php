@@ -109,12 +109,20 @@ final class NodeController extends BaseController
 
         $custom_config = $request->getParam('custom_config') ?? '{}';
 
+        $enable_vless = $request->getParam('enable_vless') === 'true' ? 1 : 0;
+        if ($enable_vless === 1) {
+            $node->reality_opts = $request->getParam('enable_reality') === 'true' ? $this->initReality() : "{}"; 
+            $temp_conf = json_decode($custom_config, true);
+            $temp_conf->enable_vless = $enable_vless;
+            $custom_config = json_encode($temp_conf);
+        }
+
         if ($custom_config !== '') {
             $node->custom_config = $custom_config;
         } else {
             $node->custom_config = '{}';
         }
-
+       
         $node->is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;        
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
@@ -171,6 +179,25 @@ final class NodeController extends BaseController
         $node->max_rate_time = $dynamic_rate_config?->max_rate_time ?? 22;
         $node->min_rate = $dynamic_rate_config?->min_rate ?? 1;
         $node->min_rate_time = $dynamic_rate_config?->min_rate_time ?? 3;
+
+        if ($node->reality_opts !== "{}") {
+            $reality_opts = json_decode($node->reality_opts);
+            $node->is_reality = true;
+            $node->private_key = $reality_opts->private_key;
+            $node->public_key = $reality_opts->public_key;
+            $node->ShortIds = implode(', ', $reality_opts->ShortIds);;
+            $node->ServerNames = $reality_opts->ServerNames;
+            $node->Dest = $reality_opts->Dest;
+            $node->ProxyProtocolVer = $reality_opts->ProxyProtocolVer ?? 0;
+            // $node->is_reality = true;
+        } else {
+            $node->is_reality = false;
+        }
+        
+        // $node->max_rate = $dynamic_rate_config?->max_rate ?? 1;
+        // $node->max_rate_time = $dynamic_rate_config?->max_rate_time ?? 22;
+        // $node->min_rate = $dynamic_rate_config?->min_rate ?? 1;
+        // $node->min_rate_time = $dynamic_rate_config?->min_rate_time ?? 3;
 
         $node->node_bandwidth = Tools::autoBytes($node->node_bandwidth);
         $node->node_bandwidth_limit = Tools::flowToGB($node->node_bandwidth_limit);
@@ -260,6 +287,66 @@ final class NodeController extends BaseController
         return $response->withJson([
             'ret' => 1,
             'msg' => 'کلید ارتباطی گره با موفقیت بازنشانی شد',
+        ]);
+    }
+
+    function initReality(): string|bool
+    {
+
+        // Generate KeyPair
+        $keys = Tools::x25519();
+        if ($keys == false) {
+            return false;
+        }
+
+        $REALITYConfig['private_key'] = $keys['private_key'];
+        $REALITYConfig['public_key'] = $keys['public_key'];
+
+        // if (($ids !== null) && ($ids !== "")) {
+        //     $ShortIds = explode(',', $ids);
+        //     $REALITYConfig['ShortIds'] = $ShortIds;
+        // } else {
+            $REALITYConfig['ShortIds'] = Tools::randomShortId() ?? [];
+        // }
+
+        $REALITYConfig['MinClientVer'] = '';
+        $REALITYConfig['MaxClientVer'] = '';
+        $REALITYConfig['MaxTimeDiff'] = 0;
+        $REALITYConfig['ProxyProtocolVer'] = 0;
+
+        // // Todo
+        $REALITYConfig['Dest'] = '';
+        $REALITYConfig['ServerNames'] = [];
+        
+        return json_encode($REALITYConfig);
+    }
+
+    public function resetKey(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+
+        $node = (new Node())->find($args['id']);
+        $REALITYConfig = json_decode($node->reality_opts, true);
+
+        $pbk = $request->getParam('pbk') ?? null;
+
+        // Generate KeyPair
+        $keys = Tools::x25519($pbk);
+        if ($keys == false) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در تولید کلید جدید',
+            ]);
+        }
+
+        $REALITYConfig['public_key'] = $keys['public_key'];
+        $REALITYConfig['private_key'] = $keys['private_key'];
+
+        $node->reality_opts = json_encode($REALITYConfig);
+        $node->save();
+        
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'کلید با موفقیت بازنشانی شد',
         ]);
     }
 

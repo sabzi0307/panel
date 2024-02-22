@@ -66,6 +66,38 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group mb-3 row" id="vless_section" style="display: none;">
+                                <label class="hr-text">Vless</label>
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن Vless</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="enable_vless" class="form-check-input" type="checkbox">
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row" id="reality_section" style="display: none;">
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن Reality</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="enable_reality" class="form-check-input" type="checkbox">
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row" id="routedns" style="display: none;">
+                                <label class="hr-text">Route Dns</label>
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن RouteDns</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="is_route_dns" class="form-check-input" type="checkbox">
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <div id="custom_config"></div>
@@ -176,17 +208,6 @@
                                     <input id="node_speedlimit" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row" id="routedns" style="display: none;">
-                                <label class="hr-text">Route Dns</label>
-                                <div class="form-group mb-3 row">
-                                    <span class="col">فعال کردن RouteDns</span>
-                                    <span class="col-auto">
-                                        <label class="form-check form-check-single form-switch">
-                                            <input id="is_route_dns" class="form-check-input" type="checkbox">
-                                        </label>
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -214,6 +235,8 @@
                 type: $("#type").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
                 is_route_dns: $("#is_route_dns").is(":checked"),
+                enable_reality: $("#enable_reality").is(":checked"),
+                enable_vless: $("#enable_vless").is(":checked"),
             },
             success: function(data) {
                 if (data.ret === 1) {
@@ -230,13 +253,45 @@
 
     document.getElementById("sort").addEventListener("change", function() {
         var selectedValue = this.value;
-        var hiddenSection = document.getElementById("routedns");
 
-        if (selectedValue === "3") {
-            hiddenSection.style.display = "block";
-        } else {
-            hiddenSection.style.display = "none";
+        var vlessSection = document.getElementById("vless_section");
+        var realitySection = document.getElementById("reality_section");
+        var routednsSection = document.getElementById("routedns");
+
+        switch(selectedValue) {
+            case "11":
+                routednsSection.style.display = "none";
+                vlessSection.style.display = "block";
+                var routednsSection = document.getElementById("enable_vless").value;
+                if (selectedValue == "true") {
+                    realitySection.style.display = "block";
+                } else {
+                    realitySection.style.display = "none";
+                }
+                break;
+            case "3":
+                routednsSection.style.display = "block";
+                vlessSection.style.display = "none";
+                realitySection.style.display = "none";
+                break;
+            default:
+                vlessSection.style.display = "none";
+                routednsSection.style.display = "none";
+                realitySection.style.display = "none";
         }
+    });
+
+
+    document.getElementById("enable_vless").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("reality_section");
+        if (this.checked) {
+            realitySection.style.display = "block";
+        } else {
+            realitySection.style.display = "none";
+        }
+
     });
 </script>
 

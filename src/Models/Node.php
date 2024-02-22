@@ -36,6 +36,7 @@ use const DNS_AAAA;
  * @property int    $online                  在线状态
  * @property int    $gfw_block               是否被GFW封锁
  * @property string $password                后端连接密码
+ * @property string $reality_opts            reality config
  *
  * @mixin Builder
  */

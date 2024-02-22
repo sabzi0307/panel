@@ -218,6 +218,62 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="form-group mb-3 row" id="reality" {if $node->is_reality}style="display: block;" {else}style="display: none;"{/if}>
+                                <label class="hr-text">Reality Configs</label>
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن RouteDns</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="is_route_dns" class="form-check-input" type="checkbox" {if $node->is_reality}checked="" {/if}>
+                                        </label>
+                                    </span>
+                                </div>
+
+                                <label class="form-label col-3 col-form-label">کلید خصوصی</label>
+                                <input type="text" class="form-control" id="pvk" value="{$node->private_key}"
+                                    disabled="">
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="reset-key" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="copy-pvk" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->private_key}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <label class="form-label col-3 col-form-label">کلید عمومی</label>
+                                <input type="text" class="form-control" id="pvk" value="{$node->public_key}"
+                                    disabled="">
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="copy-pbk" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->public_key}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
+                                <textarea type="text" class="form-control" id="pvk">"{$node->ShortIds}"</textarea>
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="short_ids" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="copy-ids" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->ShortIds}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
+                                <textarea type="text" class="form-control" id="pvk">"{$node->ServerNames}"</textarea>
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="srv-names" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="copy-srv-names" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->ServerNames}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="hr-text">
                                 <span>گزینه های پیشرفته</span>
                             </div>
@@ -230,6 +286,20 @@
                                         <button id="reset-password" class="btn btn-red">تنظیم مجدد</button>
                                         <button id="copy-password" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->password}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="reality_init" class="btn btn-red">reality جدید</button>
+                                    </div>
+                                </div>
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="reset-key" class="btn btn-red">کلید جدید</button>
+                                        <button id="copy-key" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->key}">
                                             کپی
                                         </button>
                                     </div>
@@ -283,6 +353,40 @@
     $("#reset-password").click(function () {
         $.ajax({
             url: '/admin/node/{$node->id}/reset_password',
+            type: 'POST',
+            dataType: "json",
+            success: function(data) {
+                if (data.ret === 1) {
+                    $('#success-message').text(data.msg);
+                    $('#success-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#reality_init").click(function () {
+        $.ajax({
+            url: '/admin/node/{$node->id}/reality_init',
+            type: 'POST',
+            dataType: "json",
+            success: function(data) {
+                if (data.ret === 1) {
+                    $('#success-message').text(data.msg);
+                    $('#success-dialog').modal('show');
+                } else {
+                    $('#fail-message').text(data.msg);
+                    $('#fail-dialog').modal('show');
+                }
+            }
+        })
+    });
+
+    $("#reset-key").click(function () {
+        $.ajax({
+            url: '/admin/node/{$node->id}/reset_key',
             type: 'POST',
             dataType: "json",
             success: function(data) {

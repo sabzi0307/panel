@@ -12,6 +12,7 @@ use DateTime;
 use GeoIp2\Exception\AddressNotFoundException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Morilog\Jalali\Jalalian;
+use ParagonIE\Sodium;
 use function array_diff;
 use function array_flip;
 use function base64_encode;
@@ -631,5 +632,137 @@ final class Tools
         return $Pings;
     }
 
+
+    /**
+     * Generate a X25519 key pair for Diffie-Hellman key exchange.
+     *
+     * @param string|null $privateKey Optional private key in Base64 format.
+     * @return array|false The generated key pair or false on error.
+     */
+    public static function x25519(?string $privateKey = null): array|false
+    {
+        if ($privateKey !== null) {
+            $privateKeyBytes = sodium_base642bin($privateKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+
+            // Verify the private key
+            if (strlen($privateKeyBytes) !== SODIUM_CRYPTO_BOX_SECRETKEYBYTES) {
+                return false;
+            }
+        } else {
+            $privateKeyBytes = random_bytes(SODIUM_CRYPTO_BOX_SECRETKEYBYTES);
+        }
+        
+        // Modify random bytes using algorithm described at:
+        // https://cr.yp.to/ecdh.html.
+        $privateKeyBytes = unpack('C*', $privateKeyBytes);
+        $privateKeyBytes[1] &= 248;
+        $privateKeyBytes[SODIUM_CRYPTO_BOX_SECRETKEYBYTES] &= 127;
+        $privateKeyBytes[SODIUM_CRYPTO_BOX_SECRETKEYBYTES] |= 64;
+        $privateKey = pack('C*', ...$privateKeyBytes);
+
+
+        $publicKey = sodium_crypto_scalarmult_base($privateKey);
+
+        if ($publicKey === false) {
+            return false;
+        }
+
+        $privateKeyBase64 = sodium_bin2base64($privateKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+        $publicKeyBase64 = sodium_bin2base64($publicKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+
+        $output = [
+            'private_key' => $privateKeyBase64,
+            'public_key' => $publicKeyBase64
+        ];
+
+        return $output;
+    }
+
+    public static function x25519Back(): array|false 
+    {
+        $privateKeyBytes = random_bytes(SODIUM_CRYPTO_BOX_SECRETKEYBYTES);
+
+        // Modify random bytes using algorithm described at:
+        // https://cr.yp.to/ecdh.html.
+        $privateKeyBytes = unpack('C*', $privateKeyBytes);
+        $privateKeyBytes[1] &= 248;
+        $privateKeyBytes[SODIUM_CRYPTO_BOX_SECRETKEYBYTES] &= 127;
+        $privateKeyBytes[SODIUM_CRYPTO_BOX_SECRETKEYBYTES] |= 64;
+        $privateKey = pack('C*', ...$privateKeyBytes);
+
+        $publicKey = sodium_crypto_scalarmult_base($privateKey);
+
+        if ($publicKey === false) {
+            return false;
+        }
+
+        $privateKeyBase64 = sodium_bin2base64($privateKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+        $publicKeyBase64 = sodium_bin2base64($publicKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+
+        $output = [
+            'private_key' => $privateKeyBase64,
+            'public_key' => $publicKeyBase64
+        ];
+
+        return $output;
+    }
+
+    /**
+     * Verify the validity of a X25519 key pair.
+     *
+     * @param string $privateKey The private key in Base64 format.
+     * @param string $publicKey The public key in Base64 format.
+     * @return bool True if the key pair is valid, false otherwise.
+     */
+    public static function verifyX25519KeyPair(string $privateKey, string $publicKey): bool
+    {
+        $privateKeyBytes = sodium_base642bin($privateKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+        $publicKeyBytes = sodium_base642bin($publicKey, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING);
+
+        // Check key sizes
+        if (strlen($privateKeyBytes) !== SODIUM_CRYPTO_BOX_SECRETKEYBYTES || strlen($publicKeyBytes) !== SODIUM_CRYPTO_BOX_PUBLICKEYBYTES) {
+            return false;
+        }
+
+        // Verify the public key using the private key
+        $computedPublicKey = sodium_crypto_scalarmult_base($privateKeyBytes);
+        if ($computedPublicKey === false || $publicKeyBytes !== $computedPublicKey) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Generate a random short ID.
+     *
+     * @return array An array of 24 random hexadecimal strings.
+     */
+    public static function randomShortId(): array
+    {
+        $shortIds = array_fill(0, 24, '');
+
+        for ($ii = 0; $ii < 24; $ii++) {
+            $hexString = '';
+            while (strlen($hexString) < 16) {
+                $randomNum = self::randomInt(256);
+                $hexString .= sprintf('%02x', $randomNum);
+            }
+            $shortIds[$ii] = substr($hexString, 0, 16);
+        }
+
+        return $shortIds;
+    }
+
+    /**
+     * Generate a random integer between 0 and $max (exclusive).
+     *
+     * @param int $max The maximum value (exclusive).
+     * @return int A random integer.
+     */
+    private static function randomInt(int $max): int
+    {
+        return mt_rand(0, $max - 1);
+    }
 
 }

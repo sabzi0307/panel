@@ -95,30 +95,34 @@ final class Clash extends Base
                     $security = $node_custom_config['security'] ?? 'none';
                     $encryption = $node_custom_config['encryption'] ?? 'auto';
                     $network = $node_custom_config['network'] ?? '';
-                    $host = $node_custom_config['header']['request']['headers']['Host'][0] ??
-                        $node_custom_config['host'] ?? '';
+                    $host = $node_custom_config['host'] ?? $node_custom_config['header']['request']['headers']['Host'][0] ?? '';
                     $allow_insecure = $node_custom_config['allow_insecure'] ?? false;
-                    $tls = $security === 'tls';
-                    // Clash 特定配置
+                    $tls = in_array($security, ['reality', 'tls']);
+                    // Clash specific configuration
                     $udp = $node_custom_config['udp'] ?? true;
+                    $flow = $node_custom_config['flow'] ?? '';
+                    $client_fingerprint = $node_custom_config['client_fingerprint'] ?? 'chrome';
+                    $type = ($node_custom_config['enable_vless'] ?? '0') === '1' ? 'vless' : 'vmess';
                     $ws_opts = $node_custom_config['ws-opts'] ?? $node_custom_config['ws_opts'] ?? null;
                     $h2_opts = $node_custom_config['h2-opts'] ?? $node_custom_config['h2_opts'] ?? null;
                     $http_opts = $node_custom_config['http-opts'] ?? $node_custom_config['http_opts'] ?? null;
                     $grpc_opts = $node_custom_config['grpc-opts'] ?? $node_custom_config['grpc_opts'] ?? null;
-                    // HTTPUpgrade 在 Clash.Meta 内核中属于 ws 类型
+                    $reality_opts = $node_custom_config['reality-opts'] ?? $node_custom_config['reality_opts'] ?? null;
+                    // HTTPUpgrade is ws in the Clash.Meta core
                     if ($network === 'httpupgrade') {
                         $network = 'ws';
                     }
-
                     $node = [
                         'name' => $node_raw->name,
-                        'type' => 'vmess',
+                        'type' => $type,
                         'server' => $node_raw->server,
                         'port' => (int) $v2_port,
                         'uuid' => $user->uuid,
                         'alterId' => 0,
                         'cipher' => $encryption,
                         'udp' => (bool) $udp,
+                        'client-fingerprint' => $client_fingerprint,
+                        'flow' => $flow,
                         'tls' => $tls,
                         'skip-cert-verify' => (bool) $allow_insecure,
                         'servername' => $host,
@@ -127,6 +131,7 @@ final class Clash extends Base
                         'h2-opts' => $h2_opts,
                         'http-opts' => $http_opts,
                         'grpc-opts' => $grpc_opts,
+                        'reality-opts' => $reality_opts,
                     ];
 
                     break;

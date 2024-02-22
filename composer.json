@@ -16,6 +16,7 @@
         "ext-zip": "*",
         "anankke/omnipay-alipay": "^3",
         "aws/aws-sdk-php": "^3",
+        "fastly/fastly": "*@dev",
         "geoip2/geoip2": "^3",
         "guzzlehttp/guzzle": "^7",
         "guzzlehttp/psr7": "^2",
@@ -30,6 +31,7 @@
         "nikolaposa/rate-limit": "^3",
         "openai-php/client": "^0",
         "ozdemir/datatables": "^2",
+        "paragonie/sodium_compat": "^1.20",
         "phpmailer/phpmailer": "^6",
         "postal/postal": "^2",
         "ramsey/uuid": "^4",
@@ -40,14 +42,15 @@
         "smarty/smarty": "^4",
         "srmklive/paypal": "^3",
         "stripe/stripe-php": "^13",
-        "symfony/yaml": "^6",
         "symfony/http-client": "^7",
         "symfony/translation": "^6|^7",
+        "symfony/yaml": "^6",
         "tronovav/geoip2-update": "^2",
         "twig/twig": "^3",
         "vectorface/googleauthenticator": "^3",
         "voku/anti-xss": "^4",
-        "fastly/fastly": "*@dev"
+        "paragonie/constant_time_encoding": "^v2.5.0",
+        "paragonie/random_compat": "^v9.99.100"
     },
     "autoload": {
         "psr-4": {

@@ -30,11 +30,16 @@ final class V2Ray extends Base
                 $v2_port = $node_custom_config['offset_port_user'] ?? ($node_custom_config['offset_port_node'] ?? 443);
                 $security = $node_custom_config['security'] ?? 'none';
                 $network = $node_custom_config['network'] ?? '';
+                $pbk = $node_custom_config['pbk'] ?? '';
+                $flow = $node_custom_config['flow'] ?? '';
+				// $transit_address = $node_custom_config['transit_address'] ?? '';
+				// $transit_port = $node_custom_config['transit_port'] ?? '';
                 $header = $node_custom_config['header'] ?? ['type' => 'none'];
                 $header_type = $header['type'] ?? '';
-                $host = $node_custom_config['header']['request']['headers']['Host'][0] ?? $node_custom_config['host'] ?? '';
+                $host = $node_custom_config['host'] ?? $node_custom_config['header']['request']['headers']['Host'][0] ?? '';
                 $path = $node_custom_config['header']['request']['path'][0] ?? $node_custom_config['path'] ?? '/';
-
+                $client_fingerprint = $node_custom_config['client_fingerprint'] ?? 'chrome';
+                
                 $v2rayn_array = [
                     'v' => '2',
                     'ps' => $node_raw->name,
@@ -42,14 +47,21 @@ final class V2Ray extends Base
                     'port' => $v2_port,
                     'id' => $user->uuid,
                     'aid' => 0,
+                    'fp' => $client_fingerprint,
                     'net' => $network,
                     'type' => $header_type,
                     'host' => $host,
                     'path' => $path,
                     'tls' => $security,
+                    'sni' => $host,
                 ];
 
-                $links .= 'vmess://' . base64_encode(json_encode($v2rayn_array)) . PHP_EOL;
+                if (($node_custom_config['enable_vless'] ?? '0') === '1'){
+					$links .= 'vless://' . $user->uuid . '@' . $node_raw->server . ':' . $v2_port . '?encryption=none&flow=' . $flow . '&security=' . $security . '&sni=' . $host . '&fp=' . $client_fingerprint . '&pbk=' . $pbk . '&type=' . $network . '&headerType=' . $header_type . '#' . $node_raw->name . PHP_EOL;
+                } else {
+                    $links .= 'vmess://' . base64_encode(json_encode($v2rayn_array)) . PHP_EOL;
+                }
+
             }
         }
 
