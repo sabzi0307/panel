@@ -45,7 +45,7 @@ final class NodeController extends BaseController
         $report = new StreamMedia();
         $report->node_id = $node_id;
         $report->result = json_encode($result);
-        $report->created_at = time();
+        $report->create_time = time();
         $report->save();
 
         return $response->withJson([
@@ -67,7 +67,24 @@ final class NodeController extends BaseController
         }
 
         $custom_config = json_decode($node->custom_config, true, JSON_UNESCAPED_SLASHES);
-        
+
+        $custom_config['enable_vless'] = $node->enable_vless == true ? 'true' : 'false';
+        if ($node->enable_vless) {
+            $reality = json_decode($node->reality_opts, true);
+            $custom_config["enable_reality"] = $reality["enable_reality"];
+            $newReality = json_encode([
+                "dest" => $reality["reality_opts"]["Dest"],
+                "proxy_protocol_ver" => $reality["reality_opts"]["ProxyProtocolVer"],
+                "server_names" => $reality["reality_opts"]["ServerNames"],
+                "private_key" => $reality["reality_opts"]["private_key"],
+                "min_client_ver" => $reality["reality_opts"]["MinClientVer"],
+                "max_client_ver" => $reality["reality_opts"]["MaxClientVer"],
+                "max_time_diff" => $reality["reality_opts"]["MaxTimeDiff"],
+                "short_ids" => $reality["reality_opts"]["ShortIds"],
+            ]);
+
+            $custom_config['reality-opts'] = json_decode($newReality, true);
+        }
         if ($node->sort === 3) {
             $port = $custom_config["offset_port_node"];
             if ($port === "") {

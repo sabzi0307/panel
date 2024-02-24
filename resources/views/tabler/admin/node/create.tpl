@@ -48,9 +48,9 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">سرعت ترافیک</label>
+                                <label class="form-label col-3 col-form-label required">ضریب ترافیک</label>
                                 <div class="col">
-                                    <input id="traffic_rate" type="text" class="form-control" value="">
+                                    <input id="traffic_rate" type="text" class="form-control" value="1">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -113,7 +113,7 @@
                                 </label>
                             </div>
                             <div class="form-group mb-3 row">
-                                <span class="col">نمایش سرور</span>
+                                <span class="col">نمایش نود</span>
                                 <span class="col-auto">
                                     <label class="form-check form-check-single form-switch">
                                         <input id="type" class="form-check-input" type="checkbox" checked="">
@@ -121,7 +121,7 @@
                                 </span>
                             </div>
                             <div class="hr-text">
-                                <span>نسبت دینامیکی</span>
+                                <span>ضریب پویا</span>
                             </div>
                             <div class="form-group mb-3 row">
                                 <span class="col">فعال کردن ضریب ترافیک پویا</span>
@@ -131,7 +131,8 @@
                                     </label>
                                 </span>
                             </div>
-                                <label class="form-label col-3 col-form-label">روش محاسبه دینامیک</label>
+                            <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
                                 <div class="col">
                                     <select id="dynamic_rate_type" class="col form-select">
                                         <option value="0">Logistic</option>
@@ -140,27 +141,27 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Maximum ratio</label>
+                                <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
                                 <div class="col">
-                                    <input id="max_rate" type="text" class="form-control" value="">
+                                    <input id="max_rate" type="text" class="form-control" value=1>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
                                 <div class="col">
-                                    <input id="max_rate_time" type="text" class="form-control" value="">
+                                    <input id="max_rate_time" type="text" class="form-control" value=22>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Minimum ratio</label>
+                                <label class="form-label col-3 col-form-label">کمترین ضریب</label>
                                 <div class="col">
-                                    <input id="min_rate" type="text" class="form-control" value="">
+                                    <input id="min_rate" type="text" class="form-control" value=1>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
                                 <div class="col">
-                                    <input id="min_rate_time" type="text" class="form-control" value="">
+                                    <input id="min_rate_time" type="text" class="form-control" value=3>
                                 </div>
                                 <label class="form-label col-form-label">
                                     حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
@@ -233,6 +234,7 @@
                     {$key}: $('#{$key}').val(),
                 {/foreach}
                 type: $("#type").is(":checked"),
+                is_dynamic_rate: $("#is_dynamic_rate").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
                 is_route_dns: $("#is_route_dns").is(":checked"),
                 enable_reality: $("#enable_reality").is(":checked"),
@@ -292,6 +294,15 @@
             realitySection.style.display = "none";
         }
 
+    });
+
+    document.getElementById("is_route_dns").addEventListener("change", function() {
+        var routedns = document.getElementById("routedns_container");
+        if (this.checked) {
+            routedns.style.display = "block";
+        } else {
+            routedns.style.display = "none";
+        }
     });
 </script>
 

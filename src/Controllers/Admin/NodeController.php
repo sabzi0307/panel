@@ -30,7 +30,7 @@ final class NodeController extends BaseController
             'server' => 'نشانی',
             'type' => 'وضعیت',
             'sort' => 'نوع',
-            'traffic_rate' => 'بزرگنمایی',
+            'traffic_rate' => 'ضریب ترافیک',
             'is_dynamic_rate' => 'فعال کردن ضریب ترافیک پویا',
             'dynamic_rate_type' => 'روش محاسبه پویا',
             'node_class' => 'درجه',
@@ -109,20 +109,22 @@ final class NodeController extends BaseController
 
         $custom_config = $request->getParam('custom_config') ?? '{}';
 
-        $enable_vless = $request->getParam('enable_vless') === 'true' ? 1 : 0;
-        if ($enable_vless === 1) {
-            $node->reality_opts = $request->getParam('enable_reality') === 'true' ? $this->initReality() : "{}"; 
-            $temp_conf = json_decode($custom_config, true);
-            $temp_conf->enable_vless = $enable_vless;
-            $custom_config = json_encode($temp_conf);
-        }
-
         if ($custom_config !== '') {
             $node->custom_config = $custom_config;
         } else {
             $node->custom_config = '{}';
         }
-       
+
+        $enable_vless = $request->getParam('enable_vless') === 'true' ? true : false;
+        $node->enable_vless = $enable_vless;
+        if ($enable_vless) {
+            $temp_conf = [];
+            $temp_conf['enable_reality'] = $request->getParam('enable_reality') === 'true' ? true : false; 
+            $temp_conf['reality_opts'] = $request->getParam('enable_reality') === 'true' ? $this->initReality() : "{}"; 
+        }
+        $node->reality_opts = $temp_conf != null ? json_encode($temp_conf) : '{}';
+        
+
         $node->is_route_dns = $request->getParam('is_route_dns') === 'true' ? 1 : 0;        
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
@@ -180,8 +182,9 @@ final class NodeController extends BaseController
         $node->min_rate = $dynamic_rate_config?->min_rate ?? 1;
         $node->min_rate_time = $dynamic_rate_config?->min_rate_time ?? 3;
 
-        if ($node->reality_opts !== "{}") {
-            $reality_opts = json_decode($node->reality_opts);
+        $vless_opts = json_decode($node->reality_opts);
+        $reality_opts = $vless_opts->reality_opts;
+        if (($reality_opts !== null) && ($reality_opts !== "{}")) {
             $node->is_reality = true;
             $node->private_key = $reality_opts->private_key;
             $node->public_key = $reality_opts->public_key;
@@ -238,6 +241,15 @@ final class NodeController extends BaseController
             $node->custom_config = '{}';
         }
 
+        $enable_vless = $request->getParam('enable_vless') === 'true' ? 1 : 0;
+        $node->enable_vless = $enable_vless;
+        if ($enable_vless == 0) {
+            $node->reality_opts = json_encode([
+                'enable_reality' => false,
+                'reality_opts' => '{}',
+            ]);
+        }
+
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
         $node->sort = $request->getParam('sort');
@@ -282,7 +294,30 @@ final class NodeController extends BaseController
     {
         $node = (new Node())->find($args['id']);
         $node->password = Tools::genRandomChar(32);
-        $node->save();
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در بازنشانی کلید ارتباطی',
+            ]);
+        }
+
+        if (Config::obtain('telegram_update_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Config::obtain('telegram_update_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+                ]);
+            }
+        }
 
         return $response->withJson([
             'ret' => 1,
@@ -290,7 +325,7 @@ final class NodeController extends BaseController
         ]);
     }
 
-    function initReality(): string|bool
+    function initReality(): array|bool
     {
 
         // Generate KeyPair
@@ -318,7 +353,87 @@ final class NodeController extends BaseController
         $REALITYConfig['Dest'] = '';
         $REALITYConfig['ServerNames'] = [];
         
-        return json_encode($REALITYConfig);
+        return $REALITYConfig;
+    }
+
+
+    
+    public function reality(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $node = (new Node())->find($args['id']);
+        $temp_conf = [];
+        $temp_conf['enable_reality'] = true; 
+        $temp_conf['reality_opts'] = $this->initReality(); 
+        $node->enable_vless = true;
+        $node->reality_opts = $temp_conf != null ? json_encode($temp_conf) : json_encode([
+            'enable_reality' => false,
+            'reality_opts' => '{}',
+        ]);
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در فعالسازی',
+            ]);
+        }
+
+        if (Config::obtain('telegram_update_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Config::obtain('telegram_update_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+                ]);
+            }
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت فعال شد',
+        ]);
+
+    }
+    public function disableReality(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
+    {
+        $node = (new Node())->find($args['id']);
+        $node->reality_opts = '{}';
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در غیر فعال کردن',
+            ]);
+        }
+
+        if (Config::obtain('telegram_update_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Config::obtain('telegram_update_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+                ]);
+            }
+        }
+
+        return $response->withJson([
+            'ret' => 1,
+            'msg' => 'با موفقیت غیر فعال شد',
+        ]);
+
     }
 
     public function resetKey(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
@@ -342,7 +457,30 @@ final class NodeController extends BaseController
         $REALITYConfig['private_key'] = $keys['private_key'];
 
         $node->reality_opts = json_encode($REALITYConfig);
-        $node->save();
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در بازنشانی کلید',
+            ]);
+        }
+
+        if (Config::obtain('telegram_update_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Config::obtain('telegram_update_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+                ]);
+            }
+        }
         
         return $response->withJson([
             'ret' => 1,
@@ -355,6 +493,30 @@ final class NodeController extends BaseController
         $node = (new Node())->find($args['id']);
         $node->node_bandwidth = 0;
         $node->save();
+        if (! $node->save()) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'خطا در ریست ترافیک گره',
+            ]);
+        }
+
+        if (Config::obtain('telegram_update_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $node->name,
+                        Config::obtain('telegram_update_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'اصلاح با موفقیت انجام شد، اما اعلان تلگرام ناموفق بود',
+                ]);
+            }
+        }
 
         return $response->withJson([
             'ret' => 1,
@@ -416,9 +578,28 @@ final class NodeController extends BaseController
             ]);
         }
 
+        if (Config::obtain('telegram_add_node')) {
+            try {
+                (new Telegram())->send(
+                    0,
+                    str_replace(
+                        '%node_name%',
+                        $new_node->name,
+                        Config::obtain('telegram_add_node_text')
+                    )
+                );
+            } catch (TelegramSDKException $e) {
+                return $response->withJson([
+                    'ret' => 1,
+                    'msg' => 'سرور با موفقیت اضافه شد، اما اعلان تلگرام ناموفق بود',
+                    'node_id' => $new_node->id,
+                ]);
+            }
+        }
+
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'با موفقیت کپی کنید',
+            'msg' => 'با موفقیت کپی شد',
         ]);
     }
 

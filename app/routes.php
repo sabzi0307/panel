@@ -158,8 +158,12 @@ return static function (Slim\App $app): void {
             App\Controllers\Admin\NodeController::class . ':resetPassword'
         );
         $group->post(
-            '/node/{id:[0-9]+}/reality_init',
-            App\Controllers\Admin\NodeController::class . ':initReality'
+            '/node/{id:[0-9]+}/reality',
+            App\Controllers\Admin\NodeController::class . ':reality'
+        );
+        $group->delete(
+            '/node/{id:[0-9]+}/reality',
+            App\Controllers\Admin\NodeController::class . ':disableReality'
         );
         $group->post(
             '/node/{id:[0-9]+}/reset_key',

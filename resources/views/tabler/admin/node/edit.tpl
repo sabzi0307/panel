@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سرعت جریان</label>
+                                <label class="form-label col-3 col-form-label">سرعت ترافیک</label>
                                 <div class="col">
                                     <input id="traffic_rate" type="text" class="form-control"
                                         value="{$node->traffic_rate}">
@@ -73,16 +73,29 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group mb-3 row" id="vless_section" {if $node->sort == 11}style="display: block;" {else}style="display: none;"{/if}>
+                                <label class="hr-text">Vless</label>
+                                <div class="form-group mb-3 row">
+                                    <span class="col">فعال کردن Vless</span>
+                                    <span class="col-auto">
+                                        <label class="form-check form-check-single form-switch">
+                                            <input id="enable_vless" class="form-check-input" type="checkbox" {if $node->enable_vless}checked="" {/if}>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">پیکربندی سفارشی</label>
                                 <div id="custom_config"></div>
                                 <label class="form-label col-form-label">
-                                    مراجعه فرمایید
+                                    جهت افزودن پیکربندی سفارشی به
+                                   
                                     <a href="//wiki.sspanel.org/#/custom-config"
                                         target="_blank">
                                         wiki.sspanel.org/#/custom-config
                                     </a>
-                                    پیکربندی سفارشی سرور را تغییر دهید
+                                    
+                                    مراجعه فرمایید
                                 </label>
                             </div>
                             <div class="form-group mb-3 row">
@@ -94,7 +107,7 @@
                                 </span>
                             </div>
                             <div class="hr-text">
-                                <span>dynamic ratio</span>
+                                <span>ضریب پویا</span>
                             </div>
                             <div class="form-group mb-3 row">
                                 <span class="col">فعال کردن ضریب ترافیک پویا</span>
@@ -105,7 +118,7 @@
                                 </span>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">روش محاسبه دینامیکی</label>
+                                <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
                                 <div class="col">
                                     <select id="dynamic_rate_type" class="col form-select" value="{$node->dynamic_rate_type}">
                                         <option value="0" {if $node->dynamic_rate_type === 0}selected{/if}>Logistic</option>
@@ -114,7 +127,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Maximum ratio</label>
+                                <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
                                 <div class="col">
                                     <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
                                 </div>
@@ -127,7 +140,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Minimum ratio</label>
+                                <label class="form-label col-3 col-form-label">کمترین ضریب</label>
                                 <div class="col">
                                     <input id="min_rate" type="text" class="form-control" value="{$node->min_rate}">
                                 </div>
@@ -148,7 +161,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header card-header-light">
-                            <h3 class="card-title">اطلاعات دیگر</h3>
+                            <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 row">
@@ -218,16 +231,20 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row" id="reality" {if $node->is_reality}style="display: block;" {else}style="display: none;"{/if}>
-                                <label class="hr-text">Reality Configs</label>
+                            <div class="form-group mb-3 row" id="reality_section" {if $node->enable_vless}style="display: block;" {else}style="display: none;"{/if}>
+                                <div class="hr-text">
+                                    <span>گزینه های Reality</span>
+                                </div>
                                 <div class="form-group mb-3 row">
-                                    <span class="col">فعال کردن RouteDns</span>
+                                    <span class="col">فعال کردن Reality</span>
                                     <span class="col-auto">
                                         <label class="form-check form-check-single form-switch">
-                                            <input id="is_route_dns" class="form-check-input" type="checkbox" {if $node->is_reality}checked="" {/if}>
+                                            <input id="enable_reality" class="form-check-input" type="checkbox" {if $node->is_reality}checked="" {/if}>
                                         </label>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="form-group mb-3 row" id="reality_extra_section" {if $node->is_reality}style="display: block;" {else}style="display: none;"{/if}>
 
                                 <label class="form-label col-3 col-form-label">کلید خصوصی</label>
                                 <input type="text" class="form-control" id="pvk" value="{$node->private_key}"
@@ -286,20 +303,6 @@
                                         <button id="reset-password" class="btn btn-red">تنظیم مجدد</button>
                                         <button id="copy-password" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->password}">
-                                            کپی
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row my-3">
-                                    <div class="col">
-                                        <button id="reality_init" class="btn btn-red">reality جدید</button>
-                                    </div>
-                                </div>
-                                <div class="row my-3">
-                                    <div class="col">
-                                        <button id="reset-key" class="btn btn-red">کلید جدید</button>
-                                        <button id="copy-key" class="copy btn btn-primary"
-                                            data-clipboard-text="{$node->key}">
                                             کپی
                                         </button>
                                     </div>
@@ -367,23 +370,6 @@
         })
     });
 
-    $("#reality_init").click(function () {
-        $.ajax({
-            url: '/admin/node/{$node->id}/reality_init',
-            type: 'POST',
-            dataType: "json",
-            success: function(data) {
-                if (data.ret === 1) {
-                    $('#success-message').text(data.msg);
-                    $('#success-dialog').modal('show');
-                } else {
-                    $('#fail-message').text(data.msg);
-                    $('#fail-dialog').modal('show');
-                }
-            }
-        })
-    });
-
     $("#reset-key").click(function () {
         $.ajax({
             url: '/admin/node/{$node->id}/reset_key',
@@ -414,6 +400,8 @@
                 is_dynamic_rate: $("#is_dynamic_rate").is(":checked"),
                 custom_config: JSON.stringify(editor.get()),
                 is_route_dns: $("#is_route_dns").is(":checked"),
+                enable_reality: $("#enable_reality").is(":checked"),
+                enable_vless: $("#enable_vless").is(":checked"),
             },
             success: function(data) {
                 if (data.ret === 1) {
@@ -428,16 +416,88 @@
         })
     });
 
-
     document.getElementById("sort").addEventListener("change", function() {
         var selectedValue = this.value;
-        var hiddenSection = document.getElementById("routedns");
+        
+        var vlessSection = document.getElementById("vless_section");
+        var realitySection = document.getElementById("reality_section");
+        var routednsSection = document.getElementById("routedns");
 
-        if (selectedValue === "3") {
-            hiddenSection.style.display = "block";
-        } else {
-            hiddenSection.style.display = "none";
+        switch(selectedValue) {
+            case "11":
+                routednsSection.style.display = "none";
+                vlessSection.style.display = "block";
+                var routednsSection = document.getElementById("enable_vless").value;
+                if (selectedValue == "true") {
+                    realitySection.style.display = "block";
+                } else {
+                    realitySection.style.display = "none";
+                }
+                break;
+            case "3":
+                routednsSection.style.display = "block";
+                vlessSection.style.display = "none";
+                realitySection.style.display = "none";
+                break;
+            default:
+                vlessSection.style.display = "none";
+                routednsSection.style.display = "none";
+                realitySection.style.display = "none";
         }
+    });
+
+
+    document.getElementById("enable_vless").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("reality_section");
+        if (this.checked) {
+            realitySection.style.display = "block";
+        } else {
+            realitySection.style.display = "none";
+        }
+
+    });
+
+    document.getElementById("enable_reality").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("reality_extra_section");
+        if (this.checked) {
+            $.ajax({
+                url: '/admin/node/{$node->id}/reality',
+                type: 'POST',
+                dataType: "json",
+                success: function(data) {
+                    if (data.ret === 1) {
+                        realitySection.style.display = "block";
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                    } else {
+                        $('#fail-message').text(data.msg);
+                        $('#fail-dialog').modal('show');
+                    }
+                }
+            })
+        } else {
+            $.ajax({
+                url: '/admin/node/{$node->id}/reality',
+                type: 'DELETE',
+                dataType: "json",
+                success: function(data) {
+                    if (data.ret === 1) {
+                        realitySection.style.display = "none";
+                        $('#success-message').text(data.msg);
+                        $('#success-dialog').modal('show');
+                    } else {
+                        $('#fail-message').text(data.msg);
+                        $('#fail-dialog').modal('show');
+                    }
+                }
+            })
+            
+        }
+
     });
 
     document.getElementById("is_route_dns").addEventListener("change", function() {
@@ -448,7 +508,6 @@
             routedns.style.display = "none";
         }
     });
-
 </script>
 
 {include file='admin/footer.tpl'}

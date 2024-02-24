@@ -147,6 +147,7 @@ return new class() implements MigrationInterface {
                 `server` varchar(255) NOT NULL DEFAULT '' COMMENT 'node address',
                 `custom_config` longtext NOT NULL DEFAULT '{}' COMMENT 'custom configuration' CHECK (json_valid(`custom_config`)),
                 `reality_opts` longtext NOT NULL DEFAULT '{}' COMMENT 'reality configuration' CHECK (json_valid(`reality_opts`)),
+                `enable_vless` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable v2ray vless',
                 `sort` tinyint(2) unsigned NOT NULL DEFAULT 14 COMMENT 'node type',
                 `traffic_rate` float unsigned NOT NULL DEFAULT 1 COMMENT 'Flow rate',
                 `is_dynamic_rate` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable dynamic traffic ratio',
