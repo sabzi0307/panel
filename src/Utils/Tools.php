@@ -92,7 +92,7 @@ final class Tools
                     $res = $provider . ', ';
                 } else {
                     $res = $asn->autonomousSystemOrganization . ', ';
-                }
+                }                
                 // return $city . ', ' . $country;
             }
 
@@ -102,6 +102,9 @@ final class Tools
                 $data = $country;
             } else if ($city !== null && $country == null) {
                 $data = $city;
+            }
+            if ($res !== null) {
+                $data = $res . $data;
             }
         }
 
