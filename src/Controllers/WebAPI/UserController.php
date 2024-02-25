@@ -70,8 +70,8 @@ final class UserController extends BaseController
         )->orWhere(
             'is_admin',
             1
-        )->leftJoin('smart_dns', 'smart_dns.userid', '=', 'users.id')->get([
-            'id',
+        )->leftJoin('smart_dns', 'smart_dns.userid', '=', 'user.id')->get([
+            'user.id as id',
             'u',
             'd',
             'transfer_enable',
