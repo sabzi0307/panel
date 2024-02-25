@@ -99,6 +99,21 @@ if [ "$INIT" = true ];then
         MYSQL_PASSWORD="sspanel"
     fi
 
+    if [ -z "$enable_db_rw_split" ];then
+        echo >&2 "enable_db_rw_split not set! using false"
+        enable_db_rw_split=false
+    fi
+
+    if [ -z "$read_db_hosts" ];then
+        echo >&2 "read_db_hosts not set! using ['']"
+        read_db_hosts=['']
+    fi
+
+    if [ -z "$write_db_host" ];then
+        echo >&2 "write_db_host not set! using ''"
+        write_db_host=''
+    fi
+
     if [ -z "$db_charset" ];then
         echo >&2 "db_charset not set! using utf8mb4"
         db_charset="utf8mb4"
@@ -474,6 +489,10 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['db_username']  = '$MYSQL_USER';               //database username
 \$_ENV['db_password']  = '$MYSQL_PASSWORD';           //The password corresponding to the username
 \$_ENV['db_port']      = '$db_port';                  //database poprt
+# Read and write separation related configurations
+\$_ENV['enable_db_rw_split'] = $enable_db_rw_split;         // turn on read-write separation
+\$_ENV['read_db_hosts']      = $read_db_hosts;          // Slave library address, multiple configurable
+\$_ENV['write_db_host']      = '$write_db_host';            // Main library address
 #advanced
 \$_ENV['db_charset']   = '$db_charset';
 \$_ENV['db_collation'] = '$db_collation';

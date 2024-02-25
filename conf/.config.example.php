@@ -26,6 +26,10 @@ $_ENV['db_database']  = 'sspanel';           //Database name
 $_ENV['db_username']  = 'root';              //database username
 $_ENV['db_password']  = 'sspanel';           //The password corresponding to the username
 $_ENV['db_port']      = '3306';              //database port
+# Read and write separation related configurations
+$_ENV['enable_db_rw_split'] = false;         // turn on read-write separation
+$_ENV['read_db_hosts']      = [''];          // Slave library address, multiple configurable
+$_ENV['write_db_host']      = '';            // Main library address
 #advanced
 $_ENV['db_charset']   = 'utf8mb4';
 $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
