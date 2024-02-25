@@ -182,21 +182,22 @@ final class NodeController extends BaseController
         $node->min_rate = $dynamic_rate_config?->min_rate ?? 1;
         $node->min_rate_time = $dynamic_rate_config?->min_rate_time ?? 3;
 
-        $vless_opts = json_decode($node->reality_opts);
-        $reality_opts = $vless_opts->reality_opts;
-        if (($reality_opts !== null) && ($reality_opts !== "{}")) {
-            $node->is_reality = true;
-            $node->private_key = $reality_opts->private_key;
-            $node->public_key = $reality_opts->public_key;
-            $node->ShortIds = implode(', ', $reality_opts->ShortIds);;
-            $node->ServerNames = $reality_opts->ServerNames;
-            $node->Dest = $reality_opts->Dest;
-            $node->ProxyProtocolVer = $reality_opts->ProxyProtocolVer ?? 0;
-            // $node->is_reality = true;
-        } else {
-            $node->is_reality = false;
-        }
+        $node->is_reality = false;
+        if ($node->reality_opts != '{}') {
         
+            $vless_opts = json_decode($node->reality_opts);
+            $reality_opts = $vless_opts->reality_opts;
+            if ($reality_opts !== null) {
+                $node->is_reality = true;
+                $node->private_key = $reality_opts->private_key;
+                $node->public_key = $reality_opts->public_key;
+                $node->ShortIds = implode(', ', $reality_opts->ShortIds);
+                $node->ServerNames = implode(', ', $reality_opts->ServerNames);
+                $node->Dest = $reality_opts->Dest;
+                $node->ProxyProtocolVer = $reality_opts->ProxyProtocolVer ?? 0;
+                // $node->is_reality = true;
+            }
+        }
         // $node->max_rate = $dynamic_rate_config?->max_rate ?? 1;
         // $node->max_rate_time = $dynamic_rate_config?->max_rate_time ?? 22;
         // $node->min_rate = $dynamic_rate_config?->min_rate ?? 1;
@@ -248,8 +249,22 @@ final class NodeController extends BaseController
                 'enable_reality' => false,
                 'reality_opts' => '{}',
             ]);
+        } else {
+            $reality_opts = json_decode($node->reality_opts, true);
+            if ($reality_opts['enable_reality']) {
+                $reality_opts['reality_opts']['ServerNames'] = explode(", ", trim($request->getParam('server_names'), '"'));
+                $sIds = explode(", ", trim($request->getParam('short_ids'), '"'));
+                if (! Tools::validateShortIds($sIds)) {
+                    return $response->withJson([
+                        'ret' => 0,
+                        'msg' => 'خطا در مقدار short_ids',
+                    ]);
+                }
+                $reality_opts['reality_opts']['ShortIds'] = $sIds;
+                $node->reality_opts = json_encode($reality_opts);
+            }
         }
-
+        
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type') === 'true' ? 1 : 0;
         $node->sort = $request->getParam('sort');
@@ -341,7 +356,7 @@ final class NodeController extends BaseController
         //     $ShortIds = explode(',', $ids);
         //     $REALITYConfig['ShortIds'] = $ShortIds;
         // } else {
-            $REALITYConfig['ShortIds'] = Tools::randomShortId() ?? [];
+            $REALITYConfig['ShortIds'] = Tools::randomShortId(5) ?? [];
         // }
 
         $REALITYConfig['MinClientVer'] = '';

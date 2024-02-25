@@ -72,7 +72,7 @@
             language: {
                 "sProcessing": "در حال پردازش...",
                 "sLengthMenu": "نمایش موارد _MENU_",
-                "sZeroRecords": "نتایج منطبقی وجود ندارد",
+                "sZeroRecords": "هیچ کاربری آنلاین نیست",
                 "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
                 "sInfoEmpty": "نتایج 0 تا 0 از 0",
                 "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",

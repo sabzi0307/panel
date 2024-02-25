@@ -9,10 +9,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">سرور #{$node->id}</span>
+                        <span class="home-title">گره #{$node->id}</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">ویرایش اطلاعات سرور</span>
+                        <span class="home-subtitle">ویرایش اطلاعات گره</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -54,13 +54,6 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">سرعت ترافیک</label>
-                                <div class="col">
-                                    <input id="traffic_rate" type="text" class="form-control"
-                                        value="{$node->traffic_rate}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">نوع دسترسی</label>
                                 <div class="col">
                                     <select id="sort" class="col form-select" value="{$node->sort}">
@@ -98,63 +91,6 @@
                                     مراجعه فرمایید
                                 </label>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <span class="col">نمایش نود</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input id="type" class="form-check-input" type="checkbox" {if $node->type}checked="" {/if}>
-                                    </label>
-                                </span>
-                            </div>
-                            <div class="hr-text">
-                                <span>ضریب پویا</span>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <span class="col">فعال کردن ضریب ترافیک پویا</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox" {if $node->is_dynamic_rate}checked="" {/if}>
-                                    </label>
-                                </span>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
-                                <div class="col">
-                                    <select id="dynamic_rate_type" class="col form-select" value="{$node->dynamic_rate_type}">
-                                        <option value="0" {if $node->dynamic_rate_type === 0}selected{/if}>Logistic</option>
-                                        <option value="1" {if $node->dynamic_rate_type === 1}selected{/if}>Linear</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
-                                <div class="col">
-                                    <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
-                                <div class="col">
-                                    <input id="max_rate_time" type="text" class="form-control"
-                                        value="{$node->max_rate_time}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">کمترین ضریب</label>
-                                <div class="col">
-                                    <input id="min_rate" type="text" class="form-control" value="{$node->min_rate}">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
-                                <div class="col">
-                                    <input id="min_rate_time" type="text" class="form-control"
-                                        value="{$node->min_rate_time}">
-                                </div>
-                                <label class="form-label col-form-label">
-                                    حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,6 +100,14 @@
                             <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
+                            <div class="form-group mb-3 row">
+                                <span class="col-auto">نمایش نود</span>
+                                <span class="col-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="type" class="form-check-input" type="checkbox" {if $node->type}checked="" {/if}>
+                                    </label>
+                                </span>
+                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">سطح</label>
                                 <div class="col">
@@ -247,11 +191,11 @@
                             <div class="form-group mb-3 row" id="reality_extra_section" {if $node->is_reality}style="display: block;" {else}style="display: none;"{/if}>
 
                                 <label class="form-label col-3 col-form-label">کلید خصوصی</label>
-                                <input type="text" class="form-control" id="pvk" value="{$node->private_key}"
+                                <input type="text" class="form-control" id="private_key" value="{$node->private_key}"
                                     disabled="">
                                 <div class="row my-3">
                                     <div class="col">
-                                        <button id="reset-key" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="reset-key" class="btn btn-red">تولید مجدد</button>
                                         <button id="copy-pvk" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->private_key}">
                                             کپی
@@ -260,7 +204,7 @@
                                 </div>
 
                                 <label class="form-label col-3 col-form-label">کلید عمومی</label>
-                                <input type="text" class="form-control" id="pvk" value="{$node->public_key}"
+                                <input type="text" class="form-control" id="public_key" value="{$node->public_key}"
                                     disabled="">
                                 <div class="row my-3">
                                     <div class="col">
@@ -270,25 +214,82 @@
                                         </button>
                                     </div>
                                 </div>
-                                <textarea type="text" class="form-control" id="pvk">"{$node->ShortIds}"</textarea>
+                                <textarea type="text" class="form-control" id="short_ids">"{$node->ShortIds}"</textarea>
                                 <div class="row my-3">
                                     <div class="col">
-                                        <button id="short_ids" class="btn btn-red">تنظیم مجدد</button>
+                                        <button id="reset_ids" class="btn btn-red">تولید مجدد</button>
                                         <button id="copy-ids" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->ShortIds}">
                                             کپی
                                         </button>
                                     </div>
                                 </div>
-                                <textarea type="text" class="form-control" id="pvk">"{$node->ServerNames}"</textarea>
+                                <textarea type="text" class="form-control" id="server_names">"{$node->ServerNames}"</textarea>
                                 <div class="row my-3">
                                     <div class="col">
-                                        <button id="srv-names" class="btn btn-red">تنظیم مجدد</button>
                                         <button id="copy-srv-names" class="copy btn btn-primary"
                                             data-clipboard-text="{$node->ServerNames}">
                                             کپی
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="hr-text">
+                                <span>ضریب ترافیک</span>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">ضریب ترافیک</label>
+                                <div class="col">
+                                    <input id="traffic_rate" type="text" class="form-control"
+                                        value="{$node->traffic_rate}">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <span class="col">فعال کردن ضریب ترافیک پویا</span>
+                                <span class="col-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox" {if $node->is_dynamic_rate}checked="" {/if}>
+                                    </label>
+                                </span>
+                            </div>
+                            <div class="form-group mb-3 row" id="dynamic_rate" style="display: none;">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
+                                    <div class="col">
+                                        <select id="dynamic_rate_type" class="col form-select" value="{$node->dynamic_rate_type}">
+                                            <option value="0" {if $node->dynamic_rate_type === 0}selected{/if}>Logistic</option>
+                                            <option value="1" {if $node->dynamic_rate_type === 1}selected{/if}>Linear</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
+                                    <div class="col">
+                                        <input id="max_rate" type="text" class="form-control" value="{$node->max_rate}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
+                                    <div class="col">
+                                        <input id="max_rate_time" type="text" class="form-control"
+                                            value="{$node->max_rate_time}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">کمترین ضریب</label>
+                                    <div class="col">
+                                        <input id="min_rate" type="text" class="form-control" value="{$node->min_rate}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
+                                    <div class="col">
+                                        <input id="min_rate_time" type="text" class="form-control"
+                                            value="{$node->min_rate_time}">
+                                    </div>
+                                    <label class="form-label col-form-label">
+                                        حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
+                                    </label>
                                 </div>
                             </div>
                             <div class="hr-text">
@@ -402,6 +403,8 @@
                 is_route_dns: $("#is_route_dns").is(":checked"),
                 enable_reality: $("#enable_reality").is(":checked"),
                 enable_vless: $("#enable_vless").is(":checked"),
+                short_ids: $("#short_ids").text(),
+                server_names: $("#server_names").val(),
             },
             success: function(data) {
                 if (data.ret === 1) {
@@ -451,6 +454,18 @@
         var selectedValue = this.value;
 
         var realitySection = document.getElementById("reality_section");
+        if (this.checked) {
+            realitySection.style.display = "block";
+        } else {
+            realitySection.style.display = "none";
+        }
+
+    });
+
+    document.getElementById("is_dynamic_rate").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("dynamic_rate");
         if (this.checked) {
             realitySection.style.display = "block";
         } else {

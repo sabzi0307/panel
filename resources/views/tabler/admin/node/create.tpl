@@ -9,10 +9,10 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        <span class="home-title">ایجاد سرور</span>
+                        <span class="home-title">افزودن گره</span>
                     </h2>
                     <div class="page-pretitle my-3">
-                        <span class="home-subtitle">سرور های مختلف ایجاد کنید</span>
+                        <span class="home-subtitle">تنظیمات افزودن گره</span>
                     </div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -45,12 +45,6 @@
                                 <label class="form-label col-3 col-form-label required">آدرس اتصال</label>
                                 <div class="col">
                                     <input id="server" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">ضریب ترافیک</label>
-                                <div class="col">
-                                    <input id="traffic_rate" type="text" class="form-control" value="1">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
@@ -112,61 +106,6 @@
                                     مراجعه فرمایید
                                 </label>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <span class="col">نمایش نود</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input id="type" class="form-check-input" type="checkbox" checked="">
-                                    </label>
-                                </span>
-                            </div>
-                            <div class="hr-text">
-                                <span>ضریب پویا</span>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <span class="col">فعال کردن ضریب ترافیک پویا</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox" checked="">
-                                    </label>
-                                </span>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
-                                <div class="col">
-                                    <select id="dynamic_rate_type" class="col form-select">
-                                        <option value="0">Logistic</option>
-                                        <option value="1">Linear</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
-                                <div class="col">
-                                    <input id="max_rate" type="text" class="form-control" value=1>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
-                                <div class="col">
-                                    <input id="max_rate_time" type="text" class="form-control" value=22>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">کمترین ضریب</label>
-                                <div class="col">
-                                    <input id="min_rate" type="text" class="form-control" value=1>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
-                                <div class="col">
-                                    <input id="min_rate_time" type="text" class="form-control" value=3>
-                                </div>
-                                <label class="form-label col-form-label">
-                                    حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,6 +115,14 @@
                             <h3 class="card-title">سایر اطلاعات</h3>
                         </div>
                         <div class="card-body">
+                            <div class="form-group mb-3 row">
+                                <span class="col-auto">نمایش نود</span>
+                                <span class="col-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="type" class="form-check-input" type="checkbox" checked="">
+                                    </label>
+                                </span>
+                            </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">سطح</label>
                                 <div class="col">
@@ -198,15 +145,70 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label required">تاریخ تنظیم مجدد ترافیک</label>
+                                <label class="form-label col-3 col-form-label required">دوره ریست ترافیک(روز)</label>
                                 <div class="col">
-                                    <input id="bandwidthlimit_resetday" type="text" class="form-control" value="">
+                                    <input id="bandwidthlimit_resetday" type="text" class="form-control" value="29">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label required">محدودیت نرخ داده (Mbps)</label>
                                 <div class="col">
-                                    <input id="node_speedlimit" type="text" class="form-control" value="">
+                                    <input id="node_speedlimit" type="text" class="form-control" value="0">
+                                </div>
+                            </div>
+                            <div class="hr-text">
+                                <span>ضریب ترافیک</span>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label required">ضریب ترافیک</label>
+                                <div class="col">
+                                    <input id="traffic_rate" type="text" class="form-control" value="1">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <span class="col">فعال کردن ضریب ترافیک پویا</span>
+                                <span class="col-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="is_dynamic_rate" class="form-check-input" type="checkbox">
+                                    </label>
+                                </span>
+                            </div>
+                            <div class="form-group mb-3 row" id="dynamic_rate" style="display: none;">
+                                <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">شیوه محاسبه</label>
+                                    <div class="col">
+                                        <select id="dynamic_rate_type" class="col form-select">
+                                            <option value="0">Logistic</option>
+                                            <option value="1">Linear</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">بیشترین ضریب</label>
+                                    <div class="col">
+                                        <input id="max_rate" type="text" class="form-control" value=1>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Maximum override time (hours)</label>
+                                    <div class="col">
+                                        <input id="max_rate_time" type="text" class="form-control" value=22>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">کمترین ضریب</label>
+                                    <div class="col">
+                                        <input id="min_rate" type="text" class="form-control" value=1>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">Minimum override time (hours)</label>
+                                    <div class="col">
+                                        <input id="min_rate_time" type="text" class="form-control" value=3>
+                                    </div>
+                                    <label class="form-label col-form-label">
+                                        حداکثر زمان لغو باید بیشتر از حداقل زمان لغو باشد، در غیر این صورت اثری نخواهد داشت
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -288,6 +290,18 @@
         var selectedValue = this.value;
 
         var realitySection = document.getElementById("reality_section");
+        if (this.checked) {
+            realitySection.style.display = "block";
+        } else {
+            realitySection.style.display = "none";
+        }
+
+    });
+    
+    document.getElementById("is_dynamic_rate").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("dynamic_rate");
         if (this.checked) {
             realitySection.style.display = "block";
         } else {

@@ -75,6 +75,9 @@ final class Tools
 
             try {
                 $country = $geoip->getCountry($ip);
+                if (($country == "iran") || ($country == "Iran")) {
+                    $country = "ایران";
+                }
             } catch (AddressNotFoundException|InvalidDatabaseException $e) {
                 $country = 'کشور ناشناخته';
             }
@@ -133,7 +136,7 @@ final class Tools
         if (isset($_ENV['Internet_Service_Providers'])) {
             foreach ($_ENV['Internet_Service_Providers'] as $provider) {
                 if (in_array($asn, $provider['AsNum'])) {
-                    $server = $provider['AsName'];
+                    $server = $provider['Name'];
                     break;
                 }
             }
@@ -741,20 +744,42 @@ final class Tools
      *
      * @return array An array of 24 random hexadecimal strings.
      */
-    public static function randomShortId(): array
+    public static function randomShortId(int $arrayLength, int $minItemLength = 4, int $maxItemLength = 16): array
     {
-        $shortIds = array_fill(0, 24, '');
+        // تضمین حداقل تعداد ایتم‌ها برابر با 4
+        $arrayLength = max($arrayLength, 4);
+        
+        $shortIds = array_fill(0, $arrayLength, '');
 
-        for ($ii = 0; $ii < 24; $ii++) {
-            $hexString = '';
-            while (strlen($hexString) < 16) {
-                $randomNum = self::randomInt(256);
-                $hexString .= sprintf('%02x', $randomNum);
-            }
-            $shortIds[$ii] = substr($hexString, 0, 16);
+        for ($ii = 0; $ii < $arrayLength; $ii++) {
+            $itemLength = mt_rand($minItemLength / 2, $maxItemLength / 2) * 2; // برای تولید طول تصادفی به صورت مضربی از 2
+            $hexString = bin2hex(random_bytes($itemLength / 2)); // تولید رشته تصادفی با طول معادل با تعداد بایت
+            $shortIds[$ii] = substr($hexString, 0, $maxItemLength);
         }
 
         return $shortIds;
+    }
+
+    /**
+     * validate short IDs.
+     *
+     * @return bool An array of 24 random hexadecimal strings.
+     */
+    public static function validateShortIds(array $shortIds, int $minItemLength = 4, int $maxItemLength = 16): bool
+    {
+        foreach ($shortIds as $item) {
+            // بررسی طول هر ایتم
+            if (strlen($item) < $minItemLength || strlen($item) > $maxItemLength || strlen($item) % 2 !== 0) {
+                return false; // اندازه نامعتبر
+            }
+            
+            // بررسی محتوای هر ایتم
+            if (!ctype_xdigit($item)) {
+                return false; // حاوی کاراکتر‌های غیر هگزادسیمال
+            }
+        }
+        
+        return true; // همه ایتم‌ها صحیح هستند
     }
 
     /**
