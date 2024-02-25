@@ -417,6 +417,19 @@ return new class() implements MigrationInterface {
                 PRIMARY KEY (`id`),
                 UNIQUE KEY (`ip`),
                 KEY `userid` (`userid`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+            CREATE TABLE `fastly` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'token',
+                `customer_id` varchar(255) NOT NULL DEFAULT '' COMMENT 'customer ID',
+                `name` varchar(255) NOT NULL DEFAULT '' COMMENT 'name',
+                `login` varchar(255) NOT NULL DEFAULT '' COMMENT 'login',
+                `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
+                `updated_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'updated time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY (`customer_id`),
+                KEY `token` (`token`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
         );
 

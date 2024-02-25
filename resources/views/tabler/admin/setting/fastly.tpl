@@ -75,7 +75,6 @@ $.fn.dataTable.ext.errMode = 'none';
                 table: '#data_table',
                 idSrc: 'id',
                 fields: [
-                    { label: 'توکن', name: 'token' },
                     { label: 'نام کاربری', name: 'username' },
                     { label: 'رمزعبور', name: 'password' }
                 ],
