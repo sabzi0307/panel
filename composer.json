@@ -14,17 +14,16 @@
         "ext-xml": "*",
         "ext-yaml": "*",
         "ext-zip": "*",
-        "anankke/omnipay-alipay": "^3",
+        "alipaysdk/openapi": "*@dev",
         "aws/aws-sdk-php": "^3",
         "fastly/fastly": "*@dev",
         "geoip2/geoip2": "^3",
         "guzzlehttp/guzzle": "^7",
         "guzzlehttp/psr7": "^2",
-        "illuminate/database": "^10",
-        "illuminate/pagination": "^10",
+        "illuminate/database": "^10.44.0",
+        "illuminate/pagination": "^10.44.0",
         "irazasyed/telegram-bot-sdk": "^3",
         "lcobucci/jwt": "^5",
-        "league/omnipay": "^3",
         "mailgun/mailgun-php": "^4",
         "matomo/device-detector": "^6",
         "morilog/jalali": "3.*",
@@ -66,6 +65,7 @@
         }
     },
     "require-dev": {
+        "dg/bypass-finals": "^1.6",
         "nunomaduro/phpinsights": "*",
         "phpunit/phpunit": "^10|^11"
     },

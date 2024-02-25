@@ -26,8 +26,6 @@ final class SubController extends BaseController
      * @param $response
      * @param $args
      *
-     * @return ResponseInterface
-     *
      * @throws ClientExceptionInterface
      * @throws GuzzleException
      * @throws RedisException

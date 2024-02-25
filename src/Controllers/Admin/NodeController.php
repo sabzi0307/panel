@@ -643,6 +643,7 @@ final class NodeController extends BaseController
         ]);
         $new_node->name .= ' (کپی)';
         $new_node->node_bandwidth = 0;
+        $new_node->password = Tools::genRandomChar(32);
 
         if (! $new_node->save()) {
             return $response->withJson([

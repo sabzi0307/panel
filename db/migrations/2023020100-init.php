@@ -25,7 +25,10 @@ return new class() implements MigrationInterface {
                 `type` varchar(255) DEFAULT NULL COMMENT 'value type',
                 `default` varchar(255) DEFAULT NULL COMMENT 'Defaults',
                 `mark` varchar(255) DEFAULT NULL COMMENT 'Remark',
-                PRIMARY KEY (`id`)
+                PRIMARY KEY (`id`),
+                KEY `item` (`item`),
+                KEY `class` (`class`),
+                KEY `is_public` (`is_public`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `detect_ban_log` (
@@ -99,7 +102,8 @@ return new class() implements MigrationInterface {
                 `date` date NOT NULL DEFAULT 0 COMMENT 'تاریخ رکورد',
                 `usage` longtext NOT NULL DEFAULT '{}' COMMENT 'مصرف ترافیک' CHECK (json_valid(`usage`)),
                 PRIMARY KEY (`id`),
-                KEY `user_id` (`user_id`)
+                KEY `user_id` (`user_id`),
+                KEY `date` (`date`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -167,9 +171,12 @@ return new class() implements MigrationInterface {
                 `password` varchar(255) NOT NULL DEFAULT '' COMMENT 'backend connection password',
                 `is_route_dns` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'enable routedns',
                 PRIMARY KEY (`id`),
+                UNIQUE KEY `password` (`password`),
                 KEY `type` (`type`),
                 KEY `sort` (`sort`),
+                KEY `is_dynamic_rate` (`is_dynamic_rate`),
                 KEY `node_class` (`node_class`),
+                KEY `bandwidthlimit_resetday` (`bandwidthlimit_resetday`),
                 KEY `node_group` (`node_group`),
                 KEY `online` (`online`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -183,7 +190,8 @@ return new class() implements MigrationInterface {
                 `last_time` int(11) unsigned NOT NULL COMMENT 'last online time',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY (`user_id`, `ip`),
-                KEY (`last_time`)
+                KEY `node_id` (`node_id`),
+                KEY `last_time` (`last_time`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `order` (
@@ -213,7 +221,10 @@ return new class() implements MigrationInterface {
                 `ref_get` decimal(12,2) unsigned NOT NULL DEFAULT 0 COMMENT 'Amount received by referrer',
                 `invoice_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Invoice ID',
                 `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
-                PRIMARY KEY (`id`)
+                PRIMARY KEY (`id`),
+                KEY `userid` (`userid`),
+                KEY `ref_by` (`ref_by`),
+                KEY `invoice_id` (`invoice_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `paylist` (
@@ -226,7 +237,10 @@ return new class() implements MigrationInterface {
                 `gateway` varchar(255) NOT NULL DEFAULT '' COMMENT 'payment gateway',
                 `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 PRIMARY KEY (`id`),
-                KEY `userid` (`userid`)
+                UNIQUE KEY `tradeno` (`tradeno`),
+                KEY `userid` (`userid`),
+                KEY `status` (`status`),
+                KEY `invoice_id` (`invoice_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `product` (
@@ -255,7 +269,8 @@ return new class() implements MigrationInterface {
                 `request_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'request time',
                 `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
                 PRIMARY KEY (`id`),
-                KEY `user_id` (`user_id`)
+                KEY `user_id` (`user_id`),
+                KEY `type` (`type`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `ticket` (
@@ -266,9 +281,11 @@ return new class() implements MigrationInterface {
                 `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket Status',
                 `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket Type',
+                `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 PRIMARY KEY (`id`),
                 KEY `userid` (`userid`),
-                KEY `status` (`status`)
+                KEY `status` (`status`),
+                KEY `type` (`type`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `user` (
@@ -323,12 +340,13 @@ return new class() implements MigrationInterface {
                 `locale` varchar(16) NOT NULL DEFAULT 'fa-IR' COMMENT 'display language',
                 `smart_dns` smallint(5) unsigned DEFAULT NULL COMMENT 'smart dns ip count',
                 PRIMARY KEY (`id`),
-                UNIQUE KEY `uuid` (`uuid`),
                 UNIQUE KEY `email` (`email`),
+                UNIQUE KEY `uuid` (`uuid`),
                 UNIQUE KEY `ga_token` (`ga_token`),
                 UNIQUE KEY `api_token` (`api_token`),
                 KEY `is_admin` (`is_admin`),
                 KEY `is_banned` (`is_banned`),
+                KEY `is_shadow_banned` (`is_shadow_banned`),
                 KEY `is_inactive` (`is_inactive`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -16,8 +16,8 @@ $_ENV['muKey']      = 'ChangeMe';                     //WebAPI Key, used for com
 $_ENV['checkNodeIp'] = true;               //是否webapi验证节点ip
 
 //database settings--------------------------------------------------------------------------------------------
-// db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
-// db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）, 10.0.0.2:4406（With port)
+// db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank.
+// db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）
 // db_socket example：/var/run/mysqld/mysqld.sock（Absolute address is required）
 $_ENV['db_driver']    = 'mysql';
 $_ENV['db_host']      = '';
@@ -90,7 +90,7 @@ $_ENV['locale']                 = 'fa-IR';          //default language
 $_ENV['jump_delay']             = 1200;                  //Jump delay, in ms, it is not recommended to be too long
 $_ENV['keep_connect']           = false;               // Speed limit to 1Mbps for traffic exhausted users
 
-$_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / gcore.jsdelivr.net / testingcf.jsdelivr.net
+$_ENV['jsdelivr_url'] = 'fastly.jsdelivr.net'; // cdn.jsdelivr.net / fastly.jsdelivr.net / testingcf.jsdelivr.net
 
 
 // https://sentry.io for production debugging
