@@ -793,4 +793,38 @@ final class Tools
         return mt_rand(0, $max - 1);
     }
 
+    public static function isSubdomain($domainName) {
+            // Check if input is a valid hostname
+            if (!filter_var($domainName, FILTER_VALIDATE_DOMAIN)) {
+                return false;
+            }
+            
+            // Remove leading 'www.', if present
+            if (strpos($domainName, 'www.') === 0) {
+                $domainName = substr($domainName, 4);
+            }
+            
+            // Split hostname into parts delimited by '.'
+            $parts = explode('.', $domainName);
+            
+            // If there are more than two parts, it's either a subdomain or a domain with more than one level (e.g., example.co.uk).
+            // In this case, we assume it's a subdomain if there are three or more parts, since two-part domains are considered top-level domains.
+            if (count($parts) > 2) {
+                return true;
+            } elseif (count($parts) === 2) {
+                // Two-part domain could be a TLD (e.g., "example.com") or a single-label country code TLD (e.g., "example.tv").
+                // We use gethostbyname() to determine whether it's a resolvable hostname and thus a potential domain.
+                $ipAddress = gethostbyname($domainName);
+                
+                // If gethostbyname() returns an IP address, then the input is likely not a subdomain.
+                if (filter_var($ipAddress, FILTER_VALIDATE_IP)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                // One-part domain can only be a TLD (e.g., "com"), so it cannot be a subdomain.
+                return false;
+            }
+    }
 }

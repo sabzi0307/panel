@@ -233,6 +233,16 @@
                                         </button>
                                     </div>
                                 </div>
+                                <label class="form-label col-3 col-form-label required">Dest</label>
+                                <input type="text" class="form-control" id="reality_dest" value="{$node->Dest}">
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <button id="copy-srv-names" class="copy btn btn-primary"
+                                            data-clipboard-text="{$node->Dest}">
+                                            کپی
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hr-text">
                                 <span>ضریب ترافیک</span>
@@ -404,6 +414,7 @@
                 enable_reality: $("#enable_reality").is(":checked"),
                 enable_vless: $("#enable_vless").is(":checked"),
                 short_ids: $("#short_ids").text(),
+                reality_dest: $("#reality_dest").val(),
                 server_names: $("#server_names").val(),
             },
             success: function(data) {
@@ -483,6 +494,10 @@
                 url: '/admin/node/{$node->id}/reality',
                 type: 'POST',
                 dataType: "json",
+                data: {
+                    reality_dest: "microsoft.com:443",
+                    server_names: "microsoft.com,www.microsoft.com",
+                },
                 success: function(data) {
                     if (data.ret === 1) {
                         realitySection.style.display = "block";

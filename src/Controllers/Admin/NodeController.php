@@ -119,8 +119,26 @@ final class NodeController extends BaseController
         $node->enable_vless = $enable_vless;
         if ($enable_vless) {
             $temp_conf = [];
-            $temp_conf['enable_reality'] = $request->getParam('enable_reality') === 'true' ? true : false; 
-            $temp_conf['reality_opts'] = $request->getParam('enable_reality') === 'true' ? $this->initReality() : "{}"; 
+            $temp_conf['enable_reality'] = $request->getParam('enable_reality') === 'true' ? true : false;
+            $reality_dest = $request->getParam('reality_dest');
+            if (($reality_dest == null) || ($reality_dest == "")) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مقدار dest مجاز نیست',
+                ]);
+            }
+            $reality_dest = trim($reality_dest);
+
+            $ServerNames = $request->getParam('server_names');
+            if (($ServerNames == null) || ($ServerNames == "")) {
+                return $response->withJson([
+                    'ret' => 0,
+                    'msg' => 'مقدار dest مجاز نیست',
+                ]);
+            }
+            $ServerNames = explode(",", trim($ServerNames, '"'));
+
+            $temp_conf['reality_opts'] = $request->getParam('enable_reality') === 'true' ? $this->initReality($ServerNames, $reality_dest) : "{}"; 
         }
         $node->reality_opts = $temp_conf != null ? json_encode($temp_conf) : '{}';
         
@@ -191,8 +209,8 @@ final class NodeController extends BaseController
                 $node->is_reality = true;
                 $node->private_key = $reality_opts->private_key;
                 $node->public_key = $reality_opts->public_key;
-                $node->ShortIds = implode(', ', $reality_opts->ShortIds);
-                $node->ServerNames = implode(', ', $reality_opts->ServerNames);
+                $node->ShortIds = implode(',', $reality_opts->ShortIds);
+                $node->ServerNames = implode(',', $reality_opts->ServerNames);
                 $node->Dest = $reality_opts->Dest;
                 $node->ProxyProtocolVer = $reality_opts->ProxyProtocolVer ?? 0;
                 // $node->is_reality = true;
@@ -252,14 +270,35 @@ final class NodeController extends BaseController
         } else {
             $reality_opts = json_decode($node->reality_opts, true);
             if ($reality_opts['enable_reality']) {
-                $reality_opts['reality_opts']['ServerNames'] = explode(", ", trim($request->getParam('server_names'), '"'));
-                $sIds = explode(", ", trim($request->getParam('short_ids'), '"'));
+                
+                $reality_dest = $request->getParam('reality_dest');
+                if (($reality_dest == null) || ($reality_dest == "")) {
+                    return $response->withJson([
+                        'ret' => 0,
+                        'msg' => 'مقدار dest مجاز نیست',
+                    ]);
+                }
+                $reality_dest = trim($reality_dest);
+
+                $ServerNames = $request->getParam('server_names');
+                if (($ServerNames == null) || ($ServerNames == "")) {
+                    return $response->withJson([
+                        'ret' => 0,
+                        'msg' => 'مقدار dest مجاز نیست',
+                    ]);
+                }
+                $ServerNames = explode(",", trim($ServerNames));
+                
+                $sIds = explode(",", trim($request->getParam('short_ids'), '"'));
                 if (! Tools::validateShortIds($sIds)) {
                     return $response->withJson([
                         'ret' => 0,
                         'msg' => 'خطا در مقدار short_ids',
                     ]);
                 }
+
+                $reality_opts['reality_opts']['ServerNames'] = $ServerNames;
+                $reality_opts['reality_opts']['Dest'] = $reality_dest;
                 $reality_opts['reality_opts']['ShortIds'] = $sIds;
                 $node->reality_opts = json_encode($reality_opts);
             }
@@ -340,7 +379,7 @@ final class NodeController extends BaseController
         ]);
     }
 
-    function initReality(): array|bool
+    function initReality($ServerNames, $reality_dest): array|bool
     {
 
         // Generate KeyPair
@@ -365,8 +404,8 @@ final class NodeController extends BaseController
         $REALITYConfig['ProxyProtocolVer'] = 0;
 
         // // Todo
-        $REALITYConfig['Dest'] = '';
-        $REALITYConfig['ServerNames'] = [];
+        $REALITYConfig['Dest'] = $reality_dest ? $reality_dest : '';
+        $REALITYConfig['ServerNames'] = $ServerNames ? $ServerNames : [];
         
         return $REALITYConfig;
     }
@@ -378,7 +417,26 @@ final class NodeController extends BaseController
         $node = (new Node())->find($args['id']);
         $temp_conf = [];
         $temp_conf['enable_reality'] = true; 
-        $temp_conf['reality_opts'] = $this->initReality(); 
+
+        $reality_dest = $request->getParam('reality_dest');
+        if (($reality_dest == null) || ($reality_dest == "")) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'مقدار dest مجاز نیست',
+            ]);
+        }
+        $reality_dest = trim($reality_dest);
+
+        $ServerNames = $request->getParam('server_names');
+        if (($ServerNames == null) || ($ServerNames == "")) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'مقدار dest مجاز نیست',
+            ]);
+        }
+        $ServerNames = explode(",", trim($ServerNames));
+                
+        $temp_conf['reality_opts'] = $this->initReality($ServerNames, $reality_dest); 
         $node->enable_vless = true;
         $node->reality_opts = $temp_conf != null ? json_encode($temp_conf) : json_encode([
             'enable_reality' => false,

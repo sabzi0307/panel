@@ -81,6 +81,15 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="form-group mb-3 row" id="reality_extra_section" style="display: none;">
+                                <div class="hr-text">
+                                    <span>Reality</span>
+                                </div>
+                                <label class="form-label col-3 col-form-label required">ServerNames</label>
+                                <textarea type="text" class="form-control" id="server_names">"microsoft.com,www.microsoft.com"</textarea>
+                                <label class="form-label col-3 col-form-label required">Dest</label>
+                                <input type="text" class="form-control" id="reality_dest" value="microsoft.com:443">
+                            </div>
                             <div class="form-group mb-3 row" id="routedns" style="display: none;">
                                 <label class="hr-text">Route Dns</label>
                                 <div class="form-group mb-3 row">
@@ -241,6 +250,8 @@
                 is_route_dns: $("#is_route_dns").is(":checked"),
                 enable_reality: $("#enable_reality").is(":checked"),
                 enable_vless: $("#enable_vless").is(":checked"),
+                reality_dest: $("#reality_dest").val(),
+                server_names: $("#server_names").text(),
             },
             success: function(data) {
                 if (data.ret === 1) {
@@ -290,6 +301,18 @@
         var selectedValue = this.value;
 
         var realitySection = document.getElementById("reality_section");
+        if (this.checked) {
+            realitySection.style.display = "block";
+        } else {
+            realitySection.style.display = "none";
+        }
+
+    });
+
+    document.getElementById("enable_reality").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        var realitySection = document.getElementById("reality_extra_section");
         if (this.checked) {
             realitySection.style.display = "block";
         } else {
