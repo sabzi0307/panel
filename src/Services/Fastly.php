@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 namespace App\Services;
-
+use App\Utils\Tools;
 use Fastly\Configuration;
 use Fastly\Api\ServiceApi;
 use Fastly\Api\BackendApi;
 use Fastly\Api\PackageApi;
 use Fastly\Api\VersionApi;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Exception;
 
@@ -20,12 +21,6 @@ final class Fastly
     private string $username;
     private string $password;
 
-    public function __construct($token, $username, $password)
-    {
-        $this->token = $token;
-        $this->username = $username;
-        $this->password = $password;
-    }
     public static function ServiceInit(): ServiceApi
     {
         // Authorize the client with a Fastly API token.
@@ -577,38 +572,57 @@ final class Fastly
         return $result;
     }
     
-    public static function Login($username, $password)
+    public static function Login($username, $password): array
     {
-        $client = new Client();
+        $clientId = 'fastly-ui';
+        $grantType = 'password';
+        // $password = 'qwe123QWE!@#';
+        // $username = 'bofoxaf503@massefm.com';
 
         try {
-            $response = $client->post('https://api.fastly.com/oauth/access_token', [
+            $client = new Client([
                 'headers' => [
                     'Accept' => 'application/vnd.api+json;q=1.0,application/json;q=0.9',
+                    'Accept-Language' => 'en-US,en;q=0.9',
+                    'Cache-Control' => 'no-cache',
                     'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'Origin' => 'https://manage.fastly.com',
-                    'Referer' => 'https://manage.fastly.com/'
+                    'Fastly-UI-Client' => 'umbrella-auth, version=4c783c22ed937f3f1dc69c469d1f973ffcf21690',
+                    'Pragma' => 'no-cache',
+                    'Sec-Ch-Ua' => '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+                    'Sec-Ch-Ua-Mobile' => '?0',
+                    'Sec-Ch-Ua-Platform' => '"macOS"',
+                    'Sec-Fetch-Dest' => 'empty',
+                    'Sec-Fetch-Mode' => 'cors',
+                    'Sec-Fetch-Site' => 'same-site',
+                    'Referer' => 'https://manage.fastly.com/',
+                    'Referrer-Policy' => 'origin-when-cross-origin',
                 ],
-                'form_params' => [
-                    'client_id' => 'fastly-ui',
-                    'grant_type' => 'password',
-                    'password' => $password,
-                    'username' => $username
-                ]
             ]);
 
-            $body = $response->getBody();
-            return json_decode($body, true);
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                echo "Error: " . $e->getResponse()->getBody();
+            $response = $client->post('https://api.fastly.com/oauth/access_token', [
+                'form_params' => [
+                    'client_id' => $clientId,
+                    'grant_type' => $grantType,
+                    'password' => $password,
+                    'username' => $username,
+                ],
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $res = $response->getBody()->getContents();
+                $data = json_decode($res, true);
+                return [$data['access_token'], null];
             } else {
-                echo "Error: " . $e->getMessage();
+                return [null, $response->getBody()];
             }
+        } catch (ClientException $e) {
+            return [null, $e->getMessage()];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
         }
 
     }
-    public static function isValidToken()
+    public static function isValidToken($access_token)
     {
         $client = new Client();
 
@@ -620,7 +634,7 @@ final class Fastly
                     'Authority' => 'api.fastly.com',
                     'Origin' => 'https://manage.fastly.com',
                     'Referer' => 'https://manage.fastly.com/',
-                    'fastly-key' => self::$token
+                    'fastly-key' => $access_token
                 ]
             ]);
 
@@ -714,7 +728,7 @@ final class Fastly
 
     }
 
-    public static function isValidWebSockets()
+    public static function isValidWebSockets($access_token)
     {
         $client = new Client();
 
@@ -726,7 +740,7 @@ final class Fastly
                     'Authority' => 'api.fastly.com',
                     'Origin' => 'https://manage.fastly.com',
                     'Referer' => 'https://manage.fastly.com/',
-                    'fastly-key' => self::$token
+                    'fastly-key' => $access_token
                 ]
             ]);
 
@@ -763,9 +777,9 @@ final class Fastly
 
     }
 
-    public static function Validate()
+    public static function Validate($access_token)
     {
-        [$currentUser, $error] = self::isValidToken();
+        [$currentUser, $error] = self::isValidToken($access_token);
         if ($error) {
             return [$currentUser, $error];
         }
@@ -775,12 +789,12 @@ final class Fastly
         //     return [null, 'این اکانت قبلا ثبت شده.'];
         // }
 
-        [$fanout, $error] = self::isValidFanout();
-        if ($error) {
-            return [$fanout, $error];
-        }
+        // [$fanout, $error] = self::isValidFanout();
+        // if ($error) {
+        //     return [$fanout, $error];
+        // }
 
-        [$ws, $error] = self::isValidWebSockets();
+        [$ws, $error] = self::isValidWebSockets($access_token);
         if ($error) {
             return [$ws, $error];
         }

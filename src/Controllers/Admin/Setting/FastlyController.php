@@ -81,11 +81,18 @@ final class FastlyController extends BaseController
                 ]);
         }
 
-        $token = $antiXss->xss_clean(trim($data[0]['token']));
         $username = $antiXss->xss_clean(trim($data[0]['username']));
         $password = $antiXss->xss_clean(trim($data[0]['password']));
-        $fastlyClient = new FastlyClient($token, $username, $password);
-        [$currentUser, $error] = $fastlyClient::Validate();
+        $fastlyClient = new FastlyClient();
+        [$token, $error] = $fastlyClient::Login($username, $password);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+        [$currentUser, $error] = $fastlyClient::Validate($token);
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
