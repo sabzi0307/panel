@@ -203,9 +203,8 @@ final class NodeController extends BaseController
         $node->is_reality = false;
         if ($node->reality_opts != '{}') {
         
-            $vless_opts = json_decode($node->reality_opts);
-            $reality_opts = $vless_opts->reality_opts;
-            if ($reality_opts !== null) {
+            $reality_opts = json_decode($node->reality_opts);
+            if ($reality_opts->reality_opts !== '{}') {
                 $node->is_reality = true;
                 $node->private_key = $reality_opts->private_key;
                 $node->public_key = $reality_opts->public_key;
