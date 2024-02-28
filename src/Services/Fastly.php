@@ -6,9 +6,14 @@ namespace App\Services;
 use App\Utils\Tools;
 use Fastly\Configuration;
 use Fastly\Api\ServiceApi;
+use Fastly\Api\DomainApi;
 use Fastly\Api\BackendApi;
 use Fastly\Api\PackageApi;
 use Fastly\Api\VersionApi;
+use Faker\Factory;
+use SplFileObject;
+use Phar;
+use PharData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -20,6 +25,25 @@ final class Fastly
     private string $token;
     private string $username;
     private string $password;
+
+    public static function DomainInit(): DomainApi
+    {
+        // Authorize the client with a Fastly API token.
+        $config = Configuration::getDefaultConfiguration()->setApiToken($_ENV['fastly_api_token']);
+                return new DomainApi(null, $config);
+    }
+
+    public static function addDomainToService($options)
+    {
+        $apiInstance = self::DomainInit();
+          try {
+            $result = $apiInstance->createDomain($options);
+          } catch (Exception $e) {
+              echo 'Exception when calling ServiceApi->listServices: ', $e->getMessage(), PHP_EOL;
+          }
+          return $result;
+
+    }
 
     public static function ServiceInit(): ServiceApi
     {
@@ -82,20 +106,17 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\ServiceResponse
+     * @return [\Fastly\Model\ServiceResponse, string]
      */
-    public static function ServicesCreate($name)
+    public static function ServicesCreate($options)
     {
         $apiInstance = self::ServiceInit();
-        $options = [
-            'name' => $name,
-        ];
         try {
             $result = $apiInstance->createService($options);
         } catch (Exception $e) {
-            echo 'Exception when calling ServiceApi->createService: ', $e->getMessage(), PHP_EOL;
+            $err = $e->getMessage();
         }
-        return $result;
+        return [$result, $err];
     }
 
     /**
@@ -264,15 +285,6 @@ final class Fastly
      *
      * This operation contains host(s) defined in the OpenAP spec. Use 'hostIndex' to select the host.
      * URL: https://api.fastly.com
-     *
-     * @param  string $service_id Alphanumeric string identifying the service. (required)
-     * @param  int $version_id Integer identifying a service version. (required)
-     * @param  string $expect We recommend using the Expect header because it may identify issues with the request based upon the headers alone instead of requiring you to wait until the entire binary package upload has completed. (optional)
-     * @param  \SplFileObject $package The content of the Wasm binary package. (optional)
-     *
-     * @throws \Fastly\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Fastly\Model\PackageResponse
      */
      public static function PackageUpload($id, $version, $package)
     {
@@ -289,7 +301,7 @@ final class Fastly
         } catch (Exception $e) {
             echo 'Exception when calling PackageApi->putPackage: ', $e->getMessage(), PHP_EOL;
         }
-            return $result;
+        return $result;
 
     }
 
@@ -622,7 +634,7 @@ final class Fastly
         }
 
     }
-    public static function isValidToken($access_token)
+    public static function getUserFromToken($access_token)
     {
         $client = new Client();
 
@@ -667,7 +679,7 @@ final class Fastly
             if ($currentUser["two_factor_auth_enabled"] !== null) {
                 return [null, 'این توکن دارای احراز هویت دو عاملی است.'];
             }
-            return [$currentUser, null];
+            return [$body, null];
 
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -728,6 +740,21 @@ final class Fastly
 
     }
 
+    public static function newDomainName()
+    {
+        $faker = Factory::create();
+        $domain = '';
+        for ($i = 0; $i < 3; $i++) {
+            $domain .= $faker->unique($reset = true)->word();
+            if ($i < 2) {
+                $domain .= "-";
+
+            }
+        }
+        $domain .= ".edgecompute.app";
+        return $domain;
+    }
+
     public static function isValidWebSockets($access_token)
     {
         $client = new Client();
@@ -766,7 +793,7 @@ final class Fastly
                     return [null, 'کمتر از ' . $ws_remain->days . 'روز از زمان اعتبار سرویس WebSocket باقی مانده.'];
                 }
             }
-            return [$ws, null];
+            return [$body, null];
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 return [null, $e->getResponse()->getBody()];
@@ -777,28 +804,70 @@ final class Fastly
 
     }
 
-    public static function Validate($access_token)
+    public static function validateTrials($access_token)
     {
-        [$currentUser, $error] = self::isValidToken($access_token);
-        if ($error) {
-            return [$currentUser, $error];
-        }
+        $client = new Client();
 
-        // $dupplicate = Fastly::where('customer_id', $currentUser['customer_id'])->count();
-        // if ($dupplicate !== 0) {
-        //     return [null, 'این اکانت قبلا ثبت شده.'];
-        // }
+        try {
+            $response = $client->get('https://api.fastly.com/trials?include=creator_name', [
+                'headers' => [
+                    'Accept' => 'application/vnd.api+json;q=1.0,application/json;q=0.9',
+                    'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Authority' => 'api.fastly.com',
+                    'Origin' => 'https://manage.fastly.com',
+                    'Referer' => 'https://manage.fastly.com/',
+                    'fastly-key' => $access_token
+                ]
+            ]);
 
-        // [$fanout, $error] = self::isValidFanout();
-        // if ($error) {
-        //     return [$fanout, $error];
-        // }
-
-        [$ws, $error] = self::isValidWebSockets($access_token);
-        if ($error) {
-            return [$ws, $error];
+            $body = $response->getBody()->getContents();
+            return [$body, null];
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                return [null, $e->getResponse()->getBody()];
+            } else {
+                return [null, $e->getMessage()];
+            }
         }
 
     }
+    
+    public static function getComputeWasm($serviceId, $name = "Tunnel passthrough")
+{
+    $tarFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar';
+    $tarGzFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz';
+    unlink($tarFilePath);
+    unlink($tarGzFilePath);
+    // Create a PharData instance for the tar file
+    $phar = new PharData($tarFilePath);
+
+    // Build the archive from the specified directory
+    $phar->buildFromDirectory(BASE_PATH . '/resources/extra/fastly');
+
+    // Convert TOML data to string
+    $tomlString = "authors = [\"<oss@fastly.com>\"]\n";
+    $tomlString .= "description = \"Tunnel passthrough.\"\n";
+    $tomlString .= "language = \"rust\"\n";
+    $tomlString .= "manifest_version = 3\n";
+    $tomlString .= "name = \"{$name}\"\n";
+    $tomlString .= "service_id = \"{$serviceId}\"\n";
+
+    // Add or update the file with the new content
+    $phar->addFromString('fastly.toml', $tomlString);
+
+    // Compress the Phar archive
+    $phar->compress(Phar::GZ);
+
+    // Delete the temporary tar and tar.gz files
+    unlink($tarFilePath);
+    // unlink($tarGzFilePath);
+
+    return $tarGzFilePath;
+}
+
+    
+
+
+
 
 }

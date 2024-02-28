@@ -84,7 +84,7 @@ final class FastlyController extends BaseController
         $username = $antiXss->xss_clean(trim($data[0]['username']));
         $password = $antiXss->xss_clean(trim($data[0]['password']));
         $fastlyClient = new FastlyClient();
-        [$token, $error] = $fastlyClient::Login($username, $password);
+        [$login, $error] = $fastlyClient::Login($username, $password);
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
@@ -92,7 +92,10 @@ final class FastlyController extends BaseController
                     'msg' => $error,
                 ]);
         }
-        [$currentUser, $error] = $fastlyClient::Validate($token);
+
+        $access = json_decode($login, true);
+        $token = $access['access_token'];
+        [$userToken, $error] = $fastlyClient::addToken($username, $password);
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
@@ -100,12 +103,94 @@ final class FastlyController extends BaseController
                     'msg' => $error,
                 ]);
         }
+
+        [$currentUser, $error] = $fastlyClient::getUserFromToken($token);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+
+        $dupplicate = Fastly::where('customer_id', $currentUser['customer_id'])->count();
+        if ($dupplicate !== 0) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => 'این اکانت قبلا ثبت شده.',
+                ]);
+        }
+
+        [$trial, $error] = fastlyClient::validateTrials($token);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+
+        // [$fanout, $error] = fastlyClient::isValidFanout();
+        // if ($error) {
+        //     return $response->withStatus(500)
+        //         ->withJson([
+        //             'ret' => 0,
+        //             'msg' => $error,
+        //         ]);
+        // }
+        // $entitled['fanout'] = $fanout;
+
+        [$ws, $error] = fastlyClient::isValidWebSockets($token);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+        $entitled['websocket'] = $ws;
+
+        [$Service, $error] = $fastlyClient->ServicesCreate([
+            'name' => 'tunnel-passthrough',
+            'type' => 'wasm',
+            'comment' => 'WebSocket Passthrough',
+          ]);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+
+        [$Domains, $error] = $fastlyClient->addDomainToService([
+            'service_id' => $Service['id'],
+            'version_id' => 1,
+            'name' => $fastlyClient::newDomainName(),
+          ]);
+        if ($error) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'ret' => 0,
+                    'msg' => $error,
+                ]);
+        }
+
+        // $wasm = $fastlyClient::getComputeWasm($accessToken['customer_id']);
+        $Package = $fastlyClient::PackageUpload($userToken['customer_id'], 1, BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz');
         
+        // y8lgLTDnMjICwM8REnJx61
         $fastly = new Fastly();
-        $fastly->token = $token;
-        $fastly->customer_id = $currentUser['customer_id'];
-        $fastly->name = $currentUser['name'];
-        $fastly->login = $currentUser['login'];
+        $fastly->login = $login;
+        $fastly->token = $userToken;
+        $fastly->customer_id = $userToken['customer_id'];
+        $fastly->user = $currentUser;
+        $fastly->entitled = $entitled;
+        $fastly->trial = $trial;
+        $fastly->service = $Service;
+        $fastly->domains = $Domains;
+        $fastly->package = $Package;
         $fastly->created_at = time();
         $fastly->updated_at = time();
 
@@ -113,14 +198,14 @@ final class FastlyController extends BaseController
             return $response->withStatus(500)
                 ->withJson([
                     'ret' => 0,
-                    'msg' => 'توکن اضافه نشد',
+                    'msg' => 'اکانت اضافه نشد',
                 ]);
         }
 
         return $response->withStatus(200)
             ->withJson([
                 'ret' => 1,
-                'msg' => 'سرور با موفقیت اضافه شد'
+                'msg' => 'اکانت با موفقیت اضافه شد'
             ]);
     }
 

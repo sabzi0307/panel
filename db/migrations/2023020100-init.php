@@ -421,15 +421,19 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `fastly` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
-                `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'token',
+                `login` varchar(255) NOT NULL DEFAULT '' COMMENT 'login' CHECK (json_valid(`login`)),
+                `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'login' CHECK (json_valid(`token`)),
                 `customer_id` varchar(255) NOT NULL DEFAULT '' COMMENT 'customer ID',
-                `name` varchar(255) NOT NULL DEFAULT '' COMMENT 'name',
-                `login` varchar(255) NOT NULL DEFAULT '' COMMENT 'login',
+                `user` varchar(255) NOT NULL DEFAULT '' COMMENT 'user' CHECK (json_valid(`user`)),
+                `entitled` varchar(255) NOT NULL DEFAULT '' COMMENT 'entitled' CHECK (json_valid(`entitled`)),
+                `trial` varchar(255) NOT NULL DEFAULT '' COMMENT 'trial' CHECK (json_valid(`trial`)),
+                `service` varchar(255) NOT NULL DEFAULT '' COMMENT 'service' CHECK (json_valid(`service`)),
+                `domains` varchar(255) NOT NULL DEFAULT '' COMMENT 'domains' CHECK (json_valid(`domains`)),
+                `package` varchar(255) NOT NULL DEFAULT '' COMMENT 'package' CHECK (json_valid(`package`)),
                 `created_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'created time',
                 `updated_at` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'updated time',
                 PRIMARY KEY (`id`),
-                UNIQUE KEY (`customer_id`),
-                KEY `token` (`token`)
+                UNIQUE KEY (`customer_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
         );
 
