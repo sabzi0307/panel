@@ -10,6 +10,8 @@ use Fastly\Api\DomainApi;
 use Fastly\Api\BackendApi;
 use Fastly\Api\PackageApi;
 use Fastly\Api\VersionApi;
+use Fastly\Api\TokensApi;
+use Fastly\Api\SudoApi;
 use Faker\Factory;
 use SplFileObject;
 use Phar;
@@ -33,16 +35,34 @@ final class Fastly
                 return new DomainApi(null, $config);
     }
 
-    public static function addDomainToService($options)
+    public static function addDomainToService($Service_id, $version_id, $name, $max_retries = 3, $retry_delay = 2)
     {
-        $apiInstance = self::DomainInit();
-          try {
-            $result = $apiInstance->createDomain($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->listServices: ', $e->getMessage(), PHP_EOL;
-          }
-          return $result;
+        $doaminName = empty($name) ? self::newDomainName() : $name; 
 
+        $apiInstance = self::DomainInit();
+        $retries = 0;
+
+        while ($retries <= $max_retries) {
+            try {
+                $result = $apiInstance->createDomain([
+                    'service_id' => $Service_id,
+                    'version_id' => $version_id,
+                    'name' => $doaminName,
+                ]);
+                return [$result, null];
+            } catch (Exception $e) {
+                if ($e->getCode() == 400 && $retries < $max_retries) {
+                    $doaminName = self::newDomainName(); 
+                    $retries++;
+                    sleep($retry_delay); // Add a delay before retrying
+                    continue;
+                }
+                return [null, $e->getMessage()];
+            }
+        }
+
+        // If we reach this point, it means we exhausted all retries
+        return [null, 'Maximum retries exceeded'];
     }
 
     public static function ServiceInit(): ServiceApi
@@ -113,10 +133,10 @@ final class Fastly
         $apiInstance = self::ServiceInit();
         try {
             $result = $apiInstance->createService($options);
+            return [$result, null];
         } catch (Exception $e) {
-            $err = $e->getMessage();
+            return [null, $e->getMessage()];
         }
-        return [$result, $err];
     }
 
     /**
@@ -286,9 +306,9 @@ final class Fastly
      * This operation contains host(s) defined in the OpenAP spec. Use 'hostIndex' to select the host.
      * URL: https://api.fastly.com
      */
-     public static function PackageUpload($id, $version, $package)
+     public static function PackageUpload($token, $id, $version, $package)
     {
-        $config = Configuration::getDefaultConfiguration()->setApiToken($_ENV['fastly_api_token']);
+        $config = Configuration::getDefaultConfiguration()->setApiToken($token);
         $apiInstance = new PackageApi(null, $config);
         $options = [
             'service_id' => $id,
@@ -297,12 +317,10 @@ final class Fastly
           ];
           try {
             $result = $apiInstance->putPackage($options);
-            print_r($result);
+            return [$result, null];
         } catch (Exception $e) {
-            echo 'Exception when calling PackageApi->putPackage: ', $e->getMessage(), PHP_EOL;
+            return [null, $e->getMessage()];
         }
-        return $result;
-
     }
 
     public static function BackendInit(): BackendApi
@@ -586,11 +604,6 @@ final class Fastly
     
     public static function Login($username, $password): array
     {
-        $clientId = 'fastly-ui';
-        $grantType = 'password';
-        // $password = 'qwe123QWE!@#';
-        // $username = 'bofoxaf503@massefm.com';
-
         try {
             $client = new Client([
                 'headers' => [
@@ -613,8 +626,8 @@ final class Fastly
 
             $response = $client->post('https://api.fastly.com/oauth/access_token', [
                 'form_params' => [
-                    'client_id' => $clientId,
-                    'grant_type' => $grantType,
+                    'client_id' => 'fastly-ui',
+                    'grant_type' => 'password',
                     'password' => $password,
                     'username' => $username,
                 ],
@@ -622,8 +635,7 @@ final class Fastly
 
             if ($response->getStatusCode() === 200) {
                 $res = $response->getBody()->getContents();
-                $data = json_decode($res, true);
-                return [$data['access_token'], null];
+                return [$res, null];
             } else {
                 return [null, $response->getBody()];
             }
@@ -634,6 +646,53 @@ final class Fastly
         }
 
     }
+
+    public static function addToken($loginAccess, $username, $password): array
+    {
+
+        [$sudoToken, $error] = self::sudo($loginAccess, $username, $password);
+        if ($error) {
+            return [null, $error];
+        }
+
+        $config = Configuration::getDefaultConfiguration()->setApiToken($loginAccess['access_token']);
+        $apiInstance = new TokensApi(null, $config);
+        $options = [
+            'name' => 'SSPANEL',
+            'scope' => 'global',
+            'services' => [],
+            // 'username' => $username,
+            // 'password' => $password,
+          ];
+          try {
+              $result = $apiInstance->createToken($options);
+              return [$result, null];
+          } catch (Exception $e) {
+              return [null, $e->getMessage()];
+          }
+
+    }
+    
+    public static function sudo($loginAccess, $username, $password): array
+    {
+
+        $config = Configuration::getDefaultConfiguration()->setApiToken($loginAccess['access_token']);
+        $apiInstance = new SudoApi(null, $config);
+        $options = [
+            'sudo_request' => [
+              'username' => $username,
+              'password' => $password,
+            ],
+          ];
+          try {
+              $result = $apiInstance->requestSudoAccess($options);
+              return [$result, null];
+          } catch (Exception $e) {
+              return [null, $e->getMessage()];
+          }
+
+    }
+
     public static function getUserFromToken($access_token)
     {
         $client = new Client();
@@ -833,41 +892,36 @@ final class Fastly
     }
     
     public static function getComputeWasm($serviceId, $name = "Tunnel passthrough")
-{
-    $tarFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar';
-    $tarGzFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz';
-    unlink($tarFilePath);
-    unlink($tarGzFilePath);
-    // Create a PharData instance for the tar file
-    $phar = new PharData($tarFilePath);
+    {
+        $tarFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar';
+        $tarGzFilePath = BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz';
+        unlink($tarFilePath);
+        unlink($tarGzFilePath);
+        // Create a PharData instance for the tar file
+        $phar = new PharData($tarFilePath);
 
-    // Build the archive from the specified directory
-    $phar->buildFromDirectory(BASE_PATH . '/resources/extra/fastly');
+        // Build the archive from the specified directory
+        $phar->buildFromDirectory(BASE_PATH . '/resources/extra/fastly');
 
-    // Convert TOML data to string
-    $tomlString = "authors = [\"<oss@fastly.com>\"]\n";
-    $tomlString .= "description = \"Tunnel passthrough.\"\n";
-    $tomlString .= "language = \"rust\"\n";
-    $tomlString .= "manifest_version = 3\n";
-    $tomlString .= "name = \"{$name}\"\n";
-    $tomlString .= "service_id = \"{$serviceId}\"\n";
+        // Convert TOML data to string
+        $tomlString = "authors = [\"<oss@fastly.com>\"]\n";
+        $tomlString .= "description = \"Tunnel passthrough.\"\n";
+        $tomlString .= "language = \"rust\"\n";
+        $tomlString .= "manifest_version = 3\n";
+        $tomlString .= "name = \"{$name}\"\n";
+        $tomlString .= "service_id = \"{$serviceId}\"\n";
 
-    // Add or update the file with the new content
-    $phar->addFromString('fastly.toml', $tomlString);
+        // Add or update the file with the new content
+        $phar->addFromString('fastly.toml', $tomlString);
 
-    // Compress the Phar archive
-    $phar->compress(Phar::GZ);
+        // Compress the Phar archive
+        $phar->compress(Phar::GZ);
 
-    // Delete the temporary tar and tar.gz files
-    unlink($tarFilePath);
-    // unlink($tarGzFilePath);
+        // Delete the temporary tar and tar.gz files
+        unlink($tarFilePath);
+        // unlink($tarGzFilePath);
 
-    return $tarGzFilePath;
-}
-
-    
-
-
-
+        return $tarGzFilePath;
+    }
 
 }
