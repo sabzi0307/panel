@@ -27,10 +27,6 @@ final class UserController extends BaseController
 {
     /**
      * GET /mod_mu/users
-     *
-     * @param ServerRequest   $request
-     * @param Response  $response
-     * @param array     $args
      */
     public function index(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -117,13 +113,13 @@ final class UserController extends BaseController
 
             if ($node->sort === 1) {
                 $method = json_decode($node->custom_config)->method ?? '2022-blake3-aes-128-gcm';
+                $user_pk = Tools::genSs2022UserPk($user_raw->passwd, $method);
 
-                $pk_len = match ($method) {
-                    '2022-blake3-aes-128-gcm' => 16,
-                    default => 32,
-                };
+                if (! $user_pk) {
+                    continue;
+                }
 
-                $user_raw->passwd = Tools::genSs2022UserPk($user_raw->passwd, $pk_len);
+                $user_raw->passwd = $user_pk;
             }
 
             if ($node->sort === 3) {
@@ -151,10 +147,6 @@ final class UserController extends BaseController
 
     /**
      * POST /mod_mu/users/traffic
-     *
-     * @param ServerRequest   $request
-     * @param Response  $response
-     * @param array     $args
      */
     public function addTraffic(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -238,10 +230,6 @@ final class UserController extends BaseController
 
     /**
      * POST /mod_mu/users/aliveip
-     *
-     * @param ServerRequest   $request
-     * @param Response  $response
-     * @param array     $args
      */
     public function addAliveIp(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
@@ -293,10 +281,6 @@ final class UserController extends BaseController
 
     /**
      * POST /mod_mu/users/detectlog
-     *
-     * @param ServerRequest   $request
-     * @param Response  $response
-     * @param array     $args
      */
     public function addDetectLog(ServerRequest $request, Response $response, array $args): ResponseInterface
     {

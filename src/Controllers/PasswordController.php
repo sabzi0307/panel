@@ -101,9 +101,9 @@ final class PasswordController extends BaseController
     {
         $token = $this->antiXss->xss_clean($args['token']);
         $password = $request->getParam('password');
-        $repasswd = $request->getParam('repasswd');
+        $confirm_password = $request->getParam('confirm_password');
 
-        if ($password !== $repasswd) {
+        if ($password !== $confirm_password) {
             return ResponseHelper::error($response, 'این دو ورودی مطابقت ندارند');
         }
 
@@ -138,6 +138,6 @@ final class PasswordController extends BaseController
 
         $redis->del('password_reset:' . $token);
 
-        return ResponseHelper::successfully($response, 'بازنشانی با موفقیت انجام شد');
+        return ResponseHelper::success($response, 'بازنشانی با موفقیت انجام شد');
     }
 }

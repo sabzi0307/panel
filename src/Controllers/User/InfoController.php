@@ -144,28 +144,30 @@ final class InfoController extends BaseController
 
     public function updatePassword(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $oldpwd = $request->getParam('oldpwd');
-        $pwd = $request->getParam('pwd');
-        $repwd = $request->getParam('repwd');
+        $password = $request->getParam('password');
+        $new_password = $request->getParam('new_password');
+        $confirm_new_password = $request->getParam('confirm_new_password');
         $user = $this->user;
 
-        if ($oldpwd === '' || $pwd === '' || $repwd === '') {
+        if ($password === '' || $new_password === '' || $confirm_new_password === '') {
             return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
         }
 
-        if (! Hash::checkPassword($user->pass, $oldpwd)) {
+        if (! Hash::checkPassword($user->pass, $password)) {
             return ResponseHelper::error($response, 'خطای رمز قدیمی');
         }
 
-        if ($pwd !== $repwd) {
+        if ($new_password !== $confirm_new_password) {
             return ResponseHelper::error($response, 'این دو ورودی مطابقت ندارند');
         }
 
-        if (strlen($pwd) < 8) {
+        if (strlen($new_password) < 8) {
             return ResponseHelper::error($response, 'رمز عبور خیلی کوتاه است');
         }
 
-        if (! $user->updatePassword($pwd)) {
+        $user->pass = Hash::passwordHash($new_password);
+
+        if (! $user->save()) {
             return ResponseHelper::error($response, 'موفق به ویرایش نشد');
         }
 
@@ -312,13 +314,9 @@ final class InfoController extends BaseController
     public function sendToGulag(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
-        $passwd = $request->getParam('passwd');
+        $password = $request->getParam('password');
 
-        if ($passwd === '') {
-            return ResponseHelper::error($response, 'رمز عبور نمی تواند خالی باشد');
-        }
-
-        if (! Hash::checkPassword($user->pass, $passwd)) {
+        if ($password === '' || ! Hash::checkPassword($user->pass, $password)) {
             return ResponseHelper::error($response, 'رمز عبور اشتباه');
         }
 

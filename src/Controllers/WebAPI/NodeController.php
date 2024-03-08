@@ -55,6 +55,9 @@ final class NodeController extends BaseController
         ]);
     }
 
+    /**
+     * GET /mod_mu/nodes/{id}/info
+     */
     public function getInfo(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $node_id = $args['id'];

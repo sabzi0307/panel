@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Services\IM;
-use App\Utils\Hash;
 use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Query\Builder;
@@ -95,9 +94,6 @@ final class User extends Model
         'ref_by' => 'int',
     ];
 
-    /**
-     * @param $len
-     */
     public function getSs2022Pk($len): string
     {
         return Tools::genSs2022UserPk($this->passwd, $len);
@@ -137,16 +133,6 @@ final class User extends Model
     public function lastCheckInTime(): string
     {
         return $this->last_check_in_time === 0 ? 'تا کنون استفاده نشده' : Tools::toDateTime($this->last_check_in_time);
-    }
-
-    /**
-     * 更新密码
-     */
-    public function updatePassword(string $pwd): bool
-    {
-        $this->pass = Hash::passwordHash($pwd);
-
-        return $this->save();
     }
 
     /**

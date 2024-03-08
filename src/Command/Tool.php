@@ -45,7 +45,8 @@ final class Tool extends Command
 │ ├─ resetNodeBandwidth      - Reset all node traffic
 │ ├─ resetPort               - Reset individual user ports
 │ ├─ resetBandwidth          - Reset all user traffic
-│ ├─ resetPassword           - Reset all user passwords
+│ ├─ resetPassword           - Reset all user login passwords
+│ ├─ resetPasswd             - Reset all user connection passwords
 │ ├─ clearSubToken           - clear user Sub Token
 │ ├─ generateUUID            - Generate new UUIDs for all users
 │ ├─ generateGa              - Generate new Ga Secrets for all users
@@ -239,7 +240,7 @@ EOL;
     }
 
     /**
-     * 重置所有用户密码
+     * 重置所有用户登录密码
      */
     public function resetPassword(): void
     {
@@ -250,7 +251,22 @@ EOL;
             $user->save();
         }
 
-        echo 'تمام رمزهای عبور کاربر بازنشانی شده است' . PHP_EOL;
+        echo 'All user login passwords have been reset' . PHP_EOL;
+    }
+
+    /**
+     * 重置所有用户连接密码
+     */
+    public function resetPasswd(): void
+    {
+        $users = ModelsUser::all();
+
+        foreach ($users as $user) {
+            $user->passwd = Tools::genRandomChar(16);
+            $user->save();
+        }
+
+        echo 'All user connection passwords have been reset' . PHP_EOL;
     }
 
     /**

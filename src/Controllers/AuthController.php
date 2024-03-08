@@ -53,11 +53,6 @@ final class AuthController extends BaseController
             ->fetch('auth/login.tpl'));
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param array $args
-     */
     public function loginHandle(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         if (Config::obtain('enable_login_captcha') && ! Captcha::verify($request->getParams())) {
@@ -68,7 +63,7 @@ final class AuthController extends BaseController
         }
 
         $mfa_code = $this->antiXss->xss_clean($request->getParam('mfa_code'));
-        $passwd = $request->getParam('passwd');
+        $password = $request->getParam('password');
         $rememberMe = $request->getParam('remember_me') === 'true' ? 1 : 0;
         $email = strtolower(trim($this->antiXss->xss_clean($request->getParam('email'))));
         $redir = $this->antiXss->xss_clean(Cookie::get('redir')) ?? '/user';
@@ -84,7 +79,7 @@ final class AuthController extends BaseController
             ]);
         }
 
-        if (! Hash::checkPassword($user->pass, $passwd)) {
+        if (! Hash::checkPassword($user->pass, $password)) {
             $loginIp->collectLoginIP($_SERVER['REMOTE_ADDR'], 1, $user->id);
 
             return $response->withJson([
@@ -197,23 +192,13 @@ final class AuthController extends BaseController
     }
 
     /**
-     * @param Response $response
-     * @param $name
-     * @param $email
-     * @param $passwd
-     * @param $invite_code
-     * @param $imtype
-     * @param $imvalue
-     * @param $money
-     * @param $is_admin_reg
-     *
      * @throws Exception
      */
     public function registerHelper(
         Response $response,
         $name,
         $email,
-        $passwd,
+        $password,
         $invite_code,
         $imtype,
         $imvalue,
@@ -228,7 +213,7 @@ final class AuthController extends BaseController
         $user->user_name = $name;
         $user->email = $email;
         $user->remark = '';
-        $user->pass = Hash::passwordHash($passwd);
+        $user->pass = Hash::passwordHash($password);
         $user->passwd = Tools::genRandomChar(16);
         $user->uuid = Uuid::uuid4();
         $user->api_token = Uuid::uuid4();
@@ -297,10 +282,6 @@ final class AuthController extends BaseController
     }
 
     /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param array $args
-     *
      * @throws RedisException
      * @throws Exception
      */
@@ -317,14 +298,22 @@ final class AuthController extends BaseController
         $tos = $request->getParam('tos') === 'true' ? 1 : 0;
         $email = strtolower(trim($this->antiXss->xss_clean($request->getParam('email'))));
         $name = $this->antiXss->xss_clean($request->getParam('name'));
-        $passwd = $request->getParam('passwd');
-        $repasswd = $request->getParam('repasswd');
+        $password = $request->getParam('password');
+        $confirm_password = $request->getParam('confirm_password');
         $invite_code = $this->antiXss->xss_clean(trim($request->getParam('invite_code')));
-        // Check TOS agreement
+
         if (! $tos) {
             return ResponseHelper::error($response, 'لطفاً با شرایط خدمات موافقت کنید');
         }
-        // Check Invite Code
+
+        if (strlen($password) < 8) {
+            return ResponseHelper::error($response, 'رمز عبور باید بیشتر از 8 کاراکتر باشد');
+        }
+
+        if ($password !== $confirm_password) {
+            return ResponseHelper::error($response, 'دو ورودی رمز با هم مطابقت ندارند');
+        }
+
         if ($invite_code === '' && Config::obtain('reg_mode') === 'invite') {
             return ResponseHelper::error($response, 'کد دعوت نمی تواند خالی باشد');
         }
@@ -358,14 +347,6 @@ final class AuthController extends BaseController
         if ($user !== null) {
             return ResponseHelper::error($response, 'ایمیل ثبت شده است');
         }
-        // check pwd length
-        if (strlen($passwd) < 8) {
-            return ResponseHelper::error($response, 'رمز عبور لطفا بزرگتر از 8 کاراکتر باشد');
-        }
-        // check pwd re
-        if ($passwd !== $repasswd) {
-            return ResponseHelper::error($response, 'دو کلمه عبور وارد شده مطابقت ندارند');
-        }
 
         if (Config::obtain('reg_email_verify')) {
             $redis = (new Cache())->initRedis();
@@ -379,7 +360,7 @@ final class AuthController extends BaseController
             $redis->del('email_verify:' . $email_verify_code);
         }
 
-        return $this->registerHelper($response, $name, $email, $passwd, $invite_code, $imtype, $imvalue, 0, 0);
+        return $this->registerHelper($response, $name, $email, $password, $invite_code, $imtype, $imvalue, 0, 0);
     }
 
     public function logout(ServerRequest $request, Response $response, $next): Response

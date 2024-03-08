@@ -80,7 +80,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE node MODIFY COLUMN `bandwidthlimit_resetday` tinyint(2) unsigned NOT NULL DEFAULT 0 COMMENT 'Bandwidth limit_resetday';
         ALTER TABLE node MODIFY COLUMN `node_heartbeat` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'node heartbeat';
         ALTER TABLE node MODIFY COLUMN `online_user` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'node online user';
-        ALTER TABLE node MODIFY COLUMN `node_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'node IP';
         ALTER TABLE node MODIFY COLUMN `node_group` smallint(5) unsigned NOT NULL DEFAULT 0 COMMENT 'node group';
         ALTER TABLE node MODIFY COLUMN `online` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'online status';
         ALTER TABLE node MODIFY COLUMN `gfw_block` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'whether blocked by GFW';

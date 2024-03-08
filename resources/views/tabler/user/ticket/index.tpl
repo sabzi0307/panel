@@ -53,9 +53,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="d-flex">
-                                                <!-- صفحه وضعیت تیکت -->
                                                 <span class="status status-grey">{$ticket->status}</span>
-                                                <!-- صفحه نوع تیکت -->
                                                 <span class="status status-grey">{$ticket->type}</span>
                                                 <a href="/user/ticket/{$ticket->id}/view"
                                                     class="btn btn-primary ms-auto">بررسی</a>
