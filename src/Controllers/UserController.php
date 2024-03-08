@@ -56,6 +56,9 @@ final class UserController extends BaseController
 
         $dns = Subscribe::getContent($this->user, "smartdns");
 
+        $code = (new InviteCode())->where('user_id', $this->user->id)->first()?->code;
+        $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
+
         $ann = (new Ann())->orderBy('date', 'desc')->first();
         $ann->date = Tools::toDateTime((int) $ann->date);
 
@@ -67,6 +70,7 @@ final class UserController extends BaseController
                 ->assign('UniversalSub', Subscribe::getUniversalSubLink($this->user))
                 ->assign('SharedAccounts', SubController::getSharedAccounts($this->user))
                 ->assign('osFamily', $osFamily)
+                ->assign('invite_url', $invite_url)
                 ->assign('smarts', $dns)
                 ->assign('ip', $_SERVER['REMOTE_ADDR'])
                 ->fetch('user/index.tpl')

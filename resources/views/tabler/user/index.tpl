@@ -1326,6 +1326,36 @@
                                 {/if}
                             </p>
                         </div>
+                        <div class="card-body">
+
+                        <div style="
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                align-content: center;
+                                justify-content: flex-start;
+                                align-items: baseline;
+                            ">
+                            <i class="ti ti-friends"></i>&nbsp;
+                            <a class="card-title" href="/user/invite">دعوت از دوستان</a>
+                        </div>
+
+                            <div style="
+                                display: flex;
+                                flex-direction: row-reverse;
+                                flex-wrap: nowrap;
+                                align-content: center;
+                                justify-content: space-between;
+                            ">
+                        <code class="copy btn-icon"
+                        data-clipboard-text="{$invite_url}">{$invite_url}</code>
+                                <a style="font-size: 90%;" class="copy btn-icon"
+                                    data-clipboard-text="{$invite_url}">
+                                    <i class="ti ti-copy"></i>
+                                    کپی لینک
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-12">
