@@ -54,6 +54,22 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="userValueModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">لطفا مقدار را وارد کنید</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" id="userValueInput">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="submitUserValue">ارسال</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelUserValue">انصراف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script>
 $.fn.dataTable.ext.errMode = 'none';
@@ -133,12 +149,16 @@ $.fn.dataTable.ext.errMode = 'none';
                     paging: false,
                     scrollCollapse: true,
                     columns: [
-                        { data: 'ip', className: 'dt-body-right', orderable: false },
+                        { data: 'customer_id', className: 'dt-body-right', orderable: false },
                         {
-                            data: 'node.name',
+                            data: function(data) {
+                                var token = JSON.parse(data.token);
+                                return token.access_token;
+                            },
                             className: 'dt-body-right',
                             orderable: false,
-                            editField: "node.id",
+                            editable: false,
+                            editField: "token.access_token",
                         },
                         {
                             data: null,
@@ -164,24 +184,21 @@ $.fn.dataTable.ext.errMode = 'none';
                     ],
                 });
 
-            $('#data_table')
-                .on('click', 'td:not(:last-child)', function() {
+                $('#data_table').on('click', 'td:not(:last-child)', function() {
                     editor.bubble(this, ['ip', 'node.id'], {
                         buttons: [{
-                                label: 'ثبت',
-                                fn: function() {
-                                    editor.submit();
-                                }
-                            },
-                            {
-                                text: 'ثبت آدرس ‌IP فعلی',
-                                action: function() {
-                                    editor
-                                        .set('ip', "{$ip}")
-                                        .submit();
-                                }
-                            },
-                        ]
+                            label: 'ثبت',
+                            fn: function() {
+                                $('#userValueModal').modal('show');
+                            }
+                        }, {
+                            text: 'ثبت آدرس ‌IP فعلی',
+                            action: function() {
+                                editor
+                                    .set('ip', "{$ip}")
+                                    .submit();
+                            }
+                        }]
                     });
                 })
                 // Delete a record
@@ -222,6 +239,41 @@ $.fn.dataTable.ext.errMode = 'none';
                 .on('submitError', function() {
                     alert('متاسفانه خطایی رخ داده! لطفا مجددا تلاش کنید و یا به پشتیبانی گزارش دهید.');
                     table.ajax.reload();
+                });
+
+
+                // Handle "ارسال" button click
+                $('#submitUserValue').on('click', function() {
+                    var userValue = $('#userValueInput').val();
+                    var modal = $(this).closest('.modal');
+                    modal.modal('hide');
+
+                    // Send Ajax request with the user value
+                    $.ajax({
+                        url: '/path/to/server-side-script',
+                        type: 'POST',
+                        data: {
+                            userValue: userValue,
+                            ip: editor.get('ip'),
+                            nodeId: editor.get('node.id')
+                        },
+                        success: function(response) {
+                            console.log('Ajax request succeeded:', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Ajax request failed:', error);
+                        },
+                        complete: function() {
+                            editor.submit();
+                        }
+                    });
+                });
+
+                // Handle "انصراف" button click
+                $('#cancelUserValue').off('click').on('click', function() {
+                    var modal = $(this).closest('.modal');
+                    modal.modal('hide');
+                    // Perform any additional actions if needed
                 });
         </script>
 
