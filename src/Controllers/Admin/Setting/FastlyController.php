@@ -159,7 +159,7 @@ final class FastlyController extends BaseController
             'name' => 'tunnel-passthrough',
             'type' => 'wasm',
             'comment' => 'WebSocket Passthrough',
-          ]);
+          ], $token);
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
@@ -170,17 +170,28 @@ final class FastlyController extends BaseController
 
         $version_id = 1;
         $name = '';
-        [$Domains, $error] = $fastlyClient->addDomainToService($Service['id'], $version_id, $name);
+
+        [$Domains, $found, $error] = $fastlyClient->getServiceDomain($token, $Service['id'], $version_id);
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
                     'ret' => 0,
                     'msg' => $error,
                 ]);
+        }
+        if (! $found) {
+            [$Domains, $error] = $fastlyClient->addDomainToService($token, $Service['id'], $version_id, $name);
+            if ($error) {
+                return $response->withStatus(500)
+                    ->withJson([
+                        'ret' => 0,
+                        'msg' => $error,
+                    ]);
+            }
         }
 
         // $wasm = $fastlyClient::getComputeWasm($accessToken['customer_id']);
-        [$Package, $error]  = $fastlyClient::PackageUpload($token, $Service['id'], 1, BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz');
+        [$Package, $error]  = $fastlyClient::PackageUpload($token, $Service['id'], $version_id, BASE_PATH . '/resources/extra/fastly/Tunnel-passthrough.tar.gz');
         if ($error) {
             return $response->withStatus(500)
                 ->withJson([
@@ -188,33 +199,35 @@ final class FastlyController extends BaseController
                     'msg' => $error,
                 ]);
         }
+        $userToken['login'] = $username;
+        $userToken['password'] = $password;
 
         $fastly = new Fastly();
-        $fastly->login = $login;
-        $fastly->token = $userToken;
-        $fastly->customer_id = $userToken['customer_id'];
+        $fastly->customer_id = $curUser['customer_id'];
+        $fastly->token = json_encode($userToken);
         $fastly->user = $currentUser;
-        $fastly->entitled = $entitled;
+        $fastly->entitled = json_encode($entitled);
         $fastly->trial = $trial;
-        $fastly->service = $Service;
-        $fastly->domains = $Domains;
-        $fastly->package = $Package;
+        $fastly->service = json_encode($Service);
+        $fastly->domains = json_encode($Domains);
+        $fastly->package = json_encode($Package);
         $fastly->created_at = time();
         $fastly->updated_at = time();
+        $save = $fastly->save();
 
-        if (!$fastly->save()) {
+        if ($save) {
+            return $response->withStatus(200)
+            ->withJson([
+                'ret' => 1,
+                'msg' => 'اکانت با موفقیت اضافه شد'
+            ]);
+        } else {
             return $response->withStatus(500)
                 ->withJson([
                     'ret' => 0,
                     'msg' => 'خطا در ذخیره اطلاعات اکانت',
                 ]);
         }
-
-        return $response->withStatus(200)
-            ->withJson([
-                'ret' => 1,
-                'msg' => 'اکانت با موفقیت اضافه شد'
-            ]);
     }
 
     /**

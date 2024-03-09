@@ -28,18 +28,18 @@ final class Fastly
     private string $username;
     private string $password;
 
-    public static function DomainInit(): DomainApi
+    public static function DomainInit($token): DomainApi
     {
         // Authorize the client with a Fastly API token.
-        $config = Configuration::getDefaultConfiguration()->setApiToken($_ENV['fastly_api_token']);
+        $config = Configuration::getDefaultConfiguration()->setApiToken($token);
                 return new DomainApi(null, $config);
     }
 
-    public static function addDomainToService($Service_id, $version_id, $name, $max_retries = 3, $retry_delay = 2)
+    public static function addDomainToService($token, $Service_id, $version_id, $name, $max_retries = 3, $retry_delay = 2)
     {
         $doaminName = empty($name) ? self::newDomainName() : $name; 
 
-        $apiInstance = self::DomainInit();
+        $apiInstance = self::DomainInit($token);
         $retries = 0;
 
         while ($retries <= $max_retries) {
@@ -65,10 +65,41 @@ final class Fastly
         return [null, 'Maximum retries exceeded'];
     }
 
-    public static function ServiceInit(): ServiceApi
+    public static function listServiceDomains($token, $Service_id, $version_id)
+    {
+        $apiInstance = self::DomainInit($token);
+
+            try {
+                $result = $apiInstance->listDomains([
+                    'service_id' => $Service_id,
+                    'version_id' => $version_id,
+                ]);
+                return [$result, null];
+            } catch (Exception $e) {
+                return [null, $e->getMessage()];
+            }
+
+    }
+
+    public static function getServiceDomain($token, $Service_id, $version_id)
+    {
+        [$domains, $error] = self::listServiceDomains($token, $Service_id, $version_id);
+        if ($error) {
+            return [null, false, $error];
+        }
+        // Assuming $response is the result returned from the function
+        if (is_array($domains) && isset($domains[0]) && is_array($domains[0])) {
+            return [$domains[0], true, null];
+        } else {
+            return [null, false, null];
+        }
+
+    }
+
+    public static function ServiceInit($token): ServiceApi
     {
         // Authorize the client with a Fastly API token.
-        $config = Configuration::getDefaultConfiguration()->setApiToken($_ENV['fastly_api_token']);
+        $config = Configuration::getDefaultConfiguration()->setApiToken($token);
                 return new ServiceApi(null, $config);
     }
 
@@ -91,9 +122,9 @@ final class Fastly
      * @throws \InvalidArgumentException
      * @return \Fastly\Model\ServiceListResponse[]
      */
-    public static function ServicesList()
+    public static function ServicesList($token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'direction' => 'ascend',
             'page' => 1,
@@ -102,11 +133,10 @@ final class Fastly
           ];
           try {
             $result = $apiInstance->listServices($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->listServices: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
           }
-          return $result;
-
     }
 
     /**
@@ -128,14 +158,24 @@ final class Fastly
      * @throws \InvalidArgumentException
      * @return [\Fastly\Model\ServiceResponse, string]
      */
-    public static function ServicesCreate($options)
+    public static function ServicesCreate($options, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         try {
             $result = $apiInstance->createService($options);
             return [$result, null];
         } catch (Exception $e) {
-            return [null, $e->getMessage()];
+            $errorMessage = $e->getMessage();
+            $errorCode = $e->getCode();
+            
+            // Check if the error code is 409 (Conflict)
+            if ($errorCode === 409) {
+                // Handle the 409 error specifically
+                return self::ServiceGetByName("tunnel-passthrough", $token);
+            } else {
+                // Return the original error message for other errors
+                return [null, $errorMessage];
+            }
         }
     }
 
@@ -154,21 +194,21 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\ServiceDetail
+     * @return array
      */
-    public static function ServiceGetDetails($id, $version)
+    public static function ServiceGetDetails($id, $version, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'service_id' => $id,
             'version' => $version,
           ];
           try {
             $result = $apiInstance->getServiceDetail($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->getServiceDetail: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
           }
-          return $result;
 
     }
 
@@ -186,20 +226,20 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\ServiceResponse
+     * @return array
      */
-    public static function ServiceGetByName($name)
+    public static function ServiceGetByName($name, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'name' => $name,
           ];
           try {
             $result = $apiInstance->searchService($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->searchService: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
           }
-          return $result;
 
     }
 
@@ -217,20 +257,20 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\ServiceResponse
+     * @return array
      */
-    public static function ServiceGetById($id)
+    public static function ServiceGetById($id, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'service_id' => $id,
           ];
           try {
             $result = $apiInstance->getService($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->getService: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
           }
-          return $result;
 
     }
 
@@ -248,20 +288,20 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\InlineResponse200
+     * @return array
      */
-    public static function ServiceDelete($id)
+    public static function ServiceDelete($id, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'service_id' => $id,
           ];
           try {
             $result = $apiInstance->deleteService($options);
-          } catch (Exception $e) {
-              echo 'Exception when calling ServiceApi->deleteService: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+        } catch (Exception $e) {
+            return [null, $e->getMessage()];
           }
-          return $result;
 
     }
 
@@ -279,20 +319,20 @@ final class Fastly
      *
      * @throws \Fastly\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Fastly\Model\DomainResponse[]
+     * @return array
      */
-     public static function ServiceListDomains($id)
+     public static function ServiceListDomains($id, $token)
     {
-        $apiInstance = self::ServiceInit();
+        $apiInstance = self::ServiceInit($token);
         $options = [
             'service_id' => $id,
           ];
           try {
             $result = $apiInstance->listServiceDomains($options);
-            } catch (Exception $e) {
-                echo 'Exception when calling ServiceApi->listServiceDomains: ', $e->getMessage(), PHP_EOL;
+            return [$result, null];
+          } catch (Exception $e) {
+            return [null, $e->getMessage()];
             }
-            return $result;
 
     }
 
