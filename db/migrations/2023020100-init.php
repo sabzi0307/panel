@@ -423,6 +423,7 @@ return new class() implements MigrationInterface {
             CREATE TABLE `fastly` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `token` text NOT NULL DEFAULT '{}' COMMENT 'login' CHECK (json_valid(`token`)),
+                `login` varchar(255) NOT NULL DEFAULT '{}' COMMENT 'login' CHECK (json_valid(`login`)),
                 `customer_id` varchar(255) NOT NULL DEFAULT '{}' COMMENT 'customer ID',
                 `user` text NOT NULL DEFAULT '{}' COMMENT 'user' CHECK (json_valid(`user`)),
                 `entitled` text NOT NULL DEFAULT '{}' COMMENT 'entitled' CHECK (json_valid(`entitled`)),

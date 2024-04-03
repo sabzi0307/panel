@@ -11,6 +11,7 @@ use App\Models\SubscribeLog;
 use App\Services\RateLimit;
 use App\Services\Subscribe;
 use App\Utils\ResponseHelper;
+use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -89,7 +90,8 @@ final class SubController extends BaseController
     public static function getSharedAccounts($user): array
     {
         $results = [];
-        $accounts = SharedAccount::where('updated_at', '>', time() - 1200);
+        // $accounts = SharedAccount::all();
+        $accounts = SharedAccount::query()->where('created_at', '>', 100);
 
         foreach ($accounts as $id) {
             // $id = SharedAccount::where('account', $user_id)
@@ -97,24 +99,23 @@ final class SubController extends BaseController
             //     ->first();
 
             if ($id !== null) {
-                $info = [];
-                $info = [
+                $results[] = [
                     'priority' => $id->priority,
                     'status' => $id->status,
-                    'created_at' => $id->created_at,
-                    'updated_at' => $id->updated_at,
+                    'country' => $id->country,
+                    'created_at' => $id->create_time,
+                    'updated_at' => Tools::toDateTime($id->update_time),
                     'account' => $id->account,
                     'password' => $id->password,
                 ];
-                $results[] = $info;
             }
         }
 
         $node_names = array_column($results, 'updated_at');
         array_multisort($node_names, SORT_ASC, $results);
+        $node_names = array_column($results, 'status');
+        array_multisort($node_names, SORT_ASC, $results);
 
-        // $userid = $user->id;
-        // $token = Link::where('userid', $userid)->first();
         return $results;
     }
 }

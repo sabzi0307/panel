@@ -9,6 +9,7 @@ use App\Models\Node;
 use App\Models\SharedAccount;
 use App\Models\StreamMedia;
 use App\Utils\ResponseHelper;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
@@ -20,23 +21,48 @@ final class NodeController extends BaseController
 {
     public function saveSharedIds(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $body = $request->getBody()->getContents();
-        $details = json_decode($body, true);
-        foreach ($details as $item) {
-            $ids = new SharedAccount();
-            $ids->priority = $item['priority'];
-            $ids->status = $item['status'];
-            $ids->create_time = time();
-            $ids->update_time = $item['updated_at'];
-            $ids->account = $item['account'];
-            $ids->password = $item['password'];
-            $ids->save();
+        try{
+            // $body = $request->getBody()->getContents();
+            // $data = json_decode($request->getBody()->__toString());
+            $data = $request->getBody()->getContents();
+
+            // if (! $data || ! is_array($data)) {
+            //     return ResponseHelper::error($response, 'Invalid data.');
+            // }
+
+            $details = json_decode($data, true);
+            
+            foreach ($details as $item) {
+                if (! $item['account'] && ! $item['password']) {
+                    continue;
+                }
+                $ids = new SharedAccount();
+                $ids->priority = $item['priority'];
+                $ids->status = $item['status'];
+                $ids->create_time = time();
+                $ids->update_time = $item['update'];
+                $ids->country = $item['country'] ?? "Unknown";
+                $ids->account = $item['account'];
+                $ids->password = $item['password'];
+                $ids->save();
+            }
+
+            return $response->withJson([
+                'res' => $data,
+                'ret' => 1,
+                'data' => 'ok',
+            ]);
+        } catch (Exception $e) {
+            // echo $e->getMessage();
+            return $response->withJson([
+                'res' => $data,
+                'ret' => 0,
+                'data' => $e->getMessage()
+            ]);
+            // return ResponseHelper::error($response, $e->getMessage());
         }
 
-        return $response->withJson([
-            'ret' => 1,
-            'data' => 'ok',
-        ]);
+        
     }
     public function saveReport(ServerRequest $request, Response $response, array $args): ResponseInterface
     {

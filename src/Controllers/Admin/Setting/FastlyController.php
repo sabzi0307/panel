@@ -199,10 +199,11 @@ final class FastlyController extends BaseController
                     'msg' => $error,
                 ]);
         }
-        $userToken['login'] = $username;
-        $userToken['password'] = $password;
-
         $fastly = new Fastly();
+        $fastly->login =  json_encode([
+            'username' => $username,
+            'password' => $password,
+        ]);
         $fastly->customer_id = $curUser['customer_id'];
         $fastly->token = json_encode($userToken);
         $fastly->user = $currentUser;
@@ -344,6 +345,28 @@ final class FastlyController extends BaseController
         return $response->withStatus(200)
             ->withJson([
                 'data' => $accounts,
+                'ret' => 1,
+                'msg' => 'success'
+            ]);
+    }
+
+    public function ver(ServerRequest $request, Response $response, array $args): ResponseInterface
+    {
+        $accounts = Fastly::all();
+
+        // foreach ($accounts as $account) {
+        //     foreach ($account as $rd) {
+        //         $id = $rd->id;
+        //         if ($account->token === $id) {
+        //             $userdns->node = $rd;
+        //             break;
+        //         }
+        //     }
+        // }
+$data = $accounts->service->versions;
+        return $response->withStatus(200)
+            ->withJson([
+                'data' => $data,
                 'ret' => 1,
                 'msg' => 'success'
             ]);

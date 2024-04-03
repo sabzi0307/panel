@@ -70,9 +70,114 @@
                 </div>
             </div>
         </div>
+        <div id="accountForm">
+            <fieldset class="account">
+                <legend>حساب کاربری</legend>
+                <div data-editor-template="username"></div>
+                <div data-editor-template="password"></div>
+            </fieldset>
+            <fieldset class="service">
+                <legend>سرویس</legend>
+                <div data-editor-template="service_name"></div>
+                <div data-editor-template="service_type"></div>
+                <div data-editor-template="service.version"></div>
+            </fieldset>
+            <fieldset class="hr">
+                <legend>HR info</legend>
+                <div data-editor-template="position"></div>
+                <div data-editor-template="salary"></div>
+                <div data-editor-template="start_date"></div>
+            </fieldset>
+        </div>
 
+        <style>
+        #accountForm {
+            display: flex;
+            flex-flow: row wrap;
+        }
+        
+        #accountForm fieldset {
+            flex: 1;
+            border: 1px solid #aaa;
+            margin: 0.5em;
+        }
+        
+        #accountForm fieldset legend {
+            padding: 5px 20px;
+            font-size: 1.2rem;
+            /* border: 1px solid #aaa; */
+            /* font-weight: bold; */
+        }
+        
+        #accountForm fieldset.account {
+            flex: 2 10%;
+        }
+
+        #accountForm fieldset.service {
+            flex: 2 20%;
+        }
+        
+        #accountForm fieldset.account legend {
+            background: #bfffbf;
+        }
+        
+        #accountForm fieldset.service legend {
+            background: #ffffbf;
+        }
+        
+        #accountForm fieldset.hr legend {
+            background: #ffbfbf;
+        }
+        
+        /* #accountForm div.DTE_Field {
+            padding: 5px;
+        } */
+        
+        html.dark #accountForm fieldset.account legend {
+            background: #005c00;
+        }
+        
+        /* html.dark #accountForm fieldset.office legend {
+            background: #6a6a00;
+        } */
+        
+        html.dark #accountForm fieldset.hr legend {
+            background: #7e0000;
+        }
+        </style>
         <script>
-$.fn.dataTable.ext.errMode = 'none';
+
+        $.fn.dataTable.ext.errMode = 'none';
+
+        const versionEditor = new DataTable.Editor({
+            ajax: '/admin/setting/fastly/_id_/version',
+            // ajax: {
+            //         create: {
+            //             type: 'POST',
+            //             url: '/admin/setting/fastly/_id_/version'
+            //         },
+            //         edit: {
+            //             type: 'PUT',
+            //             url: '/admin/setting/fastly/_id_/version/_ver_'
+            //         },
+            //         remove: {
+            //             type: 'DELETE',
+            //             url: '/admin/setting/fastly/_id_/version/_ver_'
+            //         }
+            //     },
+            fields: [
+                {
+                    label: 'City:',
+                    name: 'number'
+                },
+                {
+                    label: 'Continent:',
+                    name: 'locked',
+                    type: 'datatable'
+                }
+            ]
+        });
+
             var editor = new $.fn.dataTable.Editor({
                 ajax: {
                     create: {
@@ -89,10 +194,96 @@ $.fn.dataTable.ext.errMode = 'none';
                     }
                 },
                 table: '#data_table',
+                template: '#accountForm',
                 idSrc: 'id',
                 fields: [
-                    { label: 'نام کاربری', name: 'username' },
-                    { label: 'رمزعبور', name: 'password' }
+                    {
+                        label: 'نام کاربری',
+                        name: 'username',
+                        data: function(row) {
+                            var login = JSON.parse(row.login);
+                            return login.username;
+                        },
+                        visible: function(field, data) {
+                            return field.mode !== 'main';
+                        },
+                        attr: {
+                            readonly: 'readonly'
+                        }
+                    },
+                    {
+                        label: 'رمزعبور',
+                        name: 'password',
+                        data: function(row) {
+                            var login = JSON.parse(row.login);
+                            return login.password;
+                        },
+                        visible: function(field, data) {
+                            return field.mode !== 'main';
+                        },
+                        attr: {
+                            readonly: 'readonly'
+                        }
+                    },
+                    {
+                        label: 'نام سرویس',
+                        name: 'service_name',
+                        data: function(row) {
+                            var service = JSON.parse(row.service);
+                            return service.name;
+                        },
+                        visible: function(field, data) {
+                            return field.mode !== 'main';
+                        },
+                        attr: {
+                            readonly: 'readonly'
+                        }
+                    },
+                    {
+                        label: 'نوع سرویس',
+                        name: 'service_type',
+                        data: function(row) {
+                            var service = JSON.parse(row.service);
+                            return service.type;
+                        },
+                        visible: function(field, data) {
+                            return field.mode !== 'main';
+                        },
+                        attr: {
+                            readonly: 'readonly'
+                        }
+                    },
+                    {
+                        label: 'Site:',
+                        name: 'service.version',
+                        type: 'datatable',
+                        editor: versionEditor,
+                        optionsPair: {
+                            value: 'id'
+                        },
+                        data: function(row) {
+                                var token = JSON.parse(row.service);
+                                return token.versions;
+                            },
+                        config: {
+                            // ajax: '/admin/setting/fastly/_id_/version',
+                            buttons: [
+                                { extend: 'create', editor: versionEditor },
+                                { extend: 'edit', editor: versionEditor },
+                                { extend: 'remove', editor: versionEditor }
+                            ],
+                            columns: [
+                                {
+                                    title: 'Name',
+                                    data: 'number'
+                                },
+                                {
+                                    title: 'Continent',
+                                    data: 'locked'
+                                }
+                            ]
+                        }
+                    }
                 ],
                 i18n: {
                     create: {
@@ -166,10 +357,10 @@ $.fn.dataTable.ext.errMode = 'none';
                             defaultContent: '<a href="" class="editor_remove">حذف</a>'
                         }
                     ],
-                    select: false,
+                    select: true,
                     buttons: [
                         { extend: 'create', editor: editor },
-                        // { extend: 'edit', editor: editor },
+                        { extend: 'edit', editor: editor },
                         // {
                         //     extend: 'selectedSingle',
                         //     text: 'تغییر به IP فعلی',
@@ -184,43 +375,43 @@ $.fn.dataTable.ext.errMode = 'none';
                     ],
                 });
 
-                $('#data_table').on('click', 'td:not(:last-child)', function() {
-                    editor.bubble(this, ['ip', 'node.id'], {
-                        buttons: [{
-                            label: 'ثبت',
-                            fn: function() {
-                                $('#userValueModal').modal('show');
-                            }
-                        }, {
-                            text: 'ثبت آدرس ‌IP فعلی',
-                            action: function() {
-                                editor
-                                    .set('ip', "{$ip}")
-                                    .submit();
-                            }
-                        }]
-                    });
-                })
-                // Delete a record
-                .on('click', 'a.editor_remove', function(e) {
-                    e.preventDefault();
+                // $('#data_table').on('click', 'td:not(:last-child)', function() {
+                //     editor.bubble(this, ['ip', 'node.id'], {
+                //         buttons: [{
+                //             label: 'ثبت',
+                //             fn: function() {
+                //                 $('#userValueModal').modal('show');
+                //             }
+                //         }, {
+                //             text: 'ثبت آدرس ‌IP فعلی',
+                //             action: function() {
+                //                 editor
+                //                     .set('ip', "{$ip}")
+                //                     .submit();
+                //             }
+                //         }]
+                //     });
+                // })
+                // // Delete a record
+                // .on('click', 'a.editor_remove', function(e) {
+                //     e.preventDefault();
 
-                    editor
-                        .title('حذف گزینه')
-                        .message('آیا از حذف این گزینه اطمینان دارید ؟')
-                        .buttons({
-                            label: 'حذف',
-                            fn: function() {
-                                editor.submit();
-                            }
-                        })
-                        .remove($(this).closest('tr'));
-                })
-                .on('error.dt', function(e, settings, techNote, message) {
-                    alert('خطا: ' + settings.jqXHR.responseJSON.error);
-                    console.log('خطا: ' + settings.jqXHR.responseJSON.error);
-                })
-                .DataTable();
+                //     editor
+                //         .title('حذف گزینه')
+                //         .message('آیا از حذف این گزینه اطمینان دارید ؟')
+                //         .buttons({
+                //             label: 'حذف',
+                //             fn: function() {
+                //                 editor.submit();
+                //             }
+                //         })
+                //         .remove($(this).closest('tr'));
+                // })
+                // .on('error.dt', function(e, settings, techNote, message) {
+                //     alert('خطا: ' + settings.jqXHR.responseJSON.error);
+                //     console.log('خطا: ' + settings.jqXHR.responseJSON.error);
+                // })
+                // .DataTable();
 
             var openVals;
             editor
@@ -243,7 +434,7 @@ $.fn.dataTable.ext.errMode = 'none';
 
 
                 // Handle "ارسال" button click
-                $('#submitUserValue').on('click', function() {
+            $('#submitUserValue').on('click', function() {
                     var userValue = $('#userValueInput').val();
                     var modal = $(this).closest('.modal');
                     modal.modal('hide');
@@ -270,7 +461,7 @@ $.fn.dataTable.ext.errMode = 'none';
                 });
 
                 // Handle "انصراف" button click
-                $('#cancelUserValue').off('click').on('click', function() {
+            $('#cancelUserValue').off('click').on('click', function() {
                     var modal = $(this).closest('.modal');
                     modal.modal('hide');
                     // Perform any additional actions if needed

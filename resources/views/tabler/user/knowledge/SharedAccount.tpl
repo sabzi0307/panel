@@ -8,8 +8,8 @@
         <div>
             {if $accounts != null}
                 {foreach $accounts as $account}
-                    {if $account['status'] != 0}
-                        <div class="col-sm-6">
+                    {if $account['status'] == 1}
+                        <div class="col-lg">
                             <div class="card" style="--tblr-card-border-color: green;">
                                 <div class="card-body">
                                     <div class="row row-cards">
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     {else}
-                        <div class="col-sm-6">
+                        <div class="col-lg">
                             <div class="card" style="--tblr-card-border-color: darkred;">
                                 <div class="card-body">
                                     <div class="row row-cards">
@@ -170,7 +170,6 @@
                             </div>
                         </div>
                     {/if}
-
                 {/foreach}
             {else}
                 <p>در حال حاضر اطلاعاتی داده ای موجود نیست.</p>

@@ -261,6 +261,12 @@ return static function (Slim\App $app): void {
         $group->post('/setting/smart', App\Controllers\Admin\Setting\SmartDnsController::class . ':save');
 
         $group->get('/setting/fastly', App\Controllers\Admin\Setting\FastlyController::class . ':index');
+
+        $group->get('/setting/fastly/{id}/version', App\Controllers\Admin\Setting\FastlyController::class . ':ver');
+        $group->post('/setting/fastly/{id}/version', App\Controllers\Admin\Setting\FastlyController::class . ':ver_add');
+        $group->put('/setting/fastly/{id}/version/{ver}', App\Controllers\Admin\Setting\FastlyController::class . ':ver_update');
+        $group->delete('/setting/fastly/{id}/version/{ver}', App\Controllers\Admin\Setting\FastlyController::class . ':ver_delete');
+
         $group->post('/setting/fastly', App\Controllers\Admin\Setting\FastlyController::class . ':add');
         $group->put('/setting/fastly/{id}', App\Controllers\Admin\Setting\FastlyController::class . ':update');
         $group->delete('/setting/fastly/{id}', App\Controllers\Admin\Setting\FastlyController::class . ':delete');
@@ -328,7 +334,7 @@ return static function (Slim\App $app): void {
     $app->group('/mod_mu', static function (RouteCollectorProxy $group): void {
         // 流媒体检测
         $group->post('/media/save_report', App\Controllers\WebAPI\NodeController::class . ':saveReport');
-        $group->post('/media/save_id', App\Controllers\WebAPI\NodeController::class . ':saveSharedIds');
+        $group->post('/save_id', App\Controllers\WebAPI\NodeController::class . ':saveSharedIds');
         // 节点
         $group->get('/nodes/{id:[0-9]+}/info', App\Controllers\WebAPI\NodeController::class . ':getInfo');
         // 用户
