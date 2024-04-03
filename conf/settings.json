@@ -1,276 +1,5 @@
 [
     {
-        "id": null,
-        "item": "smart_dns",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_plain",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS Plain Mode"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_plain_url_1",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS Plain Url 1"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_plain_url_2",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS Plain Url 2"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_dot",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS DoT Mode"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_dot_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS DoT Url"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_doh",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS DoH Mode"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_doh_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS DoH Url"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_dodtls",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS DoDTLS Mode"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_dodtls_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS DoDTLS Url"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_doq",
-        "value": "0",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Smart DNS DoQ Mode"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_doq_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS DoQ Url"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_check_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS Check Url"
-    },
-    {
-        "id": null,
-        "item": "smart_dns_fail_url",
-        "value": "",
-        "class": "smartdns",
-        "is_public": 1,
-        "type": "string",
-        "default": "",
-        "mark": "Smart DNS Fail Url"
-    },
-    {
-        "id": null,
-        "item": "nowpayments_url",
-        "value": "https://api.nowpayments.io/v1/",
-        "class": "billing",
-        "is_public": 1,
-        "type": "string",
-        "default": "https://api.nowpayments.io/v1/",
-        "mark": "NowPayments Base Url"
-    },
-    {
-        "id": null,
-        "item": "nowpayments",
-        "value": "0",
-        "class": "billing",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable NowPayments"
-    },
-    {
-        "id": null,
-        "item": "nowpayments_api_key",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "NowPayments Api Key"
-    },
-    {
-        "id": null,
-        "item": "nowpayments_ipn_secret",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "NowPayments ipn Secret"
-    },
-    {
-        "id": null,
-        "item": "nowpayments_price_currency",
-        "value": "usd",
-        "class": "billing",
-        "is_public": 1,
-        "type": "string",
-        "default": "usd",
-        "mark": "NowPayments Price Currency"
-    },
-    {
-        "id": null,
-        "item": "nowpayments_pay_currency",
-        "value": "usdt",
-        "class": "billing",
-        "is_public": 1,
-        "type": "string",
-        "default": "usdt",
-        "mark": "NowPayments Pay Currency"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_url",
-        "value": "https://perfectmoney.is/acct/",
-        "class": "billing",
-        "is_public": 1,
-        "type": "string",
-        "default": "https://perfectmoney.is/acct/",
-        "mark": "Perfect Money Base Url"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_account_id",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Perfect Money Account ID"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_payee_account",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Perfect Money Payee Account"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_pass_phrase",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Perfect Money Pass Phrase"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_alter_pass_phrase",
-        "value": "",
-        "class": "billing",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "Perfect Money Alternate Pass Phrase"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney_currency",
-        "value": "USD",
-        "class": "billing",
-        "is_public": 1,
-        "type": "string",
-        "default": "USD",
-        "mark": "Perfect Money currency"
-    },
-    {
-        "id": null,
-        "item": "perfectmoney",
-        "value": "0",
-        "class": "billing",
-        "is_public": 1,
-        "type": "bool",
-        "default": "0",
-        "mark": "Enable Perfect Money"
-    },
-    {
-        "id": null,
         "item": "payment_gateway",
         "value": "[]",
         "class": "billing",
@@ -340,7 +69,6 @@
         "mark": "currency code"
     },
     {
-        "id": null,
         "item": "stripe_sk",
         "value": "stripe_sk",
         "class": "billing",
@@ -350,7 +78,6 @@
         "mark": "stripe_sk"
     },
     {
-        "id": null,
         "item": "stripe_pk",
         "value": "stripe_pk",
         "class": "billing",
@@ -360,7 +87,6 @@
         "mark": "stripe_pk"
     },
     {
-        "id": null,
         "item": "stripe_webhook_key",
         "value": "stripe_webhook_key",
         "class": "billing",
@@ -370,7 +96,6 @@
         "mark": "web_hook key"
     },
     {
-        "id": null,
         "item": "stripe_min_recharge",
         "value": "10",
         "class": "billing",
@@ -380,7 +105,15 @@
         "mark": "Minimum recharge limit"
     },
     {
-        "id": null,
+        "item": "stripe_max_recharge",
+        "value": "1000",
+        "class": "billing",
+        "is_public": 1,
+        "type": "int",
+        "default": "1000",
+        "mark": "最高充值限额"
+    },
+    {
         "item": "stripe_card",
         "value": "0",
         "class": "billing",
@@ -390,7 +123,6 @@
         "mark": "Bank card payment"
     },
     {
-        "id": null,
         "item": "stripe_alipay",
         "value": "0",
         "class": "billing",
@@ -400,7 +132,6 @@
         "mark": "Alipay payment"
     },
     {
-        "id": null,
         "item": "stripe_wechat",
         "value": "0",
         "class": "billing",
@@ -410,17 +141,6 @@
         "mark": "WeChat payment"
     },
     {
-        "id": null,
-        "item": "stripe_max_recharge",
-        "value": "1000",
-        "class": "billing",
-        "is_public": 1,
-        "type": "int",
-        "default": "1000",
-        "mark": "Maximum Recharge Limit"
-    },
-    {
-    "id": null,
         "item": "epay_url",
         "value": "",
         "class": "billing",
@@ -429,8 +149,7 @@
         "default": "",
         "mark": "Easy payment url"
     },
-{
-        "id": null,
+	{
         "item": "epay_pid",
         "value": "",
         "class": "billing",
@@ -439,8 +158,7 @@
         "default": "",
         "mark": "Easy Payment Merchant ID"
     },
-{
-        "id": null,
+	{
         "item": "epay_key",
         "value": "",
         "class": "billing",
@@ -450,7 +168,6 @@
         "mark": "Easy Payment Merchant Key"
     },
     {
-        "id": null,
         "item": "epay_sign_type",
         "value": "sha256",
         "class": "billing",
@@ -460,7 +177,6 @@
         "mark": "Easy payment signature method"
     },
     {
-        "id": null,
         "item": "epay_alipay",
         "value": "1",
         "class": "billing",
@@ -470,7 +186,6 @@
         "mark": "Enable Alipay"
     },
     {
-        "id": null,
         "item": "epay_wechat",
         "value": "0",
         "class": "billing",
@@ -480,7 +195,6 @@
         "mark": "Enable WeChat payment"
     },
     {
-        "id": null,
         "item": "epay_qq",
         "value": "0",
         "class": "billing",
@@ -490,7 +204,6 @@
         "mark": "Enable QQ Wallet"
     },
     {
-        "id": null,
         "item": "epay_usdt",
         "value": "0",
         "class": "billing",
@@ -500,7 +213,6 @@
         "mark": "Enable USDT"
     },
     {
-        "id": null,
         "item": "paypal_mode",
         "value": "live",
         "class": "billing",
@@ -510,7 +222,6 @@
         "mark": "PayPal mode"
     },
     {
-        "id": null,
         "item": "paypal_client_id",
         "value": "",
         "class": "billing",
@@ -520,7 +231,6 @@
         "mark": "PayPal customer ID"
     },
     {
-        "id": null,
         "item": "paypal_client_secret",
         "value": "",
         "class": "billing",
@@ -530,7 +240,6 @@
         "mark": "PayPal Customer Key"
     },
     {
-        "id": null,
         "item": "paypal_currency",
         "value": "USD",
         "class": "billing",
@@ -540,7 +249,6 @@
         "mark": "PayPal currency"
     },
     {
-        "id": null,
         "item": "paypal_locale",
         "value": "en_US",
         "class": "billing",
@@ -550,7 +258,6 @@
         "mark": "Language of PayPal"
     },
     {
-        "id": null,
         "item": "email_driver",
         "value": "none",
         "class": "email",
@@ -560,7 +267,6 @@
         "mark": "Email service provider"
     },
     {
-        "id": null,
         "item": "smtp_host",
         "value": "",
         "class": "email",
@@ -570,7 +276,6 @@
         "mark": "smtp sending host"
     },
     {
-        "id": null,
         "item": "smtp_username",
         "value": "",
         "class": "email",
@@ -580,7 +285,6 @@
         "mark": "smtp account name"
     },
     {
-        "id": null,
         "item": "smtp_password",
         "value": "",
         "class": "email",
@@ -590,7 +294,6 @@
         "mark": "smtp account password"
     },
     {
-        "id": null,
         "item": "smtp_port",
         "value": "",
         "class": "email",
@@ -600,7 +303,6 @@
         "mark": "smtp sending port"
     },
     {
-        "id": null,
         "item": "smtp_name",
         "value": "",
         "class": "email",
@@ -610,7 +312,6 @@
         "mark": "smtp sender name"
     },
     {
-        "id": null,
         "item": "smtp_sender",
         "value": "",
         "class": "email",
@@ -620,7 +321,6 @@
         "mark": "smtp sending address"
     },
     {
-        "id": null,
         "item": "smtp_ssl",
         "value": "1",
         "class": "email",
@@ -630,7 +330,6 @@
         "mark": "Send with TLS\/SSL"
     },
     {
-        "id": null,
         "item": "smtp_bbc",
         "value": "",
         "class": "email",
@@ -640,7 +339,6 @@
         "mark": "Emails sent to users are blind sent to the designated mailbox for backup"
     },
     {
-        "id": null,
         "item": "mailgun_key",
         "value": "",
         "class": "email",
@@ -650,7 +348,6 @@
         "mark": "mailgun key"
     },
     {
-        "id": null,
         "item": "mailgun_domain",
         "value": "",
         "class": "email",
@@ -660,7 +357,6 @@
         "mark": "mailgun domain name"
     },
     {
-        "id": null,
         "item": "mailgun_sender",
         "value": "",
         "class": "email",
@@ -670,7 +366,6 @@
         "mark": "mailgun send mail"
     },
     {
-        "id": null,
         "item": "mailgun_sender_name",
         "value": "",
         "class": "email",
@@ -680,7 +375,6 @@
         "mark": "mailgun sender name"
     },
     {
-        "id": null,
         "item": "sendgrid_key",
         "value": "",
         "class": "email",
@@ -690,7 +384,6 @@
         "mark": "sendgrid key"
     },
     {
-        "id": null,
         "item": "sendgrid_sender",
         "value": "",
         "class": "email",
@@ -700,7 +393,6 @@
         "mark": "sendgrid sending email address"
     },
     {
-        "id": null,
         "item": "sendgrid_name",
         "value": "",
         "class": "email",
@@ -710,7 +402,6 @@
         "mark": "sendgrid sender name"
     },
     {
-        "id": null,
         "item": "postal_host",
         "value": "",
         "class": "email",
@@ -720,7 +411,6 @@
         "mark": "Postal API address"
     },
     {
-        "id": null,
         "item": "postal_key",
         "value": "",
         "class": "email",
@@ -730,7 +420,6 @@
         "mark": "Postal API key"
     },
     {
-        "id": null,
         "item": "postal_sender",
         "value": "",
         "class": "email",
@@ -740,7 +429,6 @@
         "mark": "Postal sending email"
     },
     {
-        "id": null,
         "item": "postal_name",
         "value": "",
         "class": "email",
@@ -750,8 +438,7 @@
         "mark": "Postal sender name"
     },
     {
-        "id": null,
-        "item": "aws_access_key_id",
+        "item": "aws_ses_access_key_id",
         "value": "",
         "class": "email",
         "is_public": 0,
@@ -760,8 +447,7 @@
         "mark": "aws key id"
     },
     {
-        "id": null,
-        "item": "aws_secret_access_key",
+        "item": "aws_ses_access_key_secret",
         "value": "",
         "class": "email",
         "is_public": 0,
@@ -770,8 +456,7 @@
         "mark": "aws key key"
     },
     {
-        "id": null,
-        "item": "aws_region",
+        "item": "aws_ses_region",
         "value": "",
         "class": "email",
         "is_public": 0,
@@ -780,47 +465,87 @@
         "mark": "aws region"
     },
     {
-        "id": null,
         "item": "aws_ses_sender",
         "value": "",
         "class": "email",
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "aws ses sender"
+        "mark": "AWS SES Sender"
     },
     {
-        "id": null,
         "item": "mailchimp_key",
         "value": "",
         "class": "email",
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Mailchimp API Key"
+        "mark": "Mailchimp Api Key"
     },
     {
-        "id": null,
         "item": "mailchimp_from_email",
         "value": "",
         "class": "email",
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Mailchimp Email"
+        "mark": "Mailchimp From Email"
     },
     {
-        "id": null,
         "item": "mailchimp_from_name",
         "value": "",
         "class": "email",
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Mailchimp Sender"
+        "mark": "Mailchimp From Name"
     },
     {
-        "id": null,
+        "item": "alibabacloud_dm_access_key_id",
+        "value": "",
+        "class": "email",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "AlibabaCloud DM Access Key ID"
+    },
+    {
+        "item": "alibabacloud_dm_access_key_secret",
+        "value": "",
+        "class": "email",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "AlibabaCloud DM Access Key Secret"
+    },
+    {
+        "item": "alibabacloud_dm_endpoint",
+        "value": "",
+        "class": "email",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "AlibabaCloud DM Endpoint"
+    },
+    {
+        "item": "alibabacloud_dm_account_name",
+        "value": "",
+        "class": "email",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "AlibabaCloud DM Account Name"
+    },
+    {
+        "item": "alibabacloud_dm_from_alias",
+        "value": "",
+        "class": "email",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "AlibabaCloud DM From Alias"
+    },
+    {
         "item": "email_verify_code_ttl",
         "value": "3600",
         "class": "email",
@@ -830,7 +555,6 @@
         "mark": "Email verification code validity period"
     },
     {
-        "id": null,
         "item": "email_password_reset_ttl",
         "value": "3600",
         "class": "email",
@@ -840,7 +564,6 @@
         "mark": "Email reset password link validity period"
     },
     {
-        "id": null,
         "item": "email_request_ip_limit",
         "value": "3",
         "class": "email",
@@ -850,7 +573,6 @@
         "mark": "The number of times a single IP can request to send letters per hour"
     },
     {
-        "id": null,
         "item": "email_request_address_limit",
         "value": "3",
         "class": "email",
@@ -860,7 +582,6 @@
         "mark": "The number of emails that can be requested per hour for a single email address"
     },
     {
-        "id": null,
         "item": "captcha_provider",
         "value": "turnstile",
         "class": "captcha",
@@ -870,7 +591,6 @@
         "mark": "Verification Code Provider"
     },
     {
-        "id": null,
         "item": "enable_reg_captcha",
         "value": "0",
         "class": "captcha",
@@ -880,7 +600,6 @@
         "mark": "Registration Verification Code"
     },
     {
-        "id": null,
         "item": "enable_login_captcha",
         "value": "0",
         "class": "captcha",
@@ -890,7 +609,6 @@
         "mark": "Login verification code"
     },
     {
-        "id": null,
         "item": "enable_checkin_captcha",
         "value": "0",
         "class": "captcha",
@@ -900,7 +618,6 @@
         "mark": "Sign in verification code"
     },
     {
-        "id": null,
         "item": "enable_reset_password_captcha",
         "value": "0",
         "class": "captcha",
@@ -910,7 +627,6 @@
         "mark": "Reset password verification code"
     },
     {
-        "id": null,
         "item": "turnstile_sitekey",
         "value": "",
         "class": "captcha",
@@ -920,7 +636,6 @@
         "mark": "Turnstile Site Key"
     },
     {
-        "id": null,
         "item": "turnstile_secret",
         "value": "",
         "class": "captcha",
@@ -930,7 +645,6 @@
         "mark": "Turnstile key"
     },
     {
-        "id": null,
         "item": "geetest_id",
         "value": "",
         "class": "captcha",
@@ -940,17 +654,33 @@
         "mark": "Great test id"
     },
     {
-        "id": null,
         "item": "geetest_key",
         "value": "",
         "class": "captcha",
         "is_public": 0,
         "type": "string",
         "default": "",
-        "mark": "Extreme test key"
+        "mark": "极验密钥"
     },
     {
-        "id": null,
+        "item": "hcaptcha_sitekey",
+        "value": "",
+        "class": "captcha",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "hCaptcha Site Key"
+    },
+    {
+        "item": "hcaptcha_secret",
+        "value": "",
+        "class": "captcha",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "hCaptcha Secret"
+    },
+    {
         "item": "enable_telegram",
         "value": "0",
         "class": "im",
@@ -960,7 +690,6 @@
         "mark": "enable Telegram bot"
     },
     {
-        "id": null,
         "item": "telegram_token",
         "value": "",
         "class": "im",
@@ -970,7 +699,6 @@
         "mark": "Telegram Bot Token"
     },
     {
-        "id": null,
         "item": "telegram_chatid",
         "value": "-1",
         "class": "im",
@@ -980,7 +708,6 @@
         "mark": "Telegram chat ID"
     },
     {
-        "id": null,
         "item": "telegram_bot",
         "value": "_bot",
         "class": "im",
@@ -990,7 +717,6 @@
         "mark": "Telegram bot account"
     },
     {
-        "id": null,
         "item": "telegram_request_token",
         "value": "",
         "class": "im",
@@ -1000,7 +726,6 @@
         "mark": "Telegram Webhook key"
     },
     {
-        "id": null,
         "item": "telegram_add_node",
         "value": "1",
         "class": "im",
@@ -1010,7 +735,6 @@
         "mark": "enable the Telegram bot to add node notifications"
     },
     {
-        "id": null,
         "item": "telegram_add_node_text",
         "value": "%node_name% افزوده شده است",
         "class": "im",
@@ -1020,7 +744,6 @@
         "mark": "Telegram bot adds node notification text"
     },
     {
-        "id": null,
         "item": "telegram_update_node",
         "value": "1",
         "class": "im",
@@ -1030,7 +753,6 @@
         "mark": "enable Telegram bot modification node notification"
     },
     {
-        "id": null,
         "item": "telegram_update_node_text",
         "value": "%node_name% تغییر یافته است",
         "class": "im",
@@ -1040,7 +762,6 @@
         "mark": "Telegram bot modifies node notification text"
     },
     {
-        "id": null,
         "item": "telegram_delete_node",
         "value": "1",
         "class": "im",
@@ -1050,7 +771,6 @@
         "mark": "enable the Telegram bot delete node notification"
     },
     {
-        "id": null,
         "item": "telegram_delete_node_text",
         "value": "%node_name% حذف شد",
         "class": "im",
@@ -1060,7 +780,6 @@
         "mark": "Telegram bot delete node notification text"
     },
     {
-        "id": null,
         "item": "telegram_node_gfwed",
         "value": "1",
         "class": "im",
@@ -1070,7 +789,6 @@
         "mark": "enable the Telegram bot node to be notified by the wall"
     },
     {
-        "id": null,
         "item": "telegram_node_gfwed_text",
         "value": "%node_name% گره مسدود شده است",
         "class": "im",
@@ -1080,7 +798,6 @@
         "mark": "Telegram bot node is notified by wall"
     },
     {
-        "id": null,
         "item": "telegram_node_ungfwed",
         "value": "1",
         "class": "im",
@@ -1090,7 +807,6 @@
         "mark": "enable the notification that the Telegram bot node is restored by the wall"
     },
     {
-        "id": null,
         "item": "telegram_node_ungfwed_text",
         "value": "~ گره %node_name% که توسط دیوار مسدود شده بود، میو را بازیابی کرد~",
         "class": "im",
@@ -1100,7 +816,6 @@
         "mark": "Telegram bot node restored text by wall"
     },
     {
-        "id": null,
         "item": "telegram_node_online",
         "value": "1",
         "class": "im",
@@ -1110,7 +825,6 @@
         "mark": "enable the Telegram bot node recovery online notification"
     },
     {
-        "id": null,
         "item": "telegram_node_online_text",
         "value": "%node_name% ترمیم شد",
         "class": "im",
@@ -1120,7 +834,6 @@
         "mark": "Telegram bot node recovery online notification text"
     },
     {
-        "id": null,
         "item": "telegram_node_offline",
         "value": "1",
         "class": "im",
@@ -1130,7 +843,6 @@
         "mark": "enable Telegram bot node offline notification"
     },
     {
-        "id": null,
         "item": "telegram_node_offline_text",
         "value": "%node_name% مشکلی پیش آمده",
         "class": "im",
@@ -1140,7 +852,6 @@
         "mark": "Telegram bot node offline notification text"
     },
     {
-        "id": null,
         "item": "telegram_daily_job",
         "value": "1",
         "class": "im",
@@ -1150,7 +861,6 @@
         "mark": "enable daily task notifications for Telegram bots"
     },
     {
-        "id": null,
         "item": "telegram_daily_job_text",
         "value": "کارهای روزانه با موفقیت انجام شد",
         "class": "im",
@@ -1160,7 +870,6 @@
         "mark": "Telegram bot daily task notification text"
     },
     {
-        "id": null,
         "item": "telegram_diary",
         "value": "1",
         "class": "im",
@@ -1170,7 +879,6 @@
         "mark": "enable Telegram bot system health notifications"
     },
     {
-        "id": null,
         "item": "telegram_diary_text",
         "value": "تعداد ورود امروز: %getTodayCheckinUser% \n کل ترافیک استفاده شده امروز: %lastday_total%",
         "class": "im",
@@ -1180,7 +888,6 @@
         "mark": "Telegram bot system health notification text"
     },
     {
-        "id": null,
         "item": "telegram_unbind_kick_member",
         "value": "0",
         "class": "im",
@@ -1190,7 +897,6 @@
         "mark": "Automatically kick out the group after unbinding the Telegram account"
     },
     {
-        "id": null,
         "item": "telegram_group_bound_user",
         "value": "0",
         "class": "im",
@@ -1200,7 +906,6 @@
         "mark": "Whether to allow only users with bound Telegram accounts to join the group"
     },
     {
-        "id": null,
         "item": "enable_welcome_message",
         "value": "0",
         "class": "im",
@@ -1210,7 +915,6 @@
         "mark": "Telegram bot sends welcome message"
     },
     {
-        "id": null,
         "item": "telegram_group_quiet",
         "value": "1",
         "class": "im",
@@ -1220,7 +924,6 @@
         "mark": "Telegram bot not responding in groups"
     },
     {
-        "id": null,
         "item": "allow_to_join_new_groups",
         "value": "0",
         "class": "im",
@@ -1230,7 +933,6 @@
         "mark": "Allow bots to join groups other than those configured below"
     },
     {
-        "id": null,
         "item": "group_id_allowed_to_join",
         "value": "[]",
         "class": "im",
@@ -1240,7 +942,6 @@
         "mark": "Allowed group ids"
     },
     {
-        "id": null,
         "item": "help_any_command",
         "value": "0",
         "class": "im",
@@ -1250,7 +951,6 @@
         "mark": "Allow any unknown command to trigger a /help reply"
     },
     {
-        "id": null,
         "item": "user_not_bind_reply",
         "value": "شما حساب این سایت را باند نکرده اید، می توانید وارد **ویرایش داده** وب سایت شوید و حساب خود را در پایین سمت راست قید کنید.",
         "class": "im",
@@ -1260,7 +960,6 @@
         "mark": "Reply from unbound account"
     },
     {
-        "id": null,
         "item": "discord_bot_token",
         "value": "",
         "class": "im",
@@ -1270,7 +969,6 @@
         "mark": "Discord Bot Token"
     },
     {
-        "id": null,
         "item": "discord_client_id",
         "value": "0",
         "class": "im",
@@ -1280,7 +978,6 @@
         "mark": "Discord Client ID"
     },
     {
-        "id": null,
         "item": "discord_client_secret",
         "value": "",
         "class": "im",
@@ -1290,7 +987,6 @@
         "mark": "Discord Client Secret"
     },
     {
-        "id": null,
         "item": "discord_guild_id",
         "value": "0",
         "class": "im",
@@ -1300,7 +996,6 @@
         "mark": "Discord Guild ID"
     },
     {
-        "id": null,
         "item": "slack_token",
         "value": "",
         "class": "im",
@@ -1310,7 +1005,6 @@
         "mark": "Slack App Token"
     },
     {
-        "id": null,
         "item": "slack_client_id",
         "value": "",
         "class": "im",
@@ -1320,7 +1014,6 @@
         "mark": "Slack Client ID"
     },
     {
-        "id": null,
         "item": "slack_client_secret",
         "value": "",
         "class": "im",
@@ -1330,7 +1023,6 @@
         "mark": "Slack Client Secret"
     },
     {
-        "id": null,
         "item": "slack_team_id",
         "value": "",
         "class": "im",
@@ -1340,7 +1032,6 @@
         "mark": "Slack Team ID"
     },
     {
-        "id": null,
         "item": "crisp_id",
         "value": "",
         "class": "support",
@@ -1350,7 +1041,6 @@
         "mark": "crisp_id"
     },
     {
-        "id": null,
         "item": "livechat_license",
         "value": "",
         "class": "support",
@@ -1360,7 +1050,6 @@
         "mark": "livechat_license"
     },
     {
-        "id": null,
         "item": "live_chat",
         "value": "none",
         "class": "support",
@@ -1370,7 +1059,6 @@
         "mark": "Customer service system switch"
     },
     {
-        "id": null,
         "item": "enable_ticket",
         "value": "1",
         "class": "support",
@@ -1380,7 +1068,6 @@
         "mark": "Enable ticket system"
     },
     {
-        "id": null,
         "item": "mail_ticket",
         "value": "1",
         "class": "support",
@@ -1390,7 +1077,6 @@
         "mark": "Enable Ticket Email Alerts"
     },
     {
-        "id": null,
         "item": "ticket_limit",
         "value": "3",
         "class": "support",
@@ -1400,7 +1086,6 @@
         "mark": "User ticket quota (monthly)"
     },
     {
-        "id": null,
         "item": "reg_mode",
         "value": "open",
         "class": "reg",
@@ -1410,7 +1095,6 @@
         "mark": "Registration Mode"
     },
     {
-        "id": null,
         "item": "reg_email_verify",
         "value": "0",
         "class": "reg",
@@ -1420,27 +1104,6 @@
         "mark": "Email Verification"
     },
     {
-        "id": null,
-        "item": "reg_forbidden_ip",
-        "value": "127.0.0.0/8,::1/128",
-        "class": "reg",
-        "is_public": 0,
-        "type": "string",
-        "default": "127.0.0.0/8,::1/128",
-        "mark": "By default, access to the IP list is prohibited during registration"
-    },
-    {
-        "id": null,
-        "item": "reg_forbidden_port",
-        "value": "",
-        "class": "reg",
-        "is_public": 0,
-        "type": "string",
-        "default": "",
-        "mark": "By default, access to the port list is prohibited during registration"
-    },
-    {
-        "id": null,
         "item": "random_group",
         "value": "0",
         "class": "reg",
@@ -1450,7 +1113,6 @@
         "mark": "The group randomly assigned to when registering"
     },
     {
-        "id": null,
         "item": "min_port",
         "value": "10000",
         "class": "reg",
@@ -1460,7 +1122,6 @@
         "mark": "minimum user port pool"
     },
     {
-        "id": null,
         "item": "max_port",
         "value": "65535",
         "class": "reg",
@@ -1470,7 +1131,6 @@
         "mark": "Maximum user port pool"
     },
     {
-        "id": null,
         "item": "free_user_reset_day",
         "value": "0",
         "class": "reg",
@@ -1480,7 +1140,6 @@
         "mark": "Data reset date for free users"
     },
     {
-        "id": null,
         "item": "free_user_reset_bandwidth",
         "value": "0",
         "class": "reg",
@@ -1490,7 +1149,6 @@
         "mark": "Free traffic that needs to be reset"
     },
     {
-        "id": null,
         "item": "reg_traffic",
         "value": "0",
         "class": "reg",
@@ -1500,7 +1158,6 @@
         "mark": "Free traffic when you sign up (GB)"
     },
     {
-        "id": null,
         "item": "reg_ip_limit",
         "value": "0",
         "class": "reg",
@@ -1510,7 +1167,6 @@
         "mark": "Connection IP restrictions set during registration"
     },
     {
-        "id": null,
         "item": "reg_speed_limit",
         "value": "0",
         "class": "reg",
@@ -1520,7 +1176,6 @@
         "mark": "Usage rate limit set at registration"
     },
     {
-        "id": null,
         "item": "reg_class",
         "value": "0",
         "class": "reg",
@@ -1530,7 +1185,6 @@
         "mark": "The grade set at registration"
     },
     {
-        "id": null,
         "item": "reg_class_time",
         "value": "0",
         "class": "reg",
@@ -1540,7 +1194,6 @@
         "mark": "Level expiration time set at registration (days)"
     },
     {
-        "id": null,
         "item": "reg_method",
         "value": "aes-128-gcm",
         "class": "reg",
@@ -1550,7 +1203,6 @@
         "mark": "Default Encryption"
     },
     {
-        "id": null,
         "item": "reg_daily_report",
         "value": "0",
         "class": "reg",
@@ -1560,7 +1212,6 @@
         "mark": "receive daily usage email push by default after registration"
     },
     {
-        "id": null,
         "item": "invite_reg_money_reward",
         "value": "0",
         "class": "ref",
@@ -1570,7 +1221,6 @@
         "mark": "Invitation registration balance reward (toman)"
     },
     {
-        "id": null,
         "item": "invite_reg_traffic_reward",
         "value": "0",
         "class": "ref",
@@ -1580,7 +1230,6 @@
         "mark": "Invitation registration traffic reward (GB)"
     },
     {
-        "id": null,
         "item": "invite_mode",
         "value": "reg_only",
         "class": "ref",
@@ -1590,7 +1239,6 @@
         "mark": "invite mode"
     },
     {
-        "id": null,
         "item": "invite_reward_mode",
         "value": "reward_count",
         "class": "ref",
@@ -1600,7 +1248,6 @@
         "mark": "Rebate Mode"
     },
     {
-        "id": null,
         "item": "invite_reward_rate",
         "value": "0.2",
         "class": "ref",
@@ -1610,7 +1257,6 @@
         "mark": "Total rebate times limit"
     },
     {
-        "id": null,
         "item": "invite_reward_count_limit",
         "value": "1",
         "class": "ref",
@@ -1620,7 +1266,6 @@
         "mark": "Rebate number limit"
     },
     {
-        "id": null,
         "item": "invite_reward_total_limit",
         "value": "50",
         "class": "ref",
@@ -1630,7 +1275,6 @@
         "mark": "Rebate amount limit"
     },   
     {
-        "id": null,
         "item": "display_detect_log",
         "value": "0",
         "class": "feature",
@@ -1640,7 +1284,6 @@
         "mark": "show user audit records"
     },
     {
-        "id": null,
         "item": "display_docs",
         "value": "1",
         "class": "feature",
@@ -1650,7 +1293,6 @@
         "mark": "show document"
     },
     {
-        "id": null,
         "item": "display_docs_only_for_paid_user",
         "value": "0",
         "class": "feature",
@@ -1660,7 +1302,6 @@
         "mark": "Documentation is only visible to paid users"
     },
     {
-        "id": null,
         "item": "traffic_log",
         "value": "0",
         "class": "feature",
@@ -1670,7 +1311,6 @@
         "mark": "Enable hourly usage logs"
     },
     {
-        "id": null,
         "item": "traffic_log_retention_days",
         "value": "7",
         "class": "feature",
@@ -1680,7 +1320,6 @@
         "mark": "Number of days to keep traffic logs"
     },
     {
-        "id": null,
         "item": "subscribe_log",
         "value": "0",
         "class": "feature",
@@ -1690,7 +1329,6 @@
         "mark": "Enable subscription logging logs"
     },
     {
-        "id": null,
         "item": "subscribe_log_retention_days",
         "value": "7",
         "class": "feature",
@@ -1700,7 +1338,6 @@
         "mark": "Number of days to keep subscription logs"
     },
     {
-        "id": null,
         "item": "notify_new_subscribe",
         "value": "0",
         "class": "feature",
@@ -1710,7 +1347,6 @@
         "mark": "Notify users of new IP subscriptions"
     },
     {
-        "id": null,
         "item": "login_log",
         "value": "1",
         "class": "feature",
@@ -1720,7 +1356,6 @@
         "mark": "Enable login logs"
     },
     {
-        "id": null,
         "item": "notify_new_login",
         "value": "0",
         "class": "feature",
@@ -1730,7 +1365,6 @@
         "mark": "Notify user of new IP login"
     },
     {
-        "id": null,
         "item": "enable_checkin",
         "value": "0",
         "class": "feature",
@@ -1740,7 +1374,6 @@
         "mark": "Check-in switch"
     },
     {
-        "id": null,
         "item": "checkin_min",
         "value": "1",
         "class": "feature",
@@ -1750,7 +1383,6 @@
         "mark": "Minimum traffic for checkin"
     },
     {
-        "id": null,
         "item": "checkin_max",
         "value": "50",
         "class": "feature",
@@ -1760,7 +1392,6 @@
         "mark": "Maximum traffic for checkin"
     },
     {
-        "id": null,
         "item": "enable_forced_replacement",
         "value": "1",
         "class": "subscribe",
@@ -1770,7 +1401,6 @@
         "mark": "forcibly change the subscription address when the user modifies the account login password"
     },
     {
-        "id": null,
         "item": "enable_ss_sub",
         "value": "1",
         "class": "subscribe",
@@ -1780,7 +1410,6 @@
         "mark": "Shadowsocks subscription switch"
     },
     {
-        "id": null,
         "item": "enable_v2_sub",
         "value": "1",
         "class": "subscribe",
@@ -1790,7 +1419,6 @@
         "mark": "V2Ray subscription switch"
     },
     {
-        "id": null,
         "item": "enable_trojan_sub",
         "value": "1",
         "class": "subscribe",
@@ -1800,7 +1428,6 @@
         "mark": "Trojan Subscription Switch"
     },
     {
-        "id": null,
         "item": "enable_daily_finance_mail",
         "value": "0",
         "class": "cron",
@@ -1810,7 +1437,6 @@
         "mark": "enable daily financial reports"
     },
     {
-        "id": null,
         "item": "enable_weekly_finance_mail",
         "value": "0",
         "class": "cron",
@@ -1820,7 +1446,6 @@
         "mark": "enable weekly financial reporting"
     },
     {
-        "id": null,
         "item": "enable_monthly_finance_mail",
         "value": "0",
         "class": "cron",
@@ -1830,7 +1455,6 @@
         "mark": "enable monthly financial reporting"
     },
     {
-        "id": null,
         "item": "enable_detect_gfw",
         "value": "0",
         "class": "cron",
@@ -1840,7 +1464,6 @@
         "mark": "enable node is gfw detection"
     },
     {
-        "id": null,
         "item": "enable_detect_ban",
         "value": "0",
         "class": "cron",
@@ -1850,7 +1473,6 @@
         "mark": "enable audit ban"
     },
     {
-        "id": null,
         "item": "enable_detect_inactive_user",
         "value": "0",
         "class": "cron",
@@ -1860,7 +1482,6 @@
         "mark": "enable idle user detection"
     },
     {
-        "id": null,
         "item": "detect_inactive_user_checkin_days",
         "value": "90",
         "class": "cron",
@@ -1870,7 +1491,6 @@
         "mark": "Length of non-sign-in (days)"
     },
     {
-        "id": null,
         "item": "detect_inactive_user_login_days",
         "value": "90",
         "class": "cron",
@@ -1880,7 +1500,6 @@
         "mark": "Not logged in time (days)"
     },
     {
-        "id": null,
         "item": "detect_inactive_user_use_days",
         "value": "90",
         "class": "cron",
@@ -1890,7 +1509,15 @@
         "mark": "Unused time (days)"
     },
     {
-        "id": null,
+        "item": "remove_inactive_user_link_and_invite",
+        "value": "0",
+        "class": "cron",
+        "is_public": 0,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable remove link and invite of inactive user"
+    },
+    {
         "item": "daily_job_hour",
         "value": "0",
         "class": "cron",
@@ -1900,7 +1527,6 @@
         "mark": "Daily task execution time (hours)"
     },
     {
-        "id": null,
         "item": "daily_job_minute",
         "value": "0",
         "class": "cron",
@@ -1910,7 +1536,6 @@
         "mark": "Daily task execution time (minutes)"
     },
     {
-        "id": null,
         "item": "last_daily_job_time",
         "value": "0",
         "class": "cron",
@@ -1920,7 +1545,6 @@
         "mark": "The last time the Dailies were executed"
     },
     {
-        "id": null,
         "item": "db_version",
         "value": "2023020100",
         "class": "db",
@@ -1930,7 +1554,6 @@
         "mark": "current database version"
     },
     {
-        "id": null,
         "item": "shared_account",
         "value": "0",
         "class": "feature",
@@ -1940,7 +1563,6 @@
         "mark": "Display Shared Account"
     },
     {
-        "id": null,
         "item": "display_media",
         "value": "0",
         "class": "feature",
@@ -1950,7 +1572,6 @@
         "mark": "Display node streaming unlock status"
     },
     {
-        "id": null,
         "item": "display_detect",
         "value": "0",
         "class": "feature",
@@ -1958,5 +1579,248 @@
         "type": "bool",
         "default": "0",
         "mark": "Display detect ruls and logs in user"
+    },
+    {
+        "item": "smart_dns",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS"
+    },
+    {
+        "item": "smart_dns_plain",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS Plain Mode"
+    },
+    {
+        "item": "smart_dns_plain_url_1",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Plain Url 1"
+    },
+    {
+        "item": "smart_dns_plain_url_2",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Plain Url 2"
+    },
+    {
+        "item": "smart_dns_dot",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoT Mode"
+    },
+    {
+        "item": "smart_dns_dot_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoT Url"
+    },
+    {
+        "item": "smart_dns_doh",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoH Mode"
+    },
+    {
+        "item": "smart_dns_doh_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoH Url"
+    },
+    {
+        "item": "smart_dns_dodtls",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoDTLS Mode"
+    },
+    {
+        "item": "smart_dns_dodtls_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoDTLS Url"
+    },
+    {
+        "item": "smart_dns_doq",
+        "value": "0",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Smart DNS DoQ Mode"
+    },
+    {
+        "item": "smart_dns_doq_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS DoQ Url"
+    },
+    {
+        "item": "smart_dns_check_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Check Url"
+    },
+    {
+        "item": "smart_dns_fail_url",
+        "value": "",
+        "class": "smartdns",
+        "is_public": 1,
+        "type": "string",
+        "default": "",
+        "mark": "Smart DNS Fail Url"
+    },
+    {
+        "item": "nowpayments_url",
+        "value": "https://api.nowpayments.io/v1/",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "https://api.nowpayments.io/v1/",
+        "mark": "NowPayments Base Url"
+    },
+    {
+        "item": "nowpayments",
+        "value": "0",
+        "class": "billing",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable NowPayments"
+    },
+    {
+        "item": "nowpayments_api_key",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "NowPayments Api Key"
+    },
+    {
+        "item": "nowpayments_ipn_secret",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "NowPayments ipn Secret"
+    },
+    {
+        "item": "nowpayments_price_currency",
+        "value": "usd",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "usd",
+        "mark": "NowPayments Price Currency"
+    },
+    {
+        "item": "nowpayments_pay_currency",
+        "value": "usdt",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "usdt",
+        "mark": "NowPayments Pay Currency"
+    },
+    {
+        "item": "perfectmoney_url",
+        "value": "https://perfectmoney.is/acct/",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "https://perfectmoney.is/acct/",
+        "mark": "Perfect Money Base Url"
+    },
+    {
+        "item": "perfectmoney_account_id",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Account ID"
+    },
+    {
+        "item": "perfectmoney_payee_account",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Payee Account"
+    },
+    {
+        "item": "perfectmoney_pass_phrase",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Pass Phrase"
+    },
+    {
+        "item": "perfectmoney_alter_pass_phrase",
+        "value": "",
+        "class": "billing",
+        "is_public": 0,
+        "type": "string",
+        "default": "",
+        "mark": "Perfect Money Alternate Pass Phrase"
+    },
+    {
+        "item": "perfectmoney_currency",
+        "value": "USD",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "USD",
+        "mark": "Perfect Money currency"
+    },
+    {
+        "item": "perfectmoney",
+        "value": "0",
+        "class": "billing",
+        "is_public": 1,
+        "type": "bool",
+        "default": "0",
+        "mark": "Enable Perfect Money"
     }
 ]

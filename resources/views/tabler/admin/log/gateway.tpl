@@ -37,54 +37,19 @@
         </div>
     </div>
 
+    {include file='datatable.tpl'}
+
     <script>
-        let table = new DataTable('#data-table', {
-            ajax: {
-                url: '/admin/gateway/ajax',
-                type: 'POST',
-                dataSrc: 'paylists'
-            },
-            "autoWidth": false,
-            'iDisplayLength': 10,
-            'scrollX': true,
-            'order': [
-                [0, 'desc']
-            ],
-            columns: [
-                {foreach $details['field'] as $key => $value}
-                {
-                    data: '{$key}'
-                },
-                {/foreach}
-            ],
-            "dom": "<'row px-3 py-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row card-footer d-flex align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            language: {
-                "sProcessing": "در حال پردازش...",
-                "sLengthMenu": "نمایش ورودی های _MENU_",
-                "sZeroRecords": "هیچ نتیجه منطبقی وجود ندارد",
-                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
-                "sInfoEmpty": "نتایج 0 تا 0 از 0",
-                "sInfoFiltered": "(به دنبال _MAX_ مورد بگردید)",
-                "sInfoPostFix": "",
-                "sSearch": "<i class=\"ti ti-search\"></i> ",
-                "sUrl": "",
-                "sEmptyTable": "اطلاعات جدول خالی است",
-                "sLoadingRecords": "بارگذاری...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "صفحه اول",
-                    "sPrevious": "<i class=\"ti ti-arrow-left\"></i>",
-                    "sNext": "<i class=\"ti ti-arrow-right\"></i>",
-                    "sLast": "آخرین صفحه"
-                },
-                "oAria": {
-                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
-                    "sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
-                }
-            }
-        });
+        tableConfig.ajax = {
+            url: '/admin/gateway/ajax',
+            type: 'POST',
+            dataSrc: 'paylists'
+        };
+        tableConfig.order = [
+            [0, 'desc']
+        ];
+
+        let table = new DataTable('#data-table', tableConfig);
 
         function loadTable() {
             table;

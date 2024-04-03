@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\Auth;
 use App\Services\Cache;
 use App\Services\Captcha;
+use App\Services\Filter;
 use App\Services\Mail;
 use App\Services\MFA;
 use App\Services\RateLimit;
@@ -150,9 +151,10 @@ final class AuthController extends BaseController
             }
 
             // check email format
-            $check_res = Tools::isEmailLegal($email);
-            if ($check_res['ret'] === 0) {
-                return $response->withJson($check_res);
+            $email_check = Filter::checkEmailFilter($email);
+
+            if (! $email_check) {
+                return ResponseHelper::error($response, 'ایمیل نامعتبر');
             }
 
             if (! RateLimit::checkEmailIpLimit($request->getServerParam('REMOTE_ADDR')) ||
@@ -216,13 +218,11 @@ final class AuthController extends BaseController
         $user->pass = Hash::passwordHash($password);
         $user->passwd = Tools::genRandomChar(16);
         $user->uuid = Uuid::uuid4();
-        $user->api_token = Uuid::uuid4();
+        $user->api_token = Tools::genRandomChar(32);
         $user->port = Tools::getSsPort();
         $user->u = 0;
         $user->d = 0;
         $user->method = $configs['reg_method'];
-        $user->forbidden_ip = Config::obtain('reg_forbidden_ip');
-        $user->forbidden_port = Config::obtain('reg_forbidden_port');
         $user->im_type = $imtype;
         $user->im_value = $imvalue;
         $user->transfer_enable = Tools::toGB($configs['reg_traffic']);
@@ -336,10 +336,10 @@ final class AuthController extends BaseController
         $imvalue = '';
 
         // check email format
-        $check_res = Tools::isEmailLegal($email);
+        $email_check = Filter::checkEmailFilter($email);
 
-        if ($check_res['ret'] === 0) {
-            return $response->withJson($check_res);
+        if (! $email_check) {
+            return ResponseHelper::error($response, 'ایمیل نامعتبر');
         }
         // check email
         $user = (new User())->where('email', $email)->first();

@@ -37,54 +37,19 @@
         </div>
     </div>
 
+    {include file='datatable.tpl'}
+
     <script>
-        let table = new DataTable('#data-table', {
-            ajax: {
-                url: '/admin/payback/ajax',
-                type: 'POST',
-                dataSrc: 'paybacks'
-            },
-            "autoWidth": false,
-            'iDisplayLength': 10,
-            'scrollX': true,
-            'order': [
-                [0, 'desc']
-            ],
-            columns: [
-                {foreach $details['field'] as $key => $value}
-                {
-                    data: '{$key}'
-                },
-                {/foreach}
-            ],
-            "dom": "<'row px-3 py-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row card-footer d-flex align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            language: {
-                "sProcessing": "در حال پردازش...",
-                "sLengthMenu": "نمایش _MENU_ ردیف",
-                "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                "sInfoFiltered": "(فیلتر شده از مجموع _MAX_ رکورد)",
-                "sInfoPostFix": "",
-                "sSearch": "<i class=\"ti ti-search\"></i> ",
-                "sUrl": "",
-                "sEmptyTable": "جدول خالی است",
-                "sLoadingRecords": "در حال بارگذاری...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "ابتدا",
-                    "sPrevious": "<i class=\"ti ti-arrow-left\"></i>",
-                    "sNext": "<i class=\"ti ti-arrow-right\"></i>",
-                    "sLast": "انتها"
-                },
-                "oAria": {
-                    "sSortAscending": ": فعال سازی مرتب سازی صعودی",
-                    "sSortDescending": ": فعال سازی مرتب سازی نزولی"
-                }
-            }
-        });
+        tableConfig.ajax = {
+            url: '/admin/payback/ajax',
+            type: 'POST',
+            dataSrc: 'paybacks'
+        };
+        tableConfig.order = [
+            [0, 'desc']
+        ];
+
+        let table = new DataTable('#data-table', tableConfig);
 
         function loadTable() {
             table;

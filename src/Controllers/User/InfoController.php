@@ -6,10 +6,10 @@ namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
 use App\Models\Config;
-use App\Models\InviteCode;
 use App\Models\User;
 use App\Services\Auth;
 use App\Services\Cache;
+use App\Services\Filter;
 use App\Services\MFA;
 use App\Utils\Hash;
 use App\Utils\ResponseHelper;
@@ -61,10 +61,10 @@ final class InfoController extends BaseController
             return ResponseHelper::error($response, 'آدرس ایمیل پر نشده است');
         }
 
-        $check_res = Tools::isEmailLegal($new_email);
+        $email_check = Filter::checkEmailFilter($email);
 
-        if ($check_res['ret'] !== 1) {
-            return $response->withJson($check_res);
+        if (! $email_check) {
+            return ResponseHelper::error($response, 'ایمیل نامعتبر');
         }
 
         $exist_user = (new User())->where('email', $new_email)->first();
@@ -130,9 +130,7 @@ final class InfoController extends BaseController
 
     public function unbindIM(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $user = $this->user;
-
-        if (! $user->unbindIM()) {
+        if (! $this->user->unbindIM()) {
             return ResponseHelper::error($response, 'باز کردن پیوند انجام نشد');
         }
 
@@ -172,7 +170,7 @@ final class InfoController extends BaseController
         }
 
         if (Config::obtain('enable_forced_replacement')) {
-            $user->cleanLink();
+            $user->removeLink();
         }
 
         return ResponseHelper::success($response, 'با موفقیت اصلاح شد');
@@ -201,7 +199,7 @@ final class InfoController extends BaseController
     public function resetApiToken(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
         $user = $this->user;
-        $user->api_token = Uuid::uuid4();
+        $user->api_token = Tools::genRandomChar(32);
 
         if (! $user->save()) {
             return ResponseHelper::error($response, 'بازنشانی انجام نشد');
@@ -233,25 +231,9 @@ final class InfoController extends BaseController
 
     public function resetURL(ServerRequest $request, Response $response, array $args): ResponseInterface
     {
-        $user = $this->user;
-        $user->cleanLink();
+        $this->user->removeLink();
 
         return ResponseHelper::success($response, 'بازنشانی با موفقیت انجام شد');
-    }
-
-    public function resetInviteURL(ServerRequest $request, Response $response, array $args): ResponseInterface
-    {
-        $user = $this->user;
-        $user->clearInviteCodes();
-        $code = (new InviteCode())->add($user->id);
-
-        return $response->withJson([
-            'ret' => 1,
-            'msg' => 'بازنشانی با موفقیت انجام شد',
-            'data' => [
-                'invite-url' => $_ENV['baseUrl'] . '/auth/register?code=' . $code,
-            ],
-        ]);
     }
 
     public function updateDailyMail(ServerRequest $request, Response $response, array $args): ResponseInterface

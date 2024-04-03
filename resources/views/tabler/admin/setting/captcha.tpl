@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a href="#geetest" class="nav-link" data-bs-toggle="tab">Geetest</a>
                         </li>
+                                <li class="nav-item">
+                                    <a href="#hcaptcha" class="nav-link" data-bs-toggle="tab">hCaptcha</a>
+                                </li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -51,6 +54,10 @@
                                         <select id="captcha_provider" class="col form-select" value="{$settings['captcha_provider']}">
                                             <option value="turnstile" {if $settings['captcha_provider'] === "turnstile"}selected{/if}>Turnstile</option>
                                             <option value="geetest" {if $settings['captcha_provider'] === "geetest"}selected{/if}>Geetest</option>
+                                                    <option value="hcaptcha"
+                                                            {if $settings['captcha_provider'] === "hcaptcha"}selected{/if}>
+                                                        hCaptcha
+                                                    </option>
                                         </select>
                                     </div>
                                 </div>
@@ -124,6 +131,24 @@
                                 </div>
                             </div>
                         </div>
+                                <div class="tab-pane" id="hcaptcha">
+                                    <div class="card-body">
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">hCaptcha Site Key</label>
+                                            <div class="col">
+                                                <input id="hcaptcha_sitekey" type="text" class="form-control"
+                                                       value="{$settings['hcaptcha_sitekey']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">hCaptcha Secret</label>
+                                            <div class="col">
+                                                <input id="hcaptcha_secret" type="text" class="form-control"
+                                                       value="{$settings['hcaptcha_secret']}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
                 </div>
             </div>

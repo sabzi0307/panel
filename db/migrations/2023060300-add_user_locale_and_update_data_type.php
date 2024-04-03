@@ -42,8 +42,6 @@ return new class() implements MigrationInterface {
         ALTER TABLE user MODIFY COLUMN `banned_reason` varchar(255) NOT NULL DEFAULT '' COMMENT 'Banned reason';
         ALTER TABLE user MODIFY COLUMN `expire_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Expired reminder';
         ALTER TABLE user MODIFY COLUMN `traffic_notified` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'traffic notification';
-        ALTER TABLE user MODIFY COLUMN `forbidden_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden to access IP';
-        ALTER TABLE user MODIFY COLUMN `forbidden_port` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden to access port';
         ALTER TABLE user MODIFY COLUMN `auto_reset_day` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'Auto reset traffic day';
         ALTER TABLE user MODIFY COLUMN `auto_reset_bandwidth` decimal(12,2) unsigned NOT NULL DEFAULT 0.00 COMMENT 'Auto reset bandwidth';
         ALTER TABLE user MODIFY COLUMN `is_dark_mode` tinyint(1) NOT NULL DEFAULT 0;

@@ -52,8 +52,12 @@ final class OrderController extends BaseController
     public function detail(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $id = $args['id'];
-
         $order = (new Order())->find($id);
+
+        if ($order === null) {
+            return $response->withStatus(301)->withHeader('Location', '/admin/order');
+        }
+
         $order->product_type_text = $order->productType();
         $order->status_text = $order->status();
         $order->create_time = Tools::toDateTime($order->create_time);
@@ -80,10 +84,17 @@ final class OrderController extends BaseController
         $order_id = $args['id'];
         $order = (new Order())->find($order_id);
 
-        if ($order->status === 'activated') {
+        if ($order === null) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'سرویس فعال شده را نمی توان لغو کرد',
+                'msg' => 'سفارش موجود نیست',
+            ]);
+        }
+
+        if (in_array($order->status, ['activated', 'expired', 'cancelled'])) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'را نمی توان لغو کرد' . $order->status() . 'سفارش',
             ]);
         }
 
@@ -96,22 +107,20 @@ final class OrderController extends BaseController
         if ($invoice === null) {
             return $response->withJson([
                 'ret' => 1,
-                'msg' => 'سفارش با موفقیت لغو شد، اما وضعیت صورت‌حساب مرتبط غیرعادی است',
+                'msg' => 'سفارش با موفقیت لغو شد، اما صورتحساب مرتبط وجود ندارد',
+            ]);
+        }
+
+        if (in_array($invoice->status, ['paid_gateway', 'paid_balance', 'paid_admin'])) {
+            $invoice->refundToBalance();
+
+            return $response->withJson([
+                'ret' => 1,
+                'msg' => 'سفارش با موفقیت لغو شد و صورتحساب مربوطه به موجودی حساب شما بازپرداخت شد.',
             ]);
         }
 
         $invoice->update_time = time();
-
-        if (in_array($invoice->status, ['paid_gateway', 'paid_balance', 'paid_admin'])) {
-            $invoice->status = 'cancelled';
-            $invoice->save();
-
-            return $response->withJson([
-                'ret' => 1,
-                'msg' => 'سفارش با موفقیت لغو شد، اما صورت‌حساب مربوطه قبلاً پرداخت شده است',
-            ]);
-        }
-
         $invoice->status = 'cancelled';
         $invoice->save();
 
@@ -124,12 +133,27 @@ final class OrderController extends BaseController
     public function delete(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $order_id = $args['id'];
-        (new Order())->find($order_id)->delete();
-        (new Invoice())->where('order_id', $order_id)->first()->delete();
+        $order = (new Order())->find($order_id);
+
+        if ($order === null) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'سفارش وجود ندارد',
+            ]);
+        }
+
+        $invoice = (new Invoice())->where('order_id', $order_id)->first();
+
+        if ($order->delete() && $invoice->delete()) {
+            return $response->withJson([
+                'ret' => 1,
+                'msg' => 'با موفقیت حذف شد',
+            ]);
+        }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'با موفقیت حذف شد',
+            'msg' => 'حذف نشد',
         ]);
     }
 
@@ -141,7 +165,7 @@ final class OrderController extends BaseController
             $order->op = '<button type="button" class="btn btn-red" id="delete-order-' . $order->id . '"
              onclick="deleteOrder(' . $order->id . ')">حذف</button>';
 
-            if ($order->status === 'pending_payment') {
+            if (in_array($order->status, ['pending_payment', 'pending_activation'])) {
                 $order->op .= '
                 <button type="button" class="btn btn-orange" id="cancel-order-' . $order->id . '"
                  onclick="cancelOrder(' . $order->id . ')">لغو</button>';

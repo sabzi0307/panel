@@ -76,10 +76,6 @@ if [ "$INIT" = true ];then
         echo >&2 "db_host or DB_SOCKET not set!"
         exit
     fi
-    if [ -z "$db_driver" ];then
-        echo >&2 "db_driver not set! using mysql"
-        db_driver='mysql'
-    fi
     if [ -z "$db_port" ];then
         echo >&2 "db_port not set! using 3306"
         db_port=3306
@@ -205,7 +201,7 @@ if [ "$INIT" = true ];then
     fi
     if [ -z "$mail_filter_list" ];then
         echo >&2 "mail_filter_list not set!, using ["qq.com", "vip.qq.com", "foxmail.com"]"
-        mail_filter_list=["qq.com", "vip.qq.com", "foxmail.com"]
+        mail_filter_list=[]
     fi
 
     if [ -z "$class_expire_reset_traffic" ];then
@@ -283,7 +279,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$enable_login_bind_ip" ];then
         echo >&2 "enable_login_bind_ip not set! using false "
-        enable_login_bind_ip=false
+        enable_login_bind_ip=true
     fi
     if [ -z "$enable_login_bind_device" ];then
         echo >&2 "enable_login_bind_device not set! using true "
@@ -357,7 +353,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$google_ai_model_id" ];then
         echo >&2 "google_ai_model_id not set! using gemini-pro"
-        google_ai_model_id="gemini-pro"
+        google_ai_model_id="gemini-1.5-pro-latest"
     fi
 
     if [ -z "$vertex_ai_access_token" ];then
@@ -372,7 +368,7 @@ if [ "$INIT" = true ];then
 
     if [ -z "$vertex_ai_model_id" ];then
         echo >&2 "vertex_ai_model_id not set! using gemini-pro"
-        vertex_ai_model_id="gemini-pro"
+        vertex_ai_model_id="gemini-1.0-pro"
     fi
 
     if [ -z "$vertex_ai_project_id" ];then
@@ -408,28 +404,35 @@ if [ "$INIT" = true ];then
         cf_workers_ai_model_id="@cf/meta/llama-2-7b-chat-int8"
     fi
 
+    if [ -z "$anthropic_api_key" ];then
+        echo >&2 "anthropic_api_key not set!"
+        anthropic_api_key=""
+    fi
+    if [ -z "$anthropic_model_id" ];then
+        echo >&2 "anthropic_model_id not set! using claude-3-opus-20240229"
+        anthropic_model_id="claude-3-opus-20240229"
+    fi
 
-    if [ "$enable_r2_client_download" == true ];then
-        if [ -z "$r2_bucket_name" ];then
-            echo >&2 "r2_bucket_name not set! exit "
-            exit
-        fi
-        if [ -z "$r2_account_id" ];then
-            echo >&2 "r2_account_id not set! exit "
-            exit
-        fi
-        if [ -z "$r2_access_key_id" ];then
-            echo >&2 "r2_access_key_id not set! exit "
-            exit
-        fi
-        if [ -z "$r2_access_key_secret" ];then
-            echo >&2 "r2_access_key_secret not set! exit "
-            exit
-        fi
-        if [ -z "$r2_client_download_timeout" ];then
-            echo >&2 "r2_client_download_timeout not set! using default "
-            r2_client_download_timeout = 10
-        fi
+
+    if [ -z "$enable_r2_client_download" ];then
+        echo >&2 "r2_bucket_name not set! using false"
+        enable_r2_client_download = false
+    fi
+    if [ -z "$r2_bucket_name" ];then
+        echo >&2 "r2_bucket_name not set! "
+    fi
+    if [ -z "$r2_account_id" ];then
+        echo >&2 "r2_account_id not set! "
+    fi
+    if [ -z "$r2_access_key_id" ];then
+        echo >&2 "r2_access_key_id not set! "
+    fi
+    if [ -z "$r2_access_key_secret" ];then
+        echo >&2 "r2_access_key_secret not set! "
+    fi
+    if [ -z "$r2_client_download_timeout" ];then
+        echo >&2 "r2_client_download_timeout not set! using default "
+        r2_client_download_timeout = 10
     fi
 
 
@@ -482,7 +485,6 @@ cat <<EOF >/var/www/html/conf/.config.php
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank. If the database is on the local machine it is recommended to use db_socket。
 // db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）, 10.0.0.2:4406（With port)
 // db_socket example：/var/run/mysqld/mysqld.sock（Absolute address is required）
-\$_ENV['db_driver']    = '$db_driver';
 \$_ENV['db_host']      = '$db_host';
 \$_ENV['db_socket']    = '$db_socket';
 \$_ENV['db_database']  = '$MYSQL_DATABASE';           //Database name
@@ -518,7 +520,7 @@ cat <<EOF >/var/www/html/conf/.config.php
 
 //E-Mail settings--------------------------------------------------------------------------------------------
 \$_ENV['mail_filter']        = $mail_filter;                 //0: off; 1: whitelist mode; 2; blacklist mode;
-\$_ENV['mail_filter_list']   = array($mail_filter_list);
+\$_ENV['mail_filter_list']   = $mail_filter_list;
 
 #advanced
 \$_ENV['class_expire_reset_traffic'] = $class_expire_reset_traffic;  //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
@@ -583,10 +585,13 @@ cat <<EOF >/var/www/html/conf/.config.php
 // Hugging Face Inference API
 \$_ENV['huggingface_api_key'] = '$huggingface_api_key';
 \$_ENV['huggingface_endpoint_url'] = '$huggingface_endpoint_url';
-#Cloudflare Workers AI
+// Cloudflare Workers AI
 \$_ENV['cf_workers_ai_account_id']      = '$cf_workers_ai_account_id';
 \$_ENV['cf_workers_ai_api_token']       = '$cf_workers_ai_api_token';
 \$_ENV['cf_workers_ai_model_id']         = '$cf_workers_ai_model_id';
+// Anthropic
+\$_ENV['anthropic_api_key']      = '$anthropic_api_key';
+\$_ENV['anthropic_model_id']       = '$anthropic_model_id';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 \$_ENV['github_access_token'] = '$github_access_token';
@@ -598,6 +603,16 @@ cat <<EOF >/var/www/html/conf/.config.php
 \$_ENV['r2_access_key_id'] = '$r2_access_key_id';
 \$_ENV['r2_access_key_secret'] = '$r2_access_key_secret';
 \$_ENV['r2_client_download_timeout'] = '$r2_client_download_timeout' ;
+
+
+\$_ENV['cdn_forwarded_ip'] = array('HTTP_X_FORWARDED_FOR', 'HTTP_ALI_CDN_REAL_IP', 'X-Real-IP', 'True-Client-Ip');
+foreach (\$_ENV['cdn_forwarded_ip'] as \$cdn_forwarded_ip) {
+    if (isset(\$_SERVER[\$cdn_forwarded_ip])) {
+        \$list = explode(',', \$_SERVER[\$cdn_forwarded_ip]);
+        \$_SERVER['REMOTE_ADDR'] = \$list[0];
+        break;
+    }
+}
 
 EOF
 
@@ -708,9 +723,9 @@ fi
 
 current_dir=$(pwd)
 crontab -l > cron.tmp
-if ! grep -q "*/5 * * * * php $current_dir/xcat Cron" cron.tmp; then
-    # اضافه کردن خط به فایل cron.tmp
-    echo "*/5 * * * * php $current_dir/xcat Cron" >> cron.tmp
+./cron.tmp
+if ! grep -q "\*\/5 \* \* \* \* php /var/www/html/xcat Cron" cron.tmp; then
+    echo "*/5 * * * * php $current_dir/xcat Cron" > cron.tmp
     crontab cron.tmp
 fi
 rm cron.tmp

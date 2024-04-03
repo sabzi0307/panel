@@ -540,7 +540,7 @@ final class Callback
         switch ($OpEnd) {
             case 'update_link':
                 // 重置订阅链接
-                $this->user->cleanLink();
+                $this->user->removeLink();
 
                 $this->answerCallbackQuery([
                     'text' => 'پیوند اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',

@@ -97,60 +97,25 @@
         </div>
     </div>
 
+    {include file='datatable.tpl'}
+
     <script>
-        let table = new DataTable('#data-table', {
-            ajax: {
-                url: '/admin/giftcard/ajax',
-                type: 'POST',
-                dataSrc: 'giftcards'
-            },
-            "autoWidth": false,
-            'iDisplayLength': 10,
-            'scrollX': true,
-            'order': [
-                [1, 'desc']
-            ],
-            columns: [
-                {foreach $details['field'] as $key => $value}
-                {
-                    data: '{$key}'
-                },
-                {/foreach}
-            ],
-            "columnDefs": [
-                {
-                    targets: [0],
-                    orderable: false
-                }
-            ],
-            "dom": "<'row px-3 py-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row card-footer d-flex d-flexalign-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            language: {
-                "sProcessing": "در حال پردازش...",
-                "sLengthMenu": "نمایش موارد _MENU_",
-                "sZeroRecords": "نتایج منطبقی وجود ندارد",
-                "sInfo": "نتایج _START_ تا _END_ از _TOTAL_",
-                "sInfoEmpty": "نتایج 0 تا 0 از 0",
-                "sInfoFiltered": "(در _MAX_ مورد پیدا کنید)",
-                "sInfoPostFix": "",
-                "sSearch": "<i class=\"ti ti-search\"></i> ",
-                "sUrl": "",
-                "sEmptyTable": "هیچ داده ای یافت نشد",
-                "sLoadingRecords": "بارگذاری...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "صفحه اول",
-                    "sPrevious": "<i class=\"titi-arrow-left\"></i>",
-                    "sNext": "<i class=\"ti ti-arrow-right\"><i>",
-                    "sLast": "آخرین صفحه"
-                },
-                "oAria": {
-                    "sSortAscending": ": این ستون را به ترتیب صعودی مرتب کنید",
-                    "sSortDescending": ": این ستون را به ترتیب نزولی مرتب کنید"
-                }
-            },
-        });
+        tableConfig.ajax = {
+            url: '/admin/giftcard/ajax',
+            type: 'POST',
+            dataSrc: 'giftcards'
+        };
+        tableConfig.order = [
+            [1, 'desc']
+        ];
+        tableConfig.columnDefs = [
+            {
+                targets: [0],
+                orderable: false
+            }
+        ];
+
+        let table = new DataTable('#data-table', tableConfig);
 
         function loadTable() {
             table;

@@ -3,7 +3,7 @@
 
 <div class="card-inner">
     <h4>
-        Stripe کارت بانکی
+        Stripe درگاه
     </h4>
     <p class="card-heading"></p>
     <p>قابل استفاده با

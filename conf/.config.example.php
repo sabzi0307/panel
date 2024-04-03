@@ -18,12 +18,11 @@ $_ENV['checkNodeIp'] = true;               //是否webapi验证节点ip
 //database settings--------------------------------------------------------------------------------------------
 // db_host|db_socket Choose one of the two, if set db_socket then db_host Will be ignored, please leave blank.
 // db_host example: localhost (resolvable hostname), 127.0.0.1（IP address）
-// db_socket example：/var/run/mysqld/mysqld.sock（Absolute address is required）
-$_ENV['db_driver']    = 'mysql';
-$_ENV['db_host']      = '';
+// db_socket example：/var/run/mysqld/mysqld.sock（Absolute address is required
+$_ENV['db_host']      = 'ss_db';
 $_ENV['db_socket']    = '';
 $_ENV['db_database']  = 'sspanel';           //Database name
-$_ENV['db_username']  = 'root';              //database username
+$_ENV['db_username']  = 'sspanel';              //database username
 $_ENV['db_password']  = 'sspanel';           //The password corresponding to the username
 $_ENV['db_port']      = '3306';              //database port
 # Read and write separation related configurations
@@ -36,7 +35,7 @@ $_ENV['db_collation'] = 'utf8mb4_unicode_ci';
 $_ENV['db_prefix']    = '';
 
 //Redis设置-------------------------------------------------------------------------------------------
-$_ENV['redis_host']            = '127.0.0.1';    //Redis地址，使用unix domain socket时填写文件路径
+$_ENV['redis_host']            = 'redis';    //Redis地址，使用unix domain socket时填写文件路径
 $_ENV['redis_port']            = 6379;           //Redis端口，使用unix domain socket时填写-1
 $_ENV['redis_connect_timeout'] = 2.0;            //Redis连接超时时间，单位秒
 $_ENV['redis_read_timeout']    = 8.0;            //Redis读取超时时间，单位秒
@@ -55,7 +54,7 @@ $_ENV['rate_limit_admin_api'] = 60;              //每分钟每个管理员的AP
 
 //E-Mail settings--------------------------------------------------------------------------------------------
 $_ENV['mail_filter']        = 0;            //0: off; 1: whitelist mode; 2; blacklist mode;
-$_ENV['mail_filter_list']   = array("qq.com", "vip.qq.com", "foxmail.com");
+$_ENV['mail_filter_list']   = [];
 
 #advanced
 $_ENV['class_expire_reset_traffic'] = 0;            //The traffic value to reset to when the level expires, in GB, if it is less than 0, it will not be reset
@@ -85,7 +84,7 @@ $_ENV['detect_gfw_url']                  = 'https://check-host.net/check-tcp?hos
 #offline detection
 $_ENV['enable_detect_offline']           = true;
 
-$_ENV['enable_login_bind_ip']   = false;        //bind the login thread to the IP
+$_ENV['enable_login_bind_ip']   = true;        //bind the login thread to the IP
 $_ENV['enable_login_bind_device'] = true;             //bind the login thread to the device
 $_ENV['rememberMeDuration']     = 7;           //Remember the number of days of account duration when logging in
 $_ENV['timeZone']               = 'Asia/Tehran';         //Requires a PHP-compatible timezone format
@@ -111,11 +110,11 @@ $_ENV['openai_api_key'] = '';
 $_ENV['openai_model']   = 'gpt-4-turbo-preview';
 // Google AI API
 $_ENV['google_ai_api_key']  = '';
-$_ENV['google_ai_model_id'] = 'gemini-pro';
+$_ENV['google_ai_model_id'] = 'gemini-1.5-pro-latest';
 // Vertex AI API
 $_ENV['vertex_ai_access_token']  = '';
 $_ENV['vertex_ai_location'] = 'us-central1';
-$_ENV['vertex_ai_model_id'] = 'gemini-pro';
+$_ENV['vertex_ai_model_id'] = 'gemini-1.0-pro';
 $_ENV['vertex_ai_project_id'] = '';
 // Hugging Face Inference API
 $_ENV['huggingface_api_key'] = '';
@@ -124,6 +123,9 @@ $_ENV['huggingface_endpoint_url'] = '';
 $_ENV['cf_workers_ai_account_id'] = '';
 $_ENV['cf_workers_ai_api_token']  = '';
 $_ENV['cf_workers_ai_model_id']   = '@cf/meta/llama-2-7b-chat-int8';
+// Anthropic
+$_ENV['anthropic_api_key'] = '';
+$_ENV['anthropic_model_id'] = 'claude-3-opus-20240229';
 
 // ClientDownload command resolves the restricted use of Github access tokens due to the high frequency of API access
 $_ENV['github_access_token'] = '';

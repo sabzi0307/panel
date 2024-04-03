@@ -15,12 +15,17 @@ use App\Models\Paylist;
 use App\Services\Auth;
 use App\Services\Gateway\Epay\EpayNotify;
 use App\Services\Gateway\Epay\EpaySubmit;
+use App\Services\Gateway\Epay\EpayTool;
 use App\Services\View;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use voku\helper\AntiXSS;
+use function json_decode;
+use function trim;
 
 final class Epay extends Base
 {
@@ -58,6 +63,7 @@ final class Epay extends Base
         $invoice_id = $this->antiXss->xss_clean($request->getParam('invoice_id'));
         // EPay 特定参数
         $type = $this->antiXss->xss_clean($request->getParam('type'));
+        $redir = $this->antiXss->xss_clean($request->getParam('redir'));
 
         if ($price <= 0) {
             return $response->withJson([
@@ -90,16 +96,41 @@ final class Epay extends Base
             'type' => $type,
             'out_trade_no' => $pl->tradeno,
             'notify_url' => $_ENV['baseUrl'] . '/payment/notify/epay',
-            'return_url' => $_ENV['baseUrl'] . '/user/payment/return/epay',
+            'return_url' => $redir,
             'name' => $pl->tradeno,
             'money' => $price,
             'sitename' => $_ENV['appName'],
+            'clientip' => $_SERVER['REMOTE_ADDR'],
         ];
 
         $epaySubmit = new EpaySubmit($this->epay);
-        $html_text = $epaySubmit->buildRequestForm($data);
+        $data['sign'] = $epaySubmit->buildRequestMysign(EpayTool::argSort($data));
+        $data['sign_type'] = $this->epay['sign_type'];
+        $client = new Client();
 
-        return $response->write($html_text);
+        try {
+            $res = $client->request('POST', $this->epay['apiurl'] . 'mapi.php', ['form_params' => $data]);
+
+            if ($res->getStatusCode() !== 200) {
+                throw new Exception();
+            }
+
+            $resData = json_decode($res->getBody()->__toString(), true);
+
+            if ($resData['code'] !== 1 || ! isset($resData['payurl'])) {
+                throw new Exception();
+            }
+
+            return $response->withHeader('HX-Redirect', $resData['payurl'])->withJson([
+                'ret' => 1,
+                'msg' => 'سفارش با موفقیت ثبت شد و در حال انتقال به صفحه پرداخت است...',
+            ]);
+        } catch (Exception|GuzzleException) {
+            return $response->withJson([
+                'ret' => 0,
+                'msg' => 'درخواست پرداخت انجام نشد',
+            ]);
+        }
     }
 
     public function notify($request, $response, $args): ResponseInterface
@@ -123,13 +154,11 @@ final class Epay extends Base
             if ($trade_status === 'TRADE_SUCCESS') {
                 $this->postPayment($out_trade_no);
 
-                return $response->withJson(['state' => 'success', 'msg' => 'پرداخت موفق']);
+                return $response->withJson(['state' => 'success', 'msg' => 'Payment success']);
             }
-
-            return $response->withJson(['state' => 'fail', 'msg' => 'پرداخت ناموفق']);
         }
 
-        return $response->write('درخواست غیر مجاز');
+        return $response->withJson(['state' => 'fail', 'msg' => 'Payment failed']);
     }
 
     /**
@@ -138,21 +167,5 @@ final class Epay extends Base
     public static function getPurchaseHTML(): string
     {
         return View::getSmarty()->fetch('gateway/epay.tpl');
-    }
-
-    public function getReturnHTML($request, $response, $args): ResponseInterface
-    {
-        $money = $_GET['money'];
-
-        $html = <<<HTML
-            شما با موفقیت دوباره {$money} تومان را شارژ کردید.
-            <script>
-                setTimeout(function() {
-                    location.href="/user/invoice";
-                },500)
-            </script>
-            HTML;
-
-        return $response->write($html);
     }
 }

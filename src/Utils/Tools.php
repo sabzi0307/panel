@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace App\Utils;
 
 use App\Models\Config;
-use App\Models\Link;
 use App\Models\User;
 use App\Services\GeoIP2;
 use DateTime;
 use GeoIp2\Exception\AddressNotFoundException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
+use Random\RandomException;
 use Morilog\Jalali\Jalalian;
-use ParagonIE\Sodium;
 use function array_diff;
 use function array_flip;
 use function base64_encode;
 use function bin2hex;
+use function ceil;
 use function closedir;
 use function count;
 use function date;
-use function explode;
 use function filter_var;
 use function floor;
 use function hash;
@@ -28,10 +27,11 @@ use function in_array;
 use function is_numeric;
 use function json_decode;
 use function log;
+use function max;
 use function mb_strcut;
 use function opendir;
-use function openssl_random_pseudo_bytes;
 use function pow;
+use function random_bytes;
 use function range;
 use function readdir;
 use function round;
@@ -226,23 +226,22 @@ final class Tools
 
     public static function genSubToken(): string
     {
-        $token = self::genRandomChar($_ENV['sub_token_len']);
-        $is_token_used = (new Link())->where('token', $token)->first();
-
-        if ($is_token_used === null) {
-            return $token;
-        }
-
-        return "couldn't alloc token";
+        return self::genRandomChar(max($_ENV['sub_token_len'], 8));
     }
 
-    public static function genRandomChar(int $length = 8): string
+    public static function genRandomChar(int $length = 8): string|false
     {
         if ($length <= 2) {
             $length = 2;
         }
 
-        return bin2hex(openssl_random_pseudo_bytes($length / 2));
+        try {
+            $randomString = bin2hex(random_bytes((int) ceil($length / 2)));
+        } catch (RandomException $e) {
+            return false;
+        }
+
+        return substr($randomString, 0, $length);
     }
 
     public static function genSs2022UserPk(string $passwd, string $method): string|false

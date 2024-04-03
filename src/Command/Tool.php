@@ -19,16 +19,12 @@ use function count;
 use function date;
 use function fgets;
 use function file_get_contents;
-use function file_put_contents;
 use function fwrite;
 use function in_array;
 use function json_decode;
-use function json_encode;
 use function method_exists;
 use function strtolower;
 use function trim;
-use const JSON_PRETTY_PRINT;
-use const JSON_UNESCAPED_UNICODE;
 use const PHP_EOL;
 use const STDIN;
 use const STDOUT;
@@ -38,13 +34,14 @@ final class Tool extends Command
     public string $description = <<<EOL
 ├─=: php xcat Tool [options]
 │ ├─ setTelegram             - Set up a Telegram bot
-│ ├─ resetSettings           - Override database configuration with default values
-│ ├─ exportSettings          - Export database configuration
-│ ├─ importSettings          - import all settings
+│ ├─ resetSetting            - Override database configuration with default values
+│ ├─ exportSetting           - Export database configuration
+│ ├─ importSetting           - import all settings
 │ ├─ resetNodePassword       - Reset all node communication keys
 │ ├─ resetNodeBandwidth      - Reset all node traffic
 │ ├─ resetPort               - Reset individual user ports
 │ ├─ resetBandwidth          - Reset all user traffic
+│ ├─ resetTodayBandwidth     - Reset Today Bandwidth
 │ ├─ resetPassword           - Reset all user login passwords
 │ ├─ resetPasswd             - Reset all user connection passwords
 │ ├─ clearSubToken           - clear user Sub Token
@@ -133,7 +130,6 @@ EOL;
 
             if ($query === null) {
                 $new_item = new Config();
-                $new_item->id = null;
                 $new_item->item = $item['item'];
                 $new_item->value = $item['value'];
                 $new_item->class = $item['class'];
@@ -240,6 +236,16 @@ EOL;
     }
 
     /**
+     * 重置今日流量
+     */
+    public function resetTodayBandwidth(): void
+    {
+        (new ModelsUser())->query()->update(['transfer_today' => 0]);
+
+        echo 'ترافیک امروز ریست شده است' . PHP_EOL;
+    }
+
+    /**
      * 重置所有用户登录密码
      */
     public function resetPassword(): void
@@ -321,7 +327,8 @@ EOL;
         $users = ModelsUser::all();
 
         foreach ($users as $user) {
-            $user->generateApiToken();
+            $user->api_token = Tools::genRandomChar(32);
+            $user->save();
         }
 
         echo 'موارد جدید برای همه کاربران ایجاد شده است Api Token' . PHP_EOL;
@@ -381,7 +388,7 @@ EOL;
             $user->pass = Hash::passwordHash($passwd);
             $user->passwd = Tools::genRandomChar(16);
             $user->uuid = Uuid::uuid4();
-            $user->api_token = Uuid::uuid4();
+            $user->api_token = Tools::genRandomChar(32);
             $user->port = Tools::getSsPort();
             $user->u = 0;
             $user->d = 0;

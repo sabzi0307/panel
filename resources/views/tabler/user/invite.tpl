@@ -38,13 +38,13 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">لینک دعوت</h3>
-                                    <input class="form-control" id="invite-url" value="{$invite_url}" disabled/>
+                                    <input class="form-control" id="invite-url" value="{$invite_url}" disabled>
                                 </div>
                                 <div class="card-footer">
                                     <div class="d-flex">
-                                        <button id="reset-url" class="btn text-red btn-link"
-                                                hx-post="/user/invite_reset" hx-swap="none">
-                                            تنظیم مجدد
+                                        <button class="btn text-red btn-link"
+                                                hx-post="/user/invite/reset" hx-swap="none">
+                                            ریست
                                         </button>
                                         <button data-clipboard-text="{$invite_url}"
                                            class="copy btn btn-primary ms-auto">کپی</button>

@@ -10,21 +10,21 @@ return new class() implements MigrationInterface {
     {
         DB::getPdo()->exec(
             "CREATE TABLE `announcement` (
-                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Announcement ID',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Announcement ID',
                 `date` int(11) unsigned 0 COMMENT 'announcement date',
-                `content` text NOT NULL DEFAULT '' COMMENT 'Announcement content',
+                `content` longtext NOT NULL DEFAULT '' COMMENT 'Announcement content',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `config` (
-                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
-                `item` varchar(255) DEFAULT NULL COMMENT 'item',
-                `value` varchar(2048) DEFAULT NULL COMMENT 'value',
-                `class` varchar(255) DEFAULT 'default' COMMENT 'Configuration classification',
-                `is_public` int(11) DEFAULT 0 COMMENT 'Whether it is a public parameter',
-                `type` varchar(255) DEFAULT NULL COMMENT 'value type',
-                `default` varchar(255) DEFAULT NULL COMMENT 'Defaults',
-                `mark` varchar(255) DEFAULT NULL COMMENT 'Remark',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+                `item` varchar(255) NOT NULL DEFAULT '' COMMENT 'item',
+                `value` varchar(2048) NOT NULL DEFAULT '' COMMENT 'value',
+                `class` varchar(255) NOT NULL DEFAULT '' COMMENT 'Configuration classification',
+                `is_public` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Whether it is a public parameter',
+                `type` varchar(16) NOT NULL DEFAULT '' COMMENT 'value type',
+                `default` varchar(2048) NOT NULL DEFAULT '' COMMENT 'Defaults',
+                `mark` varchar(255) NOT NULL DEFAULT '' COMMENT 'Remark',
                 PRIMARY KEY (`id`),
                 KEY `item` (`item`),
                 KEY `class` (`class`),
@@ -32,7 +32,7 @@ return new class() implements MigrationInterface {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `detect_ban_log` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `user_id` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
                 `detect_number` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'The number of ban this time',
                 `ban_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'The duration of this ban',
@@ -61,8 +61,8 @@ return new class() implements MigrationInterface {
                 `status` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'state',
                 PRIMARY KEY (`id`),
                 KEY `user_id` (`user_id`),
-                KEY `node_id` (`node_id`),
-                KEY `list_id` (`list_id`)
+                KEY `list_id` (`list_id`),
+                KEY `node_id` (`node_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `docs` (
@@ -108,7 +108,7 @@ return new class() implements MigrationInterface {
 
 
             CREATE TABLE `invoice` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Billing ID',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Billing ID',
                 `user_id` bigint(20) unsigned DEFAULT 0 COMMENT 'Attributed UserID',
                 `order_id` bigint(20) unsigned DEFAULT 0 COMMENT 'order ID',
                 `content` longtext DEFAULT '{}' COMMENT 'bill content' CHECK (json_valid(`content`)),
@@ -125,7 +125,7 @@ return new class() implements MigrationInterface {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `link` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'record ID',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'record ID',
                 `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'subscription token',
                 `userid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
                 PRIMARY KEY (`id`),
@@ -164,8 +164,8 @@ return new class() implements MigrationInterface {
                 `bandwidthlimit_resetday` tinyint(2) unsigned NOT NULL DEFAULT 0 COMMENT 'Traffic reset date',
                 `node_heartbeat` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'node heartbeat',
                 `online_user` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'node online user',
-                `ipv4` INET4 NOT NULL DEFAULT '127.0.0.1' COMMENT 'IPv4 address',
-                `ipv6` INET6 NOT NULL DEFAULT '::1' COMMENT 'IPv6 address',
+                `ipv4` inet4 NOT NULL DEFAULT '127.0.0.1' COMMENT 'IPv4 address',
+                `ipv6` inet6 NOT NULL DEFAULT '::1' COMMENT 'IPv6 address',
                 `node_group` smallint(5) unsigned NOT NULL DEFAULT 0 COMMENT 'node group',
                 `online` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'online status',
                 `gfw_block` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'is blocked by GFW',
@@ -268,10 +268,13 @@ return new class() implements MigrationInterface {
                 `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Get the subscription type',
                 `request_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Request IP',
                 `request_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'request time',
-                `request_user_agent` varchar(255) NOT NULL DEFAULT '' COMMENT 'request UA information',
+                `request_user_agent` varchar(1024) NOT NULL DEFAULT '' COMMENT 'request UA information',
                 PRIMARY KEY (`id`),
                 KEY `user_id` (`user_id`),
-                KEY `type` (`type`)
+                KEY `type` (`type`),
+                KEY `request_ip` (`request_ip`),
+                KEY `request_time` (`request_time`),
+                KEY `request_user_agent` (`request_user_agent`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `ticket` (
@@ -295,7 +298,7 @@ return new class() implements MigrationInterface {
                 `email` varchar(255) NOT NULL COMMENT 'E-Mail',
                 `pass` varchar(255) NOT NULL COMMENT 'login password',
                 `passwd` varchar(255) NOT NULL COMMENT 'node password',
-                `uuid` char(36) NOT NULL COMMENT 'UUID',
+                `uuid` uuid NOT NULL COMMENT 'UUID',
                 `u` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'The account\'s current upload traffic',
                 `d` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Account current download traffic',
                 `transfer_today` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT 'Account traffic used today',
@@ -328,20 +331,19 @@ return new class() implements MigrationInterface {
                 `node_group` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'node grouping',
                 `is_banned` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Is banned?',
                 `banned_reason` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ban reason',
-                `is_shadow_banned` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否处于账户异常状态',
+                `is_shadow_banned` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'abnormal state',
                 `expire_notified` tinyint(1)  unsigned NOT NULL DEFAULT 0 COMMENT 'Expiration reminder',
                 `traffic_notified` tinyint(1)  unsigned NOT NULL DEFAULT 0 COMMENT 'traffic reminder',
-                `forbidden_ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden to access IP',
-                `forbidden_port` varchar(255) NOT NULL DEFAULT '' COMMENT 'Forbidden port',
                 `auto_reset_day` smallint(6) unsigned NOT NULL DEFAULT 0 COMMENT 'Auto reset traffic day',
                 `auto_reset_bandwidth` decimal(12,2) unsigned NOT NULL DEFAULT 0 COMMENT 'auto reset traffic',
-                `api_token` char(36) NOT NULL DEFAULT '' COMMENT 'API key',
-                `is_dark_mode` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否启用暗黑模式',
-                `is_inactive` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否处于闲置状态',
+                `api_token` varchar(255) NOT NULL DEFAULT '' COMMENT 'API key',
+                `is_dark_mode` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Enable Dark Mode',
+                `is_inactive` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Idle Account',
                 `locale` varchar(16) NOT NULL DEFAULT 'fa-IR' COMMENT 'display language',
                 `smart_dns` smallint(5) unsigned DEFAULT NULL COMMENT 'smart dns ip count',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `email` (`email`),
+                UNIQUE KEY `passwd` (`passwd`),
                 UNIQUE KEY `uuid` (`uuid`),
                 UNIQUE KEY `ga_token` (`ga_token`),
                 UNIQUE KEY `api_token` (`api_token`),
@@ -352,7 +354,7 @@ return new class() implements MigrationInterface {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
             CREATE TABLE `user_coupon` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Coupon code ID',
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Coupon code ID',
                 `code` varchar(255) NOT NULL DEFAULT '' COMMENT 'Coupon Code',
                 `content` longtext NOT NULL DEFAULT '{}' COMMENT 'Coupon code content' CHECK (json_valid(`content`)),
                 `limit` longtext NOT NULL DEFAULT '{}' COMMENT 'Coupon Code Restrictions' CHECK (json_valid(`limit`)),
@@ -361,7 +363,7 @@ return new class() implements MigrationInterface {
                 `expire_time` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Expiration',
                 PRIMARY KEY (`id`),
                 KEY `id` (`id`),
-                KEY `code` (`code`),
+                UNIQUE KEY `code` (`code`),
                 KEY `expire_time` (`expire_time`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

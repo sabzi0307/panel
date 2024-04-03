@@ -40,7 +40,7 @@
                 <div class="mb-3">
                     <div class="input-group mb-3">
                     {if $public_setting['enable_login_captcha']}
-                        {include file='captcha_div.tpl'}
+                        {include file='captcha/div.tpl'}
                     {/if}
                     </div>
                 </div>
@@ -48,12 +48,7 @@
                     <button class="btn btn-primary w-100"
                             hx-post="/auth/login" hx-swap="none" hx-vals='js:{
                                 {if $public_setting['enable_login_captcha']}
-                                    {if $public_setting['captcha_provider'] === 'turnstile'}
-                                        turnstile: document.querySelector("[name=cf-turnstile-response]").value,
-                                    {/if}
-                                    {if $public_setting['captcha_provider'] === 'geetest'}
-                                        geetest: geetest_result,
-                                    {/if}
+                                    {include file='captcha/ajax.tpl'}
                                 {/if}
                                 email: document.getElementById("email").value,
                                 password: document.getElementById("password").value,
@@ -80,7 +75,7 @@ document.getElementById("passwd").addEventListener("keydown", function (event) {
 });
 </script>
 {if $public_setting['enable_login_captcha']}
-    {include file='captcha_js.tpl'}
+    {include file='captcha/js.tpl'}
 {/if}
 
 {include file='footer.tpl'}

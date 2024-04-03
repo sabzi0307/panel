@@ -153,6 +153,22 @@
                                                value="{$settings['detect_inactive_user_use_days']}">
                                     </div>
                                 </div>
+                                        <div class="form-group mb-3 row">
+                                            <label class="form-label col-3 col-form-label">فعال کردن حذف پیوندهای اشتراک حساب غیرفعال و کدهای دعوت</label>
+                                            <div class="col">
+                                                <select id="remove_inactive_user_link_and_invite" class="col form-select"
+                                                        value="{$settings['remove_inactive_user_link_and_invite']}">
+                                                    <option value="0"
+                                                            {if ! $settings['remove_inactive_user_link_and_invite']}selected{/if}>
+                                                        غیرفعال
+                                                    </option>
+                                                    <option value="1"
+                                                            {if $settings['remove_inactive_user_link_and_invite']}selected{/if}>
+                                                        فعال
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
                             </div>
                         </div>
                     </div>
