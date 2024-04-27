@@ -721,6 +721,18 @@ fi
     fi
 # fi
 
+if [ -f storage/GeoLite-temp/GeoLite2-ASN.mmdb ]; then
+  wget -nv -O "storage/GeoLite2-ASN/GeoLite2-ASN.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-ASN.mmdb"
+fi
+
+if [ -f storage/GeoLite-temp/GeoLite2-City.mmdb ]; then
+    wget -nv -O "storage/GeoLite2-City/GeoLite2-City.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb"
+fi
+
+if [ -f storage/GeoLite-temp/GeoLite2-Country.mmdb ]; then
+    wget -nv -O "storage/GeoLite2-Country/GeoLite2-Country.mmdb" "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-Country.mmdb"
+fi
+
 current_dir=$(pwd)
 crontab -l > cron.tmp
 ./cron.tmp
