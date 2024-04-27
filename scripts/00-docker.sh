@@ -672,7 +672,7 @@ fi
                 echo "Table is empty ..."
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
-                php xcat Tool importSettings
+                php xcat Tool importSetting
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit
@@ -705,7 +705,7 @@ fi
                 echo "Table is empty ..."
                 echo >&2 "Importing config to database..."
                 php xcat Migration new
-                php xcat Tool importSettings
+                php xcat Tool importSetting
                 if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ];then
                     echo >&2 "ADMIN_EMAIL or ADMIN_PASSWORD not set!"
                     exit
