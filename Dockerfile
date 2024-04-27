@@ -8,3 +8,5 @@ ENV YAML_VERSION 2.0.2
 ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions yaml
+
+RUN RUN sed -i 's/^GIT_COMMAND=\('git clone '\)/\1 --depth 1/' /start.sh
