@@ -9,4 +9,4 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions yaml
 
-RUN sed -i "s/^GIT_COMMAND=\\'git clone \\'/\\1 --depth 1/" /start.sh
+RUN sed -i 's/git clone /git clone --depth 1 /' /start.sh
