@@ -47,4 +47,5 @@ package.json
 package-lock.json
 
 *.cache
-
+/cache/*
+storage/LocalClientVersion.json
