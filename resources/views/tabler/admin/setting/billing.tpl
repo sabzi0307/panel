@@ -319,7 +319,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">شناسه مشتری</label>
+                                            <label class="form-label col-3 col-form-label">Account ID</label>
                                             <div class="col">
                                                 <input id="perfectmoney_account_id" type="text" class="form-control"
                                                     value="{$settings['perfectmoney_account_id']}">

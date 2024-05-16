@@ -16,6 +16,7 @@ use Http;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
+use voku\helper\AntiXSS;
 use function time;
 
 final class MoneyController extends BaseController

@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <div class="btn-list">
+                    <div class="btn btn-list">
                         <a href="#" class="btn btn-primary" data-bs-toggle="modal"
                            data-bs-target="#apply-giftcard-dialog">
                             <i class="icon ti ti-cash-banknote"></i>
@@ -21,7 +21,7 @@
                         </a>
                     </div>
                     {if $perfectMoney}
-                    <div class="btn-list">
+                    <div class="btn btn-list">
                         <a href="#" class="btn btn-primary" data-bs-toggle="modal"
                            data-bs-target="#active-perfectvoucher-dialog">
                             <i class="icon ti ti-cash-banknote"></i>
