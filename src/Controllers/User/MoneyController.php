@@ -13,10 +13,11 @@ use App\Utils\Tools;
 use DOMDocument;
 use Exception;
 use Http;
+use voku\helper\AntiXSS;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
-use voku\helper\AntiXSS;
+use GuzzleHttp\Client;
 use function time;
 
 final class MoneyController extends BaseController
@@ -122,12 +123,22 @@ final class MoneyController extends BaseController
 
         $context = stream_context_create($opts);
 
-        $voucher = Http::get("https://perfectmoney.is/acct/ev_activate.asp?AccountID=" . $account_Id . "&PassPhrase=" . $pass_Phrase . "&Payee_Account=" . $payer_Account . "&ev_number=" . $ev_number . "&ev_code=" . $ev_code)->body();
+        $client = new Client();
+
+        $api_url = "https://perfectmoney.is/acct/ev_activate.asp?AccountID=" . $account_Id . "&PassPhrase=" . $pass_Phrase . "&Payee_Account=" . $payer_Account . "&ev_number=" . $ev_number . "&ev_code=" . $ev_code;
+$voucher = $client->get($api_url, [
+            'timeout' => 10,
+        ])->getBody()->__toString();
 
         if (strpos($voucher, 'Error') !== false){
+            
+            $start_pos = strpos($voucher, "value='") + strlen("value='");
+            $end_pos = strpos($voucher, "'", $start_pos);
+            $error_value = substr($voucher, $start_pos, $end_pos - $start_pos);
+
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'کارت نامعتبر است',
+                'msg' => $error_value,
             ]);
         }
 

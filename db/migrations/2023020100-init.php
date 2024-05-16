@@ -11,7 +11,7 @@ return new class() implements MigrationInterface {
         DB::getPdo()->exec(
             "CREATE TABLE `announcement` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Announcement ID',
-                `date` int(11) unsigned 0 COMMENT 'announcement date',
+                `date` int(11) unsigned DEFAULT 0 COMMENT 'announcement date',
                 `content` longtext NOT NULL DEFAULT '' COMMENT 'Announcement content',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -285,7 +285,6 @@ return new class() implements MigrationInterface {
                 `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 `status` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket Status',
                 `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ticket Type',
-                `datetime` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'creation time',
                 PRIMARY KEY (`id`),
                 KEY `userid` (`userid`),
                 KEY `status` (`status`),
