@@ -59,7 +59,7 @@ final class UserController extends BaseController
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
 
         $ann = (new Ann())->orderBy('date', 'desc')->first();
-        $ann->date = Tools::toDateTime((int) $ann->date);
+        $ann?$ann->date = Tools::toDateTime((int) $ann->date) :null;
 
         return $response->write(
             $this->view()
