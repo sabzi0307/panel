@@ -9,6 +9,7 @@ use App\Models\InviteCode;
 use App\Models\LoginIp;
 use App\Models\User;
 use App\Services\Auth;
+use App\Services\Bot\Telegram\Message;
 use App\Services\Cache;
 use App\Services\Captcha;
 use App\Services\Filter;
@@ -34,7 +35,7 @@ use function strlen;
 use function strtolower;
 use function time;
 use function trim;
-
+use Telegram\Bot\Api;
 final class AuthController extends BaseController
 {
     /**
@@ -56,7 +57,7 @@ final class AuthController extends BaseController
 
     public function loginHandle(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        if (Config::obtain('enable_login_captcha') && ! Captcha::verify($request->getParams())) {
+        if (Config::obtain('enable_login_captcha') && !Captcha::verify($request->getParams())) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
@@ -80,7 +81,7 @@ final class AuthController extends BaseController
             ]);
         }
 
-        if (! Hash::checkPassword($user->pass, $password)) {
+        if (!Hash::checkPassword($user->pass, $password)) {
             $loginIp->collectLoginIP($_SERVER['REMOTE_ADDR'], 1, $user->id);
 
             return $response->withJson([
@@ -89,7 +90,7 @@ final class AuthController extends BaseController
             ]);
         }
 
-        if ($user->ga_enable && (strlen($mfa_code) !== 6 || ! MFA::verifyGa($user, $mfa_code))) {
+        if ($user->ga_enable && (strlen($mfa_code) !== 6 || !MFA::verifyGa($user, $mfa_code))) {
             $loginIp->collectLoginIP($_SERVER['REMOTE_ADDR'], 1, $user->id);
 
             return $response->withJson([
@@ -153,12 +154,13 @@ final class AuthController extends BaseController
             // check email format
             $email_check = Filter::checkEmailFilter($email);
 
-            if (! $email_check) {
+            if (!$email_check) {
                 return ResponseHelper::error($response, 'ایمیل نامعتبر');
             }
 
-            if (! RateLimit::checkEmailIpLimit($request->getServerParam('REMOTE_ADDR')) ||
-                ! RateLimit::checkEmailAddressLimit($email)
+            if (
+                !RateLimit::checkEmailIpLimit($request->getServerParam('REMOTE_ADDR')) ||
+                !RateLimit::checkEmailAddressLimit($email)
             ) {
                 return ResponseHelper::error($response, 'درخواست شما خیلی زیاد است، لطفاً بعداً دوباره امتحان کنید');
             }
@@ -183,7 +185,7 @@ final class AuthController extends BaseController
                         'expire' => date('Y-m-d H:i:s', time() + Config::obtain('email_verify_code_ttl')),
                     ]
                 );
-            } catch (Exception|ClientExceptionInterface $e) {
+            } catch (Exception | ClientExceptionInterface $e) {
                 return ResponseHelper::error($response, 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.');
             }
 
@@ -205,7 +207,8 @@ final class AuthController extends BaseController
         $imtype,
         $imvalue,
         $money,
-        $is_admin_reg
+        $is_admin_reg,
+        $t
     ): ResponseInterface {
         $redir = $this->antiXss->xss_clean(Cookie::get('redir')) ?? '/user';
         $configs = Config::getClass('reg');
@@ -264,7 +267,7 @@ final class AuthController extends BaseController
             $user->node_group = $random_group[array_rand(explode(',', $random_group))];
         }
 
-        if ($user->save() && ! $is_admin_reg) {
+        if ($user->save() && !$is_admin_reg) {
             if ($user->ref_by !== 0) {
                 Reward::issueRegReward($user->id, $user->ref_by);
             }
@@ -272,6 +275,25 @@ final class AuthController extends BaseController
             Auth::login($user->id, 3600);
             (new LoginIp())->collectLoginIP($_SERVER['REMOTE_ADDR'], 0, $user->id);
 
+            if($t){
+                 $responseMessage = [
+                    'type'=> 'article',
+                    'id'=> 'unique-id',
+                    'title'=> 'Square Calculation Result',
+                    'input_message_content'=> [
+                        'message_text'=> '/my'
+                    ]
+                ];
+    
+    
+                 $requestBody = [
+                    'web_app_query_id'=> $t->webAppQueryId,
+                    'result'=> $responseMessage
+                 ];
+             Message::sendPost('answerWebAppQuery', $requestBody);
+
+            return ResponseHelper::success($response,"");
+            }
             return $response->withHeader('HX-Redirect', $redir)->withJson([
                 'ret' => 1,
                 'msg' => 'ثبت نام موفق!انتقال به صفحه ورود',
@@ -291,7 +313,7 @@ final class AuthController extends BaseController
             return ResponseHelper::error($response, 'ثبت نام باز نیست');
         }
 
-        if (Config::obtain('enable_reg_captcha') && ! Captcha::verify($request->getParams())) {
+        if (Config::obtain('enable_reg_captcha') && !Captcha::verify($request->getParams())) {
             return ResponseHelper::error($response, 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.');
         }
 
@@ -301,8 +323,9 @@ final class AuthController extends BaseController
         $password = $request->getParam('password');
         $confirm_password = $request->getParam('confirm_password');
         $invite_code = $this->antiXss->xss_clean(trim($request->getParam('invite_code')));
-
-        if (! $tos) {
+        $tu = $request->getParam('tu');
+       
+        if (!$tos) {
             return ResponseHelper::error($response, 'لطفاً با شرایط خدمات موافقت کنید');
         }
 
@@ -334,11 +357,17 @@ final class AuthController extends BaseController
 
         $imtype = 0;
         $imvalue = '';
+        $t=null;
+        if($tu){
+            $imtype = 4;
+            $t=json_decode($tu);
+            $imvalue = $t->user->id; 
+        }
 
         // check email format
         $email_check = Filter::checkEmailFilter($email);
 
-        if (! $email_check) {
+        if (!$email_check) {
             return ResponseHelper::error($response, 'ایمیل نامعتبر');
         }
         // check email
@@ -353,14 +382,14 @@ final class AuthController extends BaseController
             $email_verify_code = trim($this->antiXss->xss_clean($request->getParam('emailcode')));
             $email_verify = $redis->get('email_verify:' . $email_verify_code);
 
-            if (! $email_verify) {
+            if (!$email_verify) {
                 return ResponseHelper::error($response, 'کد تأیید ایمیل شما نادرست است');
             }
 
             $redis->del('email_verify:' . $email_verify_code);
         }
 
-        return $this->registerHelper($response, $name, $email, $password, $invite_code, $imtype, $imvalue, 0, 0);
+        return $this->registerHelper($response, $name, $email, $password, $invite_code, $imtype, $imvalue, 0, 0,$t);
     }
 
     public function logout(ServerRequest $request, Response $response, $next): Response

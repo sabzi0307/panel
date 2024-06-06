@@ -63,12 +63,18 @@ final class MyCommand extends Command
         $user = (new User())->where('im_type', 4)->where('im_value', $send_user['id'])->first();
 
         if ($user === null) {
-            // 回送信息
+//todo: set url from setting
+            $registerUrl='https://panel.magix.live/auth/register';
             $response = $this->replyWithMessage(
                 [
-                    'text' => Config::obtain('user_not_bind_reply'),
-                    'reply_to_message_id' => $message_id,
-                    'parse_mode' => 'Markdown',
+                    'text' => 'لطفاً از لینک زیر برای ثبت‌نام استفاده کنید:',
+                    'reply_markup' => json_encode([
+                        'inline_keyboard' => [
+                            [
+                                ['text' => 'ثبت‌نام', 'web_app' => ['url' => $registerUrl]]
+                            ]
+                        ]
+                    ])
                 ]
             );
         } else {
@@ -100,7 +106,7 @@ final class MyCommand extends Command
                         'inline_keyboard' => [
                             [
                                 [
-                                    'text' => (! $user->isAbleToCheckin() ? 'وارد شده است' : 'بررسی کنید'),
+                                    'text' => (!$user->isAbleToCheckin() ? 'وارد شده است' : 'بررسی کنید'),
                                     'callback_data' => 'user.checkin.' . $send_user['id'],
                                 ],
                             ],

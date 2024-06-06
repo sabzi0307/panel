@@ -1,4 +1,5 @@
 {include file='header.tpl'}
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <body class="border-top-wide border-primary d-flex flex-column">
 <div class="page page-center">
@@ -64,6 +65,7 @@
                         </div>
                     </div>
                     <div class="form-footer">
+                        <input id="t_i" type="hidden" >
                         <button class="btn btn-primary w-100"
                                 hx-post="/auth/register" hx-swap="none" hx-vals='js:{
                                     {if $public_setting['reg_email_verify']}
@@ -78,6 +80,7 @@
                                     confirm_password: document.getElementById("confirm_password").value,
                                     invite_code: document.getElementById("invite_code").value,
                                     tos: document.getElementById("tos").checked,
+                                    tu: document.getElementById("t_i").value,
                                  }'>
                                  ثبت نام جدید
                         </button>
@@ -100,3 +103,26 @@
 {/if}
 
 {include file='footer.tpl'}
+<script>
+    if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        // صفحه از طریق تلگرام Mini-App فراخوانی شده است
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+         var t = {
+                   "user":Telegram.WebApp.initDataUnsafe.user,
+                   "webAppQueryId": Telegram.WebApp.initDataUnsafe.query_id
+                 }
+        document.getElementById('t_i').value =JSON.stringify(t); 
+        document.getElementById('name').value =t.user.username; 
+        
+     
+    } else {
+        // صفحه از طریق مرورگر فراخوانی شده است
+        console.log('Page opened in a regular browser');
+    }
+
+    document.body.addEventListener('htmx:afterRequest', function(event) {
+    //todo: handle error     
+       Telegram.WebApp.close();
+    });
+</script>
