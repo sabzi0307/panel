@@ -11,6 +11,7 @@ use App\Models\OnlineLog;
 use App\Models\Payback;
 use App\Models\SubscribeLog;
 use App\Models\User;
+use App\Services\Bot\Telegram\Commands\ProductCommand;
 use App\Services\Reward;
 use App\Services\Subscribe;
 use App\Utils\Tools;
@@ -87,7 +88,7 @@ final class Callback
             'username' => $callback->getFrom()->getUsername(),
         ];
 
-        $this->user = Message::getUser($this->trigger_user['id']);
+        $this->user = PersistedInfo::getUser($this->trigger_user['id']);
         $this->chat_id = $callback->getMessage()->getChat()->getId();
         $this->callback = $callback;
         $this->message_id = $callback->getMessage()->getMessageId();
@@ -102,6 +103,21 @@ final class Callback
         if (str_starts_with($this->callback_data, 'user.')) {
             // 用户相关
             $this->userCallback();
+        } else if (str_starts_with($this->callback_data, 'product')) {
+            // 用户相关
+            $this->userActionsCallback();
+        } else if (str_starts_with($this->callback_data, 'back')) {
+            // 用户相关
+            $this->backCallback();
+        } else if (str_starts_with($this->callback_data, 'buy')) {
+            // 用户相关
+            $this->buyCallback();
+        } else if (str_starts_with($this->callback_data, 'giftcard')) {
+            // 用户相关
+            $this->giftcardCallback();
+        } else if (str_starts_with($this->callback_data, 'tether')) {
+            // 用户相关
+            $this->tetherCallback();
         }
     }
 
@@ -159,36 +175,39 @@ final class Callback
 
     public static function getUserIndexKeyboard($user): array
     {
-        $checkin = (! $user->isAbleToCheckin() ? 'signed in' : 'to sign in');
+        $checkin =  [
+            [
+                'text' => 'دریافت هدیه روزانه',
+                'callback_data' => 'user.checkin.' . $user->im_value,
+            ],
+        ];
 
         $keyboard = [
             [
                 [
-                    'text' => 'مرکز کاربران',
+                    'text' => 'پروفایل من',
                     'callback_data' => 'user.center',
                 ],
                 [
-                    'text' => 'ویرایش داده ها',
+                    'text' => 'ویرایش اطلاعات من',
                     'callback_data' => 'user.edit',
                 ],
             ],
             [
                 [
-                    'text' => 'مرکز اشتراک',
+                    'text' => 'لینک کانفیگ',
                     'callback_data' => 'user.subscribe',
                 ],
                 [
-                    'text' => 'طرح را به اشتراک بگذارید',
+                    'text' => 'دعوت از دوستان',
                     'callback_data' => 'user.invite',
                 ],
             ],
-            [
-                [
-                    'text' => $checkin,
-                    'callback_data' => 'user.checkin.' . $user->im_value,
-                ],
-            ],
+
         ];
+        if ($user->isAbleToCheckin()) {
+            $keyboard = array_merge($keyboard, $checkin);
+        }
 
         $text = Message::getUserTitle($user);
         $text .= PHP_EOL . PHP_EOL;
@@ -264,6 +283,87 @@ final class Callback
                 ]);
         }
     }
+    public function userActionsCallback(): void
+    {
+        if ($this->user === null && $this->chat_id < 0) {
+            // 群组内提示
+            $this->answerCallbackQuery([
+                'text' => 'سلام، شما حسابی را باند نکرده اید و نمی توانید عملیات انجام دهید.',
+                'show_alert' => true,
+            ]);
+        }
+        $product = PersistedInfo::getProducts();
+        $keyBoard = [
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ],
+            ]
+
+        ];
+        foreach ($product as $p) {
+            $keyBoard = array_merge(
+                [
+                    [
+                        [
+                            'text' => $p->name,
+                            'callback_data' => 'buy.' . $p->id,
+                        ]
+                    ]
+                ],
+                $keyBoard
+            );
+        }
+
+        $text = " کاربرگرامی، موجودی حساب شما" . $this->user->money . " است. /nدر صورتی که موجودی حساب شما برای خرید کافی نباشد به منو افزایش موجود متصل میشوید.";
+        $this->replyWithMessage([
+            'text' => $text,
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $keyBoard,
+                ]
+            ),
+        ]);
+    }
+    public function backCallback(): void
+    {
+        $this->replyWithMessage($this->getStartCommandReply($this->user));
+    }
+    public function giftcardCallback(): void
+    {
+        PersistedInfo::logTelegramBotState($this->trigger_user['id'],'waiting_for_giftcard',$this->callback_data);
+        $text = "کد کارت هدیه خود را وارد کنید";
+        $this->replyWithMessage( [
+            'text' => $text,
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            
+        ]);
+    }
+    public function tetherCallback(): void
+    {
+        $this->replyWithMessage($this->getStartCommandReply($this->user));
+    }
+    public function buyCallback(): void
+    {
+        $CallbackDataExplode = explode('|', $this->callback_data);
+        $Operate = explode('.', $CallbackDataExplode[0]);
+        $product = PersistedInfo::getProduct(intval($Operate[1]));
+        if ($product != null) {
+            if ($this->user->money < $product->price) {
+                //forward to deposite
+            } else {
+                //do buying prosses
+                PersistedInfo::processInvoice($product, '', $this->user);
+            }
+        }
+        // $this->replyWithMessage($this->getStartCommandReply($this->user));
+    }
 
     public function getUserCenterKeyboard(): array
     {
@@ -274,7 +374,7 @@ final class Callback
         $keyboard = [
             [
                 [
-                    'text' => 'سابقه ثبت نام',
+                    'text' => 'ورود های پیشین',
                     'callback_data' => 'user.center.login_log',
                 ],
                 [
@@ -284,11 +384,11 @@ final class Callback
             ],
             [
                 [
-                    'text' => 'سابقه تخفیف',
+                    'text' => 'تخفیفات پیشین',
                     'callback_data' => 'user.center.rebate_log',
                 ],
                 [
-                    'text' => 'سابقه اشتراک',
+                    'text' => 'اشتراک های پیشین',
                     'callback_data' => 'user.center.subscribe_log',
                 ],
             ],
@@ -712,7 +812,7 @@ final class Callback
                 break;
         }
 
-        if (! isset($sendMessage['parse_mode'])) {
+        if (!isset($sendMessage['parse_mode'])) {
             $sendMessage['parse_mode'] = 'HTML';
         }
 
@@ -774,17 +874,17 @@ final class Callback
             ],
         ];
 
-        if (! Config::obtain('enable_ss_sub')) {
+        if (!Config::obtain('enable_ss_sub')) {
             unset($keyboard[0][2]);
             unset($keyboard[1][1]);
             unset($keyboard[1][2]);
         }
 
-        if (! Config::obtain('enable_v2_sub')) {
+        if (!Config::obtain('enable_v2_sub')) {
             unset($keyboard[2][0]);
         }
 
-        if (! Config::obtain('enable_trojan_sub')) {
+        if (!Config::obtain('enable_trojan_sub')) {
             unset($keyboard[2][1]);
         }
 
@@ -984,7 +1084,7 @@ final class Callback
         if ($this->user->isAbleToCheckin()) {
             $traffic = Reward::issueCheckinReward($this->user->id);
 
-            if (! $traffic) {
+            if (!$traffic) {
                 $msg = 'ورود ناموفق بود';
             } else {
                 $msg = 'برنده ' . $traffic . 'MB ترافیک.';
@@ -1008,7 +1108,7 @@ final class Callback
             $temp['keyboard'] = [
                 [
                     [
-                        'text' => (! $this->user->isAbleToCheckin() ? 'signed in' : 'to sign in'),
+                        'text' => (!$this->user->isAbleToCheckin() ? 'signed in' : 'to sign in'),
                         'callback_data' => 'user.checkin.' . $this->trigger_user['id'],
                     ],
                 ],
@@ -1025,5 +1125,111 @@ final class Callback
                 ]
             ),
         ]);
+    }
+
+    /**
+     * return a message for register
+     *
+     */
+    public static function getRegisterMessage()
+    {
+        return [
+            'text' => 'لطفاً از لینک زیر برای ثبت‌نام استفاده کنید:',
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        ['text' => 'ثبت‌نام', 'web_app' => ['url' => $_ENV['baseUrl'] . '/auth/register']]
+                    ]
+                ]
+            ])
+        ];
+    }
+
+    public static function getStartCommandReply($user): array
+    {
+
+        if (!$user) {
+            $welcome = "کاربرگرامی. چنانچه از طریق وب سایت ثبت نام نموده اید  دکمه بایند ";
+            $userManage = [
+                [
+                    [
+                        'text' => '(اگر هرگز ثبت نام نکرده اید)ثبت‌نام',
+                        'web_app' => ['url' => $_ENV['baseUrl'] . '/auth/register']
+                    ],
+                    [
+                        'text' => '(اگر قبلا ثبت نام کرده اید)اتصال به حساب',
+                        'callback_data' => '/bind',
+                    ]
+                ]
+            ];
+        } else {
+            $userManage = [
+
+                [
+                    [
+                        'text' => "حساب من🥷🏿",
+                        'callback_data' => 'user.index',
+                    ],
+                    [
+                        'text' => '🍀خرید سرویس🍀',
+                        'callback_data' => 'products.buy',
+                    ]
+                ],
+                [
+                    [
+                        'text' =>  'دریافت حجم هدیه روزانه🎁',
+                        'callback_data' => 'user.checkin.' . $user->im_value,
+                    ]
+                ]
+
+
+            ];
+        }
+
+        $keyboard = [
+            [
+                [
+                    'text' => 'نرم افزار ها🖥',
+                    'callback_data' => 'software',
+                ],
+                [
+                    'text' => 'راهنما ربات💡',
+                    'callback_data' => '/help',
+                ]
+
+
+            ],
+            [
+                [
+                    'text' => 'درباره تونل آزادی',
+                    'callback_data' => 'aboutus',
+                ]
+
+            ],
+
+        ];
+
+
+        /*    $text = Message::getUserTitle($user);
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= Message::getUserInfo($user); */
+
+        /*  return [
+            'text' => $text,
+            'keyboard' => array_merge($keyboard,$userManage),
+        ]; */
+        $text = "با تونل آزادی به اینترنت آزاد متصل شوید";
+
+        return     [
+            'text' => $text,
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' =>  array_merge($userManage, $keyboard),
+                ]
+            ),
+        ];
     }
 }

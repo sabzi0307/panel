@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Bot\Telegram\Commands;
 
 use App\Models\Config;
-use App\Services\Bot\Telegram\Message;
+use App\Services\Bot\Telegram\PersistedInfo;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use Telegram\Bot\Exceptions\TelegramSDKException;
@@ -42,7 +42,7 @@ final class UnbindCommand extends Command
         $send_user = [
             'id' => $message->getFrom()->getId(),
         ];
-        $user = Message::getUser($send_user['id']);
+        $user = PersistedInfo::getUser($send_user['id']);
 
         if ($chat_id > 0) {
             // 发送 '输入中' 会话状态

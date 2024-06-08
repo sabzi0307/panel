@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Bot\Telegram\Commands;
 
+use App\Models\User;
 use App\Models\Config;
+use App\Services\Bot\Telegram\Callback;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
+use App\Services\Bot\Telegram\PersistedInfo;
 
 /**
  * Class StratCommand.
@@ -34,14 +37,15 @@ final class StartCommand extends Command
             // 发送 '输入中' 会话状态
             $this->replyWithChatAction(['action' => Actions::TYPING]);
             // 回送信息
-            $this->replyWithMessage(
-                [
-                    'text' => 'ارسال /help کمک بگیرید',
-                    'parse_mode' => 'Markdown',
-                ]
-            );
+            $send_user = [
+                'id' => $message->getFrom()->getId(),
+                'name' => $message->getFrom()->getFirstName() . ' StartCommand.php' . $message->getFrom()->getLastName(),
+                'username' => $message->getFrom()->getUsername(),
+            ];
+            $user = PersistedInfo::getUser($send_user['id']);
+            $this->replyWithMessage( Callback::getStartCommandReply($user));
         } else {
-            if (! Config::obtain('telegram_group_quiet')) {
+            if (!Config::obtain('telegram_group_quiet')) {
                 // 发送 '输入中' 会话状态
                 $this->replyWithChatAction(['action' => Actions::TYPING]);
                 // 回送信息
@@ -55,4 +59,5 @@ final class StartCommand extends Command
             }
         }
     }
+
 }

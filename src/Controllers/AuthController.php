@@ -281,7 +281,7 @@ final class AuthController extends BaseController
                     'id'=> 'unique-id',
                     'title'=> 'Square Calculation Result',
                     'input_message_content'=> [
-                        'message_text'=> '/my'
+                        'message_text'=> '/menu'
                     ]
                 ];
     

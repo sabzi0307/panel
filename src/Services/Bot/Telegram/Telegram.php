@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Bot\Telegram;
 
 use App\Models\Config;
+use Aws\Command;
 use GuzzleHttp\Exception\GuzzleException;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Psr\Http\Message\RequestInterface;
@@ -23,9 +24,9 @@ final class Telegram
         $bot = new Api(Config::obtain('telegram_token'));
 
         $bot->addCommands([
+            new Commands\ChargeCommand(),
             new Commands\MyCommand(),
             new Commands\HelpCommand(),
-            new Commands\MenuCommand(),
             new Commands\PingCommand(),
             new Commands\StartCommand(),
             new Commands\UnbindCommand(),
@@ -33,8 +34,9 @@ final class Telegram
         ]);
 
         $bot->commandsHandler(true, $request);
-        $bot->setConnectTimeOut(1);
+        $bot->setConnectTimeOut(10);
         $update = $bot->getWebhookUpdate();
+        
 
         if ($update->has('callback_query')) {
             new Callback($bot, $update->getCallbackQuery());

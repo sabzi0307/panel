@@ -53,6 +53,48 @@ final class Message
         if ($this->message->getNewChatParticipant() !== null) {
             $this->newChatParticipant();
         }
+        $state = PersistedInfo::getTelegramBotState($this->message->getFrom->getId());
+        if ($state != null){
+        $user = PersistedInfo::getUser($this->message->getFrom->getId());
+            
+        if ( $state->state == 'waiting_for_giftcard') {
+            $this->evaluteGiftCard($user);
+        }else if ($state->state == 'waiting_for_tether') {
+            $this->evaluteTetherTran();
+        }
+    }
+    }
+    public function evaluteGiftCard($user){
+        $gift=PersistedInfo::applyGiftCard($this->message->getText(),$user);
+        if($gift==null){
+            $msg = 'کارت هدیه نامعتبر است';
+        }else{
+            $msg =  'شارژ مجدد با موفقیت انجام شد'; 
+        }
+        $keyBoard = [
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ],
+            ]
+
+        ];
+        $this->replyWithMessage([
+            'text' => $text,
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $keyBoard,
+                ]
+            ),
+        ])
+
+    }
+     public function evaluteTetherTran(){
+
     }
 
     /**
@@ -92,9 +134,11 @@ final class Message
 
         if ($new_chat_member->getUsername() === Config::obtain('telegram_bot')) {
             // 机器人加入新群组
-            if (! Config::obtain('allow_to_join_new_groups')
+            if (
+                !Config::obtain('allow_to_join_new_groups')
                 &&
-                ! in_array($this->chat_id, json_decode(Config::obtain('group_id_allowed_to_join')))) {
+                !in_array($this->chat_id, json_decode(Config::obtain('group_id_allowed_to_join')))
+            ) {
                 // 退群
 
                 $this->replyWithMessage(
@@ -119,15 +163,16 @@ final class Message
             }
         } else {
             // 新成员加入群组
-            $new_user = self::getUser($member['id']);
+            $new_user = PersistedInfo::getUser($member['id']);
 
-            if (Config::obtain('telegram_group_bound_user')
+            if (
+                Config::obtain('telegram_group_bound_user')
                 &&
                 $this->chat_id === Config::obtain('telegram_chatid')
                 &&
                 $new_user === null
                 &&
-                ! $new_chat_member->isBot()
+                !$new_chat_member->isBot()
             ) {
                 $this->replyWithMessage(
                     [
@@ -198,7 +243,7 @@ final class Message
         if ($user->class > 0) {
             $text = 'VIP عزیز ' . $user->class . ' سلام：';
         } else {
-            $text = 'سلام کاربر عزیز：';
+            $text = 'سلام ' . $user->username . 'عزیز：';
         }
 
         return $text;
@@ -216,6 +261,7 @@ final class Message
     public static function sendPost($method, $params): void
     {
         $client = new Client();
+
         $telegram_api_url = 'https://api.telegram.org/bot' . Config::obtain('telegram_token') . '/' . $method;
 
         $headers = [
@@ -227,19 +273,8 @@ final class Message
             [
                 'headers' => $headers,
                 'json' => $params,
-                'timeout' => 1,
+                'timeout' => 10,
             ]
         );
-    }
-
-    /**
-     * 搜索用户
-     *
-     * @param int $value  搜索值
-     * @param string $method 查找列
-     */
-    public static function getUser(int $value, string $method = 'im_value'): null|Model|User
-    {
-        return (new User())->where('im_type', 4)->where($method, $value)->first();
     }
 }

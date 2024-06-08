@@ -6,7 +6,9 @@ namespace App\Services\Bot\Telegram\Commands;
 
 use App\Models\Config;
 use App\Models\User;
+use App\Services\Bot\Telegram\Callback;
 use App\Services\Bot\Telegram\Message;
+use App\Services\Bot\Telegram\PersistedInfo;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use function json_encode;
@@ -25,7 +27,8 @@ final class MyCommand extends Command
     /**
      * @var string Command Description
      */
-    protected string $description = '[چت گروهی/خصوصی] اطلاعات شخصی من.';
+    //protected string $description = '[چت گروهی/خصوصی] اطلاعات شخصی من.';
+    protected string $description = '';
 
     /**
      * {@inheritdoc}
@@ -59,35 +62,29 @@ final class MyCommand extends Command
             'name' => $message->getFrom()->getFirstName() . ' MyCommand.php' . $message->getFrom()->getLastName(),
             'username' => $message->getFrom()->getUsername(),
         ];
-
-        $user = (new User())->where('im_type', 4)->where('im_value', $send_user['id'])->first();
-
+        $user = PersistedInfo::getUser($send_user['id']);
         if ($user === null) {
-//todo: set url from setting
-            $registerUrl='https://panel.magix.live/auth/register';
-            $response = $this->replyWithMessage(
-                [
-                    'text' => 'لطفاً از لینک زیر برای ثبت‌نام استفاده کنید:',
-                    'reply_markup' => json_encode([
-                        'inline_keyboard' => [
-                            [
-                                ['text' => 'ثبت‌نام', 'web_app' => ['url' => $registerUrl]]
-                            ]
-                        ]
-                    ])
-                ]
-            );
+            $reply = Callback::getRegisterMessage();
         } else {
-            if ($chat_id > 0) {
-                // 私人
-                $response = $this->triggerCommand('menu');
-            } else {
-                // 群组
-                $response = $this->group($user, $send_user, $chat_id, $message, $message_id);
-            }
+            $reply = Callback::getUserIndexKeyboard($user);
         }
 
-        return $response;
+        // 回送信息
+        return $this->replyWithMessage(
+            [
+                'text' => $reply['text'] ?? 'Hi!',
+                'parse_mode' => 'Markdown',
+                'disable_web_page_preview' => false,
+                'reply_to_message_id' => null,
+                'reply_markup' => json_encode(
+                    [
+                        'inline_keyboard' => $reply['keyboard'] ?? [],
+                    ]
+                ),
+            ]
+        );
+
+    
     }
 
     public function group($user, $send_user, $chat_id, $message, $message_id)

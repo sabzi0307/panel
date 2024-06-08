@@ -23,7 +23,7 @@ final class MenuCommand extends Command
     /**
      * @var string Command Description
      */
-    protected string $description = '[چت خصوصی] منوی اصلی کاربر، مرکز شخصی.';
+    protected string $description = '[چت خصوصی] منوی اصلی مربوط به حساب کاربری، مرکز شخصی.';
 
     /**
      * {@inheritdoc}
@@ -47,12 +47,7 @@ final class MenuCommand extends Command
                 'id' => $message->getFrom()->getId(),
             ];
 
-            $user = Message::getUser($send_user['id']);
-            if ($user === null) {
-                $reply = null;
-            } else {
-                $reply = Callback::getUserIndexKeyboard($user);
-            }
+            
 
             // 回送信息
             return $this->replyWithMessage(
