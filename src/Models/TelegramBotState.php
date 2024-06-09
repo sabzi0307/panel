@@ -32,6 +32,7 @@ final class TelegramBotState extends Model
         $this->state = $state;
         $this->content = $content;
         $this->create_time = time();
+        $this->last_update_time = time();
         $this->save();
     }
    

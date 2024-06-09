@@ -53,19 +53,21 @@ final class Message
         if ($this->message->getNewChatParticipant() !== null) {
             $this->newChatParticipant();
         }
-        $state = PersistedInfo::getTelegramBotState($this->message->getFrom->getId());
+        $state = PersistedInfo::getTelegramBotState($this->message->getFrom()->getId());
         if ($state != null){
-        $user = PersistedInfo::getUser($this->message->getFrom->getId());
-            
+        $user = PersistedInfo::getUser($this->message->getFrom()->getId());
         if ( $state->state == 'waiting_for_giftcard') {
             $this->evaluteGiftCard($user);
+           
         }else if ($state->state == 'waiting_for_tether') {
             $this->evaluteTetherTran();
         }
+        PersistedInfo::updateTelegramBotState($state);
     }
     }
     public function evaluteGiftCard($user){
         $gift=PersistedInfo::applyGiftCard($this->message->getText(),$user);
+        
         if($gift==null){
             $msg = 'کارت هدیه نامعتبر است';
         }else{
@@ -81,7 +83,7 @@ final class Message
 
         ];
         $this->replyWithMessage([
-            'text' => $text,
+            'text' => $msg,
             'parse_mode' => 'HTML',
             'disable_web_page_preview' => false,
             'reply_to_message_id' => null,
@@ -90,7 +92,7 @@ final class Message
                     'inline_keyboard' => $keyBoard,
                 ]
             ),
-        ])
+        ]);
 
     }
      public function evaluteTetherTran(){

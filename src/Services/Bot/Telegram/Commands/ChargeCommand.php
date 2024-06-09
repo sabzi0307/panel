@@ -47,41 +47,14 @@ final class ChargeCommand extends Command
             $send_user = [
                 'id' => $message->getFrom()->getId(),
             ];
+            $reply = [];
             $user = PersistedInfo::getUser($send_user['id']);
             if ($user != null) {
-            $reply = [
-                'text' => "موجودی شما " . $user->money . ' است.',
-                'keyboard' => [
-                    [
-                        [
-                            'text' => 'کارت هدیه دارم',
-                            'callback_data' => 'giftcard',
-                        ],
-                        [
-                            'text' => 'انتقال تتر',
-                            'callback_data' => 'tether',
-                        ],
-                    ]
-                ]
-            ];
-        }
+                $reply = Callback::getChargeReply($user);
+            }
 
             // 回送信息
-            return $this->replyWithMessage(
-                [
-                    'text' => $reply['text'] ?? 'Hi!',
-                    'parse_mode' => 'Markdown',
-                    'disable_web_page_preview' => false,
-                    'reply_to_message_id' => null,
-                    'reply_markup' => json_encode(
-                        [
-                            'inline_keyboard' => $reply['keyboard'] ?? [],
-                        ]
-                    ),
-                ]
-            );
+            return $this->replyWithMessage($reply);
         }
-
-        
     }
 }

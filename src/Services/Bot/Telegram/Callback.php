@@ -112,7 +112,10 @@ final class Callback
         } else if (str_starts_with($this->callback_data, 'buy')) {
             // 用户相关
             $this->buyCallback();
-        } else if (str_starts_with($this->callback_data, 'giftcard')) {
+        } else if (str_starts_with($this->callback_data, 'buy')) {
+            // 用户相关
+            $this->chargeCallback();
+        } else if (str_starts_with($this->callback_data, 'charge')) {
             // 用户相关
             $this->giftcardCallback();
         } else if (str_starts_with($this->callback_data, 'tether')) {
@@ -335,19 +338,55 @@ final class Callback
     }
     public function giftcardCallback(): void
     {
-        PersistedInfo::logTelegramBotState($this->trigger_user['id'],'waiting_for_giftcard',$this->callback_data);
+        PersistedInfo::logTelegramBotState($this->trigger_user['id'], 'waiting_for_giftcard', $this->callback_data);
         $text = "کد کارت هدیه خود را وارد کنید";
-        $this->replyWithMessage( [
+        $this->replyWithMessage([
             'text' => $text,
             'parse_mode' => 'Markdown',
             'disable_web_page_preview' => false,
             'reply_to_message_id' => null,
-            
+
         ]);
     }
     public function tetherCallback(): void
     {
         $this->replyWithMessage($this->getStartCommandReply($this->user));
+    }
+    public static function getChargeReply($user)
+    {
+        $reply = [
+            'text' => "موجودی شما " . $user->money . ' است.',
+            'keyboard' => [
+                [
+                    [
+                        'text' => 'کارت هدیه دارم',
+                        'callback_data' => 'giftcard',
+                    ],
+                    [
+                        'text' => 'انتقال تتر',
+                        'callback_data' => 'tether',
+                    ],
+                ]
+            ]
+        ];
+
+
+
+        return  [
+            'text' => $reply['text'] ?? 'Hi!',
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $reply['keyboard'] ?? [],
+                ]
+            ),
+        ];
+    }
+    public function chargeCallback(): void
+    {
+        $this->replyWithMessage($this->getChargeReply($this->user));
     }
     public function buyCallback(): void
     {
@@ -1173,6 +1212,12 @@ final class Callback
                     [
                         'text' => '🍀خرید سرویس🍀',
                         'callback_data' => 'products.buy',
+                    ]
+                ],
+                [
+                    [
+                        'text' =>  'افزایش موجودی💳',
+                        'callback_data' => 'charge',
                     ]
                 ],
                 [

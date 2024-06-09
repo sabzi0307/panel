@@ -191,13 +191,12 @@ final class PersistedInfo
         $invoice->save();
     }
 
-    public static function applyGiftCard(int $giftcard_raw, $user)
+    public static function applyGiftCard(string $giftcard_raw, $user)
     {
         $giftcard = (new GiftCard())->where('card', $giftcard_raw)->first();
 
-        if (($giftcard === null || $giftcard->status !== 0) && $user->is_shadow_banned) {
-
-           
+        if ($giftcard === null || $giftcard->status !== 0 || $user->is_shadow_banned) {
+          
             return null;
         }
        
@@ -306,8 +305,14 @@ final class PersistedInfo
             $statelog->save();
         }
     }
-    public static function getTelegramBotState($userid): TelegramBotState
+    public static function getTelegramBotState($userid): null|TelegramBotState
     {
         return (new TelegramBotState())->where('user_id', $userid)->first();
+    } 
+     public static function updateTelegramBotState(TelegramBotState $state): null|TelegramBotState
+    {
+        $state->state='NONE';
+        $state->save();
+        return $state;
     }
 }
