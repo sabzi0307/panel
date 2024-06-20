@@ -97,13 +97,13 @@ final class MoneyController extends BaseController
         $ev_number = $antiXss->xss_clean($request->getParam('ev_number'));
         $ev_code = $antiXss->xss_clean($request->getParam('ev_code'));
 
-        if(strlen($ev_number) !== 10){
+        if (strlen($ev_number) !== 10) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'کد وچر میبایست ۱۰ رقم باشد',
             ]);
         }
-        if(strlen($ev_code) !== 16){
+        if (strlen($ev_code) !== 16) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'کد فعال ساز میبایست ۱۶ رقم باشد',
@@ -112,7 +112,7 @@ final class MoneyController extends BaseController
 
         $configs = Config::getClass('billing');
         $account_Id = $configs['perfectmoney_account_id'];
-        $payer_Account = $configs['perfectmoney_payee_account'];
+        $payee_Account = $configs['perfectmoney_payee_account'];
         $pass_Phrase = urlencode($configs['perfectmoney_pass_phrase']);
 
         $opts = array(
@@ -124,14 +124,28 @@ final class MoneyController extends BaseController
         $context = stream_context_create($opts);
 
         $client = new Client();
+        $url = "https://perfectmoney.com/acct/ev_activate.asp";
 
-        $api_url = "https://perfectmoney.is/acct/ev_activate.asp?AccountID=" . $account_Id . "&PassPhrase=" . $pass_Phrase . "&Payee_Account=" . $payer_Account . "&ev_number=" . $ev_number . "&ev_code=" . $ev_code;
-$voucher = $client->get($api_url, [
+        // Prepare the parameters for the API request
+        $params = [
+            'AccountID' =>'25956214',
+            'PassPhrase' => 'x0dkrz5m32o6XxiDUfunUzMIk',
+            'Payee_Account' => 'U46609440',
+            'ev_number' => $ev_number,
+            'ev_code' => $ev_code
+        ];
+
+        $presponse = $client->request('POST', $url, [
+            'form_params' => $params
+        ]);
+        $voucher = $presponse->getBody()->getContents();
+       /*  $api_url = "https://perfectmoney.is/acct/ev_activate.asp?AccountID=" . $account_Id . "&PassPhrase=" . $pass_Phrase . "&Payee_Account=" . $payer_Account . "&ev_number=" . $ev_number . "&ev_code=" . $ev_code;
+        $voucher = $client->get($api_url, [
             'timeout' => 10,
-        ])->getBody()->__toString();
+        ])->getBody()->__toString(); */
 
-        if (strpos($voucher, 'Error') !== false){
-            
+        if (strpos($voucher, 'Error') !== false) {
+
             $start_pos = strpos($voucher, "value='") + strlen("value='");
             $end_pos = strpos($voucher, "'", $start_pos);
             $error_value = substr($voucher, $start_pos, $end_pos - $start_pos);

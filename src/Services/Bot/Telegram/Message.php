@@ -54,24 +54,23 @@ final class Message
             $this->newChatParticipant();
         }
         $state = PersistedInfo::getTelegramBotState($this->message->getFrom()->getId());
-        if ($state != null){
-        $user = PersistedInfo::getUser($this->message->getFrom()->getId());
-        if ( $state->state == 'waiting_for_giftcard') {
-            $this->evaluteGiftCard($user);
-           
-        }else if ($state->state == 'waiting_for_tether') {
-            $this->evaluteTetherTran();
+        if ($state != null) {
+            $user = PersistedInfo::getUser($this->message->getFrom()->getId());
+            if ($state->state == 'waiting_for_giftcard') {
+                $this->evaluteGiftCard($user, $state);
+            } else if ($state->state == 'waiting_for_tether') {
+                $this->evaluteTetherTran($user, $state);
+            }
         }
-        PersistedInfo::updateTelegramBotState($state);
     }
-    }
-    public function evaluteGiftCard($user){
-        $gift=PersistedInfo::applyGiftCard($this->message->getText(),$user);
-        
-        if($gift==null){
+    public function evaluteGiftCard($user, $state)
+    {
+        $gift = PersistedInfo::applyGiftCard($this->message->getText(), $user);
+        if ($gift == null) {
             $msg = 'کارت هدیه نامعتبر است';
-        }else{
-            $msg =  'شارژ مجدد با موفقیت انجام شد'; 
+        } else {
+            $msg =  'شارژ مجدد با موفقیت انجام شد';
+            PersistedInfo::updateTelegramBotState($state);
         }
         $keyBoard = [
             [
@@ -93,10 +92,38 @@ final class Message
                 ]
             ),
         ]);
-
     }
-     public function evaluteTetherTran(){
+    public function evaluteTetherTran($user, $state)
+    {
+        $saved = PersistedInfo::applyCryptoPayment($this->message->getText(), $user);
 
+
+        if ($saved == null) {
+            $msg = 'لینک نامعتبر است';
+        } else {
+            $msg =  'شارژ با موفقیت انجام شد';
+            PersistedInfo::updateTelegramBotState($state);
+        }
+        $keyBoard = [
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ],
+            ]
+
+        ];
+        $this->replyWithMessage([
+            'text' => $msg,
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $keyBoard,
+                ]
+            ),
+        ]);
     }
 
     /**

@@ -111,16 +111,19 @@ final class Callback
             $this->backCallback();
         } else if (str_starts_with($this->callback_data, 'buy')) {
             // 用户相关
-            $this->buyCallback();
-        } else if (str_starts_with($this->callback_data, 'buy')) {
+            $this->chargeCallback();
+        } else if (str_starts_with($this->callback_data, 'charge.account')) {
             // 用户相关
             $this->chargeCallback();
-        } else if (str_starts_with($this->callback_data, 'charge')) {
+        } else if (str_starts_with($this->callback_data, 'giftcard')) {
             // 用户相关
             $this->giftcardCallback();
         } else if (str_starts_with($this->callback_data, 'tether')) {
             // 用户相关
             $this->tetherCallback();
+        } else if (str_starts_with($this->callback_data, 'tran_tether')) {
+            // 用户相关
+            $this->tetherTranCallback();
         }
     }
 
@@ -348,9 +351,44 @@ final class Callback
 
         ]);
     }
+    public function tetherTranCallback(): void
+    {
+        PersistedInfo::logTelegramBotState($this->trigger_user['id'], 'waiting_for_tether', $this->callback_data);
+        $text = "شماره تراکنش خود را وراد کنید";
+        $this->replyWithMessage([
+            'text' => $text,
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+
+        ]);
+    }
     public function tetherCallback(): void
     {
-        $this->replyWithMessage($this->getStartCommandReply($this->user));
+        $reply = [
+            'text' => "کاربر گرامی لطفا مبلغ مورد نظر خود را به شماره ولت فلانlkjvfkljvglkfjvglkfjvglkjflgjn واریز کنید و سپس شماره تراکنش راارسال کسند",
+            'keyboard' => [
+                [
+                    [
+                        'text' => 'ارسال شماره تراکنش',
+                        'callback_data' => 'tran_tether',
+                    ]
+
+                ]
+            ]
+        ];
+        $this->replyWithMessage([
+            'text' => $reply['text'],
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $reply['keyboard'] ?? [],
+                ]
+            ),
+
+        ]);
     }
     public static function getChargeReply($user)
     {
@@ -365,6 +403,12 @@ final class Callback
                     [
                         'text' => 'انتقال تتر',
                         'callback_data' => 'tether',
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'بازگشت به منوی اصلی',
+                        'callback_data' => 'back',
                     ],
                 ]
             ]
@@ -1217,7 +1261,7 @@ final class Callback
                 [
                     [
                         'text' =>  'افزایش موجودی💳',
-                        'callback_data' => 'charge',
+                        'callback_data' => 'charge.account',
                     ]
                 ],
                 [

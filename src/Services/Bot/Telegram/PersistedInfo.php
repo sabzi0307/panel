@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\TelegramBotLog;
 use App\Models\TelegramBotState;
 use App\Models\UserCoupon;
+use App\Models\UserCryptoTrans;
 use App\Models\UserMoneyLog;
 use DOMDocument;
 use DOMXPath;
@@ -196,10 +197,10 @@ final class PersistedInfo
         $giftcard = (new GiftCard())->where('card', $giftcard_raw)->first();
 
         if ($giftcard === null || $giftcard->status !== 0 || $user->is_shadow_banned) {
-          
+
             return null;
         }
-       
+
 
         $giftcard->status = 1;
         $giftcard->use_time = time();
@@ -219,78 +220,83 @@ final class PersistedInfo
         );
 
 
-        
+
         return $giftcard;
     }
-    public function applyCryptoPayment($transaction_id, $user)
+    public static function applyCryptoPayment($transaction_id, $user)
     {
-        $paymentResult = $this->checkBNBCryptoPayment($transaction_id);
+        $tran = PersistedInfo::getCryptoTran($transaction_id);
+        if ($tran != null) {
+            return " .این تراکنش قبلا ثبت شده است. بعد از حصول اطمینان از صحت اطلاعات لطفا با کارشناس سیستم برای بررسی بیشتر تماس بگیرید";
+        }
+        $paymentResult = PersistedInfo::extractBNBCryptoPaymentInfo($transaction_id);
 
-        $money_before = $user->money;
-        $user->money += $paymentResult['balance'];
-        $user->save();
+        if ($paymentResult != null) {   
 
-        (new UserMoneyLog())->add(
-            $user->id,
-            $money_before,
-            (float) $user->money,
-            $paymentResult['balance'],
-            'شارژ انتقال تتر در بایننس. شماره تراکنش:  ' . $transaction_id
-        );
+            $money_before = $user->money;
+            $user->money += $paymentResult['balance'];
+            $user->save();
+
+            (new UserMoneyLog())->add(
+                $user->id,
+                $money_before,
+                (float) $user->money,
+                $paymentResult['balance'],
+                'شارژ انتقال تتر در بایننس. شماره تراکنش:  ' . $transaction_id
+            );
+            return (new UserCryptoTrans())->add($user->id,$paymentResult); ;
+        }
+        return null;
     }
 
-    public static function checkBNBCryptoPayment($transaction_id)
+    public static  function extractBNBCryptoPaymentInfo($transaction_id)
     {
         // URL of the page to fetch
-        // $url = 'https://bscscan.com/tx/0x728277c2c5041bd7728f9ec0cbbc6d466913921d9889ac4fc9596fcd954bdff8';
+        //  $url = 'https://bscscan.com/tx/0x728277c2c5041bd7728f9ec0cbbc6d466913921d9889ac4fc9596fcd954bdff8';
         $url = 'https://bscscan.com/tx/' . $transaction_id;
-
         // Use file_get_contents to get the HTML content of the page
         $html = file_get_contents($url);
-
         if ($html === FALSE) {
-            die("Error fetching the HTML content from the URL.");
+            return null;
         }
-
         // Create a new DOMDocument instance
         $doc = new DOMDocument();
-
         // Suppress warnings due to malformed HTML
         libxml_use_internal_errors(true);
-
         // Load the HTML content into the DOMDocument instance
         $doc->loadHTML($html);
-
         // Clear the libxml error buffer
         libxml_clear_errors();
-
         // Create a new DOMXPath instance
         $xpath = new DOMXPath($doc);
-
         // Extract the transaction status
-        $status = $xpath->query("//span[contains(@id, 'ContentPlaceHolder1_spanTxStatus')]");
-
-        if ($status->length > 0) {
-            echo "Status: " . $status->item(0)->textContent . "\n";
+        // $to = $xpath->query("//div[@class='tab-pane fade show active' and @id='nav_pane_erc20_transfer']/div/div/span[2]/a[2]");
+        $status = $xpath->query("//div[@id='ContentPlaceHolder1_maintable']/div[1]/div[2]/div[2]/span[1]");
+        $block = $xpath->query("//div[@id='ContentPlaceHolder1_maintable']/div[1]/div[3]/div[2]/div[1]/span[1]/a");
+        $timestamp = $xpath->query("//div[@id='ContentPlaceHolder1_divTimeStamp']/div[1]/div[2]/span[2]");
+        $amount = $xpath->query("//div[@id='wrapperContent']/div/div/span[2]");
+        $to = $xpath->query("//div[@id='wrapperContent']/div/div/span[4]/span/a");
+        if (
+            $status->length > 0 && $block->length > 0 && $timestamp->length > 0
+            && $amount->length > 0 && $to->length > 0
+        ) {
+            $result = [
+                'hash' => $transaction_id,
+                'status' => $status->item(0)->textContent,
+                'block' => $block->item(0)->textContent,
+                'timestamp' => intval($timestamp->item(0)->attributes['data-timestamp']->value),
+                'balance' => floatval($amount->item(0)->textContent),
+                'to' => $to->item(0)->textContent,
+                'type'=>'BSC-USD'
+            ];
+            //chech to with wallet address
+            //check this transaction is not used
+            if (str_contains($result['status'], 'Success') && $result['block'])
+                return $result;
+            return null;
         } else {
-            echo "Status not found.\n";
+            return null;
         }
-
-        // Extract BEP-20 tokens transferred
-        $tokensTransferred = $xpath->query("//div[@id='ContentPlaceHolder1_maintable']//span[contains(@class, 'text-success')]/parent::td/following-sibling::td[1]");
-
-        if ($tokensTransferred->length > 0) {
-            echo "BEP-20 Tokens Transferred:\n";
-            foreach ($tokensTransferred as $token) {
-                $from = $token->textContent;
-                $to = $token->nextSibling->textContent;
-                echo "From: $from, To: $to\n";
-            }
-        } else {
-            echo "No BEP-20 Tokens Transferred found.\n";
-        }
-
-        return array('balance' => 0);
     }
     public static function logTelegramBotState($userid, $state, $contnt)
     {
@@ -305,13 +311,18 @@ final class PersistedInfo
             $statelog->save();
         }
     }
+    public static function getCryptoTran($hash): null|TelegramBotState
+    {
+        return (new UserCryptoTrans())->where('tran_hash', $hash)->first();
+    }
+
     public static function getTelegramBotState($userid): null|TelegramBotState
     {
         return (new TelegramBotState())->where('user_id', $userid)->first();
-    } 
-     public static function updateTelegramBotState(TelegramBotState $state): null|TelegramBotState
+    }
+    public static function updateTelegramBotState(TelegramBotState $state): null|TelegramBotState
     {
-        $state->state='NONE';
+        $state->state = 'NONE';
         $state->save();
         return $state;
     }
