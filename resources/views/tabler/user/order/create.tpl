@@ -84,7 +84,7 @@
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">جزئیات قیمت (تومان)</h3>
+                            <h3 class="card-title">جزئیات قیمت ({$currency})</h3>
                         </div>
                         <div class="card-body">
                             <table class="table table-transparent table-responsive">
@@ -102,7 +102,7 @@
                                 </tr>
                                 <tr>
                                     <td>قیمت نهایی</td>
-                                    <td class="text-end" id="product-buy-total">{$product->price}</td>
+                                    <td class="text-end" id="product-buy-total">{number_format($product->price, 2, '.', ',')}</td>
                                 </tr>
                             </table>
                         </div>

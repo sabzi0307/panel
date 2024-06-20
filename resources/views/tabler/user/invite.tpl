@@ -30,7 +30,7 @@
                                         </li>
                                         <li>نسبت تخفیف برخی محصولات ممکن است از نسبت فوق تبعیت نکند</li>
                                     </ul>
-                                    <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید است <code>{$paybacks_sum}</code> تومان</p>
+                                    <p>مجموع تخفیفی که در حال حاضر با دعوت از دوستان دریافت می کنید است <code>{$paybacks_sum}</code> {$currency}</p>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                         <td>{$payback->id}</td>
                                         <td>{$payback->userid}</td>
                                         <td>{$payback->user_name}</td>
-                                        <td>{$payback->ref_get} تومان</td>
+                                        <td>{$payback->ref_get} {$currency}</td>
                                         <td>{$payback->datetime}</td>
                                     </tr>
                                 {/foreach}

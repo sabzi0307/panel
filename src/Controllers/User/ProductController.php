@@ -6,6 +6,7 @@ namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
 use App\Models\Product;
+use App\Utils\ResponseHelper;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -49,6 +50,7 @@ final class ProductController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('tabps', $tabps)
+                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
                 ->assign('bandwidths', $bandwidths)
                 ->assign('times', $times)
                 ->fetch('user/product.tpl')

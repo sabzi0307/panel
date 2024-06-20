@@ -12,6 +12,17 @@ use function json_encode;
 
 final class ResponseHelper
 {
+    public static function translateCurrency(string $c): string{
+        $str_curr='$';
+       if(strtolower($c)==="dollar")  {
+        $str_curr='دلار';
+       }
+      else if(strtolower($c)==="rial")  {
+        $str_curr='تومان';
+       }
+       
+       return $str_curr;
+    }
     public static function success(Response $response, string $msg = ''): ResponseInterface
     {
         return $response->withJson([

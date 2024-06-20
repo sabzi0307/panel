@@ -8,6 +8,7 @@ use App\Controllers\BaseController;
 use App\Models\Config;
 use App\Models\InviteCode;
 use App\Models\Payback;
+use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -43,13 +44,13 @@ final class InviteController extends BaseController
 
         $invite_url = $_ENV['baseUrl'] . '/auth/register?code=' . $code;
         $invite_reward_rate = Config::obtain('invite_reward_rate') * 100;
-
         return $response->write(
             $this->view()
                 ->assign('paybacks', $paybacks)
                 ->assign('invite_url', $invite_url)
                 ->assign('paybacks_sum', $paybacks_sum)
                 ->assign('invite_reward_rate', $invite_reward_rate)
+                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
                 ->fetch('user/invite.tpl')
         );
     }

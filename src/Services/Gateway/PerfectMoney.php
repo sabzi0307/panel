@@ -17,6 +17,7 @@ use App\Services\Exchange;
 use App\Services\Gateway\PerfectMoney\PerfectMoneyNotify;
 use App\Services\Gateway\PerfectMoney\PerfectMoneySubmit;
 use App\Services\View;
+use App\Utils\ResponseHelper;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -134,7 +135,7 @@ final class PerfectMoney extends Base
         $exchange_amount = (new Exchange())->exchange((float) $money, Config::obtain('perfectmoney_currency'), 'IRR');
 
         $html = '';
-
+        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
         if ($batch == 0) {
             $html = <<<HTML
                 پرداخت موفقیت آمیز نبود.
@@ -146,7 +147,7 @@ final class PerfectMoney extends Base
             HTML;
         } else {
             $html = <<<HTML
-                شما با موفقیت دوباره {$exchange_amount} تومان حساب خود را شارژ کردید.
+                شما با موفقیت دوباره {$exchange_amount} {$currency} حساب خود را شارژ کردید.
                 <script>
                     setTimeout(function() {
                         location.href="/user/invoice";

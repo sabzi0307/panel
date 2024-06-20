@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\Bot\Telegram\Commands\ProductCommand;
 use App\Services\Reward;
 use App\Services\Subscribe;
+use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\Model;
@@ -573,11 +574,11 @@ final class Callback
                 // 返利记录
                 $paybacks = (new Payback())->where('ref_by', $this->user->id)->orderBy('datetime', 'desc')->take(10)->get();
                 $text = '<strong>موارد زیر 10 رکورد آخر تخفیف شما هستند：</strong>' . PHP_EOL . PHP_EOL;
-
+                $currency=ResponseHelper::translateCurrency($_ENV['currency']);
                 foreach ($paybacks as $payback) {
                     $text .= '<code>#' . $payback->id .
                         '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شد') . '：' .
-                        $payback->ref_get . ' تومان</code>' . PHP_EOL;
+                        $payback->ref_get . ' {$currency}</code>' . PHP_EOL;
                 }
 
                 $sendMessage = [
@@ -1072,12 +1073,12 @@ final class Callback
         }
 
         $invite = Config::getClass('ref');
-
+        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
         $text = [
             '<strong>برای هر <code>1</code> کاربر که دعوت به ثبت نام می کنید: </strong>',
             '',
             '- دریافت خواهید کرد <code>' . Config::obtain('invite_reg_traffic_reward') . 'G</code> پاداش ترافیک',
-            '- طرف مقابل دریافت خواهد کرد <code>' . Config::obtain('invite_reg_money_reward') . 'تومان</code> موجودی حساب',
+            '- طرف مقابل دریافت خواهد کرد <code>' . Config::obtain('invite_reg_money_reward') . '{$currency}</code> موجودی حساب',
             '- وقتی طرف مقابل صورت حساب را پرداخت کرد، مبلغ صورت حساب طرف مقابل را دریافت خواهید کرد. <code>' . Config::obtain('invite_reward_rate') * 100 . '%</code> از تخفیف ها',
             '',
             'تخفیف دریافت کرده است：' . $paybacks_sum . ' تومان。',

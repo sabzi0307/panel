@@ -43,7 +43,7 @@
                                 <div class="tab-pane active show" id="invite">
                                     <div class="card-body">
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">پاداش موجودی (تومان) که با استفاده از لینک دعوت برای ثبت نام قابل دریافت است</label>
+                                            <label class="form-label col-3 col-form-label">پاداش موجودی (دلار) که با استفاده از لینک دعوت برای ثبت نام قابل دریافت است</label>
                                             <div class="col">
                                                 <input id="invite_reg_money_reward" type="text"
                                                        class="form-control"

@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        موجودی فعلی حساب:<code>{$user->money}</code> تومان
+                                        موجودی فعلی حساب:<code>{$user->money}</code> {$currency}
                                     </div>
                                 </div>
                                 <div class="card-footer">

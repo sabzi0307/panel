@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\UserCoupon;
 use App\Utils\Cookie;
+use App\Utils\ResponseHelper;
 use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -76,6 +77,7 @@ final class OrderController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('product', $product)
+                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
                 ->fetch('user/order/create.tpl')
         );
     }

@@ -55,7 +55,7 @@
                                                              class="display-6 my-3">
                                                             <p class="fw-bold">{$tabp->price}</p>
                                                             {* <i class="ti ti-coin"></i> *}
-                                                            <p style="font-size: medium;">تومان</p>
+                                                            <p style="font-size: medium;">{$currency}</p>
                                                         </div>
                                                         <div class="list-group list-group-flush">
                                                             <div class="list-group-item">
@@ -155,7 +155,7 @@
                                                         <div id="product-{$bandwidth->id}-price"
                                                              class="display-6 my-3">
                                                             <p class="fw-bold">{$bandwidth->price}</p>
-                                                            <p style="font-size: medium;">تومان</p>
+                                                            <p style="font-size: medium;">{$currency}</p>
                                                         </div>
                                                         <div class="list-group list-group-flush">
                                                             <div class="list-group-item">

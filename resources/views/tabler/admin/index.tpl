@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$today_income} تومان
+                                                {$today_income} {$currency}
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی امروز
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$yesterday_income} تومان
+                                                {$yesterday_income} {$currency}
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی دیروز
@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$this_month_income} تومان
+                                                {$this_month_income} {$currency}
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی این ماه
@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {$total_income} تومان
+                                                {$total_income} {$currency}
                                             </div>
                                             <div class="text-secondary">
                                                 گردش مالی کل

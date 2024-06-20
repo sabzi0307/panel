@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\Analytics;
+use App\Utils\ResponseHelper;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -12,6 +13,7 @@ use Slim\Http\ServerRequest;
 
 final class AdminController extends BaseController
 {
+   
     /**
      * 后台صفحه اول
      *
@@ -19,6 +21,7 @@ final class AdminController extends BaseController
      */
     public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
+        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
         $today_income = Analytics::getIncome('today');
         $yesterday_income = Analytics::getIncome('yesterday');
         $this_month_income = Analytics::getIncome('this month');
@@ -56,6 +59,7 @@ final class AdminController extends BaseController
                 ->assign('today_traffic', $today_traffic)
                 ->assign('last_traffic', $last_traffic)
                 ->assign('unused_traffic', $unused_traffic)
+                ->assign('currency',$currency)
                 ->fetch('admin/index.tpl')
         );
     }
