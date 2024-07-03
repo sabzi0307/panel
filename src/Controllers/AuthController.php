@@ -36,6 +36,7 @@ use function strtolower;
 use function time;
 use function trim;
 use Telegram\Bot\Api;
+
 final class AuthController extends BaseController
 {
     /**
@@ -63,7 +64,7 @@ final class AuthController extends BaseController
                 'msg' => 'سیستم نمی‌تواند نتیجه تأیید شما را بپذیرد، لطفاً صفحه را بازخوانی کنید و دوباره امتحان کنید.',
             ]);
         }
-
+        $tu = $request->getParam('tu');
         $mfa_code = $this->antiXss->xss_clean($request->getParam('mfa_code'));
         $password = $request->getParam('password');
         $rememberMe = $request->getParam('remember_me') === 'true' ? 1 : 0;
@@ -109,8 +110,32 @@ final class AuthController extends BaseController
         // 记录登录成功
         $loginIp->collectLoginIP($_SERVER['REMOTE_ADDR'], 0, $user->id);
         $user->last_login_time = time();
+        $t = null;
+        if ($tu) {
+            $user->im_type = 4;
+            $t = json_decode($tu);
+            $user->im_value = $t->user->id;
+        }
         $user->save();
+        if ($t) {
+            $responseMessage = [
+                'type' => 'article',
+                'id' => 'unique-id',
+                'title' => 'Square Calculation Result',
+                'input_message_content' => [
+                    'message_text' => '/start'
+                ]
+            ];
 
+
+            $requestBody = [
+                'web_app_query_id' => $t->webAppQueryId,
+                'result' => $responseMessage
+            ];
+            Message::sendPost('answerWebAppQuery', $requestBody);
+
+            return ResponseHelper::success($response, "");
+        }
         return $response->withHeader('HX-Redirect', $redir)->withJson([
             'ret' => 1,
             'msg' => 'ورود با موفقیت',
@@ -275,24 +300,24 @@ final class AuthController extends BaseController
             Auth::login($user->id, 3600);
             (new LoginIp())->collectLoginIP($_SERVER['REMOTE_ADDR'], 0, $user->id);
 
-            if($t){
-                 $responseMessage = [
-                    'type'=> 'article',
-                    'id'=> 'unique-id',
-                    'title'=> 'Square Calculation Result',
-                    'input_message_content'=> [
-                        'message_text'=> '/menu'
+            if ($t) {
+                $responseMessage = [
+                    'type' => 'article',
+                    'id' => 'unique-id',
+                    'title' => 'Square Calculation Result',
+                    'input_message_content' => [
+                        'message_text' => '/start'
                     ]
                 ];
-    
-    
-                 $requestBody = [
-                    'web_app_query_id'=> $t->webAppQueryId,
-                    'result'=> $responseMessage
-                 ];
-             Message::sendPost('answerWebAppQuery', $requestBody);
 
-            return ResponseHelper::success($response,"");
+
+                $requestBody = [
+                    'web_app_query_id' => $t->webAppQueryId,
+                    'result' => $responseMessage
+                ];
+                Message::sendPost('answerWebAppQuery', $requestBody);
+
+                return ResponseHelper::success($response, "");
             }
             return $response->withHeader('HX-Redirect', $redir)->withJson([
                 'ret' => 1,
@@ -324,7 +349,7 @@ final class AuthController extends BaseController
         $confirm_password = $request->getParam('confirm_password');
         $invite_code = $this->antiXss->xss_clean(trim($request->getParam('invite_code')));
         $tu = $request->getParam('tu');
-       
+
         if (!$tos) {
             return ResponseHelper::error($response, 'لطفاً با شرایط خدمات موافقت کنید');
         }
@@ -357,11 +382,11 @@ final class AuthController extends BaseController
 
         $imtype = 0;
         $imvalue = '';
-        $t=null;
-        if($tu){
+        $t = null;
+        if ($tu) {
             $imtype = 4;
-            $t=json_decode($tu);
-            $imvalue = $t->user->id; 
+            $t = json_decode($tu);
+            $imvalue = $t->user->id;
         }
 
         // check email format
@@ -389,7 +414,7 @@ final class AuthController extends BaseController
             $redis->del('email_verify:' . $email_verify_code);
         }
 
-        return $this->registerHelper($response, $name, $email, $password, $invite_code, $imtype, $imvalue, 0, 0,$t);
+        return $this->registerHelper($response, $name, $email, $password, $invite_code, $imtype, $imvalue, 0, 0, $t);
     }
 
     public function logout(ServerRequest $request, Response $response, $next): Response

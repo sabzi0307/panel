@@ -25,6 +25,7 @@ final class Telegram
 
         $bot->addCommands([
             new Commands\ChargeCommand(),
+            new Commands\ProductCommand(),
             new Commands\MyCommand(),
             new Commands\HelpCommand(),
             new Commands\PingCommand(),
@@ -36,12 +37,17 @@ final class Telegram
         $bot->commandsHandler(true, $request);
         $bot->setConnectTimeOut(10);
         $update = $bot->getWebhookUpdate();
-        
-
         if ($update->has('callback_query')) {
-            new Callback($bot, $update->getCallbackQuery());
+            $callback=$update->getCallbackQuery();
+            PersistedInfo::logTelegramBotState($callback->getFrom()->getId(), 'received-C', $callback->getData(), true);         
+            new Callback($bot,$callback);           
+            PersistedInfo::logTelegramBotState($callback->getFrom()->getId(), 'responed-C', $callback->getData());
+         
         } elseif ($update->has('message')) {
-            new Message($bot, $update->getMessage());
+            $message=$update->getMessage();
+            PersistedInfo::logTelegramBotState($message->getFrom()->getId(), 'received-M', $message->getText(), true); 
+            new Message($bot,$message );
+            PersistedInfo::logTelegramBotState($message->getFrom()->getId(), 'responed-M', $message->getText());
         }
     }
 }

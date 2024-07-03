@@ -22,6 +22,8 @@ use Illuminate\Support\Collection;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Telegram\Bot\Keyboard\Keyboard;
+
 use function array_chunk;
 use function array_merge;
 use function end;
@@ -106,13 +108,13 @@ final class Callback
             $this->userCallback();
         } else if (str_starts_with($this->callback_data, 'product')) {
             // 用户相关
-            $this->userActionsCallback();
+            $this->productsCallback();
         } else if (str_starts_with($this->callback_data, 'back')) {
             // 用户相关
             $this->backCallback();
         } else if (str_starts_with($this->callback_data, 'buy')) {
             // 用户相关
-            $this->chargeCallback();
+            $this->buyCallback();
         } else if (str_starts_with($this->callback_data, 'charge.account')) {
             // 用户相关
             $this->chargeCallback();
@@ -122,11 +124,18 @@ final class Callback
         } else if (str_starts_with($this->callback_data, 'tether')) {
             // 用户相关
             $this->tetherCallback();
+        } else if (str_starts_with($this->callback_data, 'perfectmoney')) {
+            // 用户相关
+            $this->perfectmoneyCallback();
         } else if (str_starts_with($this->callback_data, 'tran_tether')) {
             // 用户相关
             $this->tetherTranCallback();
+        } else if (str_starts_with($this->callback_data, 'software')) {
+            // 用户相关
+            $this->softwareCallback();
         }
     }
+
 
     /**
      * 响应回调查询 | 默认已添加 chat_id 和 message_id
@@ -183,10 +192,17 @@ final class Callback
     public static function getUserIndexKeyboard($user): array
     {
         $checkin =  [
-            [
+            [[
                 'text' => 'دریافت هدیه روزانه',
                 'callback_data' => 'user.checkin.' . $user->im_value,
-            ],
+            ]],
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ],
+            ]
+
         ];
 
         $keyboard = [
@@ -290,15 +306,25 @@ final class Callback
                 ]);
         }
     }
-    public function userActionsCallback(): void
+    public function productsCallback(): void
     {
-        if ($this->user === null && $this->chat_id < 0) {
-            // 群组内提示
-            $this->answerCallbackQuery([
-                'text' => 'سلام، شما حسابی را باند نکرده اید و نمی توانید عملیات انجام دهید.',
-                'show_alert' => true,
-            ]);
-        }
+
+        $reply = self::productsReply($this->user);
+
+        $this->replyWithMessage([
+            'text' => $reply['text'],
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $reply['keyboard'],
+                ]
+            ),
+        ]);
+    }
+    public static function productsReply($user)
+    {
         $product = PersistedInfo::getProducts();
         $keyBoard = [
             [
@@ -314,7 +340,7 @@ final class Callback
                 [
                     [
                         [
-                            'text' => $p->name,
+                            'text' => $p->name . ': ' . $p->price . '$',
                             'callback_data' => 'buy.' . $p->id,
                         ]
                     ]
@@ -322,19 +348,29 @@ final class Callback
                 $keyBoard
             );
         }
+        if ($user != null) {
+            $text = " کاربرگرامی، موجودی حساب شما" . $user->money . " است";
+            $text .= PHP_EOL . PHP_EOL;
+            $text .= "در صورتی که موجودی حساب شما برای خرید کافی نباشد به منو افزایش موجودی متصل میشوید";
+            $text .= PHP_EOL . PHP_EOL;
+            $text .= "امکان افزایش موجودی از طریق انتقال تتر در شبکه باینسس از طریق بات فراهم هست.  ";
+            $text .= PHP_EOL . PHP_EOL;
+            $text .= " چنانچه قصد اقزایش موجودی از طریق پرفکت مانی را دارید از وب سایت ما استفاده کنید  ";
+            $text .= PHP_EOL . PHP_EOL;
+            $text .= $_ENV['baseUrl'];
+        }
 
-        $text = " کاربرگرامی، موجودی حساب شما" . $this->user->money . " است. /nدر صورتی که موجودی حساب شما برای خرید کافی نباشد به منو افزایش موجود متصل میشوید.";
-        $this->replyWithMessage([
+        if ($user === null) {
+            $text = "کاربر گرامی.";
+            $text .= PHP_EOL;
+            $text = "شناسه تلگرام شما برای ما ناشناس است.";
+            $text .= PHP_EOL;
+            $text = "لطفا از طریق منوی استارت لاگین کنید یا عضو شوید";
+        }
+        return [
             'text' => $text,
-            'parse_mode' => 'HTML',
-            'disable_web_page_preview' => false,
-            'reply_to_message_id' => null,
-            'reply_markup' => json_encode(
-                [
-                    'inline_keyboard' => $keyBoard,
-                ]
-            ),
-        ]);
+            'keyboard' => $keyBoard
+        ];
     }
     public function backCallback(): void
     {
@@ -342,7 +378,6 @@ final class Callback
     }
     public function giftcardCallback(): void
     {
-        PersistedInfo::logTelegramBotState($this->trigger_user['id'], 'waiting_for_giftcard', $this->callback_data);
         $text = "کد کارت هدیه خود را وارد کنید";
         $this->replyWithMessage([
             'text' => $text,
@@ -352,9 +387,36 @@ final class Callback
 
         ]);
     }
+     public function perfectmoneyCallback(): void
+    {
+
+
+        if ($this->user == null) {
+            $this->replyWithMessage(Callback::getUserNotFoundReply());
+        } else {
+            $CallbackDataExplode = explode('|', $this->callback_data);
+            $Operate = explode('.', $CallbackDataExplode[0]);
+            if($Operate[1]="1"){
+                $text = "شماره وچر که یک کد 10 رقمی است را وراد کنید";
+            }
+            else if($Operate[1]="2")
+            {
+
+            }
+           
+            $this->replyWithMessage([
+                'text' => $text,
+                'parse_mode' => 'Markdown',
+                'disable_web_page_preview' => false,
+                'reply_to_message_id' => null,
+    
+            ]);
+        }
+
+       
+    }
     public function tetherTranCallback(): void
     {
-        PersistedInfo::logTelegramBotState($this->trigger_user['id'], 'waiting_for_tether', $this->callback_data);
         $text = "شماره تراکنش خود را وراد کنید";
         $this->replyWithMessage([
             'text' => $text,
@@ -366,13 +428,40 @@ final class Callback
     }
     public function tetherCallback(): void
     {
+
+        $text  = $_ENV['baseUrl'] . "/images/BTether-Address.jpg";
+        $text .= PHP_EOL;
+        $text .= $this->user->user_name . " عزیز**";
+        $text .= PHP_EOL;
+        $text .= "موجودی حساب شما" . $this->user->money . "است.";
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "شماره تراکنش را برای ما ارسال کنید.لطفا مبلغ مورد نظر خود را به ادرس زیر منتقل کنید.";
+        $text .= PHP_EOL;
+        $text .= "0xEB1FE7b959034efFFA16a503F2eF7d3000597507";
+        $text .= PHP_EOL;
+        $text .= "در زمان انتقال از انتخاب شیکه بایننس اطمینان حاصل کنید. شبکه باینسس کمترین مقدار کارمزد انتقال را دارد.";
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "برای سهولت کار پیشنهاد ما استفاده از سایت ایرانیکارت و پرداخت ریالی برای انتقال است.";
+        $text .= PHP_EOL;
+        $text .= "https://www.iranicard.ir/";
+        $text .= PHP_EOL . PHP_EOL;
+        $text  .= "اسکن کنید:";
+
+
         $reply = [
-            'text' => "کاربر گرامی لطفا مبلغ مورد نظر خود را به شماره ولت فلانlkjvfkljvglkfjvglkfjvglkjflgjn واریز کنید و سپس شماره تراکنش راارسال کسند",
+            'text' => $text,
             'keyboard' => [
                 [
                     [
                         'text' => 'ارسال شماره تراکنش',
                         'callback_data' => 'tran_tether',
+                    ]
+
+                ],
+                [
+                    [
+                        'text' => 'راهتمای انتقال تتر با کارت بانکی',
+                        'callback_data' => 'tran_tether_help',
                     ]
 
                 ]
@@ -393,8 +482,15 @@ final class Callback
     }
     public static function getChargeReply($user)
     {
+        $text = "موجودی شما " . $user->money . ' است.';
+        $text .= PHP_EOL . PHP_EOL;
+        $text  .= "درصورت که** کد هدیه** دارید و یا قصدانتقال با تتر را دارید از ربات استفاده نمایید  ";
+        $text .= PHP_EOL;
+        $text .= "در صورتی که قصد دارید از طریق وچر پرفکت مانی اعتبار خود را افزایش دهید. به وب سایت ما به ادرس زیر مراجعه کنید";
+        $text .= PHP_EOL;
+        $text  .= $_ENV['baseUrl'];
         $reply = [
-            'text' => "موجودی شما " . $user->money . ' است.',
+            'text' => $text,
             'keyboard' => [
                 [
                     [
@@ -404,6 +500,12 @@ final class Callback
                     [
                         'text' => 'انتقال تتر',
                         'callback_data' => 'tether',
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'وچر پرفکت مانی',
+                        'callback_data' => 'perfectmoney',
                     ],
                 ],
                 [
@@ -433,22 +535,216 @@ final class Callback
     {
         $this->replyWithMessage($this->getChargeReply($this->user));
     }
-    public function buyCallback(): void
+    public function buyCallback()
+    {
+        if ($this->user == null) {
+            $this->replyWithMessage(Callback::getUserNotFoundReply());
+        } else {
+            $CallbackDataExplode = explode('|', $this->callback_data);
+            $Operate = explode('.', $CallbackDataExplode[0]);
+            $product = PersistedInfo::getProduct(intval($Operate[1]));
+            if ($product != null) {
+                if ($this->user->money < $product->price) {
+                    $this->replyWithMessage($this->getChargeReply($this->user));
+                } else {
+                    //do buying prosses
+                    PersistedInfo::processInvoice($product, '', $this->user);
+                    $text = 'خرید شما موفقیت امیز بود.';
+                    $text .= PHP_EOL;
+                    $text = 'موجودی حساب شما برابر: ' . $this->user->money;
+                    $text .= PHP_EOL;
+                    $text = 'برای دریافت کانفیگ و نرم افزار مناسب اقدام کنید';
+
+                    $reply = [
+                        'text' => $text,
+                        'keyboard' => [
+                            [
+                                [
+                                    'text' => 'لینک کانفیگ',
+                                    'callback_data' => 'user.subscribe',
+                                ],
+                                [
+                                    'text' => ' نرافزار ها ',
+                                    'callback_data' => 'software',
+                                ],
+                            ],
+                            [
+
+                                [
+                                    'text' => 'بازگشت به منوی اصلی',
+                                    'callback_data' => 'back',
+                                ],
+                            ]
+                        ]
+                    ];
+
+
+                    $this->replyWithMessage([
+                        'text' => $reply['text'] ?? 'Hi!',
+                        'parse_mode' => 'Markdown',
+                        'disable_web_page_preview' => false,
+                        'reply_to_message_id' => null,
+                        'reply_markup' => json_encode(
+                            [
+                                'inline_keyboard' => $reply['keyboard'] ?? [],
+                            ]
+                        ),
+                    ]);
+                }
+            }
+        }
+    }
+
+    public function softwareCallback()
     {
         $CallbackDataExplode = explode('|', $this->callback_data);
         $Operate = explode('.', $CallbackDataExplode[0]);
-        $product = PersistedInfo::getProduct(intval($Operate[1]));
-        if ($product != null) {
-            if ($this->user->money < $product->price) {
-                //forward to deposite
-            } else {
-                //do buying prosses
-                PersistedInfo::processInvoice($product, '', $this->user);
+        $size = count($Operate);
+        $reply = [];
+        if ($size == 1) {
+            $reply = $this->osReply();
+        } else if ($size == 2) {
+            $reply = $this->softwareReply($Operate[1]);
+        } else if ($size == 3) {
+            //return download reply
+            $url = $_ENV['baseUrl'];
+            if ($Operate[1] == 'windows') {
+                if ($Operate[2] == 'clash') {
+                    $url .= '/clients/Clash.Verge.exe';
+                } else if ($Operate[2] == 'hiddify') {
+                    $url .= '/clients/hiddify-windows-x64-setup.zip';
+                } else if ($Operate[2] == 'sinxbox') {
+                    $url .= ' ';
+                }
+            } else if ($Operate[1] == 'ios') {
+                if ($Operate[2] == 'clash') {
+                    $url .= '/clients/Clash.Verge_aarch64.dmg';
+                } else if ($Operate[2] == 'hiddify') {
+                    $url .= '/clients/hiddify-macos-universal.zip';
+                } else if ($Operate[2] == 'sinxbox') {
+                    $url .= ' ';
+                }
+            } else if ($Operate[1] == 'android') {
+                if ($Operate[2] == 'clash') {
+                    $url .= '/clients/CMFA.apk';
+                } else if ($Operate[2] == 'hiddify') {
+                    $url .= '/clients/hiddify-android-universal.apk';
+                } else if ($Operate[2] == 'sinxbox') {
+                    $url .= ' ';
+                }
+            } else if ($Operate[1] == 'mac') {
+                if ($Operate[2] == 'clash') {
+                    $url .= ' ';
+                } else if ($Operate[2] == 'hiddify') {
+                    $url .= ' ';
+                } else if ($Operate[2] == 'sinxbox') {
+                    $url .= ' ';
+                }
+            } else if ($Operate[1] == 'linux') {
+                if ($Operate[2] == 'clash') {
+                    $url .= '/clients/Clash.Verge.AppImage.tar.gz';
+                } else if ($Operate[2] == 'hiddify') {
+                    $url .= '/clients/hiddify-linux-x64.zip';
+                } else if ($Operate[2] == 'sinxbox') {
+                    $url .= ' ';
+                }
             }
+            $reply = [
+                'text' => $url,
+                'keyboard' => [[]]
+            ];
         }
-        // $this->replyWithMessage($this->getStartCommandReply($this->user));
-    }
 
+        $this->replyWithMessage([
+            'text' => $reply['text'] ?? 'Hi!',
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $reply['keyboard'] ?? [],
+                ]
+            ),
+        ]);
+    }
+    public function osReply()
+    {
+
+        $text = "سیستم عامل مورد نظر که قصد نصب نرم افزار بر روی آن را دارید";
+        $text .= "را انتخاب کنبد:";
+
+        $keyboard = [
+            [
+                [
+                    'text' => ' ویندوز',
+                    'callback_data' => 'software.windows',
+                ],
+                [
+                    'text' => 'مکینتاش',
+                    'callback_data' => 'software.mac',
+                ],
+            ],
+            [
+                [
+                    'text' => ' اندروید',
+                    'callback_data' => 'software.android',
+                ],
+                /* [
+                    'text' => ' ای او اس',
+                    'callback_data' => 'software.ios',
+                ], */
+            ],
+            [
+                [
+                    'text' => 'لینوکس',
+                    'callback_data' => 'software.linux',
+                ]
+            ],
+
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ],
+            ],
+        ];
+
+        return [
+            'text' => $text,
+            'keyboard' => $keyboard,
+        ];
+    }
+    public function softwareReply($os)
+    {
+
+        $text = "نرم افزار مورد نظر خود را انتخاب کنید";
+        $text .= PHP_EOL . PHP_EOL;
+
+        $keyboard = [
+            [
+                [
+                    'text' => ' هیدیفای',
+                    'callback_data' => 'software.' . $os . '.hiddify',
+                ],
+                [
+                    'text' => 'کلش',
+                    'callback_data' => 'software.' . $os . '.clash',
+                ],
+            ],
+
+            [
+                [
+                    'text' => 'بازگشت به منوی قبل',
+                    'callback_data' => 'software',
+                ],
+            ],
+        ];
+
+        return [
+            'text' => $text,
+            'keyboard' => $keyboard,
+        ];
+    }
     public function getUserCenterKeyboard(): array
     {
         $text = Message::getUserTitle($this->user);
@@ -479,7 +775,7 @@ final class Callback
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
             ],
         ];
@@ -502,7 +798,7 @@ final class Callback
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
                 [
                     'text' => 'بازگشت به صفحه قبل',
@@ -574,7 +870,7 @@ final class Callback
                 // 返利记录
                 $paybacks = (new Payback())->where('ref_by', $this->user->id)->orderBy('datetime', 'desc')->take(10)->get();
                 $text = '<strong>موارد زیر 10 رکورد آخر تخفیف شما هستند：</strong>' . PHP_EOL . PHP_EOL;
-                $currency=ResponseHelper::translateCurrency($_ENV['currency']);
+                $currency = ResponseHelper::translateCurrency($_ENV['currency']);
                 foreach ($paybacks as $payback) {
                     $text .= '<code>#' . $payback->id .
                         '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شد') . '：' .
@@ -664,7 +960,7 @@ final class Callback
                     'callback_data' => 'user.edit.encrypt',
                 ],
                 [
-                    'text' => 'لغو پیوند حساب',
+                    'text' => 'لغو لینک حساب',
                     'callback_data' => 'user.edit.unbind',
                 ],
             ],
@@ -677,7 +973,7 @@ final class Callback
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
             ],
         ];
@@ -707,7 +1003,7 @@ final class Callback
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
                 [
                     'text' => 'بازگشت به صفحه قبل',
@@ -727,7 +1023,7 @@ final class Callback
                 $this->user->removeLink();
 
                 $this->answerCallbackQuery([
-                    'text' => 'پیوند اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',
+                    'text' => 'لینک اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',
                     'show_alert' => true,
                 ]);
 
@@ -827,7 +1123,7 @@ final class Callback
                 $this->allow_edit_message = false;
                 $text = 'ایمیل **/unbind حساب** را برای unbind ارسال کنید.';
                 if (Config::obtain('telegram_unbind_kick_member')) {
-                    $text .= PHP_EOL . PHP_EOL . 'با توجه به تنظیمات مدیر، حساب بدون پیوند شما به طور خودکار از گروه کاربری حذف می شود.';
+                    $text .= PHP_EOL . PHP_EOL . 'با توجه به تنظیمات مدیر، حساب بدون لینک شما به طور خودکار از گروه کاربری حذف می شود.';
                 }
                 $sendMessage = [
                     'text' => $text,
@@ -905,7 +1201,7 @@ final class Callback
 
     public function getUserSubscribeKeyboard(): array
     {
-        $text = 'نوع پیوند اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
+        $text = 'نوع لینک اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
 
         $keyboard = [
             [
@@ -953,7 +1249,7 @@ final class Callback
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
             ],
         ];
@@ -994,7 +1290,7 @@ final class Callback
                 [
                     [
                         'text' => 'بازگشت به منوی اصلی',
-                        'callback_data' => 'user.index',
+                        'callback_data' => 'back',
                     ],
                     [
                         'text' => 'بازگشت به صفحه قبل',
@@ -1073,7 +1369,7 @@ final class Callback
         }
 
         $invite = Config::getClass('ref');
-        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
+        $currency = ResponseHelper::translateCurrency($_ENV['currency']);
         $text = [
             '<strong>برای هر <code>1</code> کاربر که دعوت به ثبت نام می کنید: </strong>',
             '',
@@ -1087,14 +1383,14 @@ final class Callback
         $keyboard = [
             [
                 [
-                    'text' => 'پیوند دعوت را دریافت کنید',
+                    'text' => 'لینک دعوت را دریافت کنید',
                     'callback_data' => 'user.invite.get',
                 ],
             ],
             [
                 [
                     'text' => 'بازگشت به منوی اصلی',
-                    'callback_data' => 'user.index',
+                    'callback_data' => 'back',
                 ],
             ],
         ];
@@ -1196,6 +1492,12 @@ final class Callback
                         'callback_data' => 'user.checkin.' . $this->trigger_user['id'],
                     ],
                 ],
+                [
+                    [
+                        'text' => 'بازگشت به منوی اصلی',
+                        'callback_data' => 'back',
+                    ],
+                ]
             ];
         }
 
@@ -1228,6 +1530,39 @@ final class Callback
             ])
         ];
     }
+    public static function getUserNotFoundReply(): array
+    {
+        $text = "کاربر گرامی.";
+        $text .= PHP_EOL;
+        $text .= "شناسه تلگرام شما برای ما ناشناس است.";
+        $text .= PHP_EOL;
+        $text .= "لطفااز طریق گزینه های زیر یا عضو وب سایت ما شوید یا چنانچه قبلا عضو شده اید اکانت خود را به تلگرام متصل کنید";
+        $text .= PHP_EOL;
+        $text .= "<span style:\"display:hidden\">https://market.mrcode.ir/wp-content/uploads/2020/01/Tryo.jpg.webp</span> ";
+        $userManage = [
+            [
+                [
+                    'text' => 'ثبت‌نام',
+                    'web_app' => ['url' => $_ENV['baseUrl'] . '/auth/register']
+                ],
+                [
+                    'text' => 'لاگین',
+                    'web_app' => ['url' => $_ENV['baseUrl'] . '/auth/login']
+                ]
+            ]
+        ];
+        return     [
+            'text' => $text,
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' =>  $userManage,
+                ]
+            ),
+        ];
+    }
 
     public static function getStartCommandReply($user): array
     {
@@ -1237,11 +1572,11 @@ final class Callback
             $userManage = [
                 [
                     [
-                        'text' => '(اگر هرگز ثبت نام نکرده اید)ثبت‌نام',
+                        'text' => 'ثبت‌نام',
                         'web_app' => ['url' => $_ENV['baseUrl'] . '/auth/register']
                     ],
                     [
-                        'text' => '(اگر قبلا ثبت نام کرده اید)اتصال به حساب',
+                        'text' => 'لاگین',
                         'callback_data' => '/bind',
                     ]
                 ]
@@ -1311,7 +1646,7 @@ final class Callback
         $text = "با تونل آزادی به اینترنت آزاد متصل شوید";
 
         return     [
-            'text' => $text,
+            'text' => $message ?? $text,
             'parse_mode' => 'Markdown',
             'disable_web_page_preview' => false,
             'reply_to_message_id' => null,

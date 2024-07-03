@@ -64,7 +64,8 @@ final class MyCommand extends Command
         ];
         $user = PersistedInfo::getUser($send_user['id']);
         if ($user === null) {
-            $reply = Callback::getRegisterMessage();
+            
+           return $this->replyWithMessage(Callback::getUserNotFoundReply());
         } else {
             $reply = Callback::getUserIndexKeyboard($user);
         }

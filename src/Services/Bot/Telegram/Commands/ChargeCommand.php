@@ -47,14 +47,13 @@ final class ChargeCommand extends Command
             $send_user = [
                 'id' => $message->getFrom()->getId(),
             ];
-            $reply = [];
-            $user = PersistedInfo::getUser($send_user['id']);
-            if ($user != null) {
-                $reply = Callback::getChargeReply($user);
-            }
 
-            // 回送信息
-            return $this->replyWithMessage($reply);
+            $user = PersistedInfo::getUser($send_user['id']);
+            if ($user == null) {
+                $this->replyWithMessage(Callback::getUserNotFoundReply());
+            } else {
+                $this->replyWithMessage(Callback::getChargeReply($user));
+            }
         }
     }
 }

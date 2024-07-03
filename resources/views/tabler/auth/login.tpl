@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <body class="border-top-wide border-primary d-flex flex-column">
 <div class="page page-center">
     <div class="container-tight my-auto">
@@ -45,6 +45,7 @@
                     </div>
                 </div>
                 <div class="form-footer">
+                <input id="t_i" type="hidden" >
                     <button class="btn btn-primary w-100"
                             hx-post="/auth/login" hx-swap="none" hx-vals='js:{
                                 {if $public_setting['enable_login_captcha']}
@@ -54,6 +55,7 @@
                                 password: document.getElementById("password").value,
                                 mfa_code: document.getElementById("mfa_code").value,
                                 remember_me: document.getElementById("remember_me").checked,
+                                tu: document.getElementById("t_i").value,
                              }' tabindex="5">
                         ورود
                     </button>
@@ -79,3 +81,26 @@ document.getElementById("passwd").addEventListener("keydown", function (event) {
 {/if}
 
 {include file='footer.tpl'}
+<script>
+    if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        // صفحه از طریق تلگرام Mini-App فراخوانی شده است
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+         var t = {
+                   "user":Telegram.WebApp.initDataUnsafe.user,
+                   "webAppQueryId": Telegram.WebApp.initDataUnsafe.query_id
+                 }
+        document.getElementById('t_i').value =JSON.stringify(t); 
+        document.getElementById('name').value =t.user.username; 
+        
+     
+    } else {
+        // صفحه از طریق مرورگر فراخوانی شده است
+        console.log('Page opened in a regular browser');
+    }
+
+    document.body.addEventListener('htmx:afterRequest', function(event) {
+    //todo: handle error     
+       Telegram.WebApp.close();
+    });
+</script>

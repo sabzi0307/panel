@@ -53,15 +53,71 @@ final class Message
         if ($this->message->getNewChatParticipant() !== null) {
             $this->newChatParticipant();
         }
-        $state = PersistedInfo::getTelegramBotState($this->message->getFrom()->getId());
+        $state = PersistedInfo::getTelegramBotLastCallback($this->message->getFrom()->getId());
         if ($state != null) {
             $user = PersistedInfo::getUser($this->message->getFrom()->getId());
-            if ($state->state == 'waiting_for_giftcard') {
+            if ($state->content == 'giftcard') {
                 $this->evaluteGiftCard($user, $state);
-            } else if ($state->state == 'waiting_for_tether') {
+            } else if ($state->content == 'tran_tether' && !str_starts_with($state->state, 'EX-')) {
                 $this->evaluteTetherTran($user, $state);
+            } else if ($state->content == 'perfectmoney' && !str_starts_with($state->state, 'EX-')) {
+                $this->perfectmoneyS1($user, $state);
+            } else if (str_starts_with($state->content, 'perfectmoney#') && !str_starts_with($state->state, 'EX-')) {
+                $this->perfectmoneyS2($user, $state);
             }
         }
+    }
+    public function perfectmoneyS1($user, $state)
+    {
+        $stateC = $state->content . "#" . $this->message->getText();
+        $state->content = $stateC;
+        $state->save();
+
+        $msg = 'کد وچر را وارد کنید. این کد 16 رقمی است';
+
+        $this->replyWithMessage([
+            'text' => $msg,
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => [],
+                ]
+            ),
+        ]);
+    }
+    public function perfectmoneyS2($user, $state)
+    {
+        $stateC = $state->content . "#" . $this->message->getText();
+        $state->content = $stateC;
+        $state->state = 'EX-' . $state->state;
+        $state->save();
+
+        $Operate = explode('#', $state->content);
+        //to do
+        //chexk perfect money
+
+        $msg = PersistedInfo::validatePerfectMony($user, $Operate[1], $Operate[2]);
+        $keyboard = [
+            [
+                [
+                    'text' => 'بازگشت به منوی اصلی',
+                    'callback_data' => 'back',
+                ]
+            ]
+        ];
+        $this->replyWithMessage([
+            'text' => $msg,
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => json_encode(
+                [
+                    'inline_keyboard' => $keyboard,
+                ]
+            ),
+        ]);
     }
     public function evaluteGiftCard($user, $state)
     {
@@ -95,15 +151,10 @@ final class Message
     }
     public function evaluteTetherTran($user, $state)
     {
-        $saved = PersistedInfo::applyCryptoPayment($this->message->getText(), $user);
+        $msg = PersistedInfo::applyCryptoPayment($this->message->getText(), $user);
+        $state->state = 'EX-' . $state->state;
+        $state->save();
 
-
-        if ($saved == null) {
-            $msg = 'لینک نامعتبر است';
-        } else {
-            $msg =  'شارژ با موفقیت انجام شد';
-            PersistedInfo::updateTelegramBotState($state);
-        }
         $keyBoard = [
             [
                 [

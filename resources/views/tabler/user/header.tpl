@@ -7,6 +7,14 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <meta name="referrer" content="never">
+
+    <meta property="og:type" content="website">
+<meta property="og:url" content="{$config['baseUrl']}">
+<meta property="og:title" content="تونل آزادی. خدمات فروش کانفیگ برای دسترسی به اینترنت آزاد">
+<meta property="og:description" content="هدف ما ارائه سرور با ادرس های تمیز در سرتاسر دنیا برای دسترسی به اینترنت آزاد است.">
+<meta property="og:site_name" content="تونل آزادی"><meta property="og:image" content="https://nowpayments.io/images/logo/sharing_image.png">
+
+
     <title>{$config['appName']}</title>
     <!-- CSS files -->
     <link href="//{$config['jsdelivr_url']}/npm/@tabler/core@latest/dist/css/tabler.rtl.min.css" rel="stylesheet"/>
@@ -182,7 +190,7 @@
                                 (! $public_setting['display_docs_only_for_paid_user'] || $user->class !== 0)}
                                     <a class="dropdown-item" href="/user/docs">
                                         <i class="ti ti-notes"></i>&nbsp;
-                                        سند
+                                        مستندات
                                     </a>
                                 {/if}
                             </div>

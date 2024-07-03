@@ -9,15 +9,20 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Paylist;
+use App\Models\Config;
 use App\Models\TelegramBotLog;
 use App\Models\TelegramBotState;
 use App\Models\UserCoupon;
 use App\Models\UserCryptoTrans;
 use App\Models\UserMoneyLog;
+use App\Utils\Tools;
 use DOMDocument;
 use DOMXPath;
 use Fastly\Model\Stats;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use Smarty\Exception;
 
 final class PersistedInfo
 {
@@ -53,6 +58,7 @@ final class PersistedInfo
 
 
         if ($user->is_shadow_banned) {
+            throw new Exception("user_is_shadow_banned", 1000);
             //return error message
         }
 
@@ -231,7 +237,7 @@ final class PersistedInfo
         }
         $paymentResult = PersistedInfo::extractBNBCryptoPaymentInfo($transaction_id);
 
-        if ($paymentResult != null) {   
+        if ($paymentResult['succeed']) {
 
             $money_before = $user->money;
             $user->money += $paymentResult['balance'];
@@ -244,20 +250,118 @@ final class PersistedInfo
                 $paymentResult['balance'],
                 'شارژ انتقال تتر در بایننس. شماره تراکنش:  ' . $transaction_id
             );
-            return (new UserCryptoTrans())->add($user->id,$paymentResult); ;
+            (new UserCryptoTrans())->add($user->id, $paymentResult);
+            $text = "حساب شما " . $paymentResult['balance'] . " دلار شارژ شد.";
+            $text .= PHP_EOL;
+            $text .= "موجودی حساب شما " . $user->money . " دلار است.";
+
+            return $text;
         }
-        return null;
+
+        return $paymentResult['msg'];
     }
 
+    public static   function validatePerfectMony($user, $ev_number, $ev_code)
+    {/* 
+        $antiXss = new AntiXSS();
+        $ev_number = $antiXss->xss_clean($request->getParam('ev_number'));
+        $ev_code = $antiXss->xss_clean($request->getParam('ev_code')); */
+
+        if (strlen($ev_number) !== 10) {
+            return 'کد وچر میبایست ۱۰ رقم باشد';
+        }
+        if (strlen($ev_code) !== 16) {
+            return 'کد فعال ساز میبایست ۱۶ رقم باشد';
+        }
+
+        $configs = Config::getClass('billing');
+        $account_Id = $configs['perfectmoney_account_id'];
+        $payee_Account = $configs['perfectmoney_payee_account'];
+        $pass_Phrase = urlencode($configs['perfectmoney_pass_phrase']);
+
+        $opts = array(
+            'socket' => array(
+                'bindto' => '0.0.0.0:0',
+            )
+        );
+
+        $context = stream_context_create($opts);
+
+        $client = new Client();
+        $url = "https://perfectmoney.com/acct/ev_activate.asp";
+
+        // Prepare the parameters for the API request
+        $params = [
+            'AccountID' => '25956214',
+            'PassPhrase' => 'x0dkrz5m32o6XxiDUfunUzMIk',
+            'Payee_Account' => 'U46609440',
+            'ev_number' => $ev_number,
+            'ev_code' => $ev_code
+        ];
+
+        $presponse = $client->request('POST', $url, [
+            'form_params' => $params
+        ]);
+        $voucher = $presponse->getBody()->getContents();
+
+        if (strpos($voucher, 'Error') !== false) {
+
+            $start_pos = strpos($voucher, "value='") + strlen("value='");
+            $end_pos = strpos($voucher, "'", $start_pos);
+            $error_value = substr($voucher, $start_pos, $end_pos - $start_pos);
+            return $error_value;
+        } else {
+            $dom = new DOMDocument();
+            $dom->loadHTML($voucher);
+            $element = $dom->getElementsByTagName("input");
+            $amount = $element->item(1)->getAttribute('value');
+
+
+            $money_before = $user->money;
+            $user->money += $amount;
+            $user->save();
+
+            $pl = new Paylist();
+            $trade_no = Tools::genRandomChar();
+
+            $pl->userid = $user->id;
+            $pl->total = $amount;
+            $pl->invoice_id = 0;
+            $pl->tradeno = $trade_no;
+            $pl->gateway = 'PerfectMoney';
+            $pl->datetime = time();
+            $pl->status = 1;
+
+            $pl->save();
+
+            (new UserMoneyLog())->add(
+                $user->id,
+                (float) $money_before,
+                (float) $user->money,
+                (float) $amount,
+                ' شارژ وچر پرفکت مانی ' . $ev_number
+            );
+            $text = "حساب شما " . $amount . " دلار شارژ شد.";
+            $text .= PHP_EOL;
+            $text .= "موجودی حساب شما " . $user->money . " دلار است.";
+
+            return $text;
+        }
+    }
     public static  function extractBNBCryptoPaymentInfo($transaction_id)
     {
+        $result = [
+            'hash' => $transaction_id,
+            'succeed' => false,
+            'msg' => " خطا رخ داده است. لطفا داده های ورودی را بررسی کنید"
+        ];
         // URL of the page to fetch
         //  $url = 'https://bscscan.com/tx/0x728277c2c5041bd7728f9ec0cbbc6d466913921d9889ac4fc9596fcd954bdff8';
         $url = 'https://bscscan.com/tx/' . $transaction_id;
         // Use file_get_contents to get the HTML content of the page
         $html = file_get_contents($url);
         if ($html === FALSE) {
-            return null;
+            return $result;
         }
         // Create a new DOMDocument instance
         $doc = new DOMDocument();
@@ -275,7 +379,7 @@ final class PersistedInfo
         $block = $xpath->query("//div[@id='ContentPlaceHolder1_maintable']/div[1]/div[3]/div[2]/div[1]/span[1]/a");
         $timestamp = $xpath->query("//div[@id='ContentPlaceHolder1_divTimeStamp']/div[1]/div[2]/span[2]");
         $amount = $xpath->query("//div[@id='wrapperContent']/div/div/span[2]");
-        $to = $xpath->query("//div[@id='wrapperContent']/div/div/span[4]/span/a");
+        $to = $xpath->query("//div[@id='wrapperContent']/div/div/span[5]/a");
         if (
             $status->length > 0 && $block->length > 0 && $timestamp->length > 0
             && $amount->length > 0 && $to->length > 0
@@ -287,38 +391,54 @@ final class PersistedInfo
                 'timestamp' => intval($timestamp->item(0)->attributes['data-timestamp']->value),
                 'balance' => floatval($amount->item(0)->textContent),
                 'to' => $to->item(0)->textContent,
-                'type'=>'BSC-USD'
+                'type' => 'BSC-USD',
             ];
             //chech to with wallet address
-            //check this transaction is not used
-            if (str_contains($result['status'], 'Success') && $result['block'])
+            if ($result['timestamp'] < strtotime('-10 days', time())) {
+                $result['msg'] = "تراکنش متعلق به بیش از ده روز پیش هست و نمیتوان به صورت اتوماتیک تایید شود. لطفا با پشتیبانی تماس بگیرید";
+                $result['succeed'] = false;
                 return $result;
-            return null;
-        } else {
-            return null;
+            }
+
+            //check this transaction is not used
+            if ($result['to'] === $_ENV['BSC-USD-ADDRESS'] && str_contains($result['status'], 'Success') && $result['block']) {
+                $result['succeed'] = true;
+                $result['msg'] = 'عملیات موفقیت امیز بود';
+                return $result;
+            }
         }
+        return $result;
     }
-    public static function logTelegramBotState($userid, $state, $contnt)
+    public static function logTelegramBotState($userid, $state, $contnt, $asnew = false)
     {
         $tbs = new TelegramBotState();
-        $statelog = $tbs->where('user_id', $userid)->first();
-        if ($statelog == null) {
+
+        if ($asnew) {
             $tbs->add($userid, $state, $contnt);
         } else {
-            $statelog->state = $state;
-            $statelog->last_update_time = time();
-            $statelog->content = $contnt;
-            $statelog->save();
+            $statelog = $tbs->where('user_id', $userid)->where('content', $contnt)->orderByDesc('create_time')->first();
+            if ($statelog == null) {
+                $tbs->add($userid, $state, $contnt);
+            } else {
+                $statelog->state = $state;
+                $statelog->last_update_time = time();
+                $statelog->content = $contnt;
+                $statelog->save();
+            }
         }
     }
-    public static function getCryptoTran($hash): null|TelegramBotState
+    public static function getCryptoTran($hash): null|UserCryptoTrans
     {
         return (new UserCryptoTrans())->where('tran_hash', $hash)->first();
     }
 
-    public static function getTelegramBotState($userid): null|TelegramBotState
+    public static function getTelegramBotLastCallback($userid): null|TelegramBotState
     {
-        return (new TelegramBotState())->where('user_id', $userid)->first();
+        return (new TelegramBotState())->where('user_id', $userid)->where('state', 'LIKE', '%-C')->orderByDesc('create_time')->first();
+    }
+    public static function getTelegramBotLastStep($userid): null|TelegramBotState
+    {
+        return (new TelegramBotState())->where('user_id', $userid)->orderByDesc('create_time')->first();
     }
     public static function updateTelegramBotState(TelegramBotState $state): null|TelegramBotState
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Bot\Telegram\Commands;
 
 use App\Models\Config;
+use App\Services\Bot\Telegram\Callback;
 use App\Services\Bot\Telegram\PersistedInfo;
 use App\Services\Reward;
 use Telegram\Bot\Actions;
@@ -57,18 +58,12 @@ final class CheckinCommand extends Command
 
         if ($user === null) {
             // 回送信息
-            $response = $this->replyWithMessage(
-                [
-                    'text' => Config::obtain('user_not_bind_reply'),
-                    'parse_mode' => 'Markdown',
-                    'reply_to_message_id' => $message->getMessageId(),
-                ]
-            );
+            $response = $this->replyWithMessage(Callback::getUserNotFoundReply());
         } else {
             if ($user->isAbleToCheckin()) {
                 $traffic = Reward::issueCheckinReward($user->id);
 
-                if (! $traffic) {
+                if (!$traffic) {
                     $msg = 'ورود ناموفق بود';
                 } else {
                     $msg = 'برنده ' . $traffic . 'MB ترافیک.';
