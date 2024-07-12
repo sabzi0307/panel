@@ -14,10 +14,10 @@ final class ResponseHelper
 {
     public static function translateCurrency(string $c): string{
         $str_curr='$';
-       if(strtolower($c)==="dollar")  {
+       if(strtolower($c)==="USD")  {
         $str_curr='دلار';
        }
-      else if(strtolower($c)==="rial")  {
+      else if(strtolower($c)==="IRR")  {
         $str_curr='تومان';
        }
        

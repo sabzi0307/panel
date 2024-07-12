@@ -870,7 +870,7 @@ final class Callback
                 // 返利记录
                 $paybacks = (new Payback())->where('ref_by', $this->user->id)->orderBy('datetime', 'desc')->take(10)->get();
                 $text = '<strong>موارد زیر 10 رکورد آخر تخفیف شما هستند：</strong>' . PHP_EOL . PHP_EOL;
-                $currency = ResponseHelper::translateCurrency($_ENV['currency']);
+                $currency = ResponseHelper::translateCurrency(Config::obtain('system_currency'));
                 foreach ($paybacks as $payback) {
                     $text .= '<code>#' . $payback->id .
                         '：' . ($payback->user() !== null ? $payback->user()->user_name : 'از سیستم خارج شد') . '：' .
@@ -1369,7 +1369,7 @@ final class Callback
         }
 
         $invite = Config::getClass('ref');
-        $currency = ResponseHelper::translateCurrency($_ENV['currency']);
+        $currency = ResponseHelper::translateCurrency(Config::obtain('system_currency'));
         $text = [
             '<strong>برای هر <code>1</code> کاربر که دعوت به ثبت نام می کنید: </strong>',
             '',

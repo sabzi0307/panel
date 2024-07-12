@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
+use App\Models\Config;
 use App\Models\Product;
 use App\Utils\ResponseHelper;
 use Exception;
@@ -50,7 +51,7 @@ final class ProductController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('tabps', $tabps)
-                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
+                ->assign('currency', ResponseHelper::translateCurrency(Config::obtain('system_currency')))
                 ->assign('bandwidths', $bandwidths)
                 ->assign('times', $times)
                 ->fetch('user/product.tpl')

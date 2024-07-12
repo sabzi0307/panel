@@ -1822,5 +1822,14 @@
         "type": "bool",
         "default": "0",
         "mark": "Enable Perfect Money"
+    },
+    {
+        "item": "system_currency",
+        "value": "USD",
+        "class": "billing",
+        "is_public": 1,
+        "type": "string",
+        "default": "USD",
+        "mark": "System currency"
     }
 ]

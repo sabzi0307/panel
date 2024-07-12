@@ -135,7 +135,7 @@ final class PerfectMoney extends Base
         $exchange_amount = (new Exchange())->exchange((float) $money, Config::obtain('perfectmoney_currency'), 'IRR');
 
         $html = '';
-        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
+        $currency=ResponseHelper::translateCurrency(Config::obtain('system_currency'));
         if ($batch == 0) {
             $html = <<<HTML
                 پرداخت موفقیت آمیز نبود.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
+use App\Models\Config;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Product;
@@ -77,7 +78,7 @@ final class OrderController extends BaseController
         return $response->write(
             $this->view()
                 ->assign('product', $product)
-                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
+                ->assign('currency', ResponseHelper::translateCurrency(Config::obtain('system_currency')))
                 ->fetch('user/order/create.tpl')
         );
     }

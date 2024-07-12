@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Config;
 use App\Services\Analytics;
 use App\Utils\ResponseHelper;
 use Exception;
@@ -21,7 +22,7 @@ final class AdminController extends BaseController
      */
     public function index(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
-        $currency=ResponseHelper::translateCurrency($_ENV['currency']);
+        $currency=ResponseHelper::translateCurrency(Config::obtain('system_currency'));
         $today_income = Analytics::getIncome('today');
         $yesterday_income = Analytics::getIncome('yesterday');
         $this_month_income = Analytics::getIncome('this month');

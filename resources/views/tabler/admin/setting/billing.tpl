@@ -54,19 +54,26 @@
                                 </li>
                             </ul>
                         </div>
+
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane active show" id="gateway">
-                                    {foreach $payment_gateways as $key => $value}
-                                        <div class="form-group mb-3 row">
-                                            <div class="row align-items-center">
-                                                <label class="form-label col-3 col-form-label">{$key}</label>
-                                                <label class="col-auto ms-auto form-check form-check-single form-switch">
-                                                    <input id="{$value}_enable" class="form-check-input" type="checkbox"
-                                                        {if in_array($value, $active_payment_gateway)}checked="" {/if}>
-                                                </label>
-                                            </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">نوع ارز</label>
+                                        <div class="col">
+                                            <input id="system_currency" type="text" class="form-control" value="{$settings['system_currency']}">
                                         </div>
+                                    </div>
+
+                                    {foreach $payment_gateways as $key => $value}
+                                    <div class="form-group mb-3 row">
+                                        <div class="row align-items-center">
+                                            <label class="form-label col-3 col-form-label">{$key}</label>
+                                            <label class="col-auto ms-auto form-check form-check-single form-switch">
+                                                <input id="{$value}_enable" class="form-check-input" type="checkbox" {if in_array($value, $active_payment_gateway)}checked="" {/if}>
+                                            </label>
+                                        </div>
+                                    </div>
                                     {/foreach}
                                 </div>
                                 <div class="tab-pane" id="f2f">
@@ -74,37 +81,32 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">App ID</label>
                                             <div class="col">
-                                                <input id="f2f_pay_app_id" type="text" class="form-control"
-                                                    value="{$settings['f2f_pay_app_id']}">
+                                                <input id="f2f_pay_app_id" type="text" class="form-control" value="{$settings['f2f_pay_app_id']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">PID</label>
                                             <div class="col">
-                                                <input id="f2f_pay_pid" type="text" class="form-control"
-                                                    value="{$settings['f2f_pay_pid']}">
+                                                <input id="f2f_pay_pid" type="text" class="form-control" value="{$settings['f2f_pay_pid']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">کلید عمومی Alipay</label>
                                             <div class="col">
-                                                <input id="f2f_pay_public_key" type="text" class="form-control"
-                                                    value="{$settings['f2f_pay_public_key']}">
+                                                <input id="f2f_pay_public_key" type="text" class="form-control" value="{$settings['f2f_pay_public_key']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">کلید خصوصی اپلیکیشن</label>
                                             <div class="col">
-                                                <input id="f2f_pay_private_key" type="text" class="form-control"
-                                                    value="{$settings['f2f_pay_private_key']}">
+                                                <input id="f2f_pay_private_key" type="text" class="form-control" value="{$settings['f2f_pay_private_key']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Custom callback address
                                                 (optional)</label>
                                             <div class="col">
-                                                <input id="f2f_pay_notify_url" type="text" class="form-control"
-                                                    value="{$settings['f2f_pay_notify_url']}">
+                                                <input id="f2f_pay_notify_url" type="text" class="form-control" value="{$settings['f2f_pay_notify_url']}">
                                             </div>
                                         </div>
                                     </div>
@@ -114,8 +116,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">پرداخت کارت بانکی</label>
                                             <div class="col">
-                                                <select id="stripe_card" class="col form-select"
-                                                    value="{$settings['stripe_card']}">
+                                                <select id="stripe_card" class="col form-select" value="{$settings['stripe_card']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['stripe_card']}selected{/if}>فعال
                                                         کردن</option>
@@ -125,8 +126,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">با علی پی پرداخت کنید</label>
                                             <div class="col">
-                                                <select id="stripe_alipay" class="col form-select"
-                                                    value="{$settings['stripe_alipay']}">
+                                                <select id="stripe_alipay" class="col form-select" value="{$settings['stripe_alipay']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['stripe_alipay']}selected{/if}>فعال
                                                         کردن</option>
@@ -136,8 +136,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">پرداخت ویچت</label>
                                             <div class="col">
-                                                <select id="stripe_wechat" class="col form-select"
-                                                    value="{$settings['stripe_wechat']}">
+                                                <select id="stripe_wechat" class="col form-select" value="{$settings['stripe_wechat']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['stripe_wechat']}selected{/if}>فعال
                                                         کردن</option>
@@ -147,45 +146,39 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">ارز درگاه</label>
                                             <div class="col">
-                                                <input id="stripe_currency" type="text" class="form-control"
-                                                    value="{$settings['stripe_currency']}">
+                                                <input id="stripe_currency" type="text" class="form-control" value="{$settings['stripe_currency']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">حداقل محدودیت شارژ (عدد
                                                 صحیح)</label>
                                             <div class="col">
-                                                <input id="stripe_min_recharge" type="text" class="form-control"
-                                                    value="{$settings['stripe_min_recharge']}">
+                                                <input id="stripe_min_recharge" type="text" class="form-control" value="{$settings['stripe_min_recharge']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">حداکثر محدودیت شارژ (عدد
                                                 صحیح)</label>
                                             <div class="col">
-                                                <input id="stripe_max_recharge" type="text" class="form-control"
-                                                    value="{$settings['stripe_max_recharge']}">
+                                                <input id="stripe_max_recharge" type="text" class="form-control" value="{$settings['stripe_max_recharge']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">public key</label>
                                             <div class="col">
-                                                <input id="stripe_pk" type="text" class="form-control"
-                                                    value="{$settings['stripe_pk']}">
+                                                <input id="stripe_pk" type="text" class="form-control" value="{$settings['stripe_pk']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">private key</label>
                                             <div class="col">
-                                                <input id="stripe_sk" type="text" class="form-control"
-                                                    value="{$settings['stripe_sk']}">
+                                                <input id="stripe_sk" type="text" class="form-control" value="{$settings['stripe_sk']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">WebHookکلید</label>
                                             <div class="col">
-                                                <input id="stripe_webhook_key" type="text" class="form-control"
-                                                    value="{$settings['stripe_webhook_key']}">
+                                                <input id="stripe_webhook_key" type="text" class="form-control" value="{$settings['stripe_webhook_key']}">
                                             </div>
                                         </div>
                                     </div>
@@ -195,36 +188,31 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">آدرس درگاه</label>
                                             <div class="col">
-                                                <input id="epay_url" type="text" class="form-control"
-                                                    value="{$settings['epay_url']}">
+                                                <input id="epay_url" type="text" class="form-control" value="{$settings['epay_url']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Merchant ID</label>
                                             <div class="col">
-                                                <input id="epay_pid" type="text" class="form-control"
-                                                    value="{$settings['epay_pid']}">
+                                                <input id="epay_pid" type="text" class="form-control" value="{$settings['epay_pid']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">商户Key</label>
                                             <div class="col">
-                                                <input id="epay_key" type="text" class="form-control"
-                                                    value="{$settings['epay_key']}">
+                                                <input id="epay_key" type="text" class="form-control" value="{$settings['epay_key']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">签名方式</label>
                                             <div class="col">
-                                                <input id="epay_sign_type" type="text" class="form-control"
-                                                    value="{$settings['epay_sign_type']}">
+                                                <input id="epay_sign_type" type="text" class="form-control" value="{$settings['epay_sign_type']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">علی پی</label>
                                             <div class="col">
-                                                <select id="epay_alipay" class="col form-select"
-                                                    value="{$settings['epay_alipay']}">
+                                                <select id="epay_alipay" class="col form-select" value="{$settings['epay_alipay']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['epay_alipay']}selected{/if}>فعال
                                                         کردن</option>
@@ -234,8 +222,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">پرداخت ویچت</label>
                                             <div class="col">
-                                                <select id="epay_wechat" class="col form-select"
-                                                    value="{$settings['epay_wechat']}">
+                                                <select id="epay_wechat" class="col form-select" value="{$settings['epay_wechat']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['epay_wechat']}selected{/if}>فعال کردن</option>
                                                 </select>
@@ -244,8 +231,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">کیف پول QQ</label>
                                             <div class="col">
-                                                <select id="epay_qq" class="col form-select"
-                                                    value="{$settings['epay_qq']}">
+                                                <select id="epay_qq" class="col form-select" value="{$settings['epay_qq']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['epay_qq']}selected{/if}>فعال کردن
                                                     </option>
@@ -255,8 +241,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">USDT</label>
                                             <div class="col">
-                                                <select id="epay_usdt" class="col form-select"
-                                                    value="{$settings['epay_usdt']}">
+                                                <select id="epay_usdt" class="col form-select" value="{$settings['epay_usdt']}">
                                                     <option value="0">غیر فعال</option>
                                                     <option value="1" {if $settings['epay_usdt']}selected{/if}>فعال کردن
                                                     </option>
@@ -270,11 +255,9 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">شیوه</label>
                                             <div class="col">
-                                                <select id="paypal_mode" class="col form-select"
-                                                    value="{$settings['paypal_mode']}">
+                                                <select id="paypal_mode" class="col form-select" value="{$settings['paypal_mode']}">
                                                     <option value="sandbox">Sandbox</option>
-                                                    <option value="live"
-                                                        {if $settings['paypal_mode'] === 'live'}selected{/if}>Live
+                                                    <option value="live" {if $settings['paypal_mode']==='live' }selected{/if}>Live
                                                     </option>
                                                 </select>
                                             </div>
@@ -282,29 +265,25 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">شناسه مشتری پی پال</label>
                                             <div class="col">
-                                                <input id="paypal_client_id" type="text" class="form-control"
-                                                    value="{$settings['paypal_client_id']}">
+                                                <input id="paypal_client_id" type="text" class="form-control" value="{$settings['paypal_client_id']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">کلید مشتری پی پال</label>
                                             <div class="col">
-                                                <input id="paypal_client_secret" type="text" class="form-control"
-                                                    value="{$settings['paypal_client_secret']}">
+                                                <input id="paypal_client_secret" type="text" class="form-control" value="{$settings['paypal_client_secret']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">ارز پی پال</label>
                                             <div class="col">
-                                                <input id="paypal_currency" type="text" class="form-control"
-                                                    value="{$settings['paypal_currency']}">
+                                                <input id="paypal_currency" type="text" class="form-control" value="{$settings['paypal_currency']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">زبان پی پال</label>
                                             <div class="col">
-                                                <input id="paypal_locale" type="text" class="form-control"
-                                                    value="{$settings['paypal_locale']}">
+                                                <input id="paypal_locale" type="text" class="form-control" value="{$settings['paypal_locale']}">
                                             </div>
                                         </div>
                                     </div>
@@ -314,44 +293,37 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">آدرس Api درگاه</label>
                                             <div class="col">
-                                                <input id="perfectmoney_url" type="text" class="form-control"
-                                                    value="{$settings['perfectmoney_url']}" style="direction: ltr;">
+                                                <input id="perfectmoney_url" type="text" class="form-control" value="{$settings['perfectmoney_url']}" style="direction: ltr;">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Account ID</label>
                                             <div class="col">
-                                                <input id="perfectmoney_account_id" type="text" class="form-control"
-                                                    value="{$settings['perfectmoney_account_id']}">
+                                                <input id="perfectmoney_account_id" type="text" class="form-control" value="{$settings['perfectmoney_account_id']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Payee Account</label>
                                             <div class="col">
-                                                <input id="perfectmoney_payee_account" type="text" class="form-control"
-                                                    value="{$settings['perfectmoney_payee_account']}">
+                                                <input id="perfectmoney_payee_account" type="text" class="form-control" value="{$settings['perfectmoney_payee_account']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Pass Phrase</label>
                                             <div class="col">
-                                                <input id="perfectmoney_pass_phrase" type="text" class="form-control"
-                                                    value="{$settings['perfectmoney_pass_phrase']}">
+                                                <input id="perfectmoney_pass_phrase" type="text" class="form-control" value="{$settings['perfectmoney_pass_phrase']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Pass Alternate Phrase</label>
                                             <div class="col">
-                                                <input id="perfectmoney_alter_pass_phrase" type="text"
-                                                    class="form-control"
-                                                    value="{$settings['perfectmoney_alter_pass_phrase']}">
+                                                <input id="perfectmoney_alter_pass_phrase" type="text" class="form-control" value="{$settings['perfectmoney_alter_pass_phrase']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Currency</label>
                                             <div class="col">
-                                                <input id="perfectmoney_currency" type="text" class="form-control"
-                                                    value="{$settings['perfectmoney_currency']}">
+                                                <input id="perfectmoney_currency" type="text" class="form-control" value="{$settings['perfectmoney_currency']}">
                                             </div>
                                         </div>
                                     </div>
@@ -361,36 +333,31 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">آدرس Api درگاه</label>
                                             <div class="col">
-                                                <input id="nowpayments_url" type="text" class="form-control"
-                                                    value="{$settings['nowpayments_url']}" style="direction: ltr;">
+                                                <input id="nowpayments_url" type="text" class="form-control" value="{$settings['nowpayments_url']}" style="direction: ltr;">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Api Key</label>
                                             <div class="col">
-                                                <input id="nowpayments_api_key" type="text" class="form-control"
-                                                    value="{$settings['nowpayments_api_key']}">
+                                                <input id="nowpayments_api_key" type="text" class="form-control" value="{$settings['nowpayments_api_key']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">IPN Secret</label>
                                             <div class="col">
-                                                <input id="nowpayments_ipn_secret" type="text" class="form-control"
-                                                    value="{$settings['nowpayments_ipn_secret']}">
+                                                <input id="nowpayments_ipn_secret" type="text" class="form-control" value="{$settings['nowpayments_ipn_secret']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">Price Currency</label>
                                             <div class="col">
-                                                <input id="nowpayments_price_currency" type="text" class="form-control"
-                                                    value="{$settings['nowpayments_price_currency']}">
+                                                <input id="nowpayments_price_currency" type="text" class="form-control" value="{$settings['nowpayments_price_currency']}">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">PayCurrency</label>
                                             <div class="col">
-                                                <input id="nowpayments_pay_currency" type="text" class="form-control"
-                                                    value="{$settings['nowpayments_pay_currency']}">
+                                                <input id="nowpayments_pay_currency" type="text" class="form-control" value="{$settings['nowpayments_pay_currency']}">
                                             </div>
                                         </div>
                                     </div>
@@ -404,29 +371,36 @@
 
         <script>
             $("#save-setting").click(function() {
-                $.ajax({
-                    url: '/admin/setting/billing',
-                    type: 'POST',
-                    dataType: "json",
-                    data: {
-                        {foreach $update_field as $key}
-                            {$key}: $('#{$key}').val(),
-                        {/foreach}
-                        {foreach $payment_gateways as $key => $value}
-                            {$key}: $("#{$key}_enable").is(":checked"),
-                        {/foreach}
-                    },
-                    success: function(data) {
-                        if (data.ret === 1) {
-                            $('#success-message').text(data.msg);
-                            $('#success-dialog').modal('show');
-                        } else {
-                            $('#fail-message').text(data.msg);
-                            $('#fail-dialog').modal('show');
-                        }
-                    }
-                })
-            });
+                        $.ajax({
+                            url: '/admin/setting/billing',
+                            type: 'POST',
+                            dataType: "json",
+                            data: {
+                                {
+                                    foreach $update_field as $key
+                                } {
+                                    $key
+                                }: $('#{$key}').val(),
+                                {
+                                    /foreach} {
+                                        foreach $payment_gateways as $key => $value
+                                    } {
+                                        $key
+                                    }: $("#{$key}_enable").is(":checked"),
+                                    {
+                                        /foreach}
+                                    },
+                                    success: function(data) {
+                                        if (data.ret === 1) {
+                                            $('#success-message').text(data.msg);
+                                            $('#success-dialog').modal('show');
+                                        } else {
+                                            $('#fail-message').text(data.msg);
+                                            $('#fail-dialog').modal('show');
+                                        }
+                                    }
+                                })
+                        });
         </script>
 
-{include file='admin/footer.tpl'}
+        {include file='admin/footer.tpl'}

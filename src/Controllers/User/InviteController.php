@@ -50,7 +50,7 @@ final class InviteController extends BaseController
                 ->assign('invite_url', $invite_url)
                 ->assign('paybacks_sum', $paybacks_sum)
                 ->assign('invite_reward_rate', $invite_reward_rate)
-                ->assign('currency', ResponseHelper::translateCurrency($_ENV['currency']))
+                ->assign('currency', ResponseHelper::translateCurrency(Config::obtain('system_currency')))
                 ->fetch('user/invite.tpl')
         );
     }
