@@ -38,16 +38,60 @@ final class DocsController extends BaseController
     }
 
     /**
-     * 解析并获取URL内容
+     * Fetch the markdown content from a URL.
+     *
+     * @param string $url
+     * @return string
+     * @throws Exception
      */
     private function fetchMarkdownFromUrl(string $url): string
     {
+        // Check if the URL is a GitHub Wiki URL
+        if (preg_match("/^https:\/\/github.com\/(.+)\/wiki\/(.+)/", $url, $matches)) {
+            return $this->fetchGithubWikiMarkdown($url);
+        }
+
+        // For other URLs, fetch the content directly
         $content = file_get_contents($url);
         if ($content === false) {
             throw new Exception("Unable to fetch content from URL: $url");
         }
 
         return $content;
+    }
+
+    /**
+     * Fetch markdown content from a GitHub Wiki page.
+     *
+     * @param string $url
+     * @return string
+     * @throws Exception
+     */
+    private function fetchGithubWikiMarkdown(string $url): string
+    {
+        // Fetch the HTML content
+        $htmlContent = file_get_contents($url);
+        if ($htmlContent === false) {
+            throw new Exception("Unable to fetch content from GitHub Wiki URL: $url");
+        }
+
+        // Extract the main content from the HTML
+        $doc = new DOMDocument();
+        @$doc->loadHTML($htmlContent);
+        $xpath = new DOMXPath($doc);
+
+        // Extract the content inside the 'wiki-body' div
+        $nodeList = $xpath->query("//div[@id='wiki-body']");
+        if ($nodeList->length === 0) {
+            throw new Exception("Unable to find wiki content in GitHub Wiki URL: $url");
+        }
+
+        // Get the text content
+        $contentDiv = $nodeList->item(0);
+        $markdownContent = $doc->saveHTML($contentDiv);
+
+        // Clean up the HTML to Markdown
+        return strip_tags($markdownContent);
     }
 
     /**
