@@ -7,6 +7,7 @@ namespace App\Controllers\User;
 use App\Controllers\BaseController;
 use App\Models\Config;
 use App\Models\Docs;
+use App\Utils\Tools;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -25,6 +26,10 @@ final class DocsController extends BaseController
         }
 
         $docs = (new Docs())->orderBy('id', 'desc')->get();
+        foreach ($docs as $doc) {
+            $doc->date = Tools::toDateTime($doc->date);
+        }
+        
 
         return $response->write(
             $this->view()

@@ -17,14 +17,14 @@ use function time;
 final class DocsController extends BaseController
 {
     private static array $details =
-        [
-            'field' => [
-                'op' => 'اقدام',
-                'id' => 'ID',
-                'date' => 'تاریخ',
-                'title' => 'عنوان',
-            ],
-        ];
+    [
+        'field' => [
+            'op' => 'اقدام',
+            'id' => 'ID',
+            'date' => 'تاریخ',
+            'title' => 'عنوان',
+        ],
+    ];
 
     /**
      * 后台文档页面
@@ -69,11 +69,11 @@ final class DocsController extends BaseController
         }
 
         $doc = new Docs();
-        $doc->date = Tools::toDateTime(time());
+        $doc->date =  time();
         $doc->title = $title;
         $doc->content = $content;
 
-        if (! $doc->save()) {
+        if (!$doc->save()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'سند اضافه نشد',
@@ -132,7 +132,7 @@ final class DocsController extends BaseController
         $doc->content = $request->getParam('content');
         $doc->date = Tools::toDateTime(time());
 
-        if (! $doc->save()) {
+        if (!$doc->save()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'به‌روزرسانی مطلب انجام نشد',
@@ -152,7 +152,7 @@ final class DocsController extends BaseController
     {
         $doc = (new Docs())->find($args['id']);
 
-        if (! $doc->delete()) {
+        if (!$doc->delete()) {
             return $response->withJson([
                 'ret' => 0,
                 'msg' => 'حذف نشد',
@@ -171,8 +171,9 @@ final class DocsController extends BaseController
     public function ajax(ServerRequest $request, Response $response, array $args): Response|ResponseInterface
     {
         $docs = (new Docs())->orderBy('id')->get();
-
+     
         foreach ($docs as $doc) {
+            $doc->date = Tools::toDateTime($doc->date);
             $doc->op = '<button type="button" class="btn btn-red" id="delete-doc-' . $doc->id . '" 
             onclick="deleteDoc(' . $doc->id . ')">حذف</button>
             <a class="btn btn-blue" href="/admin/docs/' . $doc->id . '/edit">ویرایش</a>';

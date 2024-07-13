@@ -67,7 +67,7 @@ return new class() implements MigrationInterface {
 
             CREATE TABLE `docs` (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                `date` datetime NOT NULL DEFAULT '1989-06-04 00:05:00' COMMENT 'document date',
+                `date` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'document date',
                 `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'document title',
                 `content` longtext NOT NULL DEFAULT '' COMMENT 'document content',
                 PRIMARY KEY (`id`)
