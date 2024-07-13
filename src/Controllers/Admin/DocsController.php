@@ -60,18 +60,20 @@ final class DocsController extends BaseController
     {
         $title = $request->getParam('title');
         $content = $request->getParam('content');
+        $url = $request->getParam('url');
 
-        if ($content === '' || $title === '') {
+        if ($content === '' && $url === '') {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'عنوان یا محتوای سند نمی تواند خالی باشد',
+                'msg' => 'عنوان یا محتوای سند نمی‌تواند خالی باشد',
             ]);
         }
 
         $doc = new Docs();
-        $doc->date =  time();
+        $doc->date = time();
         $doc->title = $title;
         $doc->content = $content;
+        $doc->url = $url;
 
         if (!$doc->save()) {
             return $response->withJson([
@@ -130,6 +132,7 @@ final class DocsController extends BaseController
         $doc = (new Docs())->find($args['id']);
         $doc->title = $request->getParam('title');
         $doc->content = $request->getParam('content');
+        $doc->url = $request->getParam('url');
         $doc->date = Tools::toDateTime(time());
 
         if (!$doc->save()) {

@@ -69,6 +69,7 @@ return new class() implements MigrationInterface {
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `date` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'document date',
                 `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'document title',
+                `url` varchar(255) NOT NULL DEFAULT '' COMMENT 'md document url',
                 `content` longtext NOT NULL DEFAULT '' COMMENT 'document content',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

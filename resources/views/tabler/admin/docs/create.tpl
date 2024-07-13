@@ -41,6 +41,12 @@
                         </div>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label col-3 col-form-label">آدرس URL سند (اختیاری)</label>
+                        <div class="col">
+                            <input id="url" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <form method="post">
                             <textarea id="tinymce"></textarea>
                         </form>
@@ -125,6 +131,7 @@
             data: {
                 title: $("#title").val(),
                 content: tinyMCE.get('tinymce').getContent(),
+                url: $("#url").val(),
             },
             success: function (data) {
                 if (data.ret === 1) {
