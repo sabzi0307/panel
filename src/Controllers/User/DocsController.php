@@ -37,7 +37,7 @@ final class DocsController extends BaseController
         );
     }
 
-    /**
+     /**
      * Fetch the markdown content from a URL.
      *
      * @param string $url
@@ -69,8 +69,11 @@ final class DocsController extends BaseController
      */
     private function fetchGithubWikiMarkdown(string $url): string
     {
+        // Encode the URL properly
+        $encodedUrl = $this->encodeGithubWikiUrl($url);
+
         // Fetch the HTML content
-        $htmlContent = file_get_contents($url);
+        $htmlContent = file_get_contents($encodedUrl);
         if ($htmlContent === false) {
             throw new Exception("Unable to fetch content from GitHub Wiki URL: $url");
         }
@@ -93,6 +96,29 @@ final class DocsController extends BaseController
         // Clean up the HTML to Markdown
         return strip_tags($markdownContent);
     }
+
+    /**
+     * Encode GitHub Wiki URL.
+     *
+     * @param string $url
+     * @return string
+     */
+    private function encodeGithubWikiUrl(string $url): string
+    {
+        // Extract the base URL and page title
+        if (preg_match("/^(https:\/\/github.com\/.+\/wiki\/)(.+)$/", $url, $matches)) {
+            $baseUrl = $matches[1];
+            $pageTitle = $matches[2];
+
+            // Encode the page title
+            $encodedTitle = rawurlencode($pageTitle);
+
+            return $baseUrl . $encodedTitle;
+        }
+
+        return $url;
+    }
+}
 
     /**
      * 文档详情页面
