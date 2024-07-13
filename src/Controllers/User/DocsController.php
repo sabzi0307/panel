@@ -118,7 +118,6 @@ final class DocsController extends BaseController
 
         return $url;
     }
-}
 
     /**
      * 文档详情页面
