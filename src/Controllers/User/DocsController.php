@@ -8,6 +8,8 @@ use App\Controllers\BaseController;
 use App\Models\Config;
 use App\Models\Docs;
 use App\Utils\Tools;
+use DOMDocument;
+use DOMXPath;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -79,9 +81,9 @@ final class DocsController extends BaseController
         }
 
         // Extract the main content from the HTML
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         @$doc->loadHTML($htmlContent);
-        $xpath = new DOMXPath($doc);
+        $xpath = new \DOMXPath($doc);
 
         // Extract the content inside the 'wiki-body' div
         $nodeList = $xpath->query("//div[@id='wiki-body']");
