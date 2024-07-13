@@ -8,7 +8,7 @@ use Illuminate\Database\Query\Builder;
 
 /**
  * @property int    $id      文档ID
- * @property datetime $date    文档日期
+ * @property int $date    文档日期
  * @property string $title   文档标题
  * @property string $content 文档内容
  * @property string $url 文档内容

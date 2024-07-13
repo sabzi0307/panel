@@ -133,7 +133,7 @@ final class DocsController extends BaseController
         $doc->title = $request->getParam('title');
         $doc->content = $request->getParam('content');
         $doc->url = $request->getParam('url');
-        $doc->date = Tools::toDateTime(time());
+        $doc->date = time();
 
         if (!$doc->save()) {
             return $response->withJson([
