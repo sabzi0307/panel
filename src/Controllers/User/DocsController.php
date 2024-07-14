@@ -96,7 +96,8 @@ final class DocsController extends BaseController
         $markdownContent = $doc->saveHTML($contentDiv);
 
         // Clean up the HTML to Markdown
-        return strip_tags($markdownContent);
+        // return strip_tags($markdownContent);
+        return $markdownContent;
     }
 
     /**
