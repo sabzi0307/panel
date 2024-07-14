@@ -85,18 +85,26 @@ final class DocsController extends BaseController
         @$doc->loadHTML($htmlContent);
         $xpath = new \DOMXPath($doc);
 
-        // Extract the content inside the 'wiki-body' div
+        // Extract the content inside the 'wiki-body' div, excluding 'wiki-footer'
         $nodeList = $xpath->query("//div[@id='wiki-body']");
         if ($nodeList->length === 0) {
             throw new Exception("Unable to find wiki content in GitHub Wiki URL: $url");
         }
 
-        // Get the text content
+        // Get the content of 'wiki-body'
         $contentDiv = $nodeList->item(0);
-        $markdownContent = $doc->saveHTML($contentDiv);
 
-        // Clean up the HTML to Markdown
-        // return strip_tags($markdownContent);
+        // Remove 'wiki-footer' if it exists
+        $footerNode = $xpath->query(".//div[contains(@class, 'wiki-footer')]", $contentDiv)->item(0);
+        if ($footerNode) {
+            $footerNode->parentNode->removeChild($footerNode);
+        }
+
+        // Get the remaining HTML content
+        $markdownContent = $doc->saveHTML($contentDiv);
+        // Remove the closing </div> tag if it exists
+        $markdownContent = preg_replace('/<\/div>\s*$/', '', $markdownContent);
+
         return $markdownContent;
     }
 
@@ -106,22 +114,22 @@ final class DocsController extends BaseController
      * @param string $url
      * @return string
      */
-    private function encodeGithubWikiUrl(string $url): string
+    function encodeGithubWikiUrl(string $url): string
     {
         // Extract the base URL and page title
         if (preg_match("/^(https:\/\/github.com\/.+\/wiki\/)(.+)$/", $url, $matches)) {
             $baseUrl = $matches[1];
             $pageTitle = $matches[2];
 
-            // Encode the page title
-            $encodedTitle = rawurlencode($pageTitle);
+            // Decode the page title before encoding to avoid double encoding
+            $decodedTitle = rawurldecode($pageTitle);
+            $encodedTitle = rawurlencode($decodedTitle);
 
             return $baseUrl . $encodedTitle;
         }
 
         return $url;
     }
-
     /**
      * 文档详情页面
      *
