@@ -425,7 +425,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
+                                    <!-- <div class="accordion-item">
                                         <div class="accordion" id="windows-accordion">
                                             <h2 class="accordion-header" id="heading-2">
                                                 <button class="accordion-button collapsed" type="button"
@@ -490,7 +490,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div {if $osFamily eq "Droid"} class="tab-pane active show" 
                                 {else} class="tab-pane"

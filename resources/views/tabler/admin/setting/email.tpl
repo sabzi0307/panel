@@ -66,7 +66,7 @@
                                         <div class="form-group mb-3 row">
                                             <label class="form-label col-3 col-form-label">ارائه دهنده خدمات پست الکترونیکی</label>
                                             <div class="col">
-                                                <select id="eemail_driver" class="col form-select"
+                                                <select id="email_driver" class="col form-select"
                                                         value="{$settings['email_driver']}">
                                                     <option value="none"
                                                             {if $settings['email_driver'] === "none"}selected{/if}>none
@@ -202,7 +202,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">Sener</label>
+                                            <label class="form-label col-3 col-form-label">Sender</label>
                                             <div class="col">
                                                 <input id="smtp_sender" type="text" class="form-control"
                                                        value="{$settings['smtp_sender']}">
