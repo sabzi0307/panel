@@ -353,9 +353,7 @@ final class Callback
             $text .= PHP_EOL . PHP_EOL;
             $text .= "در صورتی که موجودی حساب شما برای خرید کافی نباشد به منو افزایش موجودی متصل میشوید";
             $text .= PHP_EOL . PHP_EOL;
-            $text .= "امکان افزایش موجودی از طریق انتقال تتر در شبکه باینسس از طریق بات فراهم هست.  ";
-            $text .= PHP_EOL . PHP_EOL;
-            $text .= " چنانچه قصد اقزایش موجودی از طریق پرفکت مانی را دارید از وب سایت ما استفاده کنید  ";
+            $text .= "پشتیبانی : ". $_ENV['adminLink'];
             $text .= PHP_EOL . PHP_EOL;
             $text .= $_ENV['baseUrl'];
         }
@@ -366,6 +364,8 @@ final class Callback
             $text = "شناسه تلگرام شما برای ما ناشناس است.";
             $text .= PHP_EOL;
             $text = "لطفا از طریق منوی استارت لاگین کنید یا عضو شوید";
+            $text .= PHP_EOL . PHP_EOL;
+            $text .= "پشتیبانی : ". $_ENV['adminLink'];
         }
         return [
             'text' => $text,
@@ -445,6 +445,8 @@ final class Callback
         $text .= PHP_EOL;
         $text .= "https://www.iranicard.ir/";
         $text .= PHP_EOL . PHP_EOL;
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
+        $text .= PHP_EOL . PHP_EOL;
         $text  .= "اسکن کنید:";
 
 
@@ -484,11 +486,7 @@ final class Callback
     {
         $text = "موجودی شما " . $user->money . ' است.';
         $text .= PHP_EOL . PHP_EOL;
-        $text  .= "درصورت که** کد هدیه** دارید و یا قصدانتقال با تتر را دارید از ربات استفاده نمایید  ";
-        $text .= PHP_EOL;
-        $text .= "در صورتی که قصد دارید از طریق وچر پرفکت مانی اعتبار خود را افزایش دهید. به وب سایت ما به ادرس زیر مراجعه کنید";
-        $text .= PHP_EOL;
-        $text  .= $_ENV['baseUrl'];
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
         $reply = [
             'text' => $text,
             'keyboard' => [
@@ -554,6 +552,8 @@ final class Callback
                     $text = 'موجودی حساب شما برابر: ' . $this->user->money;
                     $text .= PHP_EOL;
                     $text = 'برای دریافت کانفیگ و نرم افزار مناسب اقدام کنید';
+                    $text .= PHP_EOL . PHP_EOL;
+                    $text .= "پشتیبانی : ". $_ENV['adminLink'];
 
                     $reply = [
                         'text' => $text,
@@ -719,6 +719,7 @@ final class Callback
 
         $text = "نرم افزار مورد نظر خود را انتخاب کنید";
         $text .= PHP_EOL . PHP_EOL;
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
 
         $keyboard = [
             [
@@ -1202,6 +1203,8 @@ final class Callback
     public function getUserSubscribeKeyboard(): array
     {
         $text = 'نوع لینک اشتراکی که می خواهید استفاده کنید را انتخاب کنید:';
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
 
         $keyboard = [
             [
@@ -1537,8 +1540,8 @@ final class Callback
         $text .= "شناسه تلگرام شما برای ما ناشناس است.";
         $text .= PHP_EOL;
         $text .= "لطفااز طریق گزینه های زیر یا عضو وب سایت ما شوید یا چنانچه قبلا عضو شده اید اکانت خود را به تلگرام متصل کنید";
-        $text .= PHP_EOL;
-        $text .= "<span style:\"display:hidden\">https://market.mrcode.ir/wp-content/uploads/2020/01/Tryo.jpg.webp</span> ";
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
         $userManage = [
             [
                 [
@@ -1626,7 +1629,7 @@ final class Callback
             ],
             [
                 [
-                    'text' => 'درباره تونل آزادی',
+                    'text' => 'درباره ما',
                     'callback_data' => 'aboutus',
                 ]
 
@@ -1643,7 +1646,12 @@ final class Callback
             'text' => $text,
             'keyboard' => array_merge($keyboard,$userManage),
         ]; */
-        $text = "با تونل آزادی به اینترنت آزاد متصل شوید";
+        $text = "****************************************************";
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "دسترسی پرسرعت و بدون محدودیت را با ما تجربه کنید";
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= "پشتیبانی : ". $_ENV['adminLink'];
+        $text .= "****************************************************";
 
         return     [
             'text' => $message ?? $text,

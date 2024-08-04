@@ -10,9 +10,9 @@
 
     <meta property="og:type" content="website">
 <meta property="og:url" content="{$config['baseUrl']}">
-<meta property="og:title" content="تونل آزادی. خدمات فروش کانفیگ برای دسترسی به اینترنت آزاد">
-<meta property="og:description" content="هدف ما ارائه سرور با ادرس های تمیز در سرتاسر دنیا برای دسترسی به اینترنت آزاد است.">
-<meta property="og:site_name" content="تونل آزادی"><meta property="og:image" content="https://nowpayments.io/images/logo/sharing_image.png">
+<meta property="og:title" content="{$config['appTitle']}">
+<meta property="og:description" content="{$config['appDescription']}">
+<meta property="og:site_name" content="{$config['appName']}"><meta property="og:image" content="/images/uim-logo-round_192x192.png">
 
 
     <title>{$config['appName']}</title>
