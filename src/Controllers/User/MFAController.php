@@ -79,7 +79,7 @@ final class MFAController extends BaseController
         if ($user->save()) {
             return $response->withJson([
                 'ret' => 1,
-                'msg' => 'بازنشانی با موفقیت انجام شد',
+                'msg' => 'آپدیت با موفقیت انجام شد',
                 'data' => [
                     'ga-token' => $user->ga_token,
                     'ga-url' => MFA::getGaUrl($user),
@@ -89,7 +89,7 @@ final class MFAController extends BaseController
 
         return $response->withJson([
             'ret' => 0,
-            'msg' => 'بازنشانی انجام نشد',
+            'msg' => 'آپدیت انجام نشد',
         ]);
     }
 }

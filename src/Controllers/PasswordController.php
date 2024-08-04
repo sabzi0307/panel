@@ -63,7 +63,7 @@ final class PasswordController extends BaseController
         }
 
         $user = (new User())->where('email', $email)->first();
-        $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای بازنشانی رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
+        $msg = 'اگر حساب شما در پایگاه داده ما وجود داشته باشد، پیوندی برای آپدیت رمز عبور شما به آدرس ایمیل مربوط به حساب شما ارسال می شود.';
 
         if ($user !== null) {
             try {
@@ -129,7 +129,7 @@ final class PasswordController extends BaseController
         $user->pass = $hashPassword;
 
         if (! $user->save()) {
-            return ResponseHelper::error($response, 'بازنشانی انجام نشد، لطفاً دوباره امتحان کنید');
+            return ResponseHelper::error($response, 'آپدیت انجام نشد، لطفاً دوباره امتحان کنید');
         }
 
         if (Config::obtain('enable_forced_replacement')) {
@@ -138,6 +138,6 @@ final class PasswordController extends BaseController
 
         $redis->del('password_reset:' . $token);
 
-        return ResponseHelper::success($response, 'بازنشانی با موفقیت انجام شد');
+        return ResponseHelper::success($response, 'آپدیت با موفقیت انجام شد');
     }
 }

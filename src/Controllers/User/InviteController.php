@@ -63,7 +63,7 @@ final class InviteController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'بازنشانی با موفقیت انجام شد',
+            'msg' => 'آپدیت با موفقیت انجام شد',
             'data' => [
                 'invite-url' => $_ENV['baseUrl'] . '/auth/register?code=' . $code,
             ],

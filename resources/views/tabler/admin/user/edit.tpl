@@ -56,7 +56,7 @@
                                 <label class="form-label col-3 col-form-label">رمز عبور حساب کاربری</label>
                                 <div class="col">
                                     <input id="pass" type="text" class="form-control"
-                                           placeholder="برای بازنشانی رمز عبور این کاربر، این قسمت را پر کنید">
+                                           placeholder="برای آپدیت رمز عبور این کاربر، این قسمت را پر کنید">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">

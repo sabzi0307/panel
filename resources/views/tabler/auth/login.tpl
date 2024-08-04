@@ -19,7 +19,7 @@
                     <label class="form-label" style="display: block; !important">
                         کلمه عبور
                         <span class="form-label-description">
-                            <a href="/password/reset" tabindex="-1">بازنشانی کلمه عبور</a>
+                            <a href="/password/reset" tabindex="-1">آپدیت کلمه عبور</a>
                         </span>
                     </label>
                     <div class="input-group input-group-flat">

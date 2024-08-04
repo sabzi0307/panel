@@ -415,14 +415,14 @@ final class Cron
     {
         (new Node())->where('bandwidthlimit_resetday', date('d'))->update(['node_bandwidth' => 0]);
 
-        echo Tools::toDateTime(time()) . ' بازنشانی ترافیک گره کامل شد' . PHP_EOL;
+        echo Tools::toDateTime(time()) . ' آپدیت ترافیک گره کامل شد' . PHP_EOL;
     }
 
     public static function resetTodayBandwidth(): void
     {
         (new User())->query()->update(['transfer_today' => 0]);
 
-        echo Tools::toDateTime(time()) . ' بازنشانی ترافیک روزانه کاربر تکمیل شد' . PHP_EOL;
+        echo Tools::toDateTime(time()) . ' آپدیت ترافیک روزانه کاربر تکمیل شد' . PHP_EOL;
     }
 
     public static function resetFreeUserBandwidth(): void
@@ -434,7 +434,7 @@ final class Cron
             try {
                 Notification::notifyUser(
                     $user,
-                    $_ENV['appName'] . '-اعلان بازنشانی ترافیک رایگان',
+                    $_ENV['appName'] . '-اعلان آپدیت ترافیک رایگان',
                     'سلام، ترافیک رایگان شما به حالت اولیه ریست شد' . $user->auto_reset_bandwidth . 'GB。'
                 );
             } catch (GuzzleException|ClientExceptionInterface|TelegramSDKException $e) {

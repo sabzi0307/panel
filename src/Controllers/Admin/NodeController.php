@@ -350,7 +350,7 @@ final class NodeController extends BaseController
         if (! $node->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'خطا در بازنشانی کلید ارتباطی',
+                'msg' => 'خطا در آپدیت کلید ارتباطی',
             ]);
         }
 
@@ -374,7 +374,7 @@ final class NodeController extends BaseController
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'کلید ارتباطی گره با موفقیت بازنشانی شد',
+            'msg' => 'کلید ارتباطی گره با موفقیت آپدیت شد',
         ]);
     }
 
@@ -532,7 +532,7 @@ final class NodeController extends BaseController
         if (! $node->save()) {
             return $response->withJson([
                 'ret' => 0,
-                'msg' => 'خطا در بازنشانی کلید',
+                'msg' => 'خطا در آپدیت کلید',
             ]);
         }
 
@@ -556,7 +556,7 @@ final class NodeController extends BaseController
         
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'کلید با موفقیت بازنشانی شد',
+            'msg' => 'کلید با موفقیت آپدیت شد',
         ]);
     }
 

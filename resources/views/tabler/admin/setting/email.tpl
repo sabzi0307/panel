@@ -123,7 +123,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">بازنشانی ایمیل دوره اعتبار لینک رمز عبور (ثانیه)</label>
+                                            <label class="form-label col-3 col-form-label">آپدیت ایمیل دوره اعتبار لینک رمز عبور (ثانیه)</label>
                                             <div class="col">
                                                 <input id="email_password_reset_ttl" type="text" class="form-control"
                                                        value="{$settings['email_password_reset_ttl']}">

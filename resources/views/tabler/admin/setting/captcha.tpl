@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">کد تأیید رمز عبور را بازنشانی کنید</label>
+                                    <label class="form-label col-3 col-form-label">کد تأیید رمز عبور را آپدیت کنید</label>
                                     <div class="col">
                                         <select id="enable_reset_password_captcha" class="col form-select" value="{$settings['enable_reset_password_captcha']}">
                                             <option value="0" {if ! $settings['enable_reset_password_captcha']}selected{/if}>غیرفعال</option>

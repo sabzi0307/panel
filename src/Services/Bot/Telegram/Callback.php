@@ -946,11 +946,11 @@ final class Callback
         $keyboard = [
             [
                 [
-                    'text' => 'بازنشانی لینک اشتراک',
+                    'text' => 'آپدیت لینک اشتراک',
                     'callback_data' => 'user.edit.update_link',
                 ],
                 [
-                    'text' => 'بازنشانی رمز عبور لینک',
+                    'text' => 'آپدیت رمز عبور لینک',
                     'callback_data' => 'user.edit.update_passwd',
                 ],
             ],
@@ -1023,7 +1023,7 @@ final class Callback
                 $this->user->removeLink();
 
                 $this->answerCallbackQuery([
-                    'text' => 'لینک اشتراک با موفقیت بازنشانی شد، لطفا اشتراک زیر را تمدید کنید.',
+                    'text' => 'لینک اشتراک با موفقیت آپدیت شد، لطفا اشتراک زیر را تمدید کنید.',
                     'show_alert' => true,
                 ]);
 

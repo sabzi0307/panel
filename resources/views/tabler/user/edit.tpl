@@ -348,8 +348,8 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">بازنشانی رمز عبور اتصال</h3>
-                                                    <p>رمز عبور اتصال و UUID را بازنشانی کنید. پس از بازنشانی، برای ادامه استفاده باید اشتراک را به‌روزرسانی کنید</p>
+                                                    <h3 class="card-title">آپدیت رمز عبور اتصال</h3>
+                                                    <p>رمز عبور اتصال و UUID را آپدیت کنید. پس از آپدیت، برای ادامه استفاده باید اشتراک را به‌روزرسانی کنید</p>
                                                     <p>رمز عبور اتصال فعلی：<code id="passwd">{$user->passwd}</code></p>
                                                     <p>UUID فعلی：<code id="uuid">{$user->uuid}</code></p>
                                                 </div>

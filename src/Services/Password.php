@@ -22,7 +22,7 @@ final class Password
 
         $redis->setex('password_reset:' . $token, Config::obtain('email_password_reset_ttl'), $email);
 
-        $subject = $_ENV['appName'] . '-بازنشانی رمز عبور';
+        $subject = $_ENV['appName'] . '-آپدیت رمز عبور';
         $resetUrl = $_ENV['baseUrl'] . '/password/token/' . $token;
 
         Mail::send(

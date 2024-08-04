@@ -183,12 +183,12 @@ final class InfoController extends BaseController
         $user->uuid = Uuid::uuid4();
 
         if (! $user->save()) {
-            return ResponseHelper::error($response, 'بازنشانی انجام نشد');
+            return ResponseHelper::error($response, 'آپدیت انجام نشد');
         }
 
         return $response->withJson([
             'ret' => 1,
-            'msg' => 'بازنشانی با موفقیت انجام شد',
+            'msg' => 'آپدیت با موفقیت انجام شد',
             'data' => [
                 'passwd' => $user->passwd,
                 'uuid' => $user->uuid,
@@ -202,10 +202,10 @@ final class InfoController extends BaseController
         $user->api_token = Tools::genRandomChar(32);
 
         if (! $user->save()) {
-            return ResponseHelper::error($response, 'بازنشانی انجام نشد');
+            return ResponseHelper::error($response, 'آپدیت انجام نشد');
         }
 
-        return ResponseHelper::success($response, 'بازنشانی با موفقیت انجام شد');
+        return ResponseHelper::success($response, 'آپدیت با موفقیت انجام شد');
     }
 
     public function updateMethod(ServerRequest $request, Response $response, array $args): ResponseInterface
@@ -233,7 +233,7 @@ final class InfoController extends BaseController
     {
         $this->user->removeLink();
 
-        return ResponseHelper::success($response, 'بازنشانی با موفقیت انجام شد');
+        return ResponseHelper::success($response, 'آپدیت با موفقیت انجام شد');
     }
 
     public function updateDailyMail(ServerRequest $request, Response $response, array $args): ResponseInterface

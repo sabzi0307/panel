@@ -11,7 +11,7 @@
                     <div border="0" cellpadding="0" cellspacing="0" width="100%" class="logoTable">
                         <div align="center" valign="middle" style="padding-top:60px;padding-bottom:60px">
                             <h2 class="bigTitle">
-                                بازنشانی رمز عبور
+                                آپدیت رمز عبور
                             </h2>
                         </div>
                     </div>
@@ -25,9 +25,9 @@
                         <div align="center" valign="top"
                              style="padding-bottom:60px;padding-left:20px;padding-right:20px;" class="description">
                             <p class="midText">
-                                شما این ایمیل را دریافت کردید زیرا برای بازنشانی رمز عبور در سیستم {$config['appName']} درخواست داده‌اید. اگر خودتان برای آن درخواست نداده‌اید، لطفاً این ایمیل را نادیده بگیرید.
+                                شما این ایمیل را دریافت کردید زیرا برای آپدیت رمز عبور در سیستم {$config['appName']} درخواست داده‌اید. اگر خودتان برای آن درخواست نداده‌اید، لطفاً این ایمیل را نادیده بگیرید.
                                 <br><br>
-                                <a href="{$resetUrl}" style="color:#505050" target="_blank">برای بازنشانی رمز عبور روی این لینک کلیک کنید</a>
+                                <a href="{$resetUrl}" style="color:#505050" target="_blank">برای آپدیت رمز عبور روی این لینک کلیک کنید</a>
                             </p>
                         </div>
                     </div>
