@@ -10,8 +10,8 @@
 
     <meta property="og:type" content="website">
 <meta property="og:url" content="{$config['baseUrl']}">
-<meta property="og:title" content="{$config['appTitle']}">
-<meta property="og:description" content="{$config['appDescription']}">
+<meta property="og:title" content="{$config['appName']}">
+<meta property="og:description" content="{$config['appName']}">
 <meta property="og:site_name" content="{$config['appName']}"><meta property="og:image" content="/images/uim-logo-round_192x192.png">
 
 
