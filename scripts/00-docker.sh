@@ -51,6 +51,18 @@ if [ "$INIT" = true ];then
         echo >&2 "appName not set!"
         appName="IRPanel"
     fi
+if [ -z "$appTitle" ];then
+        echo >&2 "appTitle not set!"
+        appTitle="IRPanel"
+    fi
+if [ -z "$appDescription" ];then
+        echo >&2 "appDescription not set!"
+        appDescription="IRPanel"
+    fi
+if [ -z "$adminLink" ];then
+        echo >&2 "adminLink not set!"
+        adminLink="@Magix_admin"
+    fi
 
     if [ -z "$baseUrl" ];then
         echo >&2 "baseUrl not set!"
@@ -474,6 +486,9 @@ cat <<EOF >/var/www/html/conf/.config.php
 
 \$_ENV['debug']         = $debug;                       //debug mode switch，The production environment should be kept as false
 \$_ENV['appName']       = '$appName';                   // Site name
+\$_ENV['appTitle']       = '$appTitle';                   // Site name
+\$_ENV['appDescription']       = '$appDescription';                   // Site name
+\$_ENV['adminLink']       = '$adminLink';                   // Site name
 \$_ENV['baseUrl']       = '$baseUrl';                   // site address
 
 \$_ENV['webAPI']        = $WebAPI;                      // Whether to enable the WebAPI function
