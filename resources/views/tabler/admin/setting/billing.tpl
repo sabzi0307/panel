@@ -370,26 +370,20 @@
         </div>
 
         <script>
+            debugger
             $("#save-setting").click(function() {
                         $.ajax({
                             url: '/admin/setting/billing',
                             type: 'POST',
                             dataType: "json",
                             data: {
-                                {
-                                    foreach $update_field as $key
-                                } {
-                                    $key
-                                }: $('#{$key}').val(),
-                                {
-                                    /foreach} {
-                                        foreach $payment_gateways as $key => $value
-                                    } {
-                                        $key
-                                    }: $("#{$key}_enable").is(":checked"),
-                                    {
-                                        /foreach}
-                                    },
+                                        {foreach $update_field as $key} 
+                                        {$key}: $('#{$key}').val(),
+                                        {/foreach} 
+                                        {foreach $payment_gateways as $key => $value }
+                                        {$key}: $("#{$key}_enable").is(":checked"),
+                                        {/foreach}
+                                 },
                                     success: function(data) {
                                         if (data.ret === 1) {
                                             $('#success-message').text(data.msg);
