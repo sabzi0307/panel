@@ -337,7 +337,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/hiddify-windows-x64-setup.zip" {else}
-                                                            href="/clients/hiddify-windows-x64-setup.zip" {/if}
+                                                            href="https://app.hiddify.com/win" target="_blank" rel="noopener noreferrer"{/if}
                                                             class="btn btn-azure">
                                                             دانلود هیدیفای نکست
                                                         </a>
@@ -398,7 +398,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/Clash.Verge.exe" {else}
-                                                            href="/clients/Clash.Verge.exe" {/if} class="btn btn-azure">
+                                                            href="https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64-setup.exe" target="_blank" rel="noopener noreferrer" {/if} class="btn btn-azure">
                                                             دانلود Clash Verge
                                                         </a>
                                                     </div>
@@ -528,7 +528,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/hiddify-android-universal.apk" {else}
-                                                            href="/clients/hiddify-android-universal.apk" {/if}
+                                                            href="https://play.google.com/store/apps/details?id=app.hiddify.com" target="_blank" rel="noopener noreferrer"{/if}
                                                             class="btn btn-azure">
                                                             دانلود هیدیفای نکست
                                                         </a>
@@ -588,8 +588,10 @@
                                                     <div style="margin-top: 5px;"
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
-                                                            href="/user/clients/SFA.apk" {else} href="/clients/SFA.apk"
-                                                            {/if} class="btn btn-azure">
+                                                            href="/user/clients/SFA.apk" {else}
+                                                             href="https://github.com/SagerNet/sing-box/releases/download/v1.10.0-alpha.28/SFA-1.10.0-alpha.28-universal.apk"
+                                                             target="_blank" rel="noopener noreferrer"
+                                                             {/if} class="btn btn-azure">
                                                             SFA دانلود
                                                         </a>
                                                     </div>
@@ -881,7 +883,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/hiddify-linux-x64.zip" {else}
-                                                            href="/clients/hiddify-linux-x64.zip" {/if}
+                                                            href="https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-Linux-x64.AppImage" target="_blank" rel="noopener noreferrer"{/if}
                                                             class="btn btn-azure">
                                                             دانلود هیدیفای نکست
                                                         </a>
@@ -942,7 +944,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/Clash.Verge.AppImage.tar.gz" {else}
-                                                            href="/clients/Clash.Verge.AppImage.tar.gz" {/if} class="btn btn-azure">
+                                                            href="https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/clash-verge_1.3.8_amd64.AppImage" target="_blank" rel=""noopener noreferrer"{/if} class="btn btn-azure">
                                                             دانلود Clash Verge
                                                         </a>
                                                     </div>
@@ -1033,7 +1035,7 @@
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
                                                             href="/user/clients/hiddify-macos-universal.zip" {else}
-                                                            href="/clients/hiddify-macos-universal.zip" {/if}
+                                                            href="https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-MacOS.dmg" target="_blank" rel="noopener noreferrer"{/if}
                                                             class="btn btn-azure">
                                                             دانلود هیدیفای نکست
                                                         </a>
@@ -1061,7 +1063,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
+                                    <!--<div class="accordion-item">
                                         <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-2">
                                                 <button class="accordion-button collapsed" type="button"
@@ -1093,7 +1095,8 @@
                                                     <div style="margin-top: 5px;"
                                                         class="btn-list justify-content-start">
                                                         <a {if $config['enable_r2_client_download']}
-                                                            href="/user/clients/SFM.zip" {else} href="/clients/SFM.zip"
+                                                            href="/user/clients/SFM.zip" {else} 
+                                                            href="/clients/SFM.zip"
                                                             {/if} class="btn btn-azure">
                                                             دانلود SFM
                                                         </a>
@@ -1120,7 +1123,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="accordion-item">
                                         <div class="accordion" id="mac-accordion">
                                             <h2 class="accordion-header" id="heading-1">
@@ -1152,12 +1155,12 @@
                                                 <div style="margin-top: 5px;" class="btn-list justify-content-start">
                                                     <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/Clash.Verge_x64.dmg" {else}
-                                                        href="/clients/Clash.Verge_x64.dmg" {/if} class="btn btn-azure">
+                                                        href="https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64.dmg" target="_blank" rel="noopener noreferrer" {/if} class="btn btn-azure">
                                                         دانلود (x86_64)
                                                     </a>
                                                     <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/Clash.Verge_aarch64.dmg" {else}
-                                                        href="/clients/Clash.Verge_aarch64.dmg" {/if}
+                                                        href="https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_aarch64.dmg" target="_blank" rel="noopener noreferrer"{/if}
                                                         class="btn btn-azure">
                                                         دانلود (aarch64)
                                                     </a>
