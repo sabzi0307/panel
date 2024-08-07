@@ -78,7 +78,7 @@ final class NowPayments extends Base
         $pl->tradeno = $trade_no;
         $pl->save();
 
-        $exchange_amount = (new Exchange())->exchange((float) $price, 'IRR', Config::obtain('nowpayments_price_currency'));
+        $exchange_amount = (new Exchange())->exchange((float) $price, Config::obtain('system_currency'), Config::obtain('nowpayments_price_currency'));
 
         if (isset($qr)) {
             $body = [
