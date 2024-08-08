@@ -604,7 +604,7 @@ final class Callback
             $url = $_ENV['baseUrl'];
             if ($Operate[1] == 'windows') {
                 if ($Operate[2] == 'clash') {
-                    $url .= 'https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64-setup.exe';
+                    $url = 'https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64-setup.exe';
                 } else if ($Operate[2] == 'hiddify') {
                     $url = 'https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-Windows-Setup-x64.exe';
                 } else if ($Operate[2] == 'sinxbox') {
@@ -613,10 +613,10 @@ final class Callback
             } else if ($Operate[1] == 'mac') {
                 if ($Operate[2] == 'clash') {
                     $url = 'https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_aarch64.dmg';
-                    $url .=PHP_EOL
+                    $url .=PHP_EOL;
                     $url.="https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64.dmg";
                 } else if ($Operate[2] == 'hiddify') {
-                    $url .= 'https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-MacOS.dmg';
+                    $url = 'https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-MacOS.dmg';
                 } else if ($Operate[2] == 'sinxbox') {
                     $url .= ' ';
                 }
@@ -630,9 +630,9 @@ final class Callback
                 }
             } else if ($Operate[1] == 'linux') {
                 if ($Operate[2] == 'clash') {
-                    $url .= 'https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/clash-verge_1.3.8_amd64.AppImage';
+                    $url = 'https://github.com/zzzgydi/clash-verge/releases/download/v1.3.8/clash-verge_1.3.8_amd64.AppImage';
                 } else if ($Operate[2] == 'hiddify') {
-                    $url .= 'https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-Linux-x64.AppImage';
+                    $url = 'https://github.com/hiddify/hiddify-next/releases/download/v2.1.5/Hiddify-Linux-x64.AppImage';
                 } else if ($Operate[2] == 'sinxbox') {
                     $url .= ' ';
                 }
