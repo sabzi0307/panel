@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-<script>
+<!-- <script>
 document.getElementById("passwd").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         // اجرای عملیات ورود
@@ -75,7 +75,7 @@ document.getElementById("passwd").addEventListener("keydown", function (event) {
         document.getElementById("login").click(); // تابعی که عملیات ورود را انجام می‌دهد
     }
 });
-</script>
+</script> -->
 {if $public_setting['enable_login_captcha']}
     {include file='captcha/js.tpl'}
 {/if}
