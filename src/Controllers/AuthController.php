@@ -214,7 +214,7 @@ final class AuthController extends BaseController
                 return ResponseHelper::error($response, 'ایمیل ارسال نشد، لطفا با مدیر سایت تماس بگیرید.');
             }
 
-            return ResponseHelper::success($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید.');
+            return ResponseHelper::success($response, 'کد تایید با موفقیت ارسال شد، لطفا ایمیل خود را بررسی کنید. در نظر داشته باشید در صورت  نبود ایمیل در صندق ورودی تان، پوشه  span را نیز برسی کنید.');
         }
 
         return ResponseHelper::error($response, 'تایید ایمیل برای سایت فعال نیست');
