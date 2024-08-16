@@ -128,9 +128,9 @@ final class MoneyController extends BaseController
 
         // Prepare the parameters for the API request
         $params = [
-            'AccountID' =>'25956214',
-            'PassPhrase' => 'x0dkrz5m32o6XxiDUfunUzMIk',
-            'Payee_Account' => 'U46609440',
+            'AccountID' =>$account_Id,
+            'PassPhrase' =>  $pass_Phrase,
+            'Payee_Account' => $payee_Account,
             'ev_number' => $ev_number,
             'ev_code' => $ev_code
         ];
