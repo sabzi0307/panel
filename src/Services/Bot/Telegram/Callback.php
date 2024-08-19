@@ -622,7 +622,7 @@ final class Callback
                 }
             } else if ($Operate[1] == 'android') {
                 if ($Operate[2] == 'clash') {
-                    $url .= '/clients/CMFA.apk';
+                    $url = 'https://github.com/MetaCubeX/ClashMetaForAndroid/releases/download/v2.10.3/cmfa-2.10.3-meta-arm64-v8a-release.apk';
                 } else if ($Operate[2] == 'hiddify') {
                     $url = 'https://play.google.com/store/apps/details?id=app.hiddify.com';
                 } else if ($Operate[2] == 'sinxbox') {

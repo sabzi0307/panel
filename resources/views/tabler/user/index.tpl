@@ -648,7 +648,7 @@
                                                 <div style="margin-top: 5px;" class="btn-list justify-content-start">
                                                     <a {if $config['enable_r2_client_download']}
                                                         href="/user/clients/CMFA.apk" {else}
-                                                        href="/clients/CMFA.apk" {/if} class="btn btn-azure">
+                                                        href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases/download/v2.10.3/cmfa-2.10.3-meta-arm64-v8a-release.apk" {/if} class="btn btn-azure">
                                                         دانلود کلش برای اندروید
                                                     </a>
                                                 </div>
